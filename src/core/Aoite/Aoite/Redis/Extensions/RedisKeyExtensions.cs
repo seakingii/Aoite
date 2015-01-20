@@ -248,5 +248,75 @@ namespace System
             return new RedisScan<string>(client, "SCAN", null, cursor, pattern, count
                 , (command, args) => new RedisString(command, args));
         }
+
+        /// <summary>
+        /// 返回给定列表、集合、有序集合 key 中经过排序的元素。
+        /// </summary>
+        /// <param name="client">Redis 客户端。</param>
+        /// <param name="key">键名。</param>
+        /// <param name="by">按其元素来排序。</param>
+        /// <param name="offset">指定要跳过的元素数量。</param>
+        /// <param name="count">指定跳过 <paramref name="offset"/> 个指定的元素之后，要返回多少个对象。</param>
+        /// <param name="sort">排序方式。</param>
+        /// <param name="alpha">表示对字符串进行排序。</param>
+        /// <param name="get">根据排序的结果来取出相应的键值列表。</param>
+        /// <returns>返回列表形式的排序结果。</returns>
+        public static BinaryValue[] Sort(this IRedisClient client
+            , string key, string by = null
+            , long? offset = null, long? count = null
+            , RedisSort? sort = null
+            , bool? alpha = null
+            , params string[] get)
+        {
+            List<string> args = new List<string>();
+            args.Add(key);
+            if(by != null)
+                args.AddRange(new[] { "BY", by });
+            if(offset.HasValue && count.HasValue)
+                args.AddRange(new[] { "LIMIT", offset.Value.ToString(), count.Value.ToString() });
+            foreach(var pattern in get)
+                args.AddRange(new[] { "GET", pattern });
+            if(sort.HasValue)
+                args.Add(sort.ToString().ToUpperInvariant());
+            if(alpha.HasValue && alpha.Value)
+                args.Add("ALPHA");
+            return client.Execute(RedisArray.Create(new RedisValue("SORT", args.ToArray())));
+        }
+
+        /// <summary>
+        /// 返回保存给定列表、集合、有序集合 key 中经过排序的元素数量。
+        /// </summary>
+        /// <param name="client">Redis 客户端。</param>
+        /// <param name="key">键名。</param>
+        /// <param name="destination">目标键名。</param>
+        /// <param name="by">按其元素来排序。</param>
+        /// <param name="offset">指定要跳过的元素数量。</param>
+        /// <param name="count">指定跳过 <paramref name="offset"/> 个指定的元素之后，要返回多少个对象。</param>
+        /// <param name="sort">排序方式。</param>
+        /// <param name="alpha">表示对字符串进行排序。</param>
+        /// <param name="get">根据排序的结果来取出相应的键值列表。</param>
+        /// <returns>返回保存列表形式的排序结果的元素数量。</returns>
+        public static long SortStore(this IRedisClient client
+            , string key, string destination, string by = null
+            , long? offset = null, long? count = null
+            , RedisSort? sort = null
+            , bool? alpha = null
+            , params string[] get)
+        {
+            List<string> args = new List<string>();
+            args.Add(key);
+            if(by != null)
+                args.AddRange(new[] { "BY", by });
+            if(offset.HasValue && count.HasValue)
+                args.AddRange(new[] { "LIMIT", offset.Value.ToString(), count.Value.ToString() });
+            foreach(var pattern in get)
+                args.AddRange(new[] { "GET", pattern });
+            if(sort.HasValue)
+                args.Add(sort.ToString().ToUpperInvariant());
+            if(alpha.HasValue && alpha.Value)
+                args.Add("ALPHA");
+            args.AddRange(new[] { "STORE", destination });
+            return client.Execute(new RedisInteger("SORT", args.ToArray()));
+        }
     }
 }

@@ -18,17 +18,21 @@ namespace Aoite.Redis.Commands
         Action<T> _callback;
         internal override void SetCallback<TValue>(Action<TValue> callback)
         {
-            _callback = v => callback((TValue)((object)v));
+            _callback = callback as Action<T>;
         }
 
-        internal override void RunCallback(RedisExecutor executor)
+        internal override void RunCallback(object value)
         {
-            var value = this.Parse(executor);
             var callback = this._callback;
             if(callback != null)
             {
-                callback(value);
+                callback((T)value);
+                this._callback = null;
             }
+        }
+        internal override object ObjectParse(RedisExecutor executor)
+        {
+            return Parse(executor);
         }
     }
 }

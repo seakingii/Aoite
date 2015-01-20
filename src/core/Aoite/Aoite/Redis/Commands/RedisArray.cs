@@ -55,31 +55,6 @@ namespace Aoite.Redis.Commands
             }
         }
 
-        public class TranExec : RedisStatus
-        {
-            LinkedList<RedisCommand> _tranCommands;
-            internal TranExec(LinkedList<RedisCommand> tranCommands)
-                : base("EXEC", new object[0])
-            {
-                this._tranCommands = tranCommands;
-            }
-
-            internal override Result Parse(RedisExecutor executor)
-            {
-                executor.AssertType(RedisReplyType.MultiBulk);
-                var count = executor.ReadInteger(false);
-                if(count != this._tranCommands.Count)
-                    throw new RedisProtocolException(String.Format("预期 {0} 事务返回项，实际只有 {1} 个返回项。", this._tranCommands.Count, count));
-                var node = this._tranCommands.First;
-
-                do
-                {
-                    node.Value.RunCallback(executor);
-                    node = node.Next;
-                } while(node != null);
-
-                return Result.Successfully;
-            }
-        }
+       
     }
 }

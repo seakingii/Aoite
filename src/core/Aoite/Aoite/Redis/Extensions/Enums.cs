@@ -73,4 +73,19 @@ namespace System
         Max,
     }
 
+    /// <summary>
+    /// 表示 Redis 的排序规则。
+    /// </summary>
+    public enum RedisSort
+    {
+        /// <summary>
+        /// 表示正序 (a-z)。
+        /// </summary>
+        Asc,
+
+        /// <summary>
+        /// 表示逆序 (z-a)。
+        /// </summary>
+        Desc,
+    }
 }

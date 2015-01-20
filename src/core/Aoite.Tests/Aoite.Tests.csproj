@@ -64,6 +64,7 @@
     <Compile Include="Aoite\Logger\Text\DefaultLogDescriptorTests.cs" />
     <Compile Include="Aoite\Logger\Text\LogPathFactoriesTests.cs" />
     <Compile Include="Aoite\Logger\Text\StreamTextWriterFactoryTests.cs" />
+    <Compile Include="Aoite\Redis\RedisConnectionTests.cs" />
     <Compile Include="Aoite\Redis\RedisHyperLogLogTests.cs" />
     <Compile Include="Aoite\Redis\RedisHashTests.cs" />
     <Compile Include="Aoite\Redis\RedisKeyTests.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="Aoite\Redis\RedisSortedSetTests.cs" />
     <Compile Include="Aoite\Redis\RedisStringTests.cs" />
     <Compile Include="Aoite\Redis\RedisTranTests.cs" />
+    <Compile Include="Aoite\Redis\RedisScriptTests.cs" />
+    <Compile Include="Aoite\Redis\RedisServerTests.cs" />
     <Compile Include="Aoite\Redis\TestBase.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\AllFormattersTests.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\BasisFormattersTests.cs" />

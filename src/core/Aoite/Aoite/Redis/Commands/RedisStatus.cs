@@ -31,14 +31,12 @@ namespace Aoite.Redis.Commands
                 return false;
             }
         }
-
-        public class Queue : RedisCommand<Result>
+        public class Pong : RedisStatus
         {
-            public Queue(RedisCommand command) : base(command.Command, command.Arguments) { }
-
+            public Pong(string command, params object[] args) : base(command, args) { }
             internal override Result Parse(RedisExecutor executor)
             {
-                return executor.ReadStatus(statusText: "QUEUED");
+                return executor.ReadStatus(statusText: "PONG");
             }
         }
     }

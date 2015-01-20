@@ -21,9 +21,9 @@ namespace Aoite.Redis
         /// <param name="capacity"><see cref="Aoite.Redis.RedisDictionary"/> 可包含的初始元素数。</param>
         public RedisDictionary(int capacity) : base(capacity) { }
         /// <summary>
-        /// 初始化 <see cref="Aoite.Redis.RedisDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue 中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化 <see cref="Aoite.Redis.RedisDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue&gt; 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
-        /// <param name="dictionary">System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue，它的元素被复制到新的 <see cref="Aoite.Redis.RedisDictionary"/></param>
+        /// <param name="dictionary">System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue&gt;，它的元素被复制到新的 <see cref="Aoite.Redis.RedisDictionary"/></param>
         public RedisDictionary(IDictionary<string, BinaryValue> dictionary) : base(dictionary) { }
         /// <summary>
         /// 用序列化数据初始化 <see cref="Aoite.Redis.RedisDictionary"/> 类的新实例。

@@ -426,5 +426,73 @@ namespace Aoite.Redis
                 Assert.Equal(20, redis.Scan().Count());
             });
         }
+
+        [Fact()]
+        public void TestSort()
+        {
+            using(var mock = new MockConnector("localhost", 9999, "*2\r\n$2\r\nab\r\n$2\r\ncd\r\n", "*0\r\n", "*0\r\n", "*0\r\n", "*0\r\n", "*0\r\n", "*0\r\n", "*0\r\n"))
+            using(var redis = new RedisClient(mock))
+            {
+                var resp1 = redis.Sort("test1");
+                Assert.Equal(2, resp1.Length);
+                Assert.Equal("ab", (string)resp1[0]);
+                Assert.Equal("cd", (string)resp1[1]);
+                Assert.Equal("*2\r\n$4\r\nSORT\r\n$5\r\ntest1\r\n", mock.GetMessage());
+
+                var resp2 = redis.Sort("test2", offset: 0, count: 2);
+                Assert.Equal("*5\r\n$4\r\nSORT\r\n$5\r\ntest2\r\n$5\r\nLIMIT\r\n$1\r\n0\r\n$1\r\n2\r\n", mock.GetMessage());
+
+                var resp3 = redis.Sort("test3", by: "xyz");
+                Assert.Equal("*4\r\n$4\r\nSORT\r\n$5\r\ntest3\r\n$2\r\nBY\r\n$3\r\nxyz\r\n", mock.GetMessage());
+
+                var resp4 = redis.Sort("test4", sort: RedisSort.Asc);
+                Assert.Equal("*3\r\n$4\r\nSORT\r\n$5\r\ntest4\r\n$3\r\nASC\r\n", mock.GetMessage());
+
+                var resp5 = redis.Sort("test5", sort: RedisSort.Desc);
+                Assert.Equal("*3\r\n$4\r\nSORT\r\n$5\r\ntest5\r\n$4\r\nDESC\r\n", mock.GetMessage());
+
+                var resp6 = redis.Sort("test6", alpha: true);
+                Assert.Equal("*3\r\n$4\r\nSORT\r\n$5\r\ntest6\r\n$5\r\nALPHA\r\n", mock.GetMessage());
+
+                var resp7 = redis.Sort("test7", get: new[] { "get1", "get2" });
+                Assert.Equal("*6\r\n$4\r\nSORT\r\n$5\r\ntest7\r\n$3\r\nGET\r\n$4\r\nget1\r\n$3\r\nGET\r\n$4\r\nget2\r\n", mock.GetMessage());
+
+                var resp8 = redis.Sort("test8", offset: 0, count: 2, by: "xyz", sort: RedisSort.Asc, alpha: true, get: new[] { "a", "b" });
+                Assert.Equal("*13\r\n$4\r\nSORT\r\n$5\r\ntest8\r\n$2\r\nBY\r\n$3\r\nxyz\r\n$5\r\nLIMIT\r\n$1\r\n0\r\n$1\r\n2\r\n$3\r\nGET\r\n$1\r\na\r\n$3\r\nGET\r\n$1\r\nb\r\n$3\r\nASC\r\n$5\r\nALPHA\r\n", mock.GetMessage());
+            }
+        }
+
+        [Fact()]
+        public void TestSortStore()
+        {
+            using(var mock = new MockConnector("localhost", 9999, ":1\r\n", ":1\r\n", ":1\r\n", ":1\r\n", ":1\r\n", ":1\r\n", ":1\r\n", ":1\r\n"))
+            using(var redis = new RedisClient(mock))
+            {
+                Assert.Equal(1, redis.SortStore("test1", "test2"));
+                Assert.Equal("*4\r\n$4\r\nSORT\r\n$5\r\ntest1\r\n$5\r\nSTORE\r\n$5\r\ntest2\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test2", "test3", offset: 0, count: 2));
+                Assert.Equal("*7\r\n$4\r\nSORT\r\n$5\r\ntest2\r\n$5\r\nLIMIT\r\n$1\r\n0\r\n$1\r\n2\r\n$5\r\nSTORE\r\n$5\r\ntest3\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test3", "test4", by: "xyz"));
+                Assert.Equal("*6\r\n$4\r\nSORT\r\n$5\r\ntest3\r\n$2\r\nBY\r\n$3\r\nxyz\r\n$5\r\nSTORE\r\n$5\r\ntest4\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test5", "test6", sort: RedisSort.Asc));
+                Assert.Equal("*5\r\n$4\r\nSORT\r\n$5\r\ntest5\r\n$3\r\nASC\r\n$5\r\nSTORE\r\n$5\r\ntest6\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test7", "test8", sort: RedisSort.Desc));
+                Assert.Equal("*5\r\n$4\r\nSORT\r\n$5\r\ntest7\r\n$4\r\nDESC\r\n$5\r\nSTORE\r\n$5\r\ntest8\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test9", "test10", alpha: true));
+                Assert.Equal("*5\r\n$4\r\nSORT\r\n$5\r\ntest9\r\n$5\r\nALPHA\r\n$5\r\nSTORE\r\n$6\r\ntest10\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test11", "test12", get: new[] { "get1", "get2" }));
+                Assert.Equal("*8\r\n$4\r\nSORT\r\n$6\r\ntest11\r\n$3\r\nGET\r\n$4\r\nget1\r\n$3\r\nGET\r\n$4\r\nget2\r\n$5\r\nSTORE\r\n$6\r\ntest12\r\n", mock.GetMessage());
+
+                Assert.Equal(1, redis.SortStore("test13", "test14", offset: 0, count: 2, by: "xyz", sort: RedisSort.Asc, alpha: true, get: new[] { "a", "b" }));
+                Assert.Equal("*15\r\n$4\r\nSORT\r\n$6\r\ntest13\r\n$2\r\nBY\r\n$3\r\nxyz\r\n$5\r\nLIMIT\r\n$1\r\n0\r\n$1\r\n2\r\n$3\r\nGET\r\n$1\r\na\r\n$3\r\nGET\r\n$1\r\nb\r\n$3\r\nASC\r\n$5\r\nALPHA\r\n$5\r\nSTORE\r\n$6\r\ntest14\r\n", mock.GetMessage());
+            }
+        }
+
     }
 }

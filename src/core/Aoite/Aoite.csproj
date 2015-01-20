@@ -152,6 +152,8 @@
     <Compile Include="Aoite\Redis\Commands\RedisArgs.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisArray.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisBoolean.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisObject.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisTran.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisValue.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisCommand.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisCommand`1.cs" />
@@ -164,8 +166,11 @@
     <Compile Include="Aoite\Redis\Commands\RedisItem.cs" />
     <Compile Include="Aoite\Redis\Core\IConnector.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisHyperLogLogExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisScriptExtensions.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisSortedSetExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisConnectionExtensions.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisTransactionExtensions.cs" />
+    <Compile Include="Aoite\Redis\IRedisTransaction.cs" />
     <Compile Include="Aoite\Redis\Models\IRedisItem.cs" />
     <Compile Include="Aoite\Redis\Core\MockConnector.cs" />
     <Compile Include="Aoite\Redis\Models\RedisFieldItem.cs" />
@@ -188,6 +193,7 @@
     <Compile Include="Aoite\Redis\Models\RedisKeyItem.cs" />
     <Compile Include="Aoite\Redis\Core\RedisScan`1.cs" />
     <Compile Include="Aoite\Redis\Core\RedisType.cs" />
+    <Compile Include="Aoite\Redis\RedisTransaction.cs" />
     <Compile Include="Aoite\Reflection\Caching\Cache.cs" />
     <Compile Include="Aoite\Reflection\Caching\CacheStrategy.cs" />
     <Compile Include="Aoite\Reflection\Core\Constants.cs" />

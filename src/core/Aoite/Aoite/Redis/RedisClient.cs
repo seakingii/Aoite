@@ -15,17 +15,27 @@ namespace Aoite.Redis
         internal RedisExecutor _executor;
         internal IConnector _connector;
         internal LinkedList<RedisCommand> _tranCommands;
+        private string _password;
 
         /// <summary>
         /// 指定套接字的信息，初始化一个 <see cref="Aoite.Redis.RedisClient"/> 类的新实例。
         /// </summary>
         /// <param name="socketInfo">套接字的信息。</param>
-        public RedisClient(SocketInfo socketInfo) : this(new DefaultConnector(socketInfo)) { }
+        /// <param name="password">Redis 服务器授权密码。</param>
+        public RedisClient(SocketInfo socketInfo, string password = null)
+            : this(new DefaultConnector(socketInfo), password) { }
 
-        internal RedisClient(IConnector connector)
+        internal RedisClient(IConnector connector, string password = null)
         {
             this._connector = connector;
+            this._password = password;
+            if(password != null) this._connector.Connected += _connector_Connected;
             this._executor = new RedisExecutor(connector);
+        }
+
+        void _connector_Connected(object sender, EventArgs e)
+        {
+            this.Execute(new RedisStatus("AUTH", this._password)).ThrowIfFailded();
         }
 
         /// <summary>
@@ -54,6 +64,7 @@ namespace Aoite.Redis
 
         /// <summary>
         /// 开始一个新的事务。
+        /// <para>在事务期间请勿通过 <see cref="Aoite.Redis.IRedisClient"/> 执行任何命令。</para>
         /// </summary>
         /// <returns>如果事务已存在，将会抛出一个错误，否则返回一个新的事务。</returns>
         public virtual IRedisTransaction BeginTransaction()
@@ -62,69 +73,6 @@ namespace Aoite.Redis
             if(this._tranCommands != null) throw new RedisException("Redis 不支持嵌套事务。");
             this.Execute(new RedisStatus("MULTI")).ThrowIfFailded();
             return new RedisTransaction(this);
-        }
-
-    }
-
-    class RedisTransaction : ObjectDisposableBase, IRedisTransaction
-    {
-        private readonly RedisClient _client;
-        public RedisTransaction(RedisClient client)
-        {
-            if(client == null) throw new ArgumentNullException("client");
-            this._client = client;
-            this._client._tranCommands = new LinkedList<RedisCommand>();
-        }
-
-        protected override void ThrowWhenDisposed()
-        {
-            base.ThrowWhenDisposed();
-            if(this._client._tranCommands == null) throw new RedisException("Redis 的事务已结束。");
-        }
-
-        public T Execute<T>(RedisCommand<T> command)
-        {
-            if(command == null) throw new ArgumentNullException("command");
-
-            this.ThrowWhenDisposed();
-            this._client._tranCommands.AddLast(command);
-            this._client._executor.Execute(new RedisStatus.Queue(command)).ThrowIfFailded();
-            return default(T);
-        }
-
-        IRedisTransaction IRedisClient.BeginTransaction()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IRedisTransaction.On<T>(T executor, Action<T> callback)
-        {
-            this.ThrowWhenDisposed();
-            //executor();
-            this._client._tranCommands.Last.Value.SetCallback(callback);
-        }
-
-        Result IRedisTransaction.Commit()
-        {
-            this.ThrowWhenDisposed();
-            return this._client._executor.Execute(new RedisArray.TranExec(this._client._tranCommands));
-        }
-
-        protected override void DisposeManaged()
-        {
-            if(this._client._tranCommands != null && this._client._tranCommands.Count > 0)
-            {
-                try
-                {
-                    this._client._executor.Execute(new RedisStatus("DISCARD"));
-                }
-                catch(Exception)
-                {
-                    // Redis client is disposed?
-                }
-            }
-            this._client._tranCommands = null;
-            base.DisposeManaged();
         }
 
     }

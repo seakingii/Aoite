@@ -153,7 +153,7 @@ namespace Aoite.Redis
             switch(type)
             {
                 case RedisReplyType.Bulk:
-                    return ReadBulk(false);
+                    return new BinaryValue(ReadBulk(false));
 
                 case RedisReplyType.Integer:
                     return ReadInteger(false);

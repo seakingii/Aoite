@@ -21,7 +21,7 @@ namespace Aoite.Redis
         {
             get
             {
-                if(this.Connected || this.Connect()) return this._stream;
+                if(this.IsConnected || this.Connect()) return this._stream;
                 throw new RedisIOException("连接到 Redis 服务器失败。");
             }
         }
@@ -33,6 +33,7 @@ namespace Aoite.Redis
             socketInfo.EndPoint.ToLoopback();
             this.SocketInfo = socketInfo;
             this.ConnectTimeout = TimeSpan.FromMilliseconds(-1);
+
         }
 
         private void Reusable()
@@ -43,7 +44,7 @@ namespace Aoite.Redis
             this._stream = null;
         }
 
-        public bool Connected { get { return this._socket != null && this._socket.Connected; } }
+        public bool IsConnected { get { return this._socket != null && this._socket.Connected; } }
 
         public bool Connect()
         {
@@ -55,6 +56,7 @@ namespace Aoite.Redis
             if(this._socket.Connected)
             {
                 this._stream = new BufferedStream(new NetworkStream(this._socket));
+                this.OnConnected();
             }
             return this._socket.Connected;
         }
@@ -65,5 +67,12 @@ namespace Aoite.Redis
             base.DisposeManaged();
         }
 
+
+        public event EventHandler Connected;
+        protected virtual void OnConnected()
+        {
+            var handler = this.Connected;
+            if(handler != null) handler(this, EventArgs.Empty);
+        }
     }
 }

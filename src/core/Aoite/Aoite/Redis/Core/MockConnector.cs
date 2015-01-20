@@ -13,7 +13,7 @@ namespace Aoite.Redis
         public SocketInfo SocketInfo { get; private set; }
 
         private bool _Connected;
-        public bool Connected { get { return this._Connected; } }
+        public bool IsConnected { get { return this._Connected; } }
 
         public MockConnector(params string[] mockResponses) : this("localhost", 9999, mockResponses) { }
 
@@ -40,6 +40,7 @@ namespace Aoite.Redis
 
         public bool Connect()
         {
+            OnConnected();
             return this._Connected = true;
         }
 
@@ -59,6 +60,15 @@ namespace Aoite.Redis
             this._WriteStream = null;
 
             base.DisposeManaged();
+        }
+
+
+
+        public event EventHandler Connected;
+        protected virtual void OnConnected()
+        {
+            var handler = this.Connected;
+            if(handler != null) handler(this, EventArgs.Empty);
         }
     }
 }
