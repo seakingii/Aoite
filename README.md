@@ -5,9 +5,10 @@
 本项目从2009年孵化（V->Sofire->Aoite），至今已度过5个年头。一直在优化，一直在重构，一直在**商用**。有十分完整的单元测试用例。可以放心使用（我吹牛了，请暂时不要商用，目前开源版还未彻底完成所有功能，请等到 CommandModel 模块完成。）。更多内容请关注我的[博客园](http://www.cnblogs.com/sofire)。
 
 #Project Plan （2015-01-19 ~ 2015-01-24）
-1. 完成 Redis 的 95%+ 命令。
+1. <s>完成 Redis 的 95%+ 命令</s>。
 	* 考虑实现基于面向对象扩展方式。
 	* RealCall 单元测试前期可能不会实现所有命令。
+	* Pub/Sub 模块。
 2. 完成 Cache 模块。
 3. 完成 CommandModel 模块（这个模块是 Aoite 最大亮点之一，暂时保密用途）。
 4. 完成 ASP.NET MVC CommandModel 模块。
