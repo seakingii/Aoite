@@ -88,5 +88,14 @@ namespace Aoite.Net
         {
             return new SocketInfo(endPoint);
         }
+
+        /// <summary>
+        /// 返回指定终结点的 IP 地址和端口号。
+        /// </summary>
+        /// <returns>包含指定终结点（例如，192.168.1.2:80）的 IP 地址和端口号的字符串。</returns>
+        public override string ToString()
+        {
+            return this._EndPoint.ToString();
+        }
     }
 }

@@ -72,5 +72,7 @@ namespace Aoite.Serialization.BinarySuite
         Result,
         GResult,
         SuccessfullyResult,
+        
+        Custom,
     }
 }

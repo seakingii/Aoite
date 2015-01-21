@@ -92,6 +92,34 @@ namespace Aoite.Tests
             });
         }
 
+        public class HGetAllModel
+        {
+            public string Field1 { get; set; }
+            public string Field2 { get; set; }
+        }
+        [Fact()]
+        public void TestHGetAllT()
+        {
+            using(var mock = new MockConnector("localhost", 9999, "*2\r\n$6\r\nfield1\r\n$5\r\ntest1\r\n"))
+            using(var redis = new RedisClient(mock))
+            {
+                var response = redis.HGetAll<HGetAllModel>("test");
+                Assert.Equal("test1", response.Field1);
+                Assert.Null(response.Field2);
+                Assert.Equal("*2\r\n$7\r\nHGETALL\r\n$4\r\ntest\r\n", mock.GetMessage());
+            }
+
+            this.RealCall(redis =>
+            {
+                redis.HSet("test", "field1", "value1");
+                redis.HSet("test", "field2", "value2");
+
+                var response = redis.HGetAll<HGetAllModel>("test");
+
+                Assert.Equal("value1", response.Field1);
+                Assert.Equal("value2", response.Field2);
+            });
+        }
         [Fact()]
         public void TestHIncrBy()
         {
@@ -356,7 +384,7 @@ namespace Aoite.Tests
             this.RealCall(redis =>
             {
                 Assert.True(redis.HMSet("test", new { field1 = "value1", field2 = "value2" }));
-                var  response= redis.HScan("test").ToArray();
+                var response = redis.HScan("test").ToArray();
                 Assert.Equal(2, response.Length);
                 Assert.Equal("field1", response[0].Field);
                 Assert.Equal("field2", response[1].Field);

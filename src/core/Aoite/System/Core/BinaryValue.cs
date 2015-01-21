@@ -67,23 +67,60 @@ namespace System
             if(value == null) return null;
             if(value is BinaryValue) return (BinaryValue)value;
             if(value is byte[]) return new BinaryValue((byte[])value);
-            if(value is Decimal) return (Decimal)value;
-            if(value is Guid) return (Guid)value;
             if(value is String) return (String)value;
-            if(value is DateTime) return (DateTime)value;
-            if(value is DateTimeOffset) return (DateTimeOffset)value;
-            if(value is TimeSpan) return (TimeSpan)value;
-            if(value is Boolean) return (Boolean)value;
-            if(value is Char) return (Char)value;
-            if(value is Double) return (Double)value;
-            if(value is Int16) return (Int16)value;
-            if(value is Int32) return (Int32)value;
-            if(value is Int64) return (Int64)value;
-            if(value is Single) return (Single)value;
-            if(value is UInt16) return (UInt16)value;
-            if(value is UInt32) return (UInt32)value;
-            if(value is UInt64) return (UInt64)value;
+            if(value is ValueType)
+            {
+                if(value is Enum) return Create(Convert.ChangeType(value, Enum.GetUnderlyingType(value.GetType()), null));
+                if(value is Decimal) return (Decimal)value;
+                if(value is Guid) return (Guid)value;
+                if(value is DateTime) return (DateTime)value;
+                if(value is DateTimeOffset) return (DateTimeOffset)value;
+                if(value is TimeSpan) return (TimeSpan)value;
+                if(value is Boolean) return (Boolean)value;
+                if(value is Char) return (Char)value;
+                if(value is Double) return (Double)value;
+                if(value is Int16) return (Int16)value;
+                if(value is Int32) return (Int32)value;
+                if(value is Int64) return (Int64)value;
+                if(value is Single) return (Single)value;
+                if(value is UInt16) return (UInt16)value;
+                if(value is UInt32) return (UInt32)value;
+                if(value is UInt64) return (UInt64)value;
+            }
             return new BinaryValue(value);
+        }
+        /// <summary>
+        /// 提供已知的数据类型，解析当前二进制值。
+        /// </summary>
+        /// <param name="type">值的数据类型。</param>
+        /// <returns>返回一个二进制值解析后的值。</returns>
+        public object Parse(Type type)
+        {
+            if(type == null) throw new ArgumentNullException("type");
+            type = type.GetNullableType();
+            if(type == Types.BinaryValue) return this;
+            if(type == Types.ByteArray) return this._ByteArray;
+            if(type == Types.String) return (String)this;
+            if(type.IsValueType)
+            {
+                if(type.IsEnum) return Enum.ToObject(type, Parse(Enum.GetUnderlyingType(type)));
+                if(type == Types.Decimal) return (Decimal)this;
+                if(type == Types.Guid) return (Guid)this;
+                if(type == Types.DateTime) return (DateTime)this;
+                if(type == Types.DateTimeOffset) return (DateTimeOffset)this;
+                if(type == Types.TimeSpan) return (TimeSpan)this;
+                if(type == Types.Boolean) return (Boolean)this;
+                if(type == Types.Char) return (Char)this;
+                if(type == Types.Double) return (Double)this;
+                if(type == Types.Int16) return (Int16)this;
+                if(type == Types.Int32) return (Int32)this;
+                if(type == Types.Int64) return (Int64)this;
+                if(type == Types.Single) return (Single)this;
+                if(type == Types.UInt16) return (UInt16)this;
+                if(type == Types.UInt32) return (UInt32)this;
+                if(type == Types.UInt64) return (UInt64)this;
+            }
+            return this.ToModel();
         }
 
         /// <summary>
@@ -96,7 +133,6 @@ namespace System
             if(value == null) return null;
             return value._ByteArray;
         }
-
         /// <summary>
         /// <see cref="System.Byte"/>[] 和 <see cref="System.BinaryValue"/> 的隐式转换。
         /// </summary>
@@ -178,7 +214,7 @@ namespace System
         /// <returns>一个二进制的值。</returns>
         public static implicit operator BinaryValue(String value)
         {
-            if(value == null) return null; 
+            if(value == null) return null;
             return new BinaryValue(GA.UTF8.GetBytes(value));
         }
 

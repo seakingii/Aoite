@@ -27,11 +27,11 @@ namespace Aoite.Redis
         }
         public Stream WriteStream { get { return this.ReadStream; } }
 
-        public DefaultConnector(SocketInfo socketInfo)
+        public DefaultConnector(SocketInfo address)
         {
-            if(socketInfo == null) throw new ArgumentNullException("socketInfo");
-            socketInfo.EndPoint.ToLoopback();
-            this.SocketInfo = socketInfo;
+            if(address == null) throw new ArgumentNullException("socketInfo");
+            address.EndPoint.ToLoopback();
+            this.SocketInfo = address;
             this.ConnectTimeout = TimeSpan.FromMilliseconds(-1);
 
         }

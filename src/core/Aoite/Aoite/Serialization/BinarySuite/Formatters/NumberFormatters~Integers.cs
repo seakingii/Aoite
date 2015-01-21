@@ -51,10 +51,11 @@ namespace Aoite.Serialization.BinarySuite
         {
             writer.WriteTag(FormatterTag.ByteArray);
             writer.InnerWrite(value.Length);
-            foreach(var item in value)
-            {
-                writer.Stream.WriteByte(item);
-            }
+            writer.Stream.WriteBytes(value);
+            //foreach(var item in value)
+            //{
+            //    writer.Stream.WriteByte(item);
+            //}
         }
         public static Byte[] ReadByteArray(this ObjectReader reader)
         {

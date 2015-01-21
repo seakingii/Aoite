@@ -12,15 +12,14 @@ namespace System
     {
         #region 框架类型
 
-        //TODO：未完成。需要完成 Aoite.Data 模块
-        ///// <summary>
-        ///// 表示 <see cref="Aoite.Data.DbEngineManager"/> 的类型。
-        ///// </summary>
-        //public static readonly Type DbEngineManager = typeof(Aoite.Data.DbEngineManager);
-        ///// <summary>
-        ///// 表示 <see cref="System.IDbEngine"/> 的类型。
-        ///// </summary>
-        //public static readonly Type IDbEngine = typeof(IDbEngine);
+        /// <summary>
+        /// 表示 <see cref="Aoite.Data.DbEngineManager"/> 的类型。
+        /// </summary>
+        public static readonly Type DbEngineManager = typeof(Aoite.Data.DbEngineManager);
+        /// <summary>
+        /// 表示 <see cref="System.IDbEngine"/> 的类型。
+        /// </summary>
+        public static readonly Type IDbEngine = typeof(IDbEngine);
         /// <summary>
         /// 表示 <see cref="System.Result&lt;TValue&gt;"/> 的类型。
         /// </summary>
@@ -29,6 +28,15 @@ namespace System
         /// 表示 <see cref="System.Result"/> 的类型。
         /// </summary>
         public static readonly Type Result = typeof(System.Result);
+        /// <summary>
+        /// 表示 <see cref="System.BinaryValue"/> 的类型。
+        /// </summary>
+        public static readonly Type BinaryValue = typeof(System.BinaryValue);
+
+        /// <summary>
+        /// 表示 <see cref="Aoite.Serialization.ISerializable"/> 的类型。
+        /// </summary>
+        public static readonly Type ISerializable = typeof(Aoite.Serialization.ISerializable);
 
         #endregion
 

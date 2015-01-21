@@ -9,6 +9,14 @@ namespace System
     public class BinaryValueTests
     {
         [Fact()]
+        public void EnumTest()
+        {
+            TypeCode code = TypeCode.Int32;
+            var value = BinaryValue.Create(code);
+            Assert.Equal(code, (TypeCode)value.Parse(typeof(TypeCode)));
+
+        }
+        [Fact()]
         public void BytesTest()
         {
             byte[] value = { 1, 2, 3 };

@@ -12,6 +12,10 @@ namespace Aoite.Redis
     public interface IRedisClient : IObjectDisposable
     {
         /// <summary>
+        /// 获取当前 Redis 的在应用程序域中的唯一编号。
+        /// </summary>
+        long Id { get; }
+        /// <summary>
         /// 执行指定的 Redis 命令。
         /// </summary>
         /// <typeparam name="T">命令返回值的数据类型。</typeparam>

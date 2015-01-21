@@ -69,6 +69,7 @@
     <Compile Include="Aoite\Redis\RedisHashTests.cs" />
     <Compile Include="Aoite\Redis\RedisKeyTests.cs" />
     <Compile Include="Aoite\Redis\RedisListTests.cs" />
+    <Compile Include="Aoite\Redis\RedisManagerTests.cs" />
     <Compile Include="Aoite\Redis\RedisStreamTests.cs" />
     <Compile Include="Aoite\Redis\RedisSetTests.cs" />
     <Compile Include="Aoite\Redis\RedisSortedSetTests.cs" />

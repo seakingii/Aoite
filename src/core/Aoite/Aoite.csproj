@@ -165,6 +165,7 @@
     <Compile Include="Aoite\Redis\Commands\RedisString.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisItem.cs" />
     <Compile Include="Aoite\Redis\Core\IConnector.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisExtensions.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisHyperLogLogExtensions.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisScriptExtensions.cs" />
     <Compile Include="Aoite\Redis\Extensions\RedisSortedSetExtensions.cs" />
@@ -193,6 +194,8 @@
     <Compile Include="Aoite\Redis\Models\RedisKeyItem.cs" />
     <Compile Include="Aoite\Redis\Core\RedisScan`1.cs" />
     <Compile Include="Aoite\Redis\Core\RedisType.cs" />
+    <Compile Include="Aoite\Redis\RedisManager.cs" />
+    <Compile Include="Aoite\Redis\RedisSessionStateStoreProvider.cs" />
     <Compile Include="Aoite\Redis\RedisTransaction.cs" />
     <Compile Include="Aoite\Reflection\Caching\Cache.cs" />
     <Compile Include="Aoite\Reflection\Caching\CacheStrategy.cs" />
@@ -260,6 +263,7 @@
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\NumberFormatters~Integers.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\ObjectFormatters.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\StringFormatters.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\ICustomFormatter.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectReader.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectWriter.cs" />
     <Compile Include="Aoite\Serialization\JsonSerializer.cs" />

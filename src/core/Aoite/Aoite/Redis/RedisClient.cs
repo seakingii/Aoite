@@ -12,24 +12,31 @@ namespace Aoite.Redis
     /// </summary>
     public class RedisClient : ObjectDisposableBase, IRedisClient
     {
+        static long GLOBAL_ID = 0;
+
         internal RedisExecutor _executor;
         internal IConnector _connector;
         internal LinkedList<RedisCommand> _tranCommands;
         private string _password;
+        private long _Id = System.Threading.Interlocked.Increment(ref GLOBAL_ID);
+        /// <summary>
+        /// 获取当前 Redis 的在应用程序域中的唯一编号。
+        /// </summary>
+        public long Id { get { return _Id; } }
 
         /// <summary>
-        /// 指定套接字的信息，初始化一个 <see cref="Aoite.Redis.RedisClient"/> 类的新实例。
+        /// 初始化一个 <see cref="Aoite.Redis.RedisClient"/> 类的新实例。
         /// </summary>
-        /// <param name="socketInfo">套接字的信息。</param>
-        /// <param name="password">Redis 服务器授权密码。</param>
-        public RedisClient(SocketInfo socketInfo, string password = null)
-            : this(new DefaultConnector(socketInfo), password) { }
+        /// <param name="address">Redis 的连接地址。</param>
+        /// <param name="password">Redis 的连接密码。</param>
+        public RedisClient(SocketInfo address, string password = null)
+            : this(new DefaultConnector(address), password) { }
 
         internal RedisClient(IConnector connector, string password = null)
         {
             this._connector = connector;
             this._password = password;
-            if(password != null) this._connector.Connected += _connector_Connected;
+            if(!string.IsNullOrWhiteSpace(password)) this._connector.Connected += _connector_Connected;
             this._executor = new RedisExecutor(connector);
         }
 
@@ -74,6 +81,5 @@ namespace Aoite.Redis
             this.Execute(new RedisStatus("MULTI")).ThrowIfFailded();
             return new RedisTransaction(this);
         }
-
     }
 }

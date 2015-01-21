@@ -284,6 +284,28 @@ namespace Aoite.Serialization.BinarySuite
 
         #region - Object & ObjectArray -
 
+        public static void WriteCustom(this ObjectWriter writer, object value, Type formatterType)
+        {
+            var customFormatter = Activator.CreateInstance(formatterType, true) as ISerializable;
+            var bytes = customFormatter.Serialize(value);
+            writer.WriteTag(FormatterTag.Custom);
+            writer.InnerWrite(formatterType);
+            if(bytes == null || bytes.Length == 0) writer.InnerWrite(0);
+            else
+            {
+                writer.InnerWrite(bytes.Length);
+                writer.Stream.WriteBytes(bytes);
+            }
+        }
+        public static object ReadCustom(this ObjectReader reader, int index)
+        {
+            var type = reader.ReadType();
+            var byteLength = reader.ReadInt32();
+            var bytes = byteLength == 0 ? new byte[0] : reader.ReadBuffer(byteLength);
+            var customFormatter = Activator.CreateInstance(type, true) as ISerializable;
+            return customFormatter.Deserialize(bytes);
+        }
+
         public static void WriteObject(this ObjectWriter writer, object value, Type type)
         {
             writer.InnerWriteObject(value

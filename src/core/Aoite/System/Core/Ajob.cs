@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace System
 {
@@ -41,6 +43,7 @@ namespace System
 
             public bool Wait(int millisecondsTimeout = Timeout.Infinite)
             {
+                if(_Task.IsCompleted) return true;
                 return _Task.Wait(millisecondsTimeout);
             }
 
@@ -51,8 +54,8 @@ namespace System
 
             public bool WaitForNextTask()
             {
-                return this._calcelSource.IsCancellationRequested 
-                    || Thread.CurrentThread.Join(this._Interval) 
+                return this._calcelSource.IsCancellationRequested
+                    || Thread.CurrentThread.Join(this._Interval)
                     || this._calcelSource.IsCancellationRequested;
             }
 
@@ -150,6 +153,29 @@ namespace System
         public static IAsyncJob Loop(AsyncJobHandler job, TimeSpan interval, object state = null)
         {
             return new AsyncJob(job, interval, state).Start(LoopInvoke, TaskCreationOptions.LongRunning);
+        }
+
+        /// <summary>
+        /// 等待所有的异步任务完成。
+        /// </summary>
+        /// <param name="jobs">异步任务列表。</param>
+        public static void WaitAll(params IAsyncJob[] jobs)
+        {
+            if(jobs == null) throw new ArgumentNullException("jobs");
+
+            foreach(var job in jobs)
+            {
+                if(job != null)
+                    job.Wait();
+            }
+        }
+        /// <summary>
+        /// 等待所有的异步任务完成。
+        /// </summary>
+        /// <param name="jobs">异步任务列表。</param>
+        public static void WaitAll(IEnumerable<IAsyncJob> jobs)
+        {
+            WaitAll(jobs.ToArray());
         }
     }
 }

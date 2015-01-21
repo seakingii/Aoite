@@ -9,6 +9,9 @@ namespace Aoite.Redis
     class RedisTransaction : ObjectDisposableBase, IRedisTransaction
     {
         private readonly RedisClient _client;
+
+        public long Id { get { return _client.Id; } }
+
         public RedisTransaction(RedisClient client)
         {
             if(client == null) throw new ArgumentNullException("client");

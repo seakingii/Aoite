@@ -99,18 +99,18 @@ namespace Aoite.Serialization.BinarySuite
 
         private static void AddTypeName(Type type, ref StringBuilder builder)
         {
-            var ns = type.Namespace;
-            if(!string.IsNullOrEmpty(ns))
-            {
-                AddNamespace(ns, ref builder);
-                builder.Append('.');
-                if(type.ReflectedType != null)
-                {
-                    builder.Append(type.ReflectedType.Name);
-                    builder.Append('+');
-                }
-            }
-            builder.Append(type.Name);
+            //var ns = type.Namespace;
+            //if(!string.IsNullOrEmpty(ns))
+            //{
+            //    AddNamespace(ns, ref builder);
+            //    builder.Append('.');
+            //    if(type.ReflectedType != null)
+            //    {
+            //        builder.Append(type.ReflectedType.Name);
+            //        builder.Append('+');
+            //    }
+            //}
+            builder.Append(type.FullName);
         }
 
         private static void SimplifyQualifiedName(Type type, ref StringBuilder builder)
@@ -263,13 +263,13 @@ namespace Aoite.Serialization.BinarySuite
             }
 
             string typeName = firstIndex == -1 ? simplifyQualifiedName : simplifyQualifiedName.Substring(0, firstIndex);
-            var nsIndex = typeName.LastIndexOf('.');
-            if(nsIndex > -1)
-            {
-                var ns = typeName.Substring(0, nsIndex);
-                builder.Remove(builderIndex, nsIndex);
-                builder.Insert(builderIndex, GetNamespace(ns));
-            }
+            //var nsIndex = typeName.LastIndexOf('.');
+            //if(nsIndex > -1)
+            //{
+            //    var ns = typeName.Substring(0, nsIndex);
+            //    builder.Remove(builderIndex, nsIndex);
+            //    builder.Insert(builderIndex, GetNamespace(ns));
+            //}
             var assembly = AssemblyInfoCollection.Find(assemblyName);
             builder.Append(", ");
             //TODO:如果找不到程序集，是否需要延迟加载【TREENEW】？

@@ -11,7 +11,7 @@ namespace Aoite.Serialization.BinarySuite
     {
         #region Serialize
 
-        public static void Serialize(this ObjectWriter writer, object value)
+        public static void Serialize(this ObjectWriter writer, object value, System.Reflection.FieldInfo field = null)
         {
             if(value is Aoite.Data.IDbResult)
                 throw new NotSupportedException("请不要将数据源执行的结果（如：Aoite.Data.DbResult）直接序列化，因为其包含数据源连接的相关信息。");
@@ -122,6 +122,15 @@ namespace Aoite.Serialization.BinarySuite
 
             var type = value.GetType();
 
+            var customAttr = type.GetAttribute<CustomAttribute>() 
+                ?? (field == null ? null : field.GetAttribute<CustomAttribute>())
+                ?? QuicklySerializer.CustomAttributes.TryGetValue(type);
+            if(customAttr != null)
+            {
+                writer.WriteCustom(value, customAttr.FormatterType);
+                return;
+            }
+
             #region Result &　Generic
 
             if(type == Types.Result)
@@ -203,7 +212,7 @@ namespace Aoite.Serialization.BinarySuite
 
             foreach(var field in fields)
             {
-                writer.Serialize(field.GetValue(value));
+                writer.Serialize(field.GetValue(value), field.Field);
             }
         }
 
@@ -296,6 +305,8 @@ namespace Aoite.Serialization.BinarySuite
                 case FormatterTag.GDictionary: return reader.ReadGDictionary(index);
                 case FormatterTag.GConcurrentDictionary: return reader.ReadGConcurrentDictionary(index);
                 case FormatterTag.HybridDictionary: return reader.ReadHybridDictionary(index);
+
+                case FormatterTag.Custom: return reader.ReadCustom(index);
 
                 case FormatterTag.Object: return reader.ReadObject(index);
                 case FormatterTag.ObjectArray: return reader.ReadObjectArray(index);

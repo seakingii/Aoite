@@ -40,7 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +93,8 @@
       <Link>TestModels\RootContainer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisSessionStateStoreProviderTests.cs" />
+    <Compile Include="RedisTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\comm\keys\aoite.snk">

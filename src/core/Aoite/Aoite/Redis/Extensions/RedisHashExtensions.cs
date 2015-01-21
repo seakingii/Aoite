@@ -77,6 +77,30 @@ namespace System
         }
 
         /// <summary>
+        /// 返回哈希表 <paramref name="key"/> 中所有的域和值，并转换为指定的 <typeparamref name="T"/> 的新实例。
+        /// </summary>
+        /// <typeparam name="T">实体的数据类型。</typeparam>
+        /// <param name="client">Redis 客户端。</param>
+        /// <param name="key">哈希表的键名。</param>
+        /// <returns>返回 <paramref name="key"/> 所有的域和值。</returns>
+        public static T HGetAll<T>(this IRedisClient client, string key)
+        {
+            if(client == null) throw new ArgumentNullException("client");
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+
+            var typeMapper = TypeMapper.Instance<T>.Mapper;
+            var items = HGetAll(client, key);
+            if(items.Length == 0) return default(T);
+            T t = (T)Activator.CreateInstance(typeof(T), true);
+            foreach(var item in items)
+            {
+                var propertyMapper = typeMapper[item.Field];
+                if(propertyMapper != null) propertyMapper.SetValue(t, item.Value.Parse(propertyMapper.Property.PropertyType));
+            }
+            return t;
+        }
+
+        /// <summary>
         /// 将哈希表 <paramref name="key"/> 中储存给定的域 <paramref name="field"/> 的数字值递增指定的 <paramref name="increment"/> 数值。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>

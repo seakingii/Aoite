@@ -545,5 +545,72 @@ namespace Aoite.Serialization.BinarySuite
             Assert.Equal(m1.Exception.Message, m1.Exception.Message);
             Assert.Equal(m1.Value, m2.Value);
         }
+
+        [Custom(typeof(Serializable))]
+        public class CustomFormatter1
+        {
+            public int Value { get; set; }
+
+            class Serializable : ISerializable
+            {
+                object ISerializable.Deserialize(byte[] bytes)
+                {
+                    return new CustomFormatter1() { Value = BitConverter.ToInt32(bytes, 0) + 1 };
+                }
+
+                byte[] ISerializable.Serialize(object value)
+                {
+                    var f = value as CustomFormatter1;
+                    return BitConverter.GetBytes(f.Value);
+                }
+            }
+        }
+
+        [Fact()]
+        public void CustomFormatterTest1()
+        {
+            QuicklySerializer ser = new QuicklySerializer();
+
+            var bytes = ser.FastWriteBytes(new CustomFormatter1() { Value = 501 });
+            var cf = ser.FastReadBytes<CustomFormatter1>(bytes);
+            Assert.NotNull(cf);
+            Assert.Equal(502, cf.Value);
+        }
+
+        public class CustomFormatter2
+        {
+            [Custom(typeof(Serializable))]
+            private Property _Value;
+            public Property Value { get { return this._Value; } set { this._Value = value; } }
+
+            public class Property
+            {
+                public int Value { get; set; }
+            }
+            class Serializable : ISerializable
+            {
+                object ISerializable.Deserialize(byte[] bytes)
+                {
+                    return new Property() { Value = BitConverter.ToInt32(bytes, 0) + 1 };
+                }
+
+                byte[] ISerializable.Serialize(object value)
+                {
+                    var f = value as Property;
+                    return BitConverter.GetBytes(f.Value);
+                }
+            }
+        }
+
+        [Fact()]
+        public void CustomFormatterTest2()
+        {
+            QuicklySerializer ser = new QuicklySerializer();
+
+            var bytes = ser.FastWriteBytes(new CustomFormatter2() { Value = new CustomFormatter2.Property() { Value = 503 } });
+            var cf = ser.FastReadBytes<CustomFormatter2>(bytes);
+            Assert.NotNull(cf);
+            Assert.Equal(504, cf.Value.Value);
+        }
     }
 }
