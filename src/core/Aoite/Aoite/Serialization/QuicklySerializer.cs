@@ -14,9 +14,9 @@ namespace Aoite.Serialization
         /// <summary>
         /// 获取或设置动态的自定义序列化类型映射。
         /// </summary>
-        public readonly static System.Collections.Concurrent.ConcurrentDictionary<Type, CustomAttribute>
+        public readonly static System.Collections.Generic.Dictionary<Type, CustomAttribute>
              CustomAttributes
-             = new System.Collections.Concurrent.ConcurrentDictionary<Type, CustomAttribute>();
+             = new System.Collections.Generic.Dictionary<Type, CustomAttribute>();
         /// <summary>
         /// 初始化一个 <see cref="Aoite.Serialization.QuicklySerializer"/> 类的新实例。
         /// </summary>

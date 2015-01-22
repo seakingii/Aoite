@@ -263,7 +263,7 @@
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\NumberFormatters~Integers.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\ObjectFormatters.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\StringFormatters.cs" />
-    <Compile Include="Aoite\Serialization\BinarySuite\ICustomFormatter.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\CustomAttribute.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectReader.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectWriter.cs" />
     <Compile Include="Aoite\Serialization\JsonSerializer.cs" />

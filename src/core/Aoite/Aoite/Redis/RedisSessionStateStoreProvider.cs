@@ -15,9 +15,8 @@ namespace Aoite.Redis
     {
         static RedisSessionState()
         {
-            Serialization.QuicklySerializer.CustomAttributes
-                .TryAdd(typeof(SessionStateItemCollection)
-                , new Serialization.CustomAttribute(typeof(SessionStateItemCollectionSerializable)));
+            Serialization.QuicklySerializer.CustomAttributes[typeof(SessionStateItemCollection)] =
+                 new Serialization.CustomAttribute(typeof(SessionStateItemCollectionSerializable));
         }
         public DateTime Created { get; set; }
         public bool Locked { get; set; }
