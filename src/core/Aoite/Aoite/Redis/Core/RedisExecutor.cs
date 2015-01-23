@@ -71,7 +71,7 @@ namespace Aoite.Redis
             }
             return sb.ToString();
         }
-        private void ReadCRLF() // TODO: remove hardcoded
+        private void ReadCRLF() 
         {
             var stream = this._connector.ReadStream;
             var r = stream.ReadByte();

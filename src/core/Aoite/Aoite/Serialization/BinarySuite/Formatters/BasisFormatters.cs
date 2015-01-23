@@ -48,6 +48,7 @@ namespace Aoite.Serialization.BinarySuite
                     if(!TypeCache.TryGetValue(simplifyQualifiedName, out type))
                     {
                         type = SerializationHelper.RecoveryQualifiedName(simplifyQualifiedName);
+                        if(type == null) throw new ArgumentException("无法找到简化限定符的类型 " + simplifyQualifiedName);
                         TypeCache.Add(simplifyQualifiedName, type);
                     }
             return type;

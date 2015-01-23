@@ -97,6 +97,22 @@ public static class IocExtensions
         if(service == null) return default(TService);
         return (TService)service;
     }
+    
+    /// <summary>
+    /// 从手工注册服务列表中，获取指定类型的服务对象。
+    /// </summary>
+    /// <typeparam name="TService">要添加的服务类型。</typeparam>
+    /// <param name="container">服务容器。</param>
+    /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
+    /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
+    public static TService GetFixedService<TService>(this IIocContainer container, params object[] lastMappingValues)
+    {
+        if(container == null) throw new ArgumentNullException("container");
+
+        var service = container.GetFixedService(typeof(TService), lastMappingValues);
+        if(service == null) return default(TService);
+        return (TService)service;
+    }
 
     /// <summary>
     /// 尝试获取指定类型的服务对象。
@@ -234,9 +250,9 @@ public static class IocExtensions
 
         var allTypes = ObjectFactory.AllTypes;
         var hasHandler = expectTypeHandler != null;
-        foreach(var groupItem in allTypes)
+        foreach(var item in allTypes)
         {
-            foreach(var expectType in groupItem)
+            foreach(var expectType in item.Value)
             {
                 var ns = expectType.Namespace;
                 if(mapFilter.IsExpectType(expectType))

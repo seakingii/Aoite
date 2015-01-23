@@ -37,6 +37,7 @@ namespace Aoite.Redis
                 return ThreadClient.Value;
             }
         }
+
         /// <summary>
         /// 获取一个值，指示当前 Redis 上下文在线程中是否已创建。
         /// </summary>
@@ -45,11 +46,12 @@ namespace Aoite.Redis
         /// <summary>
         /// 释放并关闭当前线程上下文的 Redis 上下文。
         /// </summary>
-        public static void Reset()
+        public static void ResetContext()
         {
-            if(ThreadClient.Value != null)
+            var context = ThreadClient.Value;
+            if(context != null)
             {
-                ThreadClient.Value.Dispose();
+                context.Dispose();
                 ThreadClient.Value = null;
             }
         }

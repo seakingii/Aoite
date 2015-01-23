@@ -17,24 +17,6 @@ namespace System
         /// 获取或设置默认的锁超时间隔。
         /// </summary>
         public static TimeSpan DefaultLockTimeout = TimeSpan.FromMinutes(1);
-        class LockItem : IDisposable
-        {
-            Action _disposing;
-            public LockItem(Action disposing)
-            {
-                if(disposing == null) throw new ArgumentNullException("disposing");
-                this._disposing = disposing;
-            }
-            void IDisposable.Dispose()
-            {
-                this._disposing();
-            }
-
-            internal static void TimeoutError(string key, TimeSpan timeout)
-            {
-                throw new TimeoutException("键 {0} 的锁已被长时间占用，获取锁超时 {1}。".Fmt(key, timeout));
-            }
-        }
 
         /// <summary>
         /// 实现一个 Redis 锁的功能。
@@ -51,8 +33,8 @@ namespace System
 
             var realSpan = timeout ?? DefaultLockTimeout;
             if(!SpinWait.SpinUntil(() => client.HSet(LockKey, key, 1, nx: true), realSpan))
-               LockItem.TimeoutError(key, realSpan);
-            return new LockItem(() => client.HDel(LockKey, key));
+               SimpleLockItem.TimeoutError(key, realSpan);
+            return new SimpleLockItem(() => client.HDel(LockKey, key));
         }
     }
 }

@@ -52,8 +52,8 @@ namespace System
 
                     else if(this.MapContains(pName)) p_instance = this.FindInstanceBox(pName);
 
-                    else if(this.MapContains(actualType)) p_instance = this.FindInstanceBox(actualType, false);
-                    else if(hasExpectedType && this.MapContains(expectedType)) p_instance = this.FindInstanceBox(expectedType, false);
+                    else if(this.MapContains(actualType)) p_instance = this.FindInstanceBox(actualType);
+                    else if(hasExpectedType && this.MapContains(expectedType)) p_instance = this.FindInstanceBox(expectedType);
 
                     #endregion
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Concurrent;
 
 namespace Aoite.Serialization.BinarySuite
 {
@@ -50,23 +51,17 @@ namespace Aoite.Serialization.BinarySuite
 
         #region Simplify Qualified Name - 简化限定名称
 
-        private readonly static Dictionary<Type, string> SimplifyQualifiedNameCache = new Dictionary<Type, string>();
+        private readonly static ConcurrentDictionary<Type, string> SimplifyQualifiedNameCache = new ConcurrentDictionary<Type, string>();
 
+        private static string CreateSimplifyQualifiedName(Type type)
+        {
+            StringBuilder builder = new StringBuilder();
+            SimplifyQualifiedName(type, ref builder);
+            return builder.ToString();
+        }
         public static string SimplifyQualifiedName(Type type)
         {
-            string s;
-            if(!SimplifyQualifiedNameCache.TryGetValue(type, out s))
-                lock(type)
-                {
-                    if(!SimplifyQualifiedNameCache.TryGetValue(type, out s))
-                    {
-                        StringBuilder builder = new StringBuilder();
-                        SimplifyQualifiedName(type, ref builder);
-                        s = builder.ToString();
-                        SimplifyQualifiedNameCache.Add(type, s);
-                    }
-                }
-            return s;
+            return SimplifyQualifiedNameCache.GetOrAdd(type, CreateSimplifyQualifiedName);
         }
 
         private static void AddNamespace(string ns, ref StringBuilder builder)
@@ -99,18 +94,23 @@ namespace Aoite.Serialization.BinarySuite
 
         private static void AddTypeName(Type type, ref StringBuilder builder)
         {
-            //var ns = type.Namespace;
-            //if(!string.IsNullOrEmpty(ns))
-            //{
-            //    AddNamespace(ns, ref builder);
-            //    builder.Append('.');
-            //    if(type.ReflectedType != null)
-            //    {
-            //        builder.Append(type.ReflectedType.Name);
-            //        builder.Append('+');
-            //    }
-            //}
-            builder.Append(type.FullName);
+            var ns = type.Namespace;
+            if(!string.IsNullOrEmpty(ns))
+            {
+                AddNamespace(ns, ref builder);
+                builder.Append('.');
+                var reflectedType = type.ReflectedType;
+                if(reflectedType != null)
+                {
+                    var lastIndex = builder.Length;
+                    while(reflectedType != null)
+                    {
+                        builder.Insert(lastIndex, reflectedType.Name + '+');
+                        reflectedType = reflectedType.ReflectedType;
+                    }
+                }
+            }
+            builder.Append(type.Name);
         }
 
         private static void SimplifyQualifiedName(Type type, ref StringBuilder builder)
@@ -145,7 +145,7 @@ namespace Aoite.Serialization.BinarySuite
 
         #region Recovery Qualified Name - 还原限定名称
 
-        private readonly static Dictionary<string, Type> RecoverySimplifyQualifiedCache = new Dictionary<string, Type>();
+        private readonly static ConcurrentDictionary<string, Type> RecoverySimplifyQualifiedCache = new ConcurrentDictionary<string, Type>();
 
         private static void AppendQualifiedName(this StringBuilder builder, string typeName, string fullname)
         {
@@ -181,21 +181,17 @@ namespace Aoite.Serialization.BinarySuite
             }
         }
 
+        private static Type CreateRecoveryQualifiedName(string simplifyQualifiedName)
+        {
+            StringBuilder builder = new StringBuilder();
+            RecoveryQualifiedName(simplifyQualifiedName, ref builder);
+            return AssemblyInfoCollection.GetTypeFromQualifiedName(builder.ToString());
+
+        }
+
         public static Type RecoveryQualifiedName(string simplifyQualifiedName)
         {
-            Type type;
-            lock(simplifyQualifiedName)
-            {
-                if(!RecoverySimplifyQualifiedCache.TryGetValue(simplifyQualifiedName, out type))
-                {
-                    StringBuilder builder = new StringBuilder();
-                    RecoveryQualifiedName(simplifyQualifiedName, ref builder);
-                    type = AssemblyInfoCollection.GetTypeFromQualifiedName(builder.ToString());
-                    if(type == null) throw new ArgumentException("无法找到简化限定符的类型 " + simplifyQualifiedName);
-                    RecoverySimplifyQualifiedCache.Add(simplifyQualifiedName, type);
-                }
-            }
-            return type;
+            return RecoverySimplifyQualifiedCache.GetOrAdd(simplifyQualifiedName, CreateRecoveryQualifiedName);
         }
 
         private static void RecoveryQualifiedName(string simplifyQualifiedName, ref StringBuilder builder)
@@ -263,19 +259,19 @@ namespace Aoite.Serialization.BinarySuite
             }
 
             string typeName = firstIndex == -1 ? simplifyQualifiedName : simplifyQualifiedName.Substring(0, firstIndex);
-            //var nsIndex = typeName.LastIndexOf('.');
-            //if(nsIndex > -1)
-            //{
-            //    var ns = typeName.Substring(0, nsIndex);
-            //    builder.Remove(builderIndex, nsIndex);
-            //    builder.Insert(builderIndex, GetNamespace(ns));
-            //}
+            var nsIndex = typeName.LastIndexOf('.');
+            if(nsIndex > -1)
+            {
+                var ns = typeName.Substring(0, nsIndex);
+                builder.Remove(builderIndex, nsIndex);
+                builder.Insert(builderIndex, GetNamespace(ns));
+            }
             var assembly = AssemblyInfoCollection.Find(assemblyName);
             builder.Append(", ");
-            //TODO:如果找不到程序集，是否需要延迟加载【TREENEW】？
+            //TODO:如果找不到程序集，是否需要延迟加载？
             if(assembly == null)
             {
-                var type = AutoMappingTypes.GetOrAdd(typeName, tn => ObjectFactory.AllTypes.FirstOrDefault(g => g.Key == tn).FirstOrDefault());
+                var type = AutoMappingTypes.GetOrAdd(typeName, ObjectFactory.GetType);
                 if(type == null) throw new TypeLoadException("找不到类型 {0} 的程序集。".Fmt(typeName));
                 builder.Append(type.Assembly.FullName);
             }
@@ -283,8 +279,8 @@ namespace Aoite.Serialization.BinarySuite
         }
 
         #endregion
-        private readonly static System.Collections.Concurrent.ConcurrentDictionary<string, Type>
-            AutoMappingTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
+
+        private readonly static ConcurrentDictionary<string, Type> AutoMappingTypes = new ConcurrentDictionary<string, Type>();
     }
 
 }

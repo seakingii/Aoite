@@ -58,6 +58,13 @@ namespace System
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
         object GetService(Type serviceType, params object[] lastMappingValues);
         /// <summary>
+        /// 从手工注册服务列表中，获取指定类型的服务对象。
+        /// </summary>
+        /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
+        /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
+        /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
+        object GetFixedService(Type serviceType, params object[] lastMappingValues);
+        /// <summary>
         /// 查找服务容器是否包含指定的服务类型。
         /// </summary>
         /// <param name="serviceType">要查找的服务类型。</param>

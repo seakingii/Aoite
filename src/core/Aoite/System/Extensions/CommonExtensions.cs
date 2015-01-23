@@ -27,7 +27,6 @@ namespace System
         /// </summary>
         OnlyChangeValues,
     }
-    //TODO：未完成。需要完成 Cache
     /// <summary>
     /// 提供公共的实用工具方法。
     /// </summary>
@@ -54,7 +53,7 @@ namespace System
         {
             return type.ChangeType(value);
         }
-      
+
         /// <summary>
         /// 将 <paramref name="target"/> 所有的属性值复制到当前对象。
         /// </summary>
@@ -123,7 +122,7 @@ namespace System
             }
             return target;
         }
-      
+
         /// <summary>
         /// 对当前集合的每个元素执行指定操作。
         /// </summary>
@@ -183,56 +182,5 @@ namespace System
         {
             return BinaryValue.HasValue(value);
         }
-        /*
-        /// <summary>
-        /// 提供批量锁的功能。
-        /// </summary>
-        /// <param name="provider">缓存提供程序。</param>
-        /// <param name="keys">锁的键名列表。</param>
-        /// <returns>返回一个批量锁。</returns>
-        public static IDisposable MultipleLock(this Aoite.Cache.ICacheProvider provider, params string[] keys)
-        {
-            return MultipleLock(provider, null, keys);
-        }
-        /// <summary>
-        /// 提供批量锁的功能。
-        /// </summary>
-        /// <param name="provider">缓存提供程序。</param>
-        /// <param name="timeout">锁的超时设定。</param>
-        /// <param name="keys">锁的键名列表。</param>
-        /// <returns>返回一个批量锁。</returns>
-        public static IDisposable MultipleLock(this Aoite.Cache.ICacheProvider provider, TimeSpan timeout, params string[] keys)
-        {
-            return MultipleLock(provider, timeout, keys);
-        }
-
-        private static IDisposable MultipleLock(Aoite.Cache.ICacheProvider provider, TimeSpan? timeout, params string[] keys)
-        {
-            if(provider == null) throw new ArgumentNullException("provider");
-            if(keys == null || keys.Length == 0) throw new ArgumentNullException("keys");
-
-            Stack<IDisposable> stack = new Stack<IDisposable>(keys.Length);
-            foreach(var key in keys)
-            {
-                stack.Push(provider.Lock(key, timeout));
-            }
-            return new MultipleLockKeys(stack);
-        }
-        class MultipleLockKeys : IDisposable
-        {
-            Stack<IDisposable> _stack;
-            public MultipleLockKeys(Stack<IDisposable> stack)
-            {
-                this._stack = stack;
-            }
-            public void Dispose()
-            {
-                while(this._stack.Count > 0)
-                {
-                    this._stack.Pop().Dispose();
-                }
-            }
-        }
-        */
     }
 }

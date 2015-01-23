@@ -41,6 +41,6 @@ namespace System
         /// <param name="allTypes">当前应用程序所有已加载的类型。</param>
         /// <param name="expectType">预期定义的类型。</param>
         /// <returns>如果找到返回一个 <see cref="System.Type"/> 的实例，否则返回 null 值。</returns>
-        Type FindActualType(IEnumerable<IGrouping<string, Type>> allTypes, Type expectType);
+        Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType);
     }
 }

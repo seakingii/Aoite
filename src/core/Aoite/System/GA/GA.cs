@@ -412,7 +412,7 @@ namespace System
                 var values = Enum.GetValues(type);
                 return values.GetValue(random.Next() % values.Length);
             }
-            if(type == Types.String) random.NextString(random.Next() % 30 + random.Next(3, 6));
+            if(type == Types.String) return random.NextString(random.Next() % 30 + random.Next(3, 6));
             if(type == Types.Uri) return new Uri("www." + random.NextString(random.Next() % 10 + random.Next(3, 6)) + ".com");
             if(type == Types.TimeSpan) return TimeSpan.FromMinutes(random.NextDouble() % random.Next(124, 1025));
             if(type == Types.DateTime) return DateTime.Now.AddMinutes(random.NextDouble() % random.Next(124, 1025));

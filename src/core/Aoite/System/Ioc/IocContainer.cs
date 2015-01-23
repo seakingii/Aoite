@@ -157,15 +157,37 @@ namespace System
             return this.GetService(serviceType, null);
         }
 
-        private readonly string UUID = Guid.NewGuid().ToString();
-
         /// <summary>
         /// 获取指定类型的服务对象。
         /// </summary>
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
-        public virtual object GetService(Type serviceType, params object[] lastMappingValues)
+        public object GetService(Type serviceType, params object[] lastMappingValues)
+        {
+            return GetService(serviceType, true, lastMappingValues);
+        }
+
+        /// <summary>
+        /// 从手工注册服务列表中，获取指定类型的服务对象。
+        /// </summary>
+        /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
+        /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
+        /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
+        public object GetFixedService(Type serviceType, params object[] lastMappingValues)
+        {
+            return GetService(serviceType, false, lastMappingValues);
+        }
+
+        private readonly string UUID = Guid.NewGuid().ToString();
+        /// <summary>
+        /// 获取指定类型的服务对象。
+        /// </summary>
+        /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
+        /// <param name="autoResolving">指示在找不到手工映射的服务对象时，是否自动分析。</param>
+        /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
+        /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
+        protected virtual object GetService(Type serviceType, bool autoResolving, object[] lastMappingValues)
         {
             if(serviceType == null) throw new ArgumentNullException("serviceType");
 
@@ -173,15 +195,15 @@ namespace System
             lock(string.Intern(this.UUID + serviceType.AssemblyQualifiedName))
             {
                 //- 通过非智能解析，获取实例盒
-                var box = this.FindInstanceBox(serviceType, false);
+                var box = this.FindInstanceBox(serviceType);
                 if(box == null)
                 {
                     if(this._hasParent && this._parentLocator.ContainsService(serviceType, true))  //- 尝试从父级获取服务对象
-                    {// 
+                    {
                         var service = this._parentLocator.GetService(serviceType, lastMappingValues);
                         if(service != null) return service;
                     }
-                    box = this.AutoResolveExpectType(serviceType); //- 尝试智能解析出实例盒
+                    if(autoResolving) box = this.AutoResolveExpectType(serviceType); //- 尝试智能解析出实例盒
                 }
                 return box == null ? null : box.GetInstance(lastMappingValues);
             }

@@ -9,10 +9,8 @@ namespace Aoite.Data.Builder
 
     public class BuilderTests
     {
-        public BuilderTests()
-        {
-            Db.SetEngine(new MsSqlEngine(""));
-        }
+        private readonly MsSqlEngine engine = new MsSqlEngine("");
+
         class TestTable
         {
             public int ID { get; set; }
@@ -32,7 +30,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void WhereInTest1()
         {
-            var command = Db.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();
+            var command = engine.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
             Assert.Equal("SELECT * FROM TestTable WHERE ID IN (@id0, @id1, @id2)", command.CommandText);
         }
@@ -40,7 +38,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void WhereInTest2()
         {
-            var command = Db.Select<TestTable>()
+            var command = engine.Select<TestTable>()
                 .Where("UserName=@username", "@username", "abc")
                 .AndIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
@@ -51,7 +49,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void WhereInTest3()
         {
-            var command = Db.Select<TestTable>()
+            var command = engine.Select<TestTable>()
                 .Where("UserName=@username", "@username", "abc")
                 .AndNotIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
@@ -61,7 +59,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void SelectTest()
         {
-            var command = Db.Select<TestTable>().End();
+            var command = engine.Select<TestTable>().End();
             Assert.NotNull(command);
             Assert.Equal("SELECT * FROM TestTable", command.CommandText);
         }
@@ -69,7 +67,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void SelectByFieldsTest()
         {
-            var command = Db.Select<TestTable>("Name").End();
+            var command = engine.Select<TestTable>("Name").End();
             Assert.NotNull(command);
             Assert.Equal("SELECT Name FROM TestTable", command.CommandText);
         }
@@ -77,7 +75,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void SelectWhereTest()
         {
-            var command = Db.Select<TestTable>()
+            var command = engine.Select<TestTable>()
                             .Where("ID=@id", "@id", 5)
                             .End();
             Assert.NotNull(command);
@@ -90,7 +88,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void SelectWhereGroupsTest()
         {
-            var command = Db.Select<TestTable>()
+            var command = engine.Select<TestTable>()
                             .Where("ID=@id", "@id", 5)
                             .And("Name=@name", "@name", "abc")
                             .Or()
@@ -106,7 +104,7 @@ namespace Aoite.Data.Builder
         [Fact()]
         public void SelectSomeWhere()
         {
-            var command = Db.Select<TestTable>()
+            var command = engine.Select<TestTable>()
                             .Where("ID", "@id", new int[] { 1, 2, 3 })
                             .End();
             Assert.NotNull(command);

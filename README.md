@@ -6,10 +6,26 @@
 
 # Changelog
 
+**2015-01-23**
+
+1. 增加模块 `Aoite.CommandModel` 以及对应的单元测试。
+2. 改善 `System.Db.IsThreadContext` 在没有设置 `System.Db.Engine` 相关信息时返回 false，而不是抛出错误。
+3. 新增 `Aoite.Data.DbEngine.ResetContext` 方法，可以通过调用此方法，释放当前上下文的 `Aoite.Data.DbContext` 对象。
+4. 将 `Aoite.Redis.RedisManager.Reset` 重命名为 `ResetContext`。
+5. 恢复 `Aoite.Serialization.QuicklySerializer` 的命名空间缩写功能，并修复对 Nested Class 的支持。
+6. 增加 `System.IIocContainer.GetFixedService<T>` 方法。用于获取手工注册的服务（不会自动解析）。
+7. 改善 `System.ObjectFactory.AllType` 的取值方式。
+
 **2015-01-21**
 
-1. 增加 `Aoite.Redis.RedisSessionStateStoreProvider`，可将 Redis 用于 ASP.NET 应用程序的会话状态。通过 `web.config` 文件配置。
-`<system.web>
+1. 增加 `Aoite.Redis.RedisSessionStateStoreProvider`，可将 Redis 用于 ASP.NET 应用程序的会话状态。通过 `web.config` 文件配置（配置详见 Code.1）。
+2. `IRedisClient` 增加扩展方法：Lock（分布式锁）、HGetAll<T>（可以通过 Redis Hash 泛型出一个对象）。
+3. `Aoite.Serialization.QuicklySerializer` 增加：CustomAttribute 类和ISerializable 接口，用于序列化/反序列化特殊的类型使用。增加 `Aoite.Serialization.QuicklySerializer.CustomAttributes` 用于动态注册特性。
+4. 移除 `Aoite.Serialization.QuicklySerializer` 在序列化过程中对命名空间进行缩写的功能（因为这会导致 Nested Class 无法序列化，虽然可以解决这个问题，但最终还是删除了这块功能）。
+
+**code.1**
+
+	<system.web>
 	  <sessionState mode="Custom" customProvider="RedisSessionStateProvider">
 	    <providers>
 	      <clear />
@@ -19,20 +35,14 @@
 	    </providers>
 	  </sessionState>
 	</system.web>
-`
-
-2. `IRedisClient` 增加扩展方法：Lock（分布式锁）、HGetAll<T>（可以通过 Redis Hash 泛型出一个对象）。
-3. `Aoite.Serialization.QuicklySerializer` 增加：CustomAttribute 类和ISerializable 接口，用于序列化/反序列化特殊的类型使用。增加 `Aoite.Serialization.QuicklySerializer.CustomAttributes` 用于动态注册特性。
-4. 移除 `Aoite.Serialization.QuicklySerializer` 在序列化过程中对命名空间进行缩写的功能（因为这会导致 Nested Class 无法序列化，虽然可以解决这个问题，但最终还是删除了这块功能）。
-
 
 # Project Plan （2015-01-19 ~ 2015-01-24）
 1. <s>完成 Redis 的 95%+ 命令</s>。
 	* 考虑实现基于面向对象扩展方式。
 	* RealCall 单元测试前期可能不会实现所有命令。
 	* Pub/Sub 模块。
-2. 完成 Cache 模块。
-3. 完成 CommandModel 模块（这个模块是 Aoite 最大亮点之一，暂时保密用途）。
+2. <s>完成 Cache 模块（融入到 CommandModel 模块中）2015-01-23 完成</s>。
+3. <s>完成 CommandModel 模块（这个模块是 Aoite 最大亮点之一，暂时保密用途）2015-01-23 完成</s>。
 4. 完成 ASP.NET MVC CommandModel 模块。
 5. 编写文档（2015-01-24 以后，从博客园首发）。
 

@@ -36,10 +36,20 @@ namespace Aoite.Data
         public bool IsReadonly { get; set; }
 
         private readonly System.Threading.ThreadLocal<DbContext> _threadLocalContent = new System.Threading.ThreadLocal<DbContext>();
-        internal void ResetContext()
+        /// <summary>
+        /// 释放并关闭当前线程上下文的 <see cref="Aoite.Data.DbContext"/>。
+        /// </summary>
+        public void ResetContext()
         {
-            this._threadLocalContent.Value = null;
+            var context = this._threadLocalContent.Value;
+
+            if(context != null)
+            {
+                context.Dispose();
+                this._threadLocalContent.Value = null;
+            }
         }
+
         /// <summary>
         /// 获取一个值，指示当前上下文在线程中是否已创建。
         /// </summary>

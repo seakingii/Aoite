@@ -53,6 +53,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aoite\CommandModel\Core\EventStoreTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\EventTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ExecutorFactoryTests.cs" />
+    <Compile Include="Aoite\CommandModel\SapmlelTests.cs" />
+    <Compile Include="Aoite\CommandModel\CommandsTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ContextFactoryTest.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ContextTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandBusTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBaseTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBaseTests.cs" />
+    <Compile Include="Aoite\CommandModel\Models\Member.cs" />
+    <Compile Include="Aoite\CommandModel\TestBase.cs" />
     <Compile Include="Aoite\Data\Samples\BuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SelectCommandBuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SimpleDataTests.cs" />
@@ -196,6 +208,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Aoite\Data\Builder\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_scripts\table.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

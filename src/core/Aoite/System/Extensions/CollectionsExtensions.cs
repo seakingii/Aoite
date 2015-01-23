@@ -1,4 +1,4 @@
-﻿//using Aoite.Data;
+﻿using Aoite.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,6 @@ namespace System.Collections.Generic
             if(collection == null) throw new ArgumentNullException("collection");
             return new GridData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
-        /* TODO：未完成。需要完成 EntityMapper 模块。
         /// <summary>
         /// 将指定的集合转换为数据表格。
         /// </summary>
@@ -35,21 +34,20 @@ namespace System.Collections.Generic
         public static AoiteTable ToTable<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
             if(collection == null) throw new ArgumentNullException("collection");
-            var mp = EntityMapper.Instance<TEntity>.Mapper;
+            var mp = TypeMapper.Instance<TEntity>.Mapper;
             AoiteTable table = new AoiteTable() { TableName = mp.Name };
             foreach(var p in mp.Properties) table.Columns.Add(p.Name, p.Property.PropertyType);
             table.BeginLoadData();
             foreach(var item in collection)
             {
                 var row = table.NewRow();
-                mp.FillRow(item, row);
+                mp.From(item).To(row);
                 table.Rows.Add(row);
             }
             table.EndLoadData();
             table.TotalRowCount = totalCount > 0 ? totalCount : table.Rows.Count;
             return table;
         }
-         */
 
         /// <summary>
         /// 获取与指定的键相关联的值。

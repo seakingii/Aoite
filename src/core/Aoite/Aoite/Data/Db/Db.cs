@@ -132,7 +132,7 @@ namespace System
         {
             get
             {
-                if(Engine == null) throw new ArgumentNullException("Db.Engine");
+                if(Engine == null) return false;
                 return Engine.IsThreadContext;
             }
         }
@@ -164,7 +164,15 @@ namespace System
                 return Engine.ContextTransaction;
             }
         }
-
+        /// <summary>
+        /// 释放并关闭当前线程上下文的 <see cref="System.Db.Context"/>。
+        /// </summary>
+        public static void ResetContext()
+        {
+            var engine = Engine;
+            if(engine == null) return;
+            engine.ResetContext();
+        }
         /// <summary>
         /// 设置当前运行环境的数据源查询与交互引擎的实例。
         /// </summary>

@@ -137,7 +137,7 @@ namespace System
         /// <param name="allTypes">当前应用程序所有已加载的类型。</param>
         /// <param name="expectType">预期定义的类型。</param>
         /// <returns>如果找到返回一个 <see cref="System.Type"/> 的实例，否则返回 null 值。</returns>
-        public virtual Type FindActualType(IEnumerable<IGrouping<string, Type>> allTypes, Type expectType)
+        public virtual Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType)
         {
             if(allTypes == null) throw new ArgumentNullException("allTypes");
             if(expectType == null) throw new ArgumentNullException("expectType");
@@ -146,11 +146,11 @@ namespace System
             return FindActualType(allTypes, expectType, fullNames);
         }
 
-        internal static Type FindActualType(IEnumerable<IGrouping<string, Type>> allTypes, Type expectType, HashSet<string> fullNames)
+        internal static Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType, HashSet<string> fullNames)
         {
             return (from item in allTypes
                     where fullNames.Contains(item.Key)
-                    from type in item
+                    from type in item.Value
                     where expectType.IsAssignableFrom(type) && !type.IsDefined(IgnoreAttribute.Type, true)
                     select type).FirstOrDefault();
         }

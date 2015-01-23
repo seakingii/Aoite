@@ -14,6 +14,7 @@ namespace Aoite.Redis
         /// <summary>
         /// 获取当前 Redis 的在应用程序域中的唯一编号。
         /// </summary>
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         long Id { get; }
         /// <summary>
         /// 执行指定的 Redis 命令。

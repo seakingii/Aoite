@@ -612,5 +612,43 @@ namespace Aoite.Serialization.BinarySuite
             Assert.NotNull(cf);
             Assert.Equal(504, cf.Value.Value);
         }
+
+
+        public class NestedClass1
+        {
+            public string MyProperty { get; set; }
+            public class NestedClass2
+            {
+                public string MyProperty { get; set; }
+                public class NestedClass3
+                {
+                    public string MyProperty { get; set; }
+                }
+            }
+        }
+
+        [Fact()]
+        public void NestedClassTest1()
+        {
+            var c1 = new NestedClass1() { MyProperty = "A" };
+            var c2 = ObjectComparer(c1);
+            Assert.Equal(c1.MyProperty, c2.MyProperty);
+        }
+
+        [Fact()]
+        public void NestedClassTest2()
+        {
+            var c1 = new NestedClass1.NestedClass2() { MyProperty = "A" };
+            var c2 = ObjectComparer(c1);
+            Assert.Equal(c1.MyProperty, c2.MyProperty);
+        }
+
+        [Fact()]
+        public void NestedClassTest3()
+        {
+            var c1 = new NestedClass1.NestedClass2.NestedClass3() { MyProperty = "A" };
+            var c2 = ObjectComparer(c1);
+            Assert.Equal(c1.MyProperty, c2.MyProperty);
+        }
     }
 }

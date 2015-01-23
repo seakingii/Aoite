@@ -23,7 +23,7 @@ namespace Aoite.Redis
         public int LockId { get; set; }
         public DateTime LockDate { get; set; }
         public int Timeout { get; set; }
-        private byte[] _itemsBytes;
+
         private SessionStateItemCollection _items;
         public SessionStateItemCollection Items { set { this._items = value; } get { return this._items; } }
         public SessionStateActions Flags { get; set; }

@@ -53,6 +53,8 @@
       <HintPath>C:\Windows\assembly\GAC_MSIL\System.Data.SqlServerCe\4.0.0.0__89845dcd8080cc91\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +64,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aoite\CommandModel\Attributes\BindingExecutorAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Attributes\CacheAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Attributes\IExecutorAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommandCache.cs" />
+    <Compile Include="Aoite\CommandModel\Commands.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandBus.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBase.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Context.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ContextFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Delegates.cs" />
+    <Compile Include="Aoite\CommandModel\Core\EventStore.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Event`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ExecutorFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs" />
+    <Compile Include="Aoite\CommandModel\Mocks\MockEvent`1.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ICommandCacheStrategy.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommand.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommandBus.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommandHandler`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommand`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IContext.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IContextFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IEvent.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IEventStore.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IEvent`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IExecutor.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IExecutorFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IExecutorMetadata.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IExecutorMetadata`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IExecutor`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\IUserFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBase.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommandModelService.cs" />
+    <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
+    <Compile Include="Aoite\CommandModel\ServiceFactory.cs" />
+    <Compile Include="System\Core\ITransaction.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ICounterProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\IRedisProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ILockProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Extensions\CommandModelExtensions.cs" />
+    <Compile Include="Aoite\CommandModel\Mocks\MockContext.cs" />
+    <Compile Include="Aoite\CommandModel\Mocks\MockExecutor.cs" />
+    <Compile Include="Aoite\CommandModel\Mocks\MockExecutorFactory.cs" />
     <Compile Include="Aoite\Data\Attributes\ColumnAttribute.cs" />
     <Compile Include="Aoite\Data\Attributes\TableAttribute.cs" />
     <Compile Include="Aoite\Data\Builder\CommandBuilderBase.cs" />
@@ -292,11 +337,13 @@
     <Compile Include="System\Core\GridData.cs" />
     <Compile Include="System\Core\HeadersBase.cs" />
     <Compile Include="System\Core\Log.cs" />
+    <Compile Include="System\Core\SimpleLockItem.cs" />
     <Compile Include="System\Core\ValidCodeGenerator.cs" />
     <Compile Include="System\Core\Isolated`1.cs" />
     <Compile Include="System\Core\Mean`1.cs" />
     <Compile Include="System\Core\Types.cs" />
     <Compile Include="System\Core\VoidValue.cs" />
+    <Compile Include="System\Core\WhereParameters.cs" />
     <Compile Include="System\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="System\Core\IAsyncJob.cs" />
     <Compile Include="System\Attributes\IgnoreAttribute.cs" />

@@ -13,10 +13,10 @@ namespace Aoite.Redis
         {
             Assert.False(RedisManager.IsThreadContext);
             Assert.NotNull(RedisManager.Context);
-            Assert.Equal(1, RedisManager.Context.Id);
+            Assert.True(RedisManager.Context.Id > 0);
             Assert.True(RedisManager.IsThreadContext);
-            Assert.Equal(1, RedisManager.Context.Id);
-            RedisManager.Reset();
+            Assert.True(RedisManager.Context.Id > 0);
+            RedisManager.ResetContext();
             Assert.False(RedisManager.IsThreadContext);
         }
 
@@ -31,14 +31,14 @@ namespace Aoite.Redis
                 {
                     Assert.NotNull(RedisManager.Context);
                     idList.Add(RedisManager.Context.Id);
-                    RedisManager.Reset();
+                    RedisManager.ResetContext();
                 }));
             }
             Ajob.WaitAll(jobList);
             Assert.Equal(10, idList.Count);
-            Assert.Equal(55, idList.Sum());
-            Assert.Equal(11, RedisManager.Context.Id);
-            RedisManager.Reset();
+            Assert.True(idList.Sum() >= 55);
+            Assert.True(RedisManager.Context.Id >= 11);
+            RedisManager.ResetContext();
         }
     }
 }

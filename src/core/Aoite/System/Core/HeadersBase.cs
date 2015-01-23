@@ -6,18 +6,18 @@ namespace System
     using LazyDictionary = Lazy<ConcurrentDictionary<string, object>>;
 
     /// <summary>
-    /// 包含头部信息的契约相关基类。
+    /// 包含头部信息的相关基类。
     /// </summary>
     public abstract class HeadersBase
     {
         private LazyDictionary _Headers;
         /// <summary>
-        /// 获取或设置契约的头部信息。
+        /// 获取或设置的头部信息。
         /// </summary>
         public CDictionary Headers { get { return this._Headers.Value; } }
 
         /// <summary>
-        /// 获取一个值，该值指示当前是否包含契约的头部信息。
+        /// 获取一个值，该值指示当前是否包含头部信息。
         /// </summary>
         public bool HasHeaders { get { return this._Headers.IsValueCreated; } }
 

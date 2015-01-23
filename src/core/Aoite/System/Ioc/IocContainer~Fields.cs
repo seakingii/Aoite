@@ -35,18 +35,19 @@ namespace System
         {
             return CacheType.ContainsKey(type);
         }
-        private InstanceBox FindInstanceBox(Type type, bool autoResolve)
+        private InstanceBox FindInstanceBox(Type type/*, bool autoResolve*/)
         {
-            InstanceBox box;
-            if(!CacheType.TryGetValue(type, out box))
-                lock(type)
-                {
-                    if(!CacheType.TryGetValue(type, out box))
-                    {
-                        if(autoResolve) box = AutoResolveExpectType(type);
-                    }
-                }
-            return box;
+            return CacheType.TryGetValue(type);
+            //InstanceBox box;
+            //if(!CacheType.TryGetValue(type, out box))
+            //    lock(type)
+            //    {
+            //        if(!CacheType.TryGetValue(type, out box))
+            //        {
+            //            if(autoResolve) box = AutoResolveExpectType(type);
+            //        }
+            //    }
+            //return box;
         }
 
         private void Map(string name, InstanceBox box)

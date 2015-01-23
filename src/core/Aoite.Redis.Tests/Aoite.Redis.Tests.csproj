@@ -7,7 +7,7 @@
     <ProjectGuid>{03C91638-4DD6-4A94-B57D-DBC831D765B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Aoite.Redis</RootNamespace>
+    <RootNamespace>Aoite</RootNamespace>
     <AssemblyName>Aoite.Redis.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -93,8 +93,8 @@
       <Link>TestModels\RootContainer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RedisSessionStateStoreProviderTests.cs" />
-    <Compile Include="RedisTest.cs" />
+    <Compile Include="Redis\RedisSessionStateStoreProviderTests.cs" />
+    <Compile Include="Redis\RedisTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\comm\keys\aoite.snk">
