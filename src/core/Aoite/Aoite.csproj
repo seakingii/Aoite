@@ -99,6 +99,7 @@
     <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommandModelService.cs" />
     <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
     <Compile Include="Aoite\CommandModel\ServiceFactory.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\ICustomSerializable.cs" />
     <Compile Include="System\Core\ITransaction.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ICounterProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\IRedisProvider.cs" />
@@ -308,7 +309,7 @@
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\NumberFormatters~Integers.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\ObjectFormatters.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\Formatters\StringFormatters.cs" />
-    <Compile Include="Aoite\Serialization\BinarySuite\CustomAttribute.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\SerializableUsageAttribute.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectReader.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\ObjectWriter.cs" />
     <Compile Include="Aoite\Serialization\JsonSerializer.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="System\Result\Result`1.cs" />
     <Compile Include="System\Result\SuccessfullyResult.cs" />
     <Compile Include="Aoite\Data\Test\SqlScriptsManager.cs" />
+    <Compile Include="System\Web\IIdentityStore.cs" />
     <Compile Include="System\Web\Webx.cs" />
   </ItemGroup>
   <ItemGroup>

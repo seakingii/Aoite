@@ -34,9 +34,9 @@ namespace System
         public static readonly Type BinaryValue = typeof(System.BinaryValue);
 
         /// <summary>
-        /// 表示 <see cref="Aoite.Serialization.ISerializable"/> 的类型。
+        /// 表示 <see cref="Aoite.Serialization.ICustomSerializable"/> 的类型。
         /// </summary>
-        public static readonly Type ISerializable = typeof(Aoite.Serialization.ISerializable);
+        public static readonly Type ISerializable = typeof(Aoite.Serialization.ICustomSerializable);
 
         #endregion
 

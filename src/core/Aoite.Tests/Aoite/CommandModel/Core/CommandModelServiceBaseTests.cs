@@ -139,7 +139,7 @@ namespace Aoite.CommandModel.Core
             var s = new SimpleCommandModelService(container);
             using(var tran = s.BeginTransactionTest())
             {
-                Assert.IsType<SimpleCommandModelService.DefaultTransaction>(tran);
+                Assert.IsType<DefaultTransaction>(tran);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace System
         /// <summary>
         /// 表示一个缓存列表，映射所有类型的构造函数的参数名称的实例盒。优先级最低（3）。
         /// </summary>
-        private readonly ConcurrentDictionary<string, InstanceBox> CacheName = new ConcurrentDictionary<string, InstanceBox>();
+        private readonly ConcurrentDictionary<string, InstanceBox> CacheName = new ConcurrentDictionary<string, InstanceBox>(StringComparer.CurrentCultureIgnoreCase);
 
         private void Map(Type type, InstanceBox box)
         {

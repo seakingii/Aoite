@@ -4,7 +4,7 @@ using System.Text;
 using System.Reflection;
 using Aoite.Reflection;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal class SerializableFieldInfo
     {

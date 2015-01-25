@@ -260,7 +260,7 @@ namespace System
                 redisDict = new RedisDictionary(typeMapper.Count);
                 foreach(var propertyMapper in typeMapper.Properties)
                 {
-                    redisDict.Add(propertyMapper.Name, BinaryValue.Create(propertyMapper.GetValue(fieldValues)));
+                    redisDict.Add(propertyMapper.Name, BinaryValue.Create(propertyMapper.GetValue(fieldValues), propertyMapper.Property));
                 }
             }
             return HMSet(client, key, redisDict);

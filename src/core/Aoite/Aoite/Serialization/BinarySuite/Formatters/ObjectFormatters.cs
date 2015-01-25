@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal static class ObjectFormatters
     {
@@ -283,27 +283,23 @@ namespace Aoite.Serialization.BinarySuite
         #endregion
 
         #region - Object & ObjectArray -
-
+        //static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, ICustomSerializable>
+        //    CustomSerializables = new System.Collections.Concurrent.ConcurrentDictionary<Type, ICustomSerializable>();
         public static void WriteCustom(this ObjectWriter writer, object value, Type formatterType)
         {
-            var customFormatter = Activator.CreateInstance(formatterType, true) as ISerializable;
-            var bytes = customFormatter.Serialize(value);
+            var customFormatter = Activator.CreateInstance(formatterType, true) as ICustomSerializable;
+           
             writer.WriteTag(FormatterTag.Custom);
             writer.InnerWrite(formatterType);
-            if(bytes == null || bytes.Length == 0) writer.InnerWrite(0);
-            else
-            {
-                writer.InnerWrite(bytes.Length);
-                writer.Stream.WriteBytes(bytes);
-            }
+            customFormatter.Serialize(writer,value);
         }
         public static object ReadCustom(this ObjectReader reader, int index)
         {
             var type = reader.ReadType();
-            var byteLength = reader.ReadInt32();
-            var bytes = byteLength == 0 ? new byte[0] : reader.ReadBuffer(byteLength);
-            var customFormatter = Activator.CreateInstance(type, true) as ISerializable;
-            return customFormatter.Deserialize(bytes);
+            //var byteLength = reader.ReadInt32();
+            //var bytes = byteLength == 0 ? new byte[0] : reader.ReadBuffer(byteLength);
+            var customFormatter = Activator.CreateInstance(type, true) as ICustomSerializable;
+            return customFormatter.Deserialize(reader);
         }
 
         public static void WriteObject(this ObjectWriter writer, object value, Type type)

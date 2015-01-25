@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Aoite.Serialization.BinarySuite;
+using Aoite.Serialization;
 
 namespace Aoite.Serialization
 {
@@ -14,9 +14,9 @@ namespace Aoite.Serialization
         /// <summary>
         /// 获取或设置动态的自定义序列化类型映射。
         /// </summary>
-        public readonly static System.Collections.Generic.Dictionary<Type, CustomAttribute>
+        public readonly static System.Collections.Generic.Dictionary<Type, SerializableUsageAttribute>
              CustomAttributes
-             = new System.Collections.Generic.Dictionary<Type, CustomAttribute>();
+             = new System.Collections.Generic.Dictionary<Type, SerializableUsageAttribute>();
         /// <summary>
         /// 初始化一个 <see cref="Aoite.Serialization.QuicklySerializer"/> 类的新实例。
         /// </summary>

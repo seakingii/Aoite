@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aoite.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,11 +22,28 @@ namespace System
         /// </summary>
         public byte[] ByteArray { get { return this._ByteArray; } }
 
+        static byte[] GetBytes(object value, System.Reflection.MemberInfo member = null)
+        {
+            using(var stream = new System.IO.MemoryStream())
+            {
+                new ObjectWriter(stream, Serializer.Quickly.Encoding).Serialize(value, member);
+                return stream.ToArray();
+            }
+        }
+        static object ReadObject(byte[] bytes)
+        {
+            using(var stream = new System.IO.MemoryStream(bytes))
+            {
+                return new ObjectReader(stream, Serializer.Quickly.Encoding).Deserialize();
+            }
+        }
+
         /// <summary>
         /// 初始化一个 <see cref="System.BinaryValue"/> 类的新实例。
         /// </summary>
         /// <param name="value">待序列化的对象。可以为 null 值。</param>
-        public BinaryValue(object value) : this(value == null ? null : Serializer.Quickly.FastWriteBytes(value)) { }
+        /// <param name="member">序列化的对象成员。</param>
+        public BinaryValue(object value, System.Reflection.MemberInfo member = null) : this(value == null ? null : GetBytes(value, member)) { }
 
         /// <summary>
         /// 初始化一个 <see cref="System.BinaryValue"/> 类的新实例。
@@ -44,7 +62,7 @@ namespace System
         public TModel ToModel<TModel>()
         {
             if(!HasValue(this)) return default(TModel);
-            return Serializer.Quickly.FastReadBytes<TModel>(this._ByteArray);
+            return (TModel)ReadObject(this._ByteArray);
         }
 
         /// <summary>
@@ -54,15 +72,16 @@ namespace System
         public object ToModel()
         {
             if(!HasValue(this)) return null;
-            return Serializer.Quickly.FastReadBytes(this._ByteArray);
+            return ReadObject(this._ByteArray);
         }
 
         /// <summary>
         /// 提供未知的数据类型，创建一个二进制值。
         /// </summary>
         /// <param name="value">一个未知类型的值。</param>
+        /// <param name="member">序列化的对象成员。</param>
         /// <returns>返回一个二进制值。</returns>
-        public static BinaryValue Create(object value)
+        public static BinaryValue Create(object value, System.Reflection.MemberInfo member = null)
         {
             if(value == null) return null;
             if(value is BinaryValue) return (BinaryValue)value;
@@ -87,7 +106,7 @@ namespace System
                 if(value is UInt32) return (UInt32)value;
                 if(value is UInt64) return (UInt64)value;
             }
-            return new BinaryValue(value);
+            return new BinaryValue(value, member);
         }
         /// <summary>
         /// 提供已知的数据类型，解析当前二进制值。

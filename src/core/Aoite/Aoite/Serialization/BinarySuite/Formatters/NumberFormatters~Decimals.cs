@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal static partial class NumberFormatters
     {

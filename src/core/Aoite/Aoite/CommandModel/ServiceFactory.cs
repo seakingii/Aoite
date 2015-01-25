@@ -83,17 +83,6 @@ namespace Aoite.CommandModel
             return container;
         }
 
-        /// <summary>
-        /// 释放并关闭所有线程上下文的上下文对象。其包括:
-        /// <para><see cref="System.Db.Context"/></para>
-        /// <para><see cref="Aoite.Redis.RedisManager.Context"/></para>
-        /// </summary>
-        public static void ResetContexts()
-        {
-            Aoite.Redis.RedisManager.ResetContext();
-            Db.ResetContext();
-        }
-
         internal static dynamic GetUser(this IIocContainer container)
         {
             if(container == null) throw new ArgumentNullException("container");

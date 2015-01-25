@@ -47,17 +47,19 @@ namespace Aoite.Redis
             this._client._tranCommands.Last.Value.SetCallback(callback);
         }
 
+        private bool _IsCommited;
         void IRedisTransaction.Commit()
         {
             this.ThrowWhenDisposed();
-            if(this._client._tranCommands.Count == 0) return;
+            if(this._IsCommited) return;
 
             this._client._executor.Execute(new RedisTran.Exec(this._client._tranCommands)).ThrowIfFailded();
+            this._IsCommited = true;
         }
 
         protected override void DisposeManaged()
         {
-            if(this._client._tranCommands != null && this._client._tranCommands.Count > 0)
+            if(!this._IsCommited)
             {
                 try
                 {

@@ -105,6 +105,11 @@ namespace System
             {
                 callback(t);
             }
+            //catch(Exception ex)
+            //{
+            //    GA.TraceError(ex.ToString());
+            //    throw;
+            //}
             finally
             {
                 this.Release(t);

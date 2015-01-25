@@ -1,0 +1,11 @@
+﻿@model WebSample.Models.LoginArguments
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>登录</h2>
+@Html.ValidationSummary()
+<form method="post">
+    @Html.DisplayForModel()
+    <p><input type="submit" /> </p>
+</form>

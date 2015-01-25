@@ -546,22 +546,24 @@ namespace Aoite.Serialization.BinarySuite
             Assert.Equal(m1.Value, m2.Value);
         }
 
-        [Custom(typeof(Serializable))]
+        [SerializableUsageAttribute(typeof(Serializable))]
         public class CustomFormatter1
         {
             public int Value { get; set; }
 
-            class Serializable : ISerializable
+            class Serializable : ICustomSerializable
             {
-                object ISerializable.Deserialize(byte[] bytes)
+
+                public object Deserialize(ObjectReader reader)
                 {
-                    return new CustomFormatter1() { Value = BitConverter.ToInt32(bytes, 0) + 1 };
+                    var value = (int)reader.Deserialize();
+                    return new CustomFormatter1() { Value = value + 1 };
                 }
 
-                byte[] ISerializable.Serialize(object value)
+                public void Serialize(ObjectWriter writer, object value)
                 {
                     var f = value as CustomFormatter1;
-                    return BitConverter.GetBytes(f.Value);
+                    writer.Serialize(f.Value);
                 }
             }
         }
@@ -579,7 +581,7 @@ namespace Aoite.Serialization.BinarySuite
 
         public class CustomFormatter2
         {
-            [Custom(typeof(Serializable))]
+            [SerializableUsageAttribute(typeof(Serializable))]
             private Property _Value;
             public Property Value { get { return this._Value; } set { this._Value = value; } }
 
@@ -587,17 +589,18 @@ namespace Aoite.Serialization.BinarySuite
             {
                 public int Value { get; set; }
             }
-            class Serializable : ISerializable
+            class Serializable : ICustomSerializable
             {
-                object ISerializable.Deserialize(byte[] bytes)
+                public object Deserialize(ObjectReader reader)
                 {
-                    return new Property() { Value = BitConverter.ToInt32(bytes, 0) + 1 };
+                    var value = (int)reader.Deserialize();
+                    return new Property() { Value = value + 1 };
                 }
 
-                byte[] ISerializable.Serialize(object value)
+                public void Serialize(ObjectWriter writer, object value)
                 {
                     var f = value as Property;
-                    return BitConverter.GetBytes(f.Value);
+                    writer.Serialize(f.Value);
                 }
             }
         }

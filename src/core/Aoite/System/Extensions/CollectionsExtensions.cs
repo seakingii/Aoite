@@ -301,5 +301,19 @@ namespace System.Collections.Generic
             return Array.IndexOf(collection, value);
         }
 
+        /// <summary>
+        /// 获取与 <see cref="System.Collections.Specialized.NameValueCollection"/> 中的指定键关联的值，并将值转换为指定的类型。
+        /// </summary>
+        /// <typeparam name="T">值的数据类型。</typeparam>
+        /// <param name="collection">可通过键或索引访问的关联 <see cref="System.String"/> 键和 <see cref="System.String"/> 值的集合。</param>
+        /// <param name="name">项的 <see cref="System.String"/> 键，该项包含要获取的值。键可以是 null。</param>
+        /// <param name="defaultValue">默认值。</param>
+        /// <returns>如果找到，则为一个 <see cref="System.String"/>，包含与 <see cref="System.Collections.Specialized.NameValueCollection"/> 中的指定键关联的值的列表（此列表以逗号分隔）；否则为 null。</returns>
+        public static T Get<T>(this System.Collections.Specialized.NameValueCollection collection, string name, T defaultValue = default(T))
+        {
+            var value = collection.Get(name);
+            if(value == null) return defaultValue;
+            return value.CastTo<T>();
+        }
     }
 }

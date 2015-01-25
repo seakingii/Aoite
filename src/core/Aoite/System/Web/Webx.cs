@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Aoite.CommandModel;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
@@ -8,7 +10,7 @@ namespace System.Web
     /// <summary>
     /// 表示一个 Web Application 的增强功能。
     /// </summary>
-    public static class Webx
+    public class Webx
     {
         #region Temp Values
 
@@ -44,13 +46,13 @@ namespace System.Web
         {
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
-            var ctx = HttpContext.Current;
-            var value = HttpContext.Current.Items[name];
+            var items = HttpContext.Current.Items;
+            var value = items[name];
             if(value == null)
             {
                 if(defaultValueCallback == null) return default(T);
                 var tValue = defaultValueCallback();
-                ctx.Items[name] = tValue;
+                items[name] = tValue;
                 return tValue;
             }
 
@@ -67,9 +69,9 @@ namespace System.Web
         {
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
-            var ctx = HttpContext.Current;
-            if(value == null) ctx.Items.Remove(name);
-            else ctx.Items[name] = value;
+            var items = HttpContext.Current.Items;
+            if(value == null) items.Remove(name);
+            else items[name] = value;
             return value;
         }
 
@@ -179,7 +181,7 @@ namespace System.Web
 
         #region Scripts
 
-        private const string SCRIPT_STRING_BUILDER = "Webx$SCRIPT_STRING_BUILDER$";
+        private const string SCRIPT_STRING_BUILDER = "$Webx:SCRIPT_STRING_BUILDER$";
         private readonly static IHtmlString EmptyHtmlString = new HtmlString(string.Empty);
         /// <summary>
         /// 添加客户端脚本。
@@ -217,5 +219,159 @@ namespace System.Web
 
         #endregion
 
+        #region Commom
+
+        private const string IsJsonResponseName = "$Webx:IS_JSON_RESPONSE";
+        /// <summary>
+        /// 获取一个值，指示客户端是否要求 JSON 的响应。
+        /// </summary>
+        public static bool IsJsonResponse
+        {
+            get
+            {
+                var isJsonResult = GetTemp<bool?>(IsJsonResponseName, defaultValue: null);
+                if(isJsonResult == null)
+                {
+                    var request = HttpContext.Current.Request;
+                    isJsonResult = ((request["X-Requested-With"] == "XMLHttpRequest")
+                        || ((request.Headers != null) && (request.Headers["X-Requested-With"] == "XMLHttpRequest")));
+
+                    SetTemp(IsJsonResponseName, isJsonResult);
+                }
+                return isJsonResult.Value;
+            }
+        }
+
+        #endregion
+
+        #region Identity
+
+        private const string ContainerName = "$Webx:Container";
+        private static IIocContainer SetContainer(IIocContainer value)
+        {
+            var config = value.GetValue("$AppSettings") as NameValueCollection
+                  ?? System.Web.Configuration.WebConfigurationManager.AppSettings
+                  ?? new NameValueCollection();
+
+            var redisAddress = config.Get("reids.address");
+            if(!string.IsNullOrEmpty(redisAddress))
+            {
+                var sp = redisAddress.Split(':');
+                if(sp.Length != 2) throw new ArgumentException("非法的 Redis 的连接地址 {0}。".Fmt(redisAddress));
+                Aoite.Redis.RedisManager.DefaultAddress = new Aoite.Net.SocketInfo(sp[0], int.Parse(sp[1]));
+            }
+            Aoite.Redis.RedisManager.DefaultPassword = config.Get("redis.password");
+
+            if(config.Get<bool>("redis.enabled")) value.AddService<IRedisProvider>(new RedisProvider(value));
+
+            var identityStore = value.GetService<IIdentityStore>();
+            if(!value.ContainsService<IUserFactory>(true)) value.AddService<IUserFactory>(identityStore);
+
+            HttpContext.Current.Application[ContainerName] = value;
+            return value;
+        }
+
+        private static IIocContainer GetContainer()
+        {
+            return HttpContext.Current.Application[ContainerName] as IIocContainer;
+        }
+
+        private static IIocContainer _Container;
+        /// <summary>
+        /// 获取或设置用于 Webx 的服务容器。
+        /// </summary>
+        public static IIocContainer Container
+        {
+            get
+            {
+                var container = GetContainer();
+                if(container == null)
+                    lock(string.Intern(ContainerName))
+                    {
+                        return GetContainer() ?? SetContainer(ObjectFactory.Global);
+                    }
+                return container;
+            }
+            set
+            {
+                if(value == null) throw new ArgumentNullException("value");
+                SetContainer(value);
+            }
+        }
+
+        /// <summary>
+        /// 初始化 Webx。
+        /// </summary>
+        /// <param name="container">服务容器。</param>
+        public static void Initialize(IIocContainer container)
+        {
+            if(container == null) throw new ArgumentNullException("container");
+            if(_Container != null) throw new InvalidOperationException();
+
+            _Container = container;
+        }
+
+        /// <summary>
+        /// 获取一个值，指示当前请求是否已通过授权。
+        /// </summary>
+        public static bool IsAuthorized { get { return Identity != null; } }
+
+        private const string AllowAnonymousName = "$Webx:ALLOW_ANONYMOUS";
+        /// <summary>
+        /// 获取或设置一个值，指示当前请求是否允许匿名访问。
+        /// </summary>
+        public static bool AllowAnonymous { get { return GetTemp(AllowAnonymousName, false); } set { SetTemp(AllowAnonymousName, value); } }
+
+        private const string IdentityName = "$Webx:IDENTITY";
+        /// <summary>
+        ///  获取或设置客户端唯一标识，如果上下文缓存不存在，则尝试从当前请求中获取。
+        /// </summary>
+        /// <returns>返回客户端唯一标识。</returns>
+        public static dynamic Identity
+        {
+            get { return GetTemp<object>(IdentityName, Container.GetService<IIdentityStore>().Get); }
+            set
+            {
+                var store = Container.GetService<IIdentityStore>();
+                object v = value;
+                if(v == null)
+                {
+                    store.Remove();
+                    SetTemp<object>(IdentityName, null);
+                }
+                else
+                {
+                    store.Set(v);
+                    SetTemp(IdentityName, v);
+                }
+            }
+        }
+
+        [SingletonMapping]
+        internal class SessionIdentityStore : IIdentityStore
+        {
+            public void Set(object user)
+            {
+                HttpContext.Current.Session[IdentityName] = user;
+            }
+
+            public object Get()
+            {
+                return HttpContext.Current.Session[IdentityName];
+            }
+
+            public void Remove()
+            {
+                HttpContext.Current.Session.Remove(IdentityName);
+            }
+
+            public object GetUser(IIocContainer container)
+            {
+                return this.Get();
+            }
+        }
+
+        #endregion
     }
+
 }

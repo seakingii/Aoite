@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal static class AssemblyInfoCollection
     {

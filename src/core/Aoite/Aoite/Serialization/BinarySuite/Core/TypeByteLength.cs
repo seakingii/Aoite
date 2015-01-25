@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal static class TypeByteLength
     {

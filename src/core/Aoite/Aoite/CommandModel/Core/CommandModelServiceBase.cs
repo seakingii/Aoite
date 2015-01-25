@@ -43,7 +43,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 获取执行命令模型的用户。该属性可能返回 null 值。
         /// </summary>
-        public dynamic User { get { return this._Container.GetUser(); } }
+        public virtual dynamic User { get { return this._Container.GetUser(); } }
 
         /// <summary>
         /// 执行一个命令模型。
@@ -81,7 +81,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="timeout">获取锁的超时设定。</param>
         /// <returns>返回一个锁。</returns>
-        protected virtual IDisposable AcquireLock<T>(TimeSpan? timeout = null)
+        protected IDisposable AcquireLock<T>(TimeSpan? timeout = null)
         {
             return this.AcquireLock(typeof(T).FullName, timeout);
         }
@@ -103,7 +103,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="increment">递增量。</param>
         /// <returns>返回递增的序列。</returns>
-        protected virtual long Increment<T>(long increment = 1)
+        protected long Increment<T>(long increment = 1)
         {
             return this.Increment(typeof(T).FullName, increment);
         }
@@ -119,26 +119,11 @@ namespace Aoite.CommandModel
             return this._Container.GetService<ICounterProvider>().Increment(key, increment);
         }
 
-        internal class DefaultTransaction : ITransaction
-        {
-            private System.Transactions.TransactionScope _t = new System.Transactions.TransactionScope();
-
-            void ITransaction.Commit()
-            {
-                _t.Complete();
-            }
-
-            void IDisposable.Dispose()
-            {
-                _t.Dispose();
-            }
-        }
-
         /// <summary>
         /// 开始事务模式。
         /// </summary>
         /// <returns>返回一个事务。</returns>
-        protected ITransaction BeginTransaction()
+        protected virtual ITransaction BeginTransaction()
         {
             return new DefaultTransaction();
         }

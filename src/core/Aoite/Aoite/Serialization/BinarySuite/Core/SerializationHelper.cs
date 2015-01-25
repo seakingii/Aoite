@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Concurrent;
 
-namespace Aoite.Serialization.BinarySuite
+namespace Aoite.Serialization
 {
     internal static class SerializationHelper
     {

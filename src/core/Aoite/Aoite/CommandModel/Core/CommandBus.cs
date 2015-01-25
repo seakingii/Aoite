@@ -88,7 +88,7 @@ namespace Aoite.CommandModel
                 {
                     return this.Execute(command, executing, executed);
                 }
-                finally { ServiceFactory.ResetContexts(); }
+                finally { GA.ResetContexts(); }
             });
 
         }

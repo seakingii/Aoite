@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aoite.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -10,52 +11,69 @@ using System.Web.SessionState;
 
 namespace Aoite.Redis
 {
-
     class RedisSessionState
     {
-        static RedisSessionState()
-        {
-            Serialization.QuicklySerializer.CustomAttributes[typeof(SessionStateItemCollection)] =
-                 new Serialization.CustomAttribute(typeof(SessionStateItemCollectionSerializable));
-        }
         public DateTime Created { get; set; }
         public bool Locked { get; set; }
         public int LockId { get; set; }
         public DateTime LockDate { get; set; }
         public int Timeout { get; set; }
 
-        private SessionStateItemCollection _items;
-        public SessionStateItemCollection Items { set { this._items = value; } get { return this._items; } }
+        [SerializableUsage(typeof(Serializable))]
+        public SessionStateItemCollection Items { get; set; }
         public SessionStateActions Flags { get; set; }
 
         internal RedisSessionState()
         {
-            this._items = new SessionStateItemCollection();
+            this.Items = new SessionStateItemCollection();
             this.Locked = false;
             this.Created = DateTime.UtcNow;
         }
-        class SessionStateItemCollectionSerializable : Aoite.Serialization.ISerializable
+        class Serializable : Aoite.Serialization.ICustomSerializable
         {
-            public object Deserialize(byte[] bytes)
+            //public object Deserialize(byte[] bytes)
+            //{
+            //    if(bytes == null || bytes.Length == 0) return new SessionStateItemCollection();
+            //    using(var ms = new MemoryStream(bytes))
+            //    using(var reader = new BinaryReader(ms, GA.UTF8))
+            //    {
+            //        return SessionStateItemCollection.Deserialize(reader);
+            //    }
+            //}
+
+            //public byte[] Serialize(object value)
+            //{
+            //    if(value == null) return new byte[0];
+            //    var item = value as SessionStateItemCollection;
+            //    if(item.Count == 0) return new byte[0];
+            //    using(var ms = new MemoryStream())
+            //    using(var writer = new BinaryWriter(ms, GA.UTF8))
+            //    {
+            //        item.Serialize(writer);
+            //        return ms.ToArray();
+            //    }
+            //}
+            public object Deserialize(ObjectReader reader)
             {
-                if(bytes == null || bytes.Length == 0) return new SessionStateItemCollection();
-                using(var ms = new MemoryStream(bytes))
-                using(var reader = new BinaryReader(ms, GA.UTF8))
+                SessionStateItemCollection items = new SessionStateItemCollection();
+                var count = reader.ReadInt32();
+                for(int i = 0; i < count; i++)
                 {
-                    return SessionStateItemCollection.Deserialize(reader);
+                    var name = (string)reader.Deserialize();
+                    var value = reader.Deserialize();
+                    items[name] = value;
                 }
+                return items;
             }
 
-            public byte[] Serialize(object value)
+            public void Serialize(ObjectWriter writer, object value)
             {
-                if(value == null) return new byte[0];
-                var item = value as SessionStateItemCollection;
-                if(item.Count == 0) return new byte[0];
-                using(var ms = new MemoryStream())
-                using(var writer = new BinaryWriter(ms, GA.UTF8))
+                var items = value as SessionStateItemCollection;
+                writer.InnerWrite(items.Count);
+                foreach(string name in items.Keys)
                 {
-                    item.Serialize(writer);
-                    return ms.ToArray();
+                    writer.Serialize(name);
+                    writer.Serialize(items[name]);
                 }
             }
         }
