@@ -115,12 +115,25 @@ namespace System
                 if(spType != tpType)
                 {
                     if(tpType.IsValueType && sValue == null)
-                        throw new ArgumentNullException("{0}.{1}".Fmt(sMapper.Type.Name, sProperty.Property.Name), "目标属性 {0}.{1} 不能为 null 值。".Fmt(tMapper.Type.Name, tProperty.Property.Name));
+                    {
+                        //throw new ArgumentNullException("{0}.{1}".Fmt(sMapper.Type.Name, sProperty.Property.Name), "目标属性 {0}.{1} 不能为 null 值。".Fmt(tMapper.Type.Name, tProperty.Property.Name));
+                        continue;
+                    }
                     tProperty.SetValue(target, tpType.ChangeType(sValue));
                 }
                 else tProperty.SetValue(target, sValue);
             }
             return target;
+        }
+
+        /// <summary>
+        /// 抛出比较结果的错误。
+        /// </summary>
+        /// <param name="result">比较结果。</param>
+        public static void ThrowIfExists(this CompareResult result)
+        {
+            if(result != null)
+                throw new NotSupportedException(result.ToString());
         }
 
         /// <summary>

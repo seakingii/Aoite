@@ -48,7 +48,7 @@ namespace System
         internal const string NameWithReadonlyEngine = "Readonly";
 
         private static bool _isInitialized = false;
-        private static void InitializationEngines()
+        private static void Initialize()
         {
             if(_isInitialized) return;
             lock(SyncObjectE)
@@ -107,7 +107,7 @@ namespace System
         {
             get
             {
-                InitializationEngines();
+                Initialize();
                 return _Engine ?? Manager[NameWithDefualtEngine];
             }
         }
@@ -120,7 +120,7 @@ namespace System
         {
             get
             {
-                InitializationEngines();
+                Initialize();
                 return _Readonly ?? Manager[NameWithReadonlyEngine];
             }
         }

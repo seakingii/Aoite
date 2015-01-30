@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 namespace WebSample.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : QController
     {
         // GET: Home

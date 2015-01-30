@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Aoite.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Aoite.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -89,6 +91,8 @@
     <Compile Include="Mvc\Core\MvcBasicActionFilterAttribute.cs" />
     <Compile Include="Mvc\Core\MvcClient.cs" />
     <Compile Include="Mvc\Core\RedirectToActionResult.cs" />
+    <None Include="Aoite.Web.nuspec" />
+    <None Include="Mvc\Core\UnitTestExtensions.cs" />
     <Compile Include="Mvc\Core\XControllerBase`1.cs" />
     <Compile Include="Mvc\Core\XWebViewPageBase`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

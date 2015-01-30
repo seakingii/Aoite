@@ -10,7 +10,10 @@ namespace Aoite.CommandModel
     /// </summary>
     public class UserFactory : IUserFactory
     {
-        Func<IIocContainer, object> _getUserFunc;
+        readonly Func<IIocContainer, object> _getUserFunc;
+        //readonly Action<IIocContainer, object> _setUserFunc;
+        //readonly Action<IIocContainer> _clearUserFunc;
+
         /// <summary>
         /// 指定一个委托，初始化一个 <see cref="Aoite.CommandModel.UserFactory"/> 类的新实例。
         /// </summary>
@@ -23,7 +26,7 @@ namespace Aoite.CommandModel
 
         object IUserFactory.GetUser(IIocContainer container)
         {
-            return _getUserFunc(container);
+            return this._getUserFunc(container);
         }
     }
 }

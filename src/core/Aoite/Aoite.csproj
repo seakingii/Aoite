@@ -78,6 +78,7 @@
     <Compile Include="Aoite\CommandModel\Core\Event`1.cs" />
     <Compile Include="Aoite\CommandModel\Core\ExecutorFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs" />
+    <Compile Include="Aoite\CommandModel\Extensions\CommandBusExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Mocks\MockEvent`1.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ICommandCacheStrategy.cs" />
     <Compile Include="Aoite\CommandModel\Core\Interfaces\ICommand.cs" />
@@ -413,6 +414,7 @@
     </None>
     <EmbeddedResource Include="Aoite\LevelDB\Interop\LevelDBx32.gz" />
     <EmbeddedResource Include="Aoite\LevelDB\Interop\LevelDBx64.gz" />
+    <None Include="Aoite.nuspec" />
     <None Include="Aoite\Redis\ReadMe.md" />
   </ItemGroup>
   <ItemGroup>

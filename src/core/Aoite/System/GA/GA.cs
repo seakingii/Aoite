@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -210,7 +211,7 @@ namespace System
             }
             else
             {
-                if(Path.IsPathRooted(paths[0]))  return Path.Combine(paths);
+                if(Path.IsPathRooted(paths[0])) return Path.Combine(paths);
                 string[] newPaths = new string[paths.Length + 1];
                 newPaths[0] = AppDirectory;
                 Array.Copy(paths, 0, newPaths, 1, paths.Length);
@@ -314,6 +315,65 @@ namespace System
                         t2 = t2.ToString();
                         goto default;
                     }
+                    if(type.IsArray)
+                    {
+                        var a1 = t1 as Array;
+                        var a2 = t2 as Array;
+                        if(a1 == null || a2 == null) goto default;
+                        if(a1.Length != a2.Length) return new CompareResult()
+                        {
+                            Name = "数组长度",
+                            Value1 = a1.Length,
+                            Value2 = a2.Length
+                        };
+                        for(int i = 0; i < a1.Length; i++)
+                        {
+                            var r = Compare(a1.GetValue(i), a2.GetValue(i));
+                            if(r != null) return r;
+                        }
+                    }
+                    else if(type.IsSubclassOf(Types.IDictionary))
+                    {
+                        var a1 = t1 as IDictionary;
+                        var a2 = t2 as IDictionary;
+                        if(a1 == null || a2 == null) goto default;
+                        if(a1.Count != a2.Count) return new CompareResult()
+                        {
+                            Name = "字典大小",
+                            Value1 = a1.Count,
+                            Value2 = a2.Count
+                        };
+                        foreach(DictionaryEntry item in a1)
+                        {
+                            if(!a2.Contains(item.Key)) return new CompareResult()
+                            {
+                                Name = "字典键",
+                                Value1 = item.Key,
+                                Value2 = null
+                            };
+                            var r = Compare(item.Value, a2[item.Key]);
+                            if(r != null) return r;
+                        }
+                    }
+                    else if(type.IsSubclassOf(Types.IEnumerable))
+                    {
+                        var a1 = new ArrayList();
+                        foreach(var item in t1 as IEnumerable) a1.Add(item);
+                        var a2 = new ArrayList();
+                        foreach(var item in t2 as IEnumerable) a2.Add(item);
+
+                        if(a1.Count != a2.Count) return new CompareResult()
+                        {
+                            Name = "枚举大小",
+                            Value1 = a1.Count,
+                            Value2 = a2.Count
+                        };
+                        for(int i = 0; i < a1.Count; i++)
+                        {
+                            var r = Compare(a1[i], a2[i]);
+                            if(r != null) return r;
+                        }
+                    }
                     var mp = TypeMapper.Create(type);
                     foreach(var p in mp.Properties)
                     {
@@ -356,6 +416,17 @@ namespace System
         {
             var type = typeof(T);
             return Compare(type.Name, type, t1, t2);
+        }
+        /// <summary>
+        /// 深度比较两个对象，如果发生不匹配则抛出异常。
+        /// </summary>
+        /// <typeparam name="T">对象的数据类型。</typeparam>
+        /// <param name="t1">第一个对象的实例。</param>
+        /// <param name="t2">第二个对象的实例。</param>
+        public static void CompareThrown<T>(this T t1, T t2) where T : class
+        {
+            var type = typeof(T);
+            Compare(type.Name, type, t1, t2).ThrowIfExists();
         }
 
         #endregion

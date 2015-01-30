@@ -92,5 +92,10 @@ namespace Aoite.CommandModel
                 }
             }
         }
+
+        internal static IDbEngine GetDbEngine(this IContainerProvider provider)
+        {
+            return provider.Container.GetFixedService<IDbEngine>() ?? Db.Context;
+        }
     }
 }

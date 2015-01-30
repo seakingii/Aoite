@@ -11,8 +11,8 @@ namespace System
     public interface IContainerProvider
     {
         /// <summary>
-        /// 获取服务容器。
+        /// 获取或设置服务容器。
         /// </summary>
-        IIocContainer Container { get; }
+        IIocContainer Container { get; set; }
     }
 }

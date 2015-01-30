@@ -31,6 +31,7 @@ namespace System
         /// 获取或设置执行时发生的错误。结果状态 <see cref="System.ResultStatus.Succeed"/> 时，该值为 null 值。
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
+        [Ignore]
         public virtual Exception Exception
         {
             get

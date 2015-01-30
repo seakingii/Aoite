@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace WebSample.Models
+namespace WebSample.Arguments
 {
     public class LoginArguments
     {

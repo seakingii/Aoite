@@ -87,8 +87,8 @@ namespace System.Web
         public static string MapUrl(string contentPath)
         {
             if(string.IsNullOrEmpty(contentPath)) throw new ArgumentNullException("contentPath");
-            return VirtualPathUtility.Combine(HttpRuntime.AppDomainAppVirtualPath
-                , VirtualPathUtility.ToAbsolute(contentPath, HttpRuntime.AppDomainAppVirtualPath));
+            var path = HttpRuntime.AppDomainAppVirtualPath ?? "/";
+            return VirtualPathUtility.Combine(path, VirtualPathUtility.ToAbsolute(contentPath, path));
         }
 
         /// <summary>
@@ -264,8 +264,7 @@ namespace System.Web
 
             if(config.Get<bool>("redis.enabled")) value.AddService<IRedisProvider>(new RedisProvider(value));
 
-            var identityStore = value.GetService<IIdentityStore>();
-            if(!value.ContainsService<IUserFactory>(true)) value.AddService<IUserFactory>(identityStore);
+            if(!value.ContainsService<IUserFactory>(true)) value.AddService<IUserFactory>(value.GetService<IIdentityStore>());
 
             HttpContext.Current.Application[ContainerName] = value;
             return value;
@@ -276,7 +275,6 @@ namespace System.Web
             return HttpContext.Current.Application[ContainerName] as IIocContainer;
         }
 
-        private static IIocContainer _Container;
         /// <summary>
         /// 获取或设置用于 Webx 的服务容器。
         /// </summary>
@@ -297,18 +295,6 @@ namespace System.Web
                 if(value == null) throw new ArgumentNullException("value");
                 SetContainer(value);
             }
-        }
-
-        /// <summary>
-        /// 初始化 Webx。
-        /// </summary>
-        /// <param name="container">服务容器。</param>
-        public static void Initialize(IIocContainer container)
-        {
-            if(container == null) throw new ArgumentNullException("container");
-            if(_Container != null) throw new InvalidOperationException();
-
-            _Container = container;
         }
 
         /// <summary>

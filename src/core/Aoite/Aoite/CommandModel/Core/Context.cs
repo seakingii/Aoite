@@ -55,7 +55,7 @@ namespace Aoite.CommandModel
 
         private IDbEngine InitializeEngine()
         {
-            return this.Container.GetFixedService<IDbEngine>() ?? Db.Context;
+            return this.GetDbEngine();
         }
 
         /// <summary>

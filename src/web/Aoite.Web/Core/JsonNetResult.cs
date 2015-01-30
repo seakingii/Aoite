@@ -22,9 +22,12 @@ namespace System.Web.Mvc
         /// 初始化 <see cref="System.Web.Mvc.JsonNetResult"/> 类的新实例。
         /// </summary>
         /// <param name="data">数据。</param>
-        public JsonNetResult(object data)
+        /// <param name="behavior">请求行为。</param>
+        public JsonNetResult(object data, JsonRequestBehavior behavior
+             = JsonRequestBehavior.AllowGet)
         {
             base.Data = data;
+            this.JsonRequestBehavior = behavior;
         }
 
         /// <summary>

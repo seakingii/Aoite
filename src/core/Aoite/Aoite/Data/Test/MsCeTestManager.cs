@@ -48,14 +48,14 @@ namespace Aoite.Data
             command.CommandText = ReplaceVarchar(command.CommandText);
         }
 
-        static readonly Regex RegexReplaceVarchar = new Regex(@"\bvarchar\b", RegexOptions.Multiline | RegexOptions.Compiled);
+        internal static readonly Regex RegexReplaceVarchar = new Regex(@"\bvarchar\b", RegexOptions.Multiline | RegexOptions.Compiled);
 
         /// <summary>
         /// 由于 Miscsoft SQL Server Compact 不支持 varchar 数据类型，此方法将所有 varchar 转换为 nvarchar。
         /// </summary>
         /// <param name="sql">SQL 脚本。</param>
         /// <returns>返回一个新的 SQL 脚本。</returns>
-        public string ReplaceVarchar(string sql)
+        public static string ReplaceVarchar(string sql)
         {
             return RegexReplaceVarchar.Replace(sql, "nvarchar");
         }

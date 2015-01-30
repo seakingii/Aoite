@@ -29,7 +29,7 @@ namespace System
         /// <returns>返回一个字符串。</returns>
         public override string ToString()
         {
-            return "{0} 的 {1} 和 {2} 不匹配。".Fmt(Name, Value1 ?? "<NULL>", Value2 ?? "<NULL>");
+            return "{0} 预期为“{1}”，实际为“{2}”。".Fmt(Name, Value1 ?? "<NULL>", Value2 ?? "<NULL>");
         }
     }
 }

@@ -7,11 +7,54 @@ using System.Threading.Tasks;
 
 namespace System.Web.Mvc
 {
+    class AoiteAsyncActionInvoker : System.Web.Mvc.Async.AsyncControllerActionInvoker
+    {
+        private readonly static object Successfully = new { };
+        protected override ActionResult CreateActionResult(ControllerContext controllerContext, ActionDescriptor actionDescriptor, object actionReturnValue)
+        {
+            if(!(actionReturnValue is ActionResult))
+            {
+                if(actionReturnValue is Result)
+                {
+                    if(actionReturnValue is SuccessfullyResult)
+                    {
+                        actionReturnValue = new JsonNetResult(Successfully);
+                    }
+                    else
+                    {
+                        var result = actionReturnValue as Result;
+                        var value = result.GetValue();
+                        if(result.IsSucceed)
+                        {
+                            actionReturnValue = new JsonNetResult(value == null ? Successfully : new { Value = value });
+                        }
+                        else actionReturnValue = new JsonNetResult(new { result.Message, result.Status });
+                    }
+                }
+                else
+                {
+                    actionReturnValue = new JsonNetResult(actionReturnValue);
+                }
+            }
+            return base.CreateActionResult(controllerContext, actionDescriptor, actionReturnValue);
+        }
+    }
     /// <summary>
     /// 提供用于响应对 ASP.NET MVC 网站所进行的 HTTP 请求的方法。
     /// </summary>
-    public abstract class XControllerBase<TUser> : Controller
+    public abstract class XControllerBase<TUser> : Controller, IContainerProvider
     {
+        private readonly static AoiteAsyncActionInvoker DefaultInvoker = new AoiteAsyncActionInvoker();
+
+        /// <summary>
+        /// Creates an action invoker.
+        /// </summary>
+        /// <returns>An action invoker.</returns>
+        protected override IActionInvoker CreateActionInvoker()
+        {
+            return DefaultInvoker;
+        }
+
         /// <summary>
         ///  获取用户。如果当前请求尚未授权，则为 null 值。
         /// </summary>
@@ -27,8 +70,8 @@ namespace System.Web.Mvc
         /// </summary>
         /// <param name="data">要序列化的 JavaScript 对象图。</param>
         /// <param name="contentType">内容类型（MIME 类型）。</param>
-        /// <param name="contentEncoding"></param>
-        /// <param name="behavior">内容编码。</param>
+        /// <param name="contentEncoding">内容编码。</param>
+        /// <param name="behavior">请求的行为。</param>
         /// <returns>The result object that serializes the specified object to JSON format.</returns>
         protected override JsonResult Json(object data, string contentType, Encoding contentEncoding, JsonRequestBehavior behavior)
         {
@@ -41,11 +84,54 @@ namespace System.Web.Mvc
             };
         }
 
+        protected override void OnResultExecuted(ResultExecutedContext filterContext)
+        {
+            base.OnResultExecuted(filterContext);
+        }
+
+        private readonly static object Successfully = new { };
+        /// <summary>
+        /// 返回一个成功的结果。
+        /// </summary>
+        /// <param name="behavior">请求的行为。</param>
+        /// <returns>The result object that serializes the specified object to JSON format.</returns>
+        protected JsonResult Success(JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        {
+            return Json(Successfully, behavior);
+        }
+        /// <summary>
+        /// 返回一个含值且成功的结果。
+        /// </summary>
+        /// <typeparam name="TValue">值的数据类型。</typeparam>
+        /// <param name="value">成功的值。</param>
+        /// <param name="behavior">请求的行为。</param>
+        /// <returns>The result object that serializes the specified object to JSON format.</returns>
+        protected JsonResult Success<TValue>(TValue value, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        {
+            return Json(new { value }, behavior);
+        }
+        /// <summary>
+        /// 返回一个错误的结果。
+        /// </summary>
+        /// <param name="message">错误的描述。</param>
+        /// <param name="status">错误的状态。</param>
+        /// <param name="behavior">请求的行为。</param>
+        /// <returns>The result object that serializes the specified object to JSON format.</returns>
+        public JsonResult Faild(string message, int status = ResultStatus.Failed, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
+        {
+            return Json(new { message, status });
+        }
+
         private IIocContainer _Container = Webx.Container;
         /// <summary>
         /// 设置或获取命令模型服务容器。
         /// </summary>
         public IIocContainer Container { get { return this._Container; } set { this._Container = value; } }
+
+        /// <summary>
+        /// 获取命令总线。
+        /// </summary>
+        protected ICommandBus Bus { get { return this._Container.GetService<ICommandBus>(); } }
 
         /// <summary>
         /// 执行一个命令模型。
@@ -59,7 +145,7 @@ namespace System.Web.Mvc
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            return this._Container.GetService<ICommandBus>().Execute(command, executing, executed);
+            return this.Bus.Execute(command, executing, executed);
         }
 
         /// <summary>
@@ -74,7 +160,7 @@ namespace System.Web.Mvc
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            return this._Container.GetService<ICommandBus>().ExecuteAsync(command, executing, executed);
+            return this.Bus.ExecuteAsync(command, executing, executed);
         }
 
         /// <summary>

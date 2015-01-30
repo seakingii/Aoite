@@ -461,6 +461,54 @@ namespace System
             return RemoveAnonymous<TEntity>(engine, entity, tableName);
         }
 
+        #endregion
+
+        #region RemoveWhere
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="objectInstance">匿名参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, object objectInstance)
+        {
+            return RemoveWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
+        }
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>  
+        /// <param name="ps">参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps)
+        {
+            return RemoveWhere<TEntity>(engine, CreateWhere(engine, ps), ps);
+        }
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="where">条件表达式。</param>
+        /// <param name="ps">参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
+        {
+            if(engine == null) throw new ArgumentNullException("engine");
+
+            var mapper1 = TypeMapper.Instance<TEntity>.Mapper;
+            var parSettings = engine.Owner.Injector.ParameterSettings;
+            var setBuilder = new StringBuilder("DELETE ")
+                                .Append(parSettings.EscapeName(mapper1.Name));
+            if(where != null)
+            {
+                setBuilder.Append(" WHERE ").Append(where);
+            }
+            return engine.Execute(setBuilder.ToString(), ps).ToNonQuery();
+
+        }
 
         #endregion
 
@@ -488,7 +536,7 @@ namespace System
         public static ISelect Select<TEntity>(this IDbEngine engine, params string[] fields)
         {
             if(engine == null) throw new ArgumentNullException("engine");
-            return new SelectCommandBuilder(engine).Select(fields).From(TypeMapper.Instance<TEntity>.Mapper.Name);
+            return new SelectCommandBuilder(engine).Select(fields).From(engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name));
         }
 
         #endregion

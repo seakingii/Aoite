@@ -24,12 +24,11 @@ namespace CMD
     /// </summary>
     public abstract class WhereCommandBase
     {
-        static readonly WhereParameters Empty = new WhereParameters();
-        private WhereParameters _WhereParameters;
+        private WhereParameters _WhereParameters = new WhereParameters();
         /// <summary>
         /// 设置一个 WHERE 的条件参数。
         /// </summary>
-        public WhereParameters WhereParameters { get { return this._WhereParameters ?? Empty; } set { this._WhereParameters = value; } }
+        public WhereParameters WhereParameters { get { return this._WhereParameters; } set { this._WhereParameters = value ?? new WhereParameters(); } }
 
     }
 
@@ -101,6 +100,8 @@ namespace CMD
 
     #endregion
 
+    #region ModifyWhere
+
     /// <summary>
     /// 表示一个条件的修改的命令模型。
     /// </summary>
@@ -133,6 +134,8 @@ namespace CMD
         }
     }
 
+    #endregion
+
     #region Remove
 
     /// <summary>
@@ -156,6 +159,37 @@ namespace CMD
         public void Execute(IContext context, Remove<TEntity> command)
         {
             command.ResultValue = context.Engine.RemoveAnonymous<TEntity>(command.Entity).UnsafeValue;
+        }
+    }
+
+
+    #endregion
+
+    #region RemoveWhere
+
+    /// <summary>
+    /// 表示一个条件的修改的命令模型。
+    /// </summary>
+    /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+    public class RemoveWhere<TEntity> : WhereCommandBase, ICommand<int>
+    {
+        /// <summary>
+        /// 设置或获取受影响的行。
+        /// </summary>
+        public int ResultValue { get; set; }
+        /// <summary>
+        /// 初始化一个 <see cref="CMD.RemoveWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// </summary>
+        public RemoveWhere() { }
+    }
+
+    class RemoveWhereExecutor<TEntity> : IExecutor<RemoveWhere<TEntity>>
+    {
+        public void Execute(IContext context, RemoveWhere<TEntity> command)
+        {
+            command.ResultValue = context.Engine.RemoveWhere<TEntity>(command.WhereParameters.Where
+                , command.WhereParameters.Parameters)
+                .UnsafeValue;
         }
     }
 
@@ -414,6 +448,10 @@ namespace CMD
             command.ResultValue = context.Engine.Exists<TEntity>(command.KeyName, command.KeyValue).UnsafeValue;
         }
     }
+
+    #endregion
+
+    #region ExistsWhere
 
     /// <summary>
     /// 表示一个查询条件是否存在的命令模型。

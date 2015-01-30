@@ -116,6 +116,10 @@ namespace System
         /// </summary>
         public static readonly Type IEnumerator = typeof(System.Collections.IEnumerator);
         /// <summary>
+        /// 表示 <see cref="System.Collections.IEnumerable"/> 的类型。
+        /// </summary>
+        public static readonly Type IEnumerable = typeof(System.Collections.IEnumerable);
+        /// <summary>
         /// 表示 <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/> 的类型。
         /// </summary>
         public static readonly Type IGEnumerable = typeof(System.Collections.Generic.IEnumerable<>);

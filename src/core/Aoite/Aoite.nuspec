@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Aoite</id>
+    <version>2.0.0.0</version>
+    <title>Aoite</title>
+    <authors>Treenew</authors>
+    <owners>SOFIRE</owners>
+    <projectUrl>https://github.com/treenew/Aoite</projectUrl>
+    <iconUrl>http://images.cnblogs.com/cnblogs_com/sofire/218678/o_aoite-v2-square.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>一个适于任何 .Net Framework 4.0+ 项目的快速开发整体解决方案。</description>
+    <summary>一个适于任何 .Net Framework 4.0+ 项目的快速开发整体解决方案。</summary>
+    <tags>aoite data ioc commandmodel leveldb logger log redis reflection serialization</tags>
+  </metadata>
+  <files>
+    <!--<file src="bin\Release\Aoite.dll" target="lib\net40" />
+    <file src="bin\Release\Aoite.xml" target="lib\net40" />-->
+    <file src="bin\Debug\Aoite.dll" target="lib\net40" />
+    <file src="bin\Debug\Aoite.xml" target="lib\net40" />
+    <file src="bin\Debug\Aoite.pdb" target="lib\net40" />
+  </files>
+</package>

@@ -222,10 +222,18 @@ namespace Aoite.Data
             if(this._Connection != null) lock(this) if(this._Connection != null)
                     {
                         if(this._Connection.State != ConnectionState.Closed)
-                            using(this._Connection)
+                            try
                             {
-                                if(this._Transaction != null) this._Transaction.Dispose();
-                                this._Connection.TryClose();
+                                using(this._Connection)
+                                {
+                                    if(this._Transaction != null) this._Transaction.Dispose();
+                                    this._Connection.TryClose();
+                                }
+                            }
+                            catch(Exception)
+                            {
+
+                                throw;
                             }
 
                         this._Connection = null;

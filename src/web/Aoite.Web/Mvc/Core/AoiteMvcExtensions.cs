@@ -75,38 +75,31 @@ namespace System.Web.Mvc
             return url.Action("Index", controllerName);
         }
 
-        private class CustomResult
+        /// <summary>
+        /// 获取第一个错误。
+        /// </summary>
+        /// <param name="modelState">一个 <see cref="System.Web.Mvc.ModelStateDictionary"/>。</param>
+        /// <returns>返回一个 null 值，或首个错误的内容。</returns>
+        public static string FirstError(this ModelStateDictionary modelState)
         {
-            public string Message { get; set; }
-            public int Status { get; set; }
-            public object Value { get; set; }
+            if(modelState == null) throw new ArgumentNullException("modelState");
+
+            return modelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault();
         }
 
         /// <summary>
-        /// 将当前结果转换为 <see cref="System.Web.Mvc.JsonResult"/> 类的新实例。
+        /// 获取 <see cref="System.Web.Mvc.ModelStateDictionary"/> 所有错误的分隔符。
         /// </summary>
-        /// <param name="result">结果。</param>
-        /// <returns>返回一个 <see cref="System.Web.Mvc.JsonResult"/> 类的新实例。</returns>
-        public static JsonResult ToJson(this Result result)
-        {
-            var cr = new CustomResult { Status = result.Status };
-            if(result.IsFailed) cr.Message = result.Message;
-
-            return new JsonResult() { Data = cr };
-        }
-
+        public static string AllErrorsJoinSeparator = "\n";
         /// <summary>
-        /// 将当前结果转换为 <see cref="System.Web.Mvc.JsonResult"/> 类的新实例。
+        /// 获取所有错误，默认以“\n”合并。
         /// </summary>
-        /// <typeparam name="TValue">结果值的数据类型。</typeparam>
-        /// <param name="result">结果。</param>
-        /// <returns>返回一个 <see cref="System.Web.Mvc.JsonResult"/> 类的新实例。</returns>
-        public static JsonResult ToJson<TValue>(this Result<TValue> result)
+        /// <param name="modelState">一个 <see cref="System.Web.Mvc.ModelStateDictionary"/>。</param>
+        /// <param name="separator">分隔符。</param>
+        /// <returns>返回错误的合并内容。</returns>
+        public static string AllErrors(this ModelStateDictionary modelState, string separator = null)
         {
-            var cr = new CustomResult { Status = result.Status, Value = result.Value };
-            if(result.IsFailed) cr.Message = result.Message;
-
-            return new JsonResult() { Data = cr };
+            return string.Join(separator??AllErrorsJoinSeparator, modelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
         }
     }
 }

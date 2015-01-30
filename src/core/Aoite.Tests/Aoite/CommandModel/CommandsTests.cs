@@ -91,6 +91,17 @@ namespace Aoite.CommandModel
             Assert.Equal(8, this.Context.RowCount<Models.Member>().UnsafeValue);
         }
 
+
+        [Fact("CMD.RemoveWhere")]
+        public void RemoveWhere()
+        {
+            var models = this.AddMockModels();
+            var testId = models.RandomOne().Id;
+            var command = new CMD.RemoveWhere<Models.Member> { WhereParameters = new WhereParameters("Id<4") };
+
+            Assert.Equal(3, this.Execute(command).ResultValue);
+        }
+
         [Fact("CMD.FindOne")]
         public void FindOne()
         {

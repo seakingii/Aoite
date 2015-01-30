@@ -46,6 +46,11 @@ namespace Aoite.CommandModel
         public virtual dynamic User { get { return this._Container.GetUser(); } }
 
         /// <summary>
+        /// 获取命令总线。
+        /// </summary>
+        protected ICommandBus Bus { get { return this._Container.GetService<ICommandBus>(); } }
+
+        /// <summary>
         /// 执行一个命令模型。
         /// </summary>
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
@@ -57,7 +62,7 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            return this._Container.GetService<ICommandBus>().Execute(command, executing, executed);
+            return this.Bus.Execute(command, executing, executed);
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            return this._Container.GetService<ICommandBus>().ExecuteAsync(command, executing, executed);
+            return this.Bus.ExecuteAsync(command, executing, executed);
         }
 
         /// <summary>

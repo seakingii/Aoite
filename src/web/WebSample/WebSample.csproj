@@ -91,7 +91,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App_Data\table.sql" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\avalon.shim.js" />
+    <Content Include="Scripts\core.js" />
+    <Content Include="Views\Home\Index.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -113,20 +117,23 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_htmlBodyFoot.cshtml" />
     <Content Include="Views\Shared\_htmlHead.cshtml" />
-    <Content Include="Views\Member\Login.cshtml" />
-    <Content Include="Views\Member\Index.cshtml" />
-    <Content Include="Views\Member\DisplayTemplates\LoginArguments.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\DisplayTemplates\LoginArguments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Arguments\UserFindAllArguments.cs" />
+    <Compile Include="Arguments\UserSaveArguments.cs" />
+    <Compile Include="Commands\FindAllUser.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Core\X.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\LoginArguments.cs" />
+    <Compile Include="Arguments\LoginArguments.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\LoggedUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -197,6 +197,40 @@ namespace System
             return Engine.Remove<TEntity>(entity, tableName);
         }
 
+        #endregion
+
+        #region RemoveWhere
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="objectInstance">匿名参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(object objectInstance)
+        {
+            return Engine.RemoveWhere<TEntity>(objectInstance);
+        }
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="ps">参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(ExecuteParameterCollection ps)
+        {
+            return Engine.RemoveWhere<TEntity>(ps);
+        }
+
+        /// <summary>
+        /// 提供匹配条件，执行一个删除的命令。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="where">条件表达式。</param>
+        /// <param name="ps">参数集合实例。</param>
+        public static DbResult<int> RemoveWhere<TEntity>(string where, ExecuteParameterCollection ps = null)
+        {
+            return Engine.RemoveWhere<TEntity>(where, ps);
+        }
 
         #endregion
 
