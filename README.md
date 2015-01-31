@@ -5,6 +5,13 @@
 本项目从2009年孵化（V->Sofire->Aoite），至今已度过5个年头。一直在优化，一直在重构，一直在**商用**。有十分完整的单元测试用例。可以放心使用（我吹牛了，请暂时不要商用，目前开源版还未彻底完成所有功能，请等到 CommandModel 模块完成。）。更多内容请关注我的[博客园](http://www.cnblogs.com/sofire)。
 
 # 教程
+
+## Nuget
+
+The easiest way to install Aoite is from NuGet via the Package Manager Console:
+
+**PM> Install-Package Aoite**
+
 ## Aoite 篇
 1. [Aoite 系列(01) - 比 Dapper 更好用的 ORM](http://www.cnblogs.com/sofire/p/aoite_data.html)
 2. [Aoite 系列(02) - 超动感的 Ioc 容器](http://www.cnblogs.com/sofire/p/aoite_ioc.html)
