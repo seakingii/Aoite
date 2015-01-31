@@ -234,7 +234,7 @@ namespace Aoite.Data
             if(entityOrPKValue == null) throw new ArgumentNullException("entityOrPKValue");
 
             var type = entityOrPKValue.GetType();
-            if(type.IsPrimitive || type == Types.Decimal || type == Types.Guid) return CreateDeleteCommandWithPK(engine, mapper, entityOrPKValue, tableName);
+            if(type.IsSimpleType()) return CreateDeleteCommandWithPK(engine, mapper, entityOrPKValue, tableName);
 
             if(entityOrPKValue is Array) return CreateDeleteCommandWithPK(engine, mapper, entityOrPKValue, tableName);
 

@@ -226,7 +226,7 @@ namespace Aoite.Redis
                             {
                                 this.WriteBytes(writer, encoding.GetBytes(((bool)arg) ? "1" : "0"));
                             }
-                            else if(type.IsPrimitive || type == Types.Decimal || type == Types.String)
+                            else if(type.IsSimpleType())
                             {
                                 var str = Convert.ToString(arg, CultureInfo.InvariantCulture);
                                 this.WriteBytes(writer, encoding.GetBytes(str));

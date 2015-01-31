@@ -6,7 +6,7 @@
     <title>Aoite.Web</title>
     <authors>Treenew</authors>
     <owners>SOFIRE</owners>
-    <projectUrl>http://www.aoite.com/</projectUrl>
+    <projectUrl>https://github.com/treenew/Aoite</projectUrl>
     <iconUrl>http://images.cnblogs.com/cnblogs_com/sofire/218678/o_aoite-v2-square.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>一个适于任何 ASP.NET MVC 项目的快速开发整体解决方案。</description>

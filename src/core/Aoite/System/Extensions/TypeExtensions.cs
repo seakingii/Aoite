@@ -94,9 +94,9 @@ namespace System
         {
             return type != null && type.IsPrimitive ||
                    type.Equals(Types.String) ||
+                   type.Equals(Types.Guid) ||
                    type.Equals(Types.DateTime) ||
                    type.Equals(Types.Decimal) ||
-                   type.Equals(Types.Guid) ||
                    type.Equals(Types.DateTimeOffset) ||
                    type.Equals(Types.TimeSpan);
         }

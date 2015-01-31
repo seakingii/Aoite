@@ -68,7 +68,7 @@ namespace System
 
                     #endregion
 
-                    else if(!pType.IsPrimitive && pType != Types.Decimal)
+                    else if(!pType.IsSimpleType())
                     {
                         //- 从映射事件获取 -or- 尝试智能解析
                         p_instance = this.OnMapResolve(pType) ?? this.AutoResolveExpectType(pType);
