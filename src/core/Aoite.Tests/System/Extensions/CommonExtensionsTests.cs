@@ -80,13 +80,16 @@ namespace System.Extensions
         public void CopyToNullableTest()
         {
             FromClass2 f2_null = new FromClass2() { Id = null };
-            Assert.Throws<ArgumentNullException>(() => f2_null.CopyTo<FromClass3>());
+            var f3 = f2_null.CopyTo<FromClass3>();
+            Assert.Equal(default(TypeCode), f3.Id);
+            //Assert.Throws<ArgumentNullException>(() => f2_null.CopyTo<FromClass3>());
         }
         [Fact()]
         public void CopyToEnumTest()
         {
             FromClass4 f4_null = new FromClass4() { Id = null };
-            Assert.Throws<ArgumentNullException>(() => f4_null.CopyTo<FromClass3>());
+            var f3 = f4_null.CopyTo<FromClass3>();
+            Assert.Equal(default(TypeCode), f3.Id);
         }
 
         public class FromClass1

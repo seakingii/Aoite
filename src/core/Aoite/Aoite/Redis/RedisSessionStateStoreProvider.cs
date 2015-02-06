@@ -31,28 +31,6 @@ namespace Aoite.Redis
         }
         class Serializable : Aoite.Serialization.ICustomSerializable
         {
-            //public object Deserialize(byte[] bytes)
-            //{
-            //    if(bytes == null || bytes.Length == 0) return new SessionStateItemCollection();
-            //    using(var ms = new MemoryStream(bytes))
-            //    using(var reader = new BinaryReader(ms, GA.UTF8))
-            //    {
-            //        return SessionStateItemCollection.Deserialize(reader);
-            //    }
-            //}
-
-            //public byte[] Serialize(object value)
-            //{
-            //    if(value == null) return new byte[0];
-            //    var item = value as SessionStateItemCollection;
-            //    if(item.Count == 0) return new byte[0];
-            //    using(var ms = new MemoryStream())
-            //    using(var writer = new BinaryWriter(ms, GA.UTF8))
-            //    {
-            //        item.Serialize(writer);
-            //        return ms.ToArray();
-            //    }
-            //}
             public object Deserialize(ObjectReader reader)
             {
                 SessionStateItemCollection items = new SessionStateItemCollection();

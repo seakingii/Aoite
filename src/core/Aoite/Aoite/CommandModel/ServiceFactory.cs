@@ -67,7 +67,7 @@ namespace Aoite.CommandModel
             , Action<CommandModel.MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
         {
-            if(userFactory == null) throw new ArgumentNullException("userFactory");
+            if(userFactory == null) userFactory = new UserFactory(c => null);
 
             var container = new IocContainer();
             container.AddService<IUserFactory>(userFactory);

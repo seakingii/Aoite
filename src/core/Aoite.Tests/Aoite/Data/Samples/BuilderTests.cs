@@ -32,7 +32,7 @@ namespace Aoite.Data.Builder
         {
             var command = engine.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE ID IN (@id0, @id1, @id2)", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE ID IN (@id0, @id1, @id2)", command.CommandText);
         }
 
         [Fact()]
@@ -42,7 +42,7 @@ namespace Aoite.Data.Builder
                 .Where("UserName=@username", "@username", "abc")
                 .AndIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE UserName=@username AND ID IN (@id0, @id1, @id2)", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE UserName=@username AND ID IN (@id0, @id1, @id2)", command.CommandText);
         }
 
 
@@ -53,7 +53,7 @@ namespace Aoite.Data.Builder
                 .Where("UserName=@username", "@username", "abc")
                 .AndNotIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE UserName=@username AND ID NOT IN (@id0, @id1, @id2)", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE UserName=@username AND ID NOT IN (@id0, @id1, @id2)", command.CommandText);
         }
 
         [Fact()]
@@ -61,7 +61,7 @@ namespace Aoite.Data.Builder
         {
             var command = engine.Select<TestTable>().End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable]", command.CommandText);
         }
 
         [Fact()]
@@ -69,7 +69,7 @@ namespace Aoite.Data.Builder
         {
             var command = engine.Select<TestTable>("Name").End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT Name FROM TestTable", command.CommandText);
+            Assert.Equal("SELECT Name FROM [TestTable]", command.CommandText);
         }
 
         [Fact()]
@@ -79,7 +79,7 @@ namespace Aoite.Data.Builder
                             .Where("ID=@id", "@id", 5)
                             .End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE ID=@id", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE ID=@id", command.CommandText);
             Assert.Equal(1, command.Count);
             Assert.Equal("@id", command[0].Name);
             Assert.Equal(5, command[0].Value);
@@ -97,7 +97,7 @@ namespace Aoite.Data.Builder
                                 .EndGroup()
                             .End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE ID=@id AND Name=@name OR (ID=@id2 OR ID=@id3)", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE ID=@id AND Name=@name OR (ID=@id2 OR ID=@id3)", command.CommandText);
             Assert.Equal(4, command.Count);
         }
 
@@ -108,7 +108,7 @@ namespace Aoite.Data.Builder
                             .Where("ID", "@id", new int[] { 1, 2, 3 })
                             .End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM TestTable WHERE (ID=@id0 OR ID=@id1 OR ID=@id2)", command.CommandText);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE (ID=@id0 OR ID=@id1 OR ID=@id2)", command.CommandText);
             Assert.Equal(3, command.Count);
         }
     }

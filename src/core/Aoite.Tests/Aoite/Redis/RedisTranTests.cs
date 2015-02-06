@@ -11,7 +11,8 @@ namespace Aoite.Redis
         [Fact()]
         public void MultiTest()
         {
-            using(var mock = new MockConnector("localhost", 9999, "+OK\r\n"))
+            var okReply = "+OK\r\n";
+            using(var mock = new MockConnector("localhost", 9999, okReply, okReply))
             using(var redis = new RedisClient(mock))
             {
                 using(var tran = redis.BeginTransaction())
@@ -133,7 +134,7 @@ namespace Aoite.Redis
         public void TranOutErrorTests()
         {
             var okReply = "+OK\r\n";
-            using(var mock = new MockConnector("localhost", 9999, okReply, "+QUEUED\r\n", "+QUEUED\r\n", "*2\r\n" + okReply + "-ERR Operation against a key holding the wrong kind of value\r\n"))
+            using(var mock = new MockConnector("localhost", 9999, okReply, "+QUEUED\r\n", "+QUEUED\r\n", "*2\r\n" + okReply + "-ERR Operation against a key holding the wrong kind of value\r\n", okReply))
             using(var redis = new RedisClient(mock))
             {
                 int x = 0;
@@ -154,7 +155,7 @@ namespace Aoite.Redis
                     Assert.Throws<RedisReplyException>(() => tran.Commit());
                     Assert.Equal("*1\r\n$4\r\nEXEC\r\n", mock.GetMessage());
                 }
-                Assert.Equal(string.Empty, mock.GetMessage());
+                Assert.Equal("*1\r\n$7\r\nDISCARD\r\n", mock.GetMessage());
                 Assert.Equal(0, x);
             }
             this.RealCall(redis =>

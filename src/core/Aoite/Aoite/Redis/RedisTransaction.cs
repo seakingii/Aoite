@@ -63,7 +63,8 @@ namespace Aoite.Redis
             {
                 try
                 {
-                    this._client._executor.Execute(new RedisStatus("DISCARD"));
+                    var r = this._client._executor.Execute(new RedisStatus("DISCARD"));
+                    Console.WriteLine(r.ToString());
                 }
                 catch(Exception)
                 {

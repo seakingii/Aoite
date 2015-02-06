@@ -35,37 +35,47 @@ namespace Aoite.CommandModel
 
         static class Singleton<TCommand> where TCommand : ICommand
         {
+            private const string ExecutorNameSuffix = "Executor";
             public readonly static IExecutorMetadata<TCommand> Instance = CreateExecutor();
 
             static Type CreateCommandExecutorType(Type commandType)
             {
                 var bea = commandType.GetAttribute<BindingExecutorAttribute>();
-                if(bea != null) return bea.Type;
-
+                Type type = null;
+                if(bea != null) type = bea.Type;
+                else
+                {
+                    type = commandType.GetNestedType(ExecutorNameSuffix
+                       , System.Reflection.BindingFlags.Public
+                       | System.Reflection.BindingFlags.NonPublic);
+                }
                 if(commandType.IsGenericType)
                 {
-                    var name = commandType.Name;
                     var gs = commandType.GetGenericArguments();
-                    var gsLength = gs.Length;
-                    var gsSuffix = "`" + gsLength;
-                    var commandSuffix = CommandNameSuffix + gsSuffix;
-                    if(name.EndsWith(commandSuffix)) name = name.RemoveEnds(commandSuffix.Length);
-                    else if(name.EndsWith(gsSuffix)) name = name.RemoveEnds(gsSuffix.Length);
+                    if(type == null)
+                    {
+                        var name = commandType.GetGenericTypeDefinition().FullName;
+                        var gsLength = gs.Length;
+                        var gsSuffix = "`" + gsLength;
+                        var commandSuffix = CommandNameSuffix + gsSuffix;
+                        if(name.EndsWith(commandSuffix)) name = name.RemoveEnds(commandSuffix.Length);
+                        else if(name.EndsWith(gsSuffix)) name = name.RemoveEnds(gsSuffix.Length);
 
-                    name = commandType.Namespace + "." + name + "Executor`" + gsLength;
-                    var type = ObjectFactory.GetType(name);
-                    if(!type.IsGenericType || !type.IsGenericTypeDefinition || type.GetGenericArguments().Length != gsLength)
-                        throw new ArgumentException("泛型命令模型 {0} 的执行器 {1}，匹配条件失败（非泛型或参数数量不匹配）。");
-
-                    return type.MakeGenericType(gs);
+                        type = ObjectFactory.GetType(name + ExecutorNameSuffix + gsSuffix);
+                        if(type == null) return null;
+                        if(!type.IsGenericType || !type.IsGenericTypeDefinition || type.GetGenericArguments().Length != gsLength)
+                            throw new ArgumentException("泛型命令模型 {0} 的执行器 {1}，匹配条件失败（非泛型或参数数量不匹配）。");
+                    }
+                    type = type.MakeGenericType(gs);
                 }
-                else
+                else if(type == null)
                 {
                     var fullName = commandType.FullName;
                     if(fullName.EndsWith(CommandNameSuffix)) fullName = fullName.RemoveEnds(CommandNameSuffix.Length);
-                    fullName += "Executor";
-                    return ObjectFactory.GetType(fullName);
+                    fullName += ExecutorNameSuffix;
+                    type = ObjectFactory.GetType(fullName);
                 }
+                return type;
             }
 
             static IExecutorMetadata<TCommand> CreateExecutor()
