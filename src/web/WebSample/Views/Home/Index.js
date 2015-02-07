@@ -5,7 +5,8 @@
         vm.current = {};
         vm.displayCurrent = false;
 
-        vm.search = function () {
+        vm.search = function (e) {
+            if (e) e.preventDefault();
             var r = aoite.remote("account/findall", vm.args);
             if (test(r)) vm.users = r.value;
         }
