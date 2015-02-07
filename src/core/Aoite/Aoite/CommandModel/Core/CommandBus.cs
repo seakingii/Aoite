@@ -32,9 +32,9 @@ namespace Aoite.CommandModel
         {
             if(command == null) throw new ArgumentNullException("command");
 
-            var eventStore = this.Container.GetService<IEventStore>();
             var contextFactory = this.Container.GetService<IContextFactory>();
             var executorFactory = this.Container.GetService<IExecutorFactory>();
+            var eventStore = this.Container.GetService<IEventStore>();
 
             var context = contextFactory.Create<TCommand>(command);
             var executorMetadata = executorFactory.Create<TCommand>(command);

@@ -36,7 +36,8 @@ namespace Aoite.CommandModel
 
         private Lazy<IDbEngine> _LazyEngine;
         /// <summary>
-        /// 获取上下文中的 <see cref="System.IDbEngine"/> 实例。理论上来说，返回值不应为空。
+        /// 获取上下文中的 <see cref="System.IDbEngine"/> 实例。该实例应不为 null 值，且线程唯一。
+        /// <para>* 不应在执行器中开启事务。</para>
         /// </summary>
         public IDbEngine Engine { get { return _LazyEngine.Value; } }
 
