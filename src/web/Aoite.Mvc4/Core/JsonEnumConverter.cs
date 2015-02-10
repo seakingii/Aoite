@@ -32,33 +32,4 @@ namespace Newtonsoft.Json
             return objectType.IsEnum;
         }
     }
-
-    internal class ResultConverter : JsonConverter
-    {
-
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == Types.Result || (objectType.IsGenericType || objectType.GetGenericTypeDefinition() == Types.GResult);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        private readonly static object Successfully = new { };
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if(value is SuccessfullyResult)
-            {
-                writer.WriteValue(Successfully);
-            }
-            else
-            {
-                var result = value as Result;
-                if(result.IsSucceed) writer.WriteValue(new { Value = result.GetValue() });
-                else writer.WriteValue(new { result.Message, result.Status });
-            }
-        }
-    }
 }

@@ -82,19 +82,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\JsonEnumConverter.cs" />
-    <Compile Include="Core\JsonNetResult.cs" />
-    <Compile Include="Core\WebConfig.cs" />
-    <Compile Include="Core\XHttpApplication.cs" />
-    <Compile Include="Mvc\Core\ActionExecuteEventArgs.cs" />
-    <Compile Include="Mvc\Core\AoiteMvcExtensions.cs" />
-    <Compile Include="Mvc\Core\MvcBasicActionFilterAttribute.cs" />
-    <Compile Include="Mvc\Core\MvcClient.cs" />
-    <Compile Include="Mvc\Core\RedirectToActionResult.cs" />
     <None Include="Aoite.Web.nuspec" />
-    <None Include="Mvc\Core\UnitTestExtensions.cs" />
-    <Compile Include="Mvc\Core\XControllerBase`1.cs" />
-    <Compile Include="Mvc\Core\XWebViewPageBase`1.cs" />
+    <Compile Include="..\Aoite.Mvc4\Core\JsonEnumConverter.cs">
+      <Link>Core\JsonEnumConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Core\JsonNetResult.cs">
+      <Link>Core\JsonNetResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Core\WebConfig.cs">
+      <Link>Core\WebConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Core\XHttpApplication.cs">
+      <Link>Core\XHttpApplication.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\ActionExecuteEventArgs.cs">
+      <Link>Mvc\Core\ActionExecuteEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\AoiteMvcExtensions.cs">
+      <Link>Mvc\Core\AoiteMvcExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\MvcBasicActionFilterAttribute.cs">
+      <Link>Mvc\Core\MvcBasicActionFilterAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\MvcClient.cs">
+      <Link>Mvc\Core\MvcClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\RedirectToActionResult.cs">
+      <Link>Mvc\Core\RedirectToActionResult.cs</Link>
+    </Compile>
+    <None Include="..\Aoite.Mvc4\Mvc\Core\UnitTestExtensions.cs">
+      <Link>Mvc\Core\UnitTestExtensions.cs</Link>
+    </None>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\XControllerBase`1.cs">
+      <Link>Mvc\Core\XControllerBase`1.cs</Link>
+    </Compile>
+    <Compile Include="..\Aoite.Mvc4\Mvc\Core\XWebViewPageBase`1.cs">
+      <Link>Mvc\Core\XWebViewPageBase`1.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,10 +6,27 @@ using System.Text;
 namespace System
 {
     /// <summary>
+    /// 定义一个可能具有返回值的结果。
+    /// </summary>
+    public interface IValueResult : IResult
+    {
+        /// <summary>
+        /// 获取结果的值。如果当前结果没有值，将返回 null 值。
+        /// </summary>
+        /// <returns>返回一个结果的值或 null 值。</returns>
+        object GetValue();
+        /// <summary>
+        /// 设置结果的值，如果结果没有值，则不执行任何操作。如果值的类型不符合将会抛出异常。
+        /// </summary>
+        /// <param name="value">设置的值。</param>
+        void SetValue(object value);
+    }
+
+    /// <summary>
     /// 表示一个结果。
     /// </summary>
     [Serializable]
-    public class Result : IResult
+    public class Result : IResult, IValueResult
     {
         internal const string SuccessedString = "执行成功！";
         internal const string NullValueString = "[null]";
@@ -94,6 +111,10 @@ namespace System
         }
 
         internal virtual object GetValue() { return null; }
+
+        object IValueResult.GetValue() { return this.GetValue(); }
+        void IValueResult.SetValue(object value) { this.SetValue(value); }
+
         internal virtual void SetValue(object value) { }
         internal virtual Type GetValueType() { return null; }
 

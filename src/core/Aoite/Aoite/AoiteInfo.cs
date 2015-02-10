@@ -31,7 +31,7 @@ namespace Aoite
         /// <summary> 
         /// 程序集详细的版本。
         /// </summary>
-        public const string AssemblyVersion = Version + ".0.2";
+        public const string AssemblyVersion = Version + ".0.3";
         /// <summary>
         /// 公司。
         /// </summary>
@@ -43,7 +43,7 @@ namespace Aoite
         /// <summary> 
         /// 程序集的简单描述。
         /// </summary>
-        public const string Description = Name + "[A]ny[o]ne [it]ems suit[e] for .NET Framwork 4.0 Runtime 开发套件，详见：http://www.aoite.com。";
+        public const string Description = Name + "[A]ny[o]ne [it]ems suit[e] for .NET Framework 4.0 Runtime 开发套件，详见：http://www.aoite.com。";
         /// <summary> 
         /// 程序集的唯一标识。
         /// </summary>
@@ -71,7 +71,7 @@ namespace Aoite
             /// </summary>
             public const string Description = AoiteInfo.Name + " Windows Forms 基础套件。";
         }
-
+        /*
         /// <summary> 
         /// Aoite ASP.NET Web 基础套件。
         /// </summary>
@@ -93,6 +93,29 @@ namespace Aoite
             /// 程序集的唯一标识。
             /// </summary>
             public const string Guid = "03356e94-5514-49d5-8eb2-092bef66b743";
+        }
+        */
+        /// <summary> 
+        /// Aoite ASP.NET Mvc4 基础套件。
+        /// </summary>
+        public static class Mvc4
+        {
+            /// <summary>
+            /// 程序集的产品名称。
+            /// </summary>
+            public const string Product = AoiteInfo.Name + " Mvc4 " + Life;
+            /// <summary>
+            /// 程序集的简单描述。
+            /// </summary>
+            public const string Description = AoiteInfo.Name + " ASP.NET Mvc4 基础套件。";
+            /// <summary> 
+            /// 程序集详细的版本。
+            /// </summary>
+            public const string AssemblyVersion = Version + ".0.3";
+            /// <summary> 
+            /// 程序集的唯一标识。
+            /// </summary>
+            public const string Guid = "3cbbe4cc-c4b3-47e5-b91b-d621303c95f5";
         }
     }
 }

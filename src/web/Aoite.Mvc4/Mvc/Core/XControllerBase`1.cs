@@ -16,13 +16,13 @@ namespace System.Web.Mvc
             {
                 if(actionReturnValue is Result)
                 {
-                    if(actionReturnValue is SuccessfullyResult)
+                    if(actionReturnValue == Result.Successfully)
                     {
                         actionReturnValue = new JsonNetResult(Successfully);
                     }
                     else
                     {
-                        var result = actionReturnValue as Result;
+                        var result = actionReturnValue as IValueResult;
                         var value = result.GetValue();
                         if(result.IsSucceed)
                         {
