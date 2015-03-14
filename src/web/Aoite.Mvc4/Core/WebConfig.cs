@@ -33,11 +33,12 @@ namespace System.Web
             TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
             ReferenceLoopHandling = ReferenceLoopHandling.Error,
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            NullValueHandling = NullValueHandling.Ignore,
+            //NullValueHandling = NullValueHandling.Ignore,
             //DefaultValueHandling = DefaultValueHandling.Ignore,
             //DateFormatString = "yyyy'-'MM'-'dd HH':'mm':'ss",
             ConstructorHandling = Newtonsoft.Json.ConstructorHandling.AllowNonPublicDefaultConstructor,
-            Converters = new List<JsonConverter>() { new JsonEnumConverter(), /*new ResultConverter()*/ }
+            //Converters = new List<JsonConverter>() { new JsonEnumConverter(), /*new ResultConverter()*/ },
+
         };
 
         #endregion

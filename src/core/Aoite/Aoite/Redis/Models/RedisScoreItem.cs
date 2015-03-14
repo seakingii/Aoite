@@ -6,7 +6,7 @@ using System.Text;
 namespace Aoite.Redis
 {
     /// <summary>
-    /// 表示一个 Reids 的成员权重项。
+    /// 表示一个 Redis 的成员权重项。
     /// </summary>
     public class RedisScoreItem : IRedisItem
     {

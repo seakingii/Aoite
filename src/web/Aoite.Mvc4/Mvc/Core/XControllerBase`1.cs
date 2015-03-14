@@ -84,11 +84,6 @@ namespace System.Web.Mvc
             };
         }
 
-        protected override void OnResultExecuted(ResultExecutedContext filterContext)
-        {
-            base.OnResultExecuted(filterContext);
-        }
-
         private readonly static object Successfully = new { };
         /// <summary>
         /// 返回一个成功的结果。

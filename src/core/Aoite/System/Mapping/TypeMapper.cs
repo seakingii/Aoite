@@ -14,6 +14,7 @@ namespace System
         /// 实体的属性映射集合。
         /// </summary>
         protected readonly Dictionary<string, PropertyMapper> _Properties;
+        private Lazy<PropertyMapper[]> _LazyKeyProperties;
 
         /// <summary>
         /// 获取或设置映射器的名称。
@@ -27,6 +28,10 @@ namespace System
         /// 获取实体的属性映射集合。
         /// </summary>
         public IEnumerable<PropertyMapper> Properties { get { return this._Properties.Values; } }
+        /// <summary>
+        /// 获取实体的主键属性映射集合。
+        /// </summary>
+        public PropertyMapper[] KeyProperties { get { return this._LazyKeyProperties.Value; } }
         /// <summary>
         /// 获取指定属性名称的属性映射。
         /// </summary>
@@ -46,6 +51,7 @@ namespace System
         internal TypeMapper(int capacity)
         {
             this._Properties = new Dictionary<string, PropertyMapper>(capacity, StringComparer.CurrentCultureIgnoreCase);
+            this._LazyKeyProperties = new Lazy<PropertyMapper[]>(() => (from p in this._Properties.Values where p.IsKey select p).ToArray());
         }
 
         /// <summary>

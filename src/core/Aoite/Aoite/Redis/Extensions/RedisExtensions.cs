@@ -12,7 +12,7 @@ namespace System
     /// </summary>
     public static class RedisExtensions
     {
-        const string LockKey = "$Reids.Locks$";
+        const string LockKey = "$Redis.Locks$";
         /// <summary>
         /// 获取或设置默认的锁超时间隔。
         /// </summary>

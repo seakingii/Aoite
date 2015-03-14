@@ -31,7 +31,7 @@ namespace Aoite
         /// <summary> 
         /// 程序集详细的版本。
         /// </summary>
-        public const string AssemblyVersion = Version + ".0.3";
+        public const string AssemblyVersion = Version + ".0.10";
         /// <summary>
         /// 公司。
         /// </summary>
@@ -111,7 +111,7 @@ namespace Aoite
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".0.3";
+            public const string AssemblyVersion = Version + ".0.9";
             /// <summary> 
             /// 程序集的唯一标识。
             /// </summary>

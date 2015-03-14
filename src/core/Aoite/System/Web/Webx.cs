@@ -194,11 +194,12 @@ namespace System.Web
 
             using(var reader = new System.IO.StringReader(scripts))
             {
-                string line;
-                while((line = reader.ReadToEnd()) != null)
+                string line = reader.ReadLine();
+                while(line != null)
                 {
                     scriptBuilder.Append("            ");
                     scriptBuilder.AppendLine(line);
+                    line = reader.ReadLine();
                 }
             }
         }
@@ -253,7 +254,7 @@ namespace System.Web
                   ?? System.Web.Configuration.WebConfigurationManager.AppSettings
                   ?? new NameValueCollection();
 
-            var redisAddress = config.Get("reids.address");
+            var redisAddress = config.Get("redis.address");
             if(!string.IsNullOrEmpty(redisAddress))
             {
                 var sp = redisAddress.Split(':');

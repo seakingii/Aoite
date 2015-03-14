@@ -11,7 +11,7 @@ namespace System.Extensions
         [Fact()]
         public void ToMd5Test()
         {
-            Assert.Equal("E10ADC3949BA59ABBE56E057F20F883E", "123456".ToMd5());
+            Assert.Equal("e10adc3949ba59abbe56e057f20f883e", "123456".ToMd5());
         }
 
         [Fact()]

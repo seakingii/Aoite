@@ -40,7 +40,7 @@ namespace System
     }
 
     /// <summary>
-    /// 表示 Reids 的插入位置。
+    /// 表示 Redis 的插入位置。
     /// </summary>
     public enum RedisInsertPosition
     {

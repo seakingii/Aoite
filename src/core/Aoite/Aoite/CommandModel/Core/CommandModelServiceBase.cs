@@ -14,7 +14,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 初始化一个 <see cref="Aoite.CommandModel.CommandModelServiceBase"/> 类的新实例。
         /// </summary>
-        public CommandModelServiceBase() { }
+        public CommandModelServiceBase() : this(ObjectFactory.Global) { }
 
         /// <summary>
         /// 指定服务容器，初始化一个 <see cref="Aoite.CommandModel.CommandModelServiceBase"/> 类的新实例。
@@ -131,6 +131,116 @@ namespace Aoite.CommandModel
         protected virtual ITransaction BeginTransaction()
         {
             return new DefaultTransaction();
+        }
+
+        /// <summary>
+        /// 获取指定实体数据类型的缓存键。
+        /// </summary>
+        /// <param name="type">实体的数据类型。</param>
+        /// <param name="keyValue">实体的主键。</param>
+        /// <returns>返回一个非 null 值的字符串。</returns>
+        protected virtual string GenerateEntityCacheKey(Type type, object keyValue)
+        {
+            return type.Name + ":" + keyValue;
+        }
+
+        ///// <summary>
+        ///// 获取指定实体数据类型的缓存键。
+        ///// </summary>
+        ///// <typeparam name="T">实体的数据类型。</typeparam>
+        ///// <param name="keyValue">实体的主键。</param>
+        ///// <returns>返回一个非 null 值的字符串。</returns>
+        //protected virtual string GenerateEntityCacheKey<T>(T value)
+        //{
+        //    var mapper = TypeMapper.Instance<T>.Mapper;
+        //    var kps = mapper.KeyProperties;
+        //    if(kps.Length == 0) throw new ArgumentNullException("类型“{0}”不存在任何主键。".Fmt(mapper.Type.FullName));
+        //    var key = mapper.Name + ":" + kps[0].GetValue(value);
+
+        //    for(int i = 1; i < kps.Length; i++)
+        //    {
+        //        key = key + "+" + kps[i].GetValue(value);
+        //    }
+            
+        //    return key;
+        //}
+
+        /// <summary>
+        /// 设置缓存。
+        /// </summary>
+        /// <param name="key">缓存键。</param>
+        /// <param name="value">缓存值。</param>
+        protected virtual void Set(string key, object value)
+        {
+            this._Container.GetService<ICacheProvider>().Set(key, value);
+        }
+        /// <summary>
+        /// 设置基于实体的缓存。
+        /// </summary>
+        /// <typeparam name="T">实体的数据类型。</typeparam>
+        /// <param name="keyValue">实体的主键。</param>
+        /// <param name="value">实体的值。</param>
+        protected void SetEntity<T>(object keyValue, T value)
+        {
+            this.Set(this.GenerateEntityCacheKey(typeof(T), keyValue), value);
+        }
+
+        /// <summary>
+        /// 获取缓存。
+        /// </summary>
+        /// <param name="key">缓存键。</param>
+        /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
+        /// <returns>返回缓存值，或一个 null 值。</returns>
+        protected virtual object Get(string key, Func<object> valueFactory = null)
+        {
+            return this._Container.GetService<ICacheProvider>().Get(key, valueFactory);
+        }
+
+        /// <summary>
+        /// 获取缓存。
+        /// </summary>
+        /// <typeparam name="T">缓存的数据类型。</typeparam>
+        /// <param name="key">缓存键。</param>
+        /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
+        /// <returns>返回缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
+        protected T Get<T>(string key, Func<T> valueFactory = null)
+        {
+            var value = this.Get(key, new Func<object>(() => valueFactory()));
+            if(value == null) return default(T);
+            return (T)value;
+        }
+
+        /// <summary>
+        /// 获取基于实体的缓存。
+        /// </summary>
+        /// <typeparam name="T">缓存的数据类型。</typeparam>
+        /// <param name="keyValue">实体的主键。</param>
+        /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
+        /// <returns>返回缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
+        protected T GetEntity<T>(object keyValue, Func<T> valueFactory = null)
+        {
+            return Get<T>(this.GenerateEntityCacheKey(typeof(T), keyValue), valueFactory);
+        }
+
+        /// <summary>
+        /// 检测指定的缓存键是否存在。
+        /// </summary>
+        /// <param name="key">缓存键。</param>
+        /// <returns>存在返回 true，否则返回 false。</returns>
+        protected virtual bool Exstis(string key)
+        {
+            return this._Container.GetService<ICacheProvider>().Exists(key);
+        }
+
+        /// <summary>
+        /// 检测基于实体指定的缓存键是否存在。
+        /// </summary>
+        /// <typeparam name="T">缓存的数据类型。</typeparam>
+        /// <param name="keyValue">实体的主键。</param>
+        /// <returns>存在返回 true，否则返回 false。</returns>
+        protected bool ExstisEntity<T>(object keyValue)
+        {
+            return this.Exstis(this.GenerateEntityCacheKey(typeof(T), keyValue));
         }
     }
 }

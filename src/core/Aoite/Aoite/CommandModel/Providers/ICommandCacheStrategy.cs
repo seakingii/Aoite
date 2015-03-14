@@ -123,7 +123,7 @@ namespace Aoite.CommandModel
         }
 
 
-        const string ReidsHashKey = "$RedisCCS::";
+        const string RedisHashKey = "$RedisCCS::";
 
         /// <summary>
         /// 获取缓存中的项。
@@ -137,7 +137,7 @@ namespace Aoite.CommandModel
             var redisProvider = container.GetFixedService<IRedisProvider>();
             if(redisProvider != null)
             {
-                key = ReidsHashKey + key;
+                key = RedisHashKey + key;
                 var client = redisProvider.GetRedisClient();
                 var model = client.Get(key).ToModel();
                 if(model != null && this.HasSlidingExpiration)
@@ -163,11 +163,11 @@ namespace Aoite.CommandModel
             if(value == null) return;
             var container = this._Context.Container;
             var key = group + this._Key;
-
+            
             var redisProvider = container.GetFixedService<IRedisProvider>();
             if(redisProvider != null)
             {
-                key = ReidsHashKey + key;
+                key = RedisHashKey + key;
                 var expiration = this.HasSlidingExpiration ? this.SlidingExpiration : (DateTimeOffset.Now - this.AbsoluteExpiration);
 
                 var client = redisProvider.GetRedisClient();

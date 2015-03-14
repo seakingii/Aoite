@@ -15,8 +15,9 @@ namespace System.Web.Mvc
         /// <summary>
         /// 渲染 Javascript 控制器。
         /// </summary>
+        /// <param name="page">当前视图页。</param>
         /// <returns>返回一个 HTML 代码。</returns>
-        public static MvcHtmlString RenderJsController(this WebViewPage page)
+        public static IHtmlString RenderJsController(this WebViewPage page)
         {
             BuildManagerCompiledView view;
             if(page != null && (view = page.ViewContext.View as BuildManagerCompiledView) != null)
@@ -27,7 +28,37 @@ namespace System.Web.Mvc
             }
             return null;
         }
-      
+
+        /// <summary>
+        /// 输出脚本文件。
+        /// </summary>
+        /// <param name="page">当前视图页。</param>
+        /// <param name="paths">脚本路径的数组。</param>
+        /// <returns>返回一个 HTML 代码。</returns>
+        public static IHtmlString RenderScripts(this WebViewPage page, params string[] paths)
+        {
+            for(int i = 0; i < paths.Length; i++)
+            {
+                var path = paths[i];
+                if(path.Contains("?")) path += "&";
+                else path += "?";
+
+                paths[i] = path + "t=" + JsTimeTicks;
+            }
+            return System.Web.Optimization.Scripts.Render(paths);
+        }
+
+        /// <summary>
+        /// 将指定的对象转换为 JSON 字符串。
+        /// </summary>
+        /// <param name="helper">HTML 帮助器。</param>
+        /// <param name="value">转换的对象。</param>
+        /// <returns>返回一个 JSON 字符串。</returns>
+        public static IHtmlString ToJson(this HtmlHelper helper, object value)
+        {
+            return new HtmlString(value.ToJson());
+        }
+
         /// <summary>
         /// 使用指定分部页视图名称生成操作方法的完全限定 URL。
         /// </summary>

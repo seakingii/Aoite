@@ -17,9 +17,9 @@ namespace System
         /// </summary>
         public virtual string Name { get; set; }
         /// <summary>
-        /// 获取或设置一个值，指示是否为唯一标识。
+        /// 获取一个值，指示是否为唯一标识。
         /// </summary>
-        public virtual bool IsKey { get; set; }
+        public virtual bool IsKey { get; private set; }
 
         /// <summary>
         /// 获取属性所属的类型映射器。

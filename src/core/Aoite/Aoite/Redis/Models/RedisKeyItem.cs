@@ -6,7 +6,7 @@ using System.Text;
 namespace Aoite.Redis
 {
     /// <summary>
-    /// 表示一个 Reids 的键值项。
+    /// 表示一个 Redis 的键值项。
     /// </summary>
     public class RedisKeyItem : IRedisItem
     {
