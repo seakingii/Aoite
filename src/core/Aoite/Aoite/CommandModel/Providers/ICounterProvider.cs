@@ -72,8 +72,8 @@ namespace Aoite.CommandModel
             lock(string.Intern(key))
             {
                 var ldb = _lazyLdb.Value;
-                int value = ldb.Get(key);
-                value += 1;
+                long value = ldb.Get(key);
+                value += increment;
                 ldb.Put(key, value);
                 return value;
             }
