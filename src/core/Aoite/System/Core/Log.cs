@@ -24,6 +24,13 @@ namespace System
         private static readonly System.Threading.ThreadLocal<LogContext> _threadLocalContent = new System.Threading.ThreadLocal<LogContext>();
         internal static void ResetContext()
         {
+            if(IsThreadContext)
+            {
+                _threadLocalContent.Value.Dispose();
+            }
+        }
+        internal static void ClearContext()
+        {
             _threadLocalContent.Value = null;
         }
         /// <summary>
@@ -165,7 +172,7 @@ namespace System
             if(this._logger != null) { this._logger.Write(this._Items.ToArray()); }
             this._logger = null;
             this._Items = null;
-            Log.ResetContext();
+            Log.ClearContext();
             base.DisposeManaged();
         }
     }
