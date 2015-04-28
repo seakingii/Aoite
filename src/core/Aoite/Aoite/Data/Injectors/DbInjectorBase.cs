@@ -335,7 +335,13 @@ namespace Aoite.Data
             foreach(var item in query)
             {
                 pms2.Add(item.op);
-                item.op.SetValue(entity2, item.np.GetValue(entity));
+                var value = item.np.GetValue(entity);
+                if(!item.op.Property.PropertyType.IsAssignableFrom(item.np.Property.PropertyType))
+                {
+                    value = Convert.ChangeType(value, item.op.Property.PropertyType);
+                }
+
+                item.op.SetValue(entity2, value);
             }
             entity = entity2;
             return pms2;

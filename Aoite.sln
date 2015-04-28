@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{3BCDD2F3-877
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Mvc4", "src\web\Aoite.Mvc4\Aoite.Mvc4.csproj", "{A00AA835-2625-4BD2-A1B4-DA9351EC6094}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Samples", "src\core\Aoite.Samples\Aoite.Samples.csproj", "{381A9034-C958-4053-8B25-BACD04765372}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{A00AA835-2625-4BD2-A1B4-DA9351EC6094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A00AA835-2625-4BD2-A1B4-DA9351EC6094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A00AA835-2625-4BD2-A1B4-DA9351EC6094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381A9034-C958-4053-8B25-BACD04765372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381A9034-C958-4053-8B25-BACD04765372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381A9034-C958-4053-8B25-BACD04765372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381A9034-C958-4053-8B25-BACD04765372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{03C91638-4DD6-4A94-B57D-DBC831D765B3} = {8028A092-6D73-4914-AAAF-8868B532394F}
 		{8028A092-6D73-4914-AAAF-8868B532394F} = {8F53C12F-A206-485C-8039-D90A0D853E76}
 		{A00AA835-2625-4BD2-A1B4-DA9351EC6094} = {3BCDD2F3-877E-4F39-A3CB-535BFF43E3C2}
+		{381A9034-C958-4053-8B25-BACD04765372} = {8028A092-6D73-4914-AAAF-8868B532394F}
 	EndGlobalSection
 EndGlobal
