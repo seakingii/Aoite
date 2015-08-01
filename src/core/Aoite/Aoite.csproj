@@ -417,6 +417,7 @@
     <EmbeddedResource Include="Aoite\LevelDB\Interop\LevelDBx64.gz" />
     <None Include="Aoite.nuspec" />
     <None Include="Aoite\Redis\ReadMe.md" />
+    <None Include="next.md" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
