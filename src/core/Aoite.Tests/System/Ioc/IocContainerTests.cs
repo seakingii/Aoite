@@ -369,8 +369,18 @@ namespace System.Ioc
             service = container.GetService<IDefaultMappingService>();
             Assert.IsType<DefaultMappingService>(service);
         }
+        [Fact()]
+        public void DefaultMappingTest2()
+        {
+            var container = new IocContainer();
+            var service = container.GetService<DefaultMappingCtorService>();
+            Assert.IsType<DefaultMappingService2>(service.InnerService);
+            container.DestroyAll();
 
-
+            container.AddService(typeof(IDefaultMappingService), typeof(DefaultMappingService));
+            service = container.GetService<DefaultMappingCtorService>();
+            Assert.IsType<DefaultMappingService>(service.InnerService);
+        }
         #endregion
     }
 }

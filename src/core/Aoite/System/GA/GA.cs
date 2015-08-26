@@ -68,6 +68,7 @@ namespace System
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            //System.Runtime.CompilerServices.RuntimeWrappedException
             if(e.ExceptionObject is Exception)
             {
                 GA.OnGlobalError(sender, e.ExceptionObject as Exception);

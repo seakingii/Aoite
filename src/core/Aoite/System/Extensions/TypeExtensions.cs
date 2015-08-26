@@ -40,7 +40,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <returns>如果为匿名类型返回 true，否则返回 false。</returns>
-        public static bool IsAnonymous(this Type type)
+        public static bool IsAnonymous(this Type type) 
         {
             if(type == null) return false;
 

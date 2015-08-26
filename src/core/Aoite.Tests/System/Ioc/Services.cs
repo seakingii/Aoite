@@ -64,4 +64,15 @@ namespace System.Ioc
     public interface IDefaultMappingService { }
     public class DefaultMappingService : IDefaultMappingService { }
     public class DefaultMappingService2 : IDefaultMappingService { }
+
+    public class DefaultMappingCtorService
+    {
+        private IDefaultMappingService _InnerService;
+        public IDefaultMappingService InnerService { get { return _InnerService; } }
+
+        public DefaultMappingCtorService(IDefaultMappingService innerService)
+        {
+            _InnerService = innerService;
+        }
+    }
 }

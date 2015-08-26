@@ -199,6 +199,15 @@ namespace System
         private InstanceBox AutoResolveExpectType(Type expectType, bool singletonMode = false)
         {
             if(this.DisabledAutoResolving) return null;
+            //- 从映射事件获取
+            var instance = this.OnMapResolve(expectType);
+            if(instance != null)
+            {
+                this.Map(expectType, instance);
+                return instance;
+            }
+            //- 如果已强制映射，发生这种情况是在构造函数里的接口，有默认映射行为
+            if(this.CacheType.TryGetValue(expectType, out instance)) return instance;
 
             Type actualType;
             var defaultMappingAttr = expectType.GetAttribute<DefaultMappingAttribute>();
@@ -212,13 +221,6 @@ namespace System
                 if((expectType.IsClass && expectType.IsAbstract) || expectType.IsValueType) return null;
                 if(!expectType.IsInterface) return this.InnerMapType(expectType, null, singletonMode);
 
-                //- 从映射事件获取
-                var instance = this.OnMapResolve(expectType);
-                if(instance != null)
-                {
-                    this.Map(expectType, instance);
-                    return instance;
-                }
 
                 actualType = null;
 

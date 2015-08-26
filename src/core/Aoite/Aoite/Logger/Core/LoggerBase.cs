@@ -38,18 +38,22 @@ namespace Aoite.Logger
         {
             while(true)
             {
-                List<LogItem> items = new List<LogItem>(this._QueueItems.Count);
+                if(this._QueueItems.Count > 0)
+                {
+                    List<LogItem> items = new List<LogItem>(this._QueueItems.Count);
 
-                LogItem item;
-                while(this._QueueItems.TryDequeue(out item)) items.Add(item);
-                try
-                {
-                    this.OnWrite(items.ToArray());
-                }
-                catch(Exception ex)
-                {
-                    GA.WriteUnhandledException("日志线程崩溃了：{0}", ex);
-                    throw;
+                    LogItem item;
+                    while(this._QueueItems.TryDequeue(out item)) items.Add(item);
+
+                    try
+                    {
+                        this.OnWrite(items.ToArray());
+                    }
+                    catch(Exception ex)
+                    {
+                        GA.WriteUnhandledException("日志线程崩溃了：{0}", ex);
+                        throw;
+                    }
                 }
                 Thread.SpinWait(this.Iterations);
             }
