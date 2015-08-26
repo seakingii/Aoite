@@ -25,6 +25,10 @@ namespace System
         /// </summary>
         System.Threading.Tasks.Task Task { get; }
         /// <summary>
+        /// 设置或获取一个值，表示间隔的时间。只有当循环的任务时，此值才有效。
+        /// </summary>
+        TimeSpan Interval { get; set; }
+        /// <summary>
         /// 获取一个值，指示任务是否已取消。
         /// </summary>
         bool IsCanceled { get; }

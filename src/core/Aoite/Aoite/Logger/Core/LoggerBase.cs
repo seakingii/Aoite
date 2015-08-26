@@ -16,48 +16,45 @@ namespace Aoite.Logger
         private readonly ConcurrentQueue<LogItem> _QueueItems = new ConcurrentQueue<LogItem>();
 
         /// <summary>
-        /// 获取或设置日志等待时间的 32 位有符号整数。
+        /// 获取或设置日志等待时间的间隔。默认为 1 秒钟。
         /// </summary>
-        public int Iterations { get; set; }
+        public TimeSpan Interval { get { return this._ajob.Interval; } set { this._ajob.Interval = value; } }
+
         /// <summary>
         /// 获取或设置一个值，指示是否为异步模式。默认为 true。
         /// </summary>
         public bool Asynchronous { get; set; }
 
+
+        private IAsyncJob _ajob;
         /// <summary>
         /// 初始化一个 <see cref="Aoite.Logger.LoggerBase"/> 类的新实例。
         /// </summary>
         public LoggerBase()
         {
-            this.Iterations = 1000;
-            this.Asynchronous = true;
-            Task.Factory.StartNew(this.OnLogging);
+            this._ajob = Ajob.Loop(AsyncWrite, TimeSpan.FromSeconds(1));
         }
 
-        private void OnLogging()
+        void AsyncWrite(IAsyncJob job)
         {
-            while(true)
+            if(this._QueueItems.Count == 0) return;
+
+            List<LogItem> items = new List<LogItem>(this._QueueItems.Count);
+
+            LogItem item;
+            while(this._QueueItems.TryDequeue(out item)) items.Add(item);
+
+            try
             {
-                if(this._QueueItems.Count > 0)
-                {
-                    List<LogItem> items = new List<LogItem>(this._QueueItems.Count);
-
-                    LogItem item;
-                    while(this._QueueItems.TryDequeue(out item)) items.Add(item);
-
-                    try
-                    {
-                        this.OnWrite(items.ToArray());
-                    }
-                    catch(Exception ex)
-                    {
-                        GA.WriteUnhandledException("日志线程崩溃了：{0}", ex);
-                        throw;
-                    }
-                }
-                Thread.SpinWait(this.Iterations);
+                this.OnWrite(items.ToArray());
+            }
+            catch(Exception ex)
+            {
+                GA.WriteUnhandledException("日志线程崩溃了：{0}", ex);
+                job.Cancel();
             }
         }
+
 
         /// <summary>
         /// 写入一个或多个日志项。

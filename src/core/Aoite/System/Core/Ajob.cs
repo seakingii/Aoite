@@ -26,6 +26,7 @@ namespace System
             public object State { get { return _State; } }
 
             public Task Task { get { return this._Task; } }
+            public TimeSpan Interval { get { return _Interval; } set { _Interval = value; } }
 
             public AsyncJob(AsyncJobHandler job, TimeSpan timeSpan, object state)
             {

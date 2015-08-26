@@ -82,19 +82,21 @@ namespace System
             /// <param name="recursive">若要移除 <paramref name="path"/> 中的目录、子目录和文件，则为 true；否则为 false。</param>
             public static IAsyncJob DeleteDirectory(string path, bool recursive = true)
             {
-                if(!Directory.Exists(path)) return null;
                 var job = Ajob.Once(j =>
                 {
-                    while(true)
+                    if(Directory.Exists(path))
                     {
-                        try
+                        while(true)
                         {
-                            Directory.Delete(path, recursive);
-                            break;
-                        }
-                        catch(Exception)
-                        {
-                            j.Delay(300);
+                            try
+                            {
+                                Directory.Delete(path, recursive);
+                                break;
+                            }
+                            catch(Exception)
+                            {
+                                j.Delay(300);
+                            }
                         }
                     }
                 });
