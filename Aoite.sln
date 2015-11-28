@@ -11,6 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{027AC183
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Tests", "tests\Aoite.Tests\Aoite.Tests.csproj", "{58B2D2E2-E7FC-4CF4-BA1C-3684F7A63F19}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comm", "comm", "{31F2CA9F-25EF-439C-8E77-917A67F42519}"
+	ProjectSection(SolutionItems) = preProject
+		comm\aoite.snk = comm\aoite.snk
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -5,9 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-[assembly: InternalsVisibleTo("Aoite.Tests")]
-[assembly: InternalsVisibleTo("Aoite.Explorables")]
-
 namespace Aoite.Serialization
 {
 

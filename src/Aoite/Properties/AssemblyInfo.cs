@@ -34,3 +34,9 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(Aoite.AoiteInfo.Core.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Aoite.AoiteInfo.Core.AssemblyVersion)]
+
+#if DEBUG
+[assembly: InternalsVisibleTo("Aoite.Tests")]
+#else
+[assembly: AssemblyKeyFile(Aoite.AoiteInfo.SnkKeyFile)]
+#endif

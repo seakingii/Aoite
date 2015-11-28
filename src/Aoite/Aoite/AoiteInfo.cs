@@ -23,6 +23,10 @@ namespace Aoite
         internal const string Stage = "Pre-alpha";
         internal const string Name = "Aoite";
         internal const string DescriptionSuffix = "For .NET Framework 4.6 runtime. See http://www.aoite.com.";
+        /// <summary>
+        /// 获取包含密钥对的文件的路径。
+        /// </summary>
+        public const string SnkKeyFile = @"..\..\comm\aoite.snk";
 
         /// <summary> 
         /// 获取简写化的版本号。
@@ -49,7 +53,7 @@ namespace Aoite
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".10.1";
+            public const string AssemblyVersion = Version + ".12.1";
             /// <summary> 
             /// 程序集的简单描述。
             /// </summary>
