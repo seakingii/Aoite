@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B0D8879-660C-4701-8117-C1499C9B65E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Aoite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\Aoite.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Aoite.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\System.Data.SqlServerCe\4.0.0.0__89845dcd8080cc91\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aoite\AoiteInfo.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CacheAttribute.cs">
+      <DependentUpon>IExecutorAttribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\BindingExecutorAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutorAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Commands.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandBus.cs">
+      <DependentUpon>ICommandBus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBase.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBase.cs">
+      <DependentUpon>ICommandModelService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\Context.cs">
+      <DependentUpon>IContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\ContextFactory.cs">
+      <DependentUpon>IContextFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\Delegates.cs" />
+    <Compile Include="Aoite\CommandModel\Core\EventStore.cs">
+      <DependentUpon>IEventStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\Event`1.cs">
+      <DependentUpon>IEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\ExecutorFactory.cs">
+      <DependentUpon>IExecutorFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs">
+      <DependentUpon>IExecutorMetadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\ICommand.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommandBus.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommandModelService.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IContext.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IContextFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IEvent.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IEvent`1.cs">
+      <DependentUpon>IEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\IExecutorFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutorMetadata.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommandCache.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommandHandler`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommand`1.cs">
+      <DependentUpon>ICommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\IEventStore.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutor.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutorMetadata`1.cs">
+      <DependentUpon>IExecutorMetadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\IExecutor`1.cs">
+      <DependentUpon>IExecutor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\IUserFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\MockContext.cs">
+      <DependentUpon>IContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\MockEvent`1.cs">
+      <DependentUpon>IEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs">
+      <DependentUpon>IExecutor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs">
+      <DependentUpon>IExecutorFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\UserFactory.cs">
+      <DependentUpon>IUserFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Extensions\CommandBusExtensions.cs" />
+    <Compile Include="Aoite\CommandModel\Extensions\CommandModelExtensions.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs">
+      <DependentUpon>ICacheProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\CommandCacheStrategy.cs">
+      <DependentUpon>ICommandCacheStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\CommandMemoryCache.cs">
+      <DependentUpon>ICommandCacheStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\CounterProvider.cs">
+      <DependentUpon>ICounterProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\ICacheProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ICommandCacheStrategy.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ICounterProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\ILockProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\IRedisProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\LockProvider.cs">
+      <DependentUpon>ILockProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\RedisProvider.cs">
+      <DependentUpon>IRedisProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\ServiceFactory.cs" />
+    <Compile Include="Aoite\Data\Attributes+EventArgs\ColumnAttribute.cs" />
+    <Compile Include="Aoite\Data\Attributes+EventArgs\TableAttribute.cs" />
+    <Compile Include="Aoite\Data\Builder\BuilderBase.cs">
+      <DependentUpon>IBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Builder\IBuilder.cs" />
+    <Compile Include="Aoite\Data\Builder\ISelect.cs" />
+    <Compile Include="Aoite\Data\Builder\IWhere.cs" />
+    <Compile Include="Aoite\Data\Builder\SelectCommandBuilder.cs">
+      <DependentUpon>ISelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Builder\WhereCommandBuilder.cs">
+      <DependentUpon>IWhere.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\AoiteTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\BulkCopyArguments.cs" />
+    <Compile Include="Aoite\Data\Core\DefaultParameterSettings.cs" />
+    <Compile Include="Aoite\Data\Core\DynamicEntityValue.cs" />
+    <Compile Include="Aoite\Data\Core\ExecuteAbortException.cs" />
+    <Compile Include="Aoite\Data\Core\ExecuteCommand.cs" />
+    <Compile Include="Aoite\Data\Core\ExecuteType.cs" />
+    <Compile Include="Aoite\Data\Core\Handlers.cs" />
+    <Compile Include="Aoite\Data\Db\Db.cs" />
+    <Compile Include="Aoite\Data\Db\DbContext.cs" />
+    <Compile Include="Aoite\Data\Db\DbEngine.cs">
+      <DependentUpon>IDbEngine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Db\DbEngineManager.cs" />
+    <Compile Include="Aoite\Data\Db\DbEngineProvider.cs" />
+    <Compile Include="Aoite\Data\Db\Db~Extensions.cs">
+      <DependentUpon>Db.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Db\IDbEngine.cs" />
+    <Compile Include="Aoite\Data\Attributes+EventArgs\ExecutedEventArgs.cs" />
+    <Compile Include="Aoite\Data\Attributes+EventArgs\ExecutingEventArgs.cs" />
+    <Compile Include="Aoite\Data\Core\DefaultDbExecutor.cs">
+      <DependentUpon>IDbExecutor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\IDbExecutor.cs" />
+    <Compile Include="Aoite\Data\Core\DbInjectorBase.cs">
+      <DependentUpon>IDbInjector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\IDbInjector.cs" />
+    <Compile Include="Aoite\Data\Core\SqlCeDbInjector.cs">
+      <DependentUpon>IDbInjector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\SqlDbInjector.cs">
+      <DependentUpon>IDbInjector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\DataReaderToObjectMapper.cs">
+      <DependentUpon>IMapTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\DataRowToObjectMapper.cs">
+      <DependentUpon>IMapTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\IMapTo.cs" />
+    <Compile Include="Aoite\Data\Core\IMapTo`1.cs">
+      <DependentUpon>IMapTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\MapperBase`1.cs">
+      <DependentUpon>IMapTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\ObjectToRowMapper.cs">
+      <DependentUpon>IMapTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\IPagination.cs" />
+    <Compile Include="Aoite\Data\Core\LimitPagination.cs">
+      <DependentUpon>IPagination.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\MsSqlCePaginationProcess.cs">
+      <DependentUpon>IPaginationProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\MsSqlPaginationProcess.cs">
+      <DependentUpon>IPaginationProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\OraclePagination.cs">
+      <DependentUpon>IPaginationProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\Pagination.cs">
+      <DependentUpon>IPagination.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\SQLitePagination.cs">
+      <DependentUpon>IPaginationProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\SqlPaginationProcessBase.cs">
+      <DependentUpon>IPaginationProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\ExecuteDbParameter.cs">
+      <DependentUpon>ExecuteParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\ExecuteParameter.cs" />
+    <Compile Include="Aoite\Data\Core\ExecuteParameterCollection.cs" />
+    <Compile Include="Aoite\Data\Core\IParameterAdorner.cs" />
+    <Compile Include="Aoite\Data\Profilers\DbProfiler.cs" />
+    <Compile Include="Aoite\Data\Profilers\ProfilerItem.cs" />
+    <Compile Include="Aoite\Data\Core\CanUpdateDbResultBase`1.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\DataSetResult`1.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\DbResult`1.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\ICanUpdateDbResult.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\IDbResult.cs" />
+    <Compile Include="Aoite\Data\Core\MsCeTestManager.cs">
+      <DependentUpon>TestManagerBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\MsSqlTestManager.cs">
+      <DependentUpon>TestManagerBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\SqlScriptsManager.cs">
+      <DependentUpon>TestManagerBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\TestManagerBase.cs" />
+    <Compile Include="Aoite\Data\Core\IDbResult`1.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Data\Core\TableResult.cs">
+      <DependentUpon>IDbResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\ILogger.cs" />
+    <Compile Include="Aoite\Logger\LoggerBase.cs">
+      <DependentUpon>ILogger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\LogItem.cs" />
+    <Compile Include="Aoite\Logger\LogType.cs" />
+    <Compile Include="Aoite\Logger\TextLogger.cs">
+      <DependentUpon>ILogger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\CustomTextWriterFactory.cs">
+      <DependentUpon>ITextWriterFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\DayLogPathFactory.cs">
+      <DependentUpon>ILogPathFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\HourLogPathFactory.cs">
+      <DependentUpon>ILogPathFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\ILogDescriptor.cs" />
+    <Compile Include="Aoite\Logger\ILogPathFactory.cs" />
+    <Compile Include="Aoite\Logger\ITextWriterFactory.cs" />
+    <Compile Include="Aoite\Logger\LogDescriptor.cs">
+      <DependentUpon>ILogDescriptor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Logger\StreamTextWriterFactory.cs">
+      <DependentUpon>ITextWriterFactory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Net\Core\IHostPort.cs" />
+    <Compile Include="Aoite\Net\Core\SocketInfo.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisArgs.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisArray.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisBoolean.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisCommand.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisCommand`1.cs">
+      <DependentUpon>RedisCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Commands\RedisDate.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisFloat.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisInteger.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisItem.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisKeyType.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisObject.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisStatus.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisString.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisTran.cs" />
+    <Compile Include="Aoite\Redis\Commands\RedisValue.cs" />
+    <Compile Include="Aoite\Redis\Core\Exceptions.cs" />
+    <Compile Include="Aoite\Redis\Core\IConnector.cs" />
+    <Compile Include="Aoite\Redis\Core\MockConnector.cs">
+      <DependentUpon>IConnector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisConnector.cs">
+      <DependentUpon>IConnector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisExecutor.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisReplyType.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisScan`1.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisType.cs" />
+    <Compile Include="Aoite\Redis\Extensions\Enums.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisConnectionExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisHashExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisHyperLogLogExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisKeyExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisListExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisScriptExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisServerExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisSetExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisSortedSetExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisStringExtensions.cs" />
+    <Compile Include="Aoite\Redis\Extensions\RedisTransactionExtensions.cs" />
+    <Compile Include="Aoite\Redis\Core\IRedisClient.cs" />
+    <Compile Include="Aoite\Redis\Core\IRedisTransaction.cs" />
+    <Compile Include="Aoite\Redis\Core\IRedisItem.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisDictionary.cs">
+      <DependentUpon>IRedisItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisFieldItem.cs">
+      <DependentUpon>IRedisItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisKeyItem.cs">
+      <DependentUpon>IRedisItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisScoreItem.cs">
+      <DependentUpon>IRedisItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisWeightDictionary.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisClient.cs">
+      <DependentUpon>IRedisClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisManager.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisSessionStateStoreProvider.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisTransaction.cs">
+      <DependentUpon>IRedisTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aoite\Reflection\Delegates.cs" />
+    <Compile Include="Aoite\Reflection\DynamicFactory.cs" />
+    <Compile Include="Aoite\Reflection\DynamicInstance.cs" />
+    <Compile Include="Aoite\Reflection\DynamicProperty.cs" />
+    <Compile Include="Aoite\Reflection\EmitHelper.cs" />
+    <Compile Include="Aoite\Reflection\Flags.cs" />
+    <Compile Include="Aoite\Serialization\BinarySerializer.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\AssemblyInfo.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\AssemblyInfoCollection.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\ObjectFormatterBase.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\SerializableFieldInfo.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\SerializationHelper.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Core\TypeByteLength.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\BasisFormatters.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\Formatters.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\FormatterTag.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\NumberFormatters~Decimals.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\NumberFormatters~Integers.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\ObjectFormatters.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\Formatters\StringFormatters.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\ICustomSerializable.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\ObjectReader.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\ObjectWriter.cs" />
+    <Compile Include="Aoite\Serialization\BinarySuite\SerializableUsageAttribute.cs" />
+    <Compile Include="Aoite\Serialization\JsonSerializer.cs" />
+    <Compile Include="Aoite\Serialization\QuicklySerializer.cs" />
+    <Compile Include="Aoite\Serialization\SerializerBase.cs" />
+    <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
+    <Compile Include="Aoite\Data\Core\IPaginationProcess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\Attributes\AliasAttribute.cs">
+      <DependentUpon>IAliasAttribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Attributes\IAliasAttribute.cs" />
+    <Compile Include="System\Attributes\IgnoreAttribute.cs" />
+    <Compile Include="System\Attributes\IKeyAttribute.cs" />
+    <Compile Include="System\Collections\Generic\ConsistentHash`1.cs" />
+    <Compile Include="System\Core\Ajob.cs" />
+    <Compile Include="System\Core\AssemblyReflectionProxy.cs" />
+    <Compile Include="System\Core\BinaryValue.cs" />
+    <Compile Include="System\Core\BinaryValue~Implicit.cs">
+      <DependentUpon>BinaryValue~Implicit.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="System\Core\CodeTimer.cs" />
+    <Compile Include="System\Core\DataSecurity.cs" />
+    <Compile Include="System\Core\GridData.cs" />
+    <Compile Include="System\Core\HeadersBase.cs" />
+    <Compile Include="System\Core\IAsyncJob.cs" />
+    <Compile Include="System\Core\Isolated`1.cs" />
+    <Compile Include="System\Core\ITransaction.cs" />
+    <Compile Include="System\Core\LockSlim.cs" />
+    <Compile Include="System\Core\Log.cs" />
+    <Compile Include="System\Core\Mean`1.cs" />
+    <Compile Include="System\Core\SimpleLockItem.cs" />
+    <Compile Include="System\Core\Types.cs" />
+    <Compile Include="System\Core\ValidCodeGenerator.cs" />
+    <Compile Include="System\Core\VoidValue.cs" />
+    <Compile Include="System\Core\WhereParameters.cs" />
+    <Compile Include="System\Core\IObjectDisposable.cs" />
+    <Compile Include="System\Core\ObjectDisposableBase.cs">
+      <DependentUpon>IObjectDisposable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Core\ExceptionEventArgs.cs" />
+    <Compile Include="System\Extensions\CollectionsExtensions.cs" />
+    <Compile Include="System\Extensions\CommonExtensions.cs" />
+    <Compile Include="System\Extensions\DbExtensions.cs" />
+    <Compile Include="System\Extensions\IocExtensions.cs" />
+    <Compile Include="System\Extensions\IOExtensions.cs" />
+    <Compile Include="System\Extensions\MapperExtensions.cs" />
+    <Compile Include="System\Extensions\NetExtensions.cs" />
+    <Compile Include="System\Extensions\ResultExtensions.cs" />
+    <Compile Include="System\Extensions\StringExtensions.cs" />
+    <Compile Include="System\Extensions\TypeExtensions.cs" />
+    <Compile Include="System\Extensions\WebExtensions.cs" />
+    <Compile Include="System\Core\CompareResult.cs">
+      <DependentUpon>GA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Core\GA.cs" />
+    <Compile Include="System\Core\GA.IO.cs">
+      <DependentUpon>GA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Core\GA.Net.cs">
+      <DependentUpon>GA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\DefaultMappingAttribute.cs" />
+    <Compile Include="System\Ioc\IContainerProvider.cs" />
+    <Compile Include="System\Ioc\IIocContainer.cs" />
+    <Compile Include="System\Ioc\IMapFilter.cs" />
+    <Compile Include="System\Ioc\IocContainer.cs">
+      <DependentUpon>IIocContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\IocContainer~Fields.cs">
+      <DependentUpon>IIocContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\IocContainer~Nested.cs">
+      <DependentUpon>IIocContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\IocContainer~Private.cs">
+      <DependentUpon>IIocContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\LastMappingAttribute.cs" />
+    <Compile Include="System\Ioc\MapFilter.cs">
+      <DependentUpon>IMapFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Ioc\MapResolveEventArgs.cs" />
+    <Compile Include="System\Ioc\NamesapceRule.cs" />
+    <Compile Include="System\Ioc\NamesapceRuleMode.cs" />
+    <Compile Include="System\Ioc\ObjectFactory.cs" />
+    <Compile Include="System\Ioc\Object`1.cs" />
+    <Compile Include="System\Ioc\SingletonMappingAttribute.cs" />
+    <Compile Include="System\Mapping\IPropertyMapper.cs" />
+    <Compile Include="System\Mapping\ITypeMapper.cs" />
+    <Compile Include="System\Mapping\PropertyMapper.cs" />
+    <Compile Include="System\Mapping\TypeMapper.cs" />
+    <Compile Include="System\Pool\IObjectRelease.cs" />
+    <Compile Include="System\Pool\ObjectPool`1.cs" />
+    <Compile Include="System\Random\FastRandom.cs" />
+    <Compile Include="System\Result\IResult.cs" />
+    <Compile Include="System\Result\IResult`1.cs">
+      <DependentUpon>IResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Result\Result.cs">
+      <DependentUpon>IResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Result\ResultException.cs" />
+    <Compile Include="System\Result\ResultStatus.cs" />
+    <Compile Include="System\Result\Result`1.cs">
+      <DependentUpon>IResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Result\SuccessfullyResult.cs">
+      <DependentUpon>IResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Web\IIdentityStore.cs" />
+    <Compile Include="System\Web\Webx.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Aoite\Redis\ReadMe.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="System\Core\BinaryValue~Implicit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BinaryValue~Implicit.cs</LastGenOutput>
+      <DependentUpon>BinaryValue.cs</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
