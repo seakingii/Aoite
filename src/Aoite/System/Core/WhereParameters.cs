@@ -16,11 +16,11 @@ namespace System
         /// </summary>
         public ExecuteParameterCollection Parameters { get; set; }
         /// <summary>
-        /// 初始化一个空的 <see cref="System.WhereParameters"/> 类的新实例。
+        /// 初始化一个空的 <see cref="WhereParameters"/> 类的新实例。
         /// </summary>
         public WhereParameters() { }
         /// <summary>
-        /// 初始化一个 <see cref="System.WhereParameters"/> 类的新实例。
+        /// 初始化一个 <see cref="WhereParameters"/> 类的新实例。
         /// </summary>
         /// <param name="where">WHERE 的语句。</param>
         /// <param name="ps">WHERE 的参数集合。</param>

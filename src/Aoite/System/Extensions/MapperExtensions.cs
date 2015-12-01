@@ -25,6 +25,7 @@ namespace System
                 FromValue = row
             };
         }
+
         /// <summary>
         /// 将指定的数据读取器填充到实体。
         /// </summary>
@@ -42,6 +43,7 @@ namespace System
                 FromValue = reader
             };
         }
+
         /// <summary>
         /// 将指定的实体填充到数据行。
         /// </summary>

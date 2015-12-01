@@ -22,13 +22,13 @@ namespace System
         public bool HasHeaders { get { return this._Headers.IsValueCreated; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.HeadersBase"/> 类的新实例。
+        /// 初始化一个 <see cref="HeadersBase"/> 类的新实例。
         /// </summary>
         public HeadersBase()
             : this(() => new CDictionary(StringComparer.CurrentCultureIgnoreCase)) { }
 
         /// <summary>
-        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="System.HeadersBase"/> 类的新实例。
+        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="HeadersBase"/> 类的新实例。
         /// </summary>
         /// <param name="headersFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         public HeadersBase(Func<CDictionary> headersFactory)

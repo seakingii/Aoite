@@ -13,7 +13,7 @@ namespace Aoite.Data
 
         private DbCommand _Command;
         /// <summary>
-        /// 获取一个值，表示查询操作的 <see cref="System.Data.Common.DbCommand"/> 对象。
+        /// 获取一个值，表示查询操作的 <see cref="Data.Common.DbCommand"/> 对象。
         /// </summary>
         public DbCommand Command { get { return this._Command; } }
 
@@ -71,7 +71,7 @@ namespace Aoite.Data
         /// 初始化查询操作的返回结果。
         /// </summary>
         /// <param name="dbEngine">数据源的操作引擎。</param>
-        /// <param name="command">查询操作的 <see cref="System.Data.Common.DbCommand"/> 对象。</param>
+        /// <param name="command">查询操作的 <see cref="Data.Common.DbCommand"/> 对象。</param>
         /// <param name="value">查询操作的返回值。</param>
         /// <param name="exception">查询操作的引发的异常。</param>
         internal virtual void Initialization(IDbEngine dbEngine, DbCommand command, TValue value, Exception exception)

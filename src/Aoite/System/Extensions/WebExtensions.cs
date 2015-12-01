@@ -14,7 +14,7 @@
         {
             string ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
-            if(!string.IsNullOrEmpty(ipAddress))
+            if(!string.IsNullOrWhiteSpace(ipAddress))
             {
                 string[] addresses = ipAddress.Split(',');
                 if(addresses.Length != 0)
@@ -23,7 +23,7 @@
                 }
             }
             ipAddress = request.ServerVariables["REMOTE_ADDR"];
-            if(string.IsNullOrEmpty(ipAddress)) ipAddress = request.UserHostAddress;
+            if(string.IsNullOrWhiteSpace(ipAddress)) ipAddress = request.UserHostAddress;
             return ipAddress;
         }
     }

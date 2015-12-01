@@ -23,7 +23,7 @@ namespace Aoite.Logger
         public string Message { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.LogItem"/> 类的新实例。
+        /// 初始化一个 <see cref="LogItem"/> 类的新实例。
         /// </summary>
         public LogItem()
         {

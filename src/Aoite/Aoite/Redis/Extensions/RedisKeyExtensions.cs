@@ -33,7 +33,7 @@ namespace System
         public static bool Exists(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisBoolean("EXISTS", key));
         }
 
@@ -63,7 +63,7 @@ namespace System
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(expiration < 0) throw new ArgumentOutOfRangeException(nameof(expiration));
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisBoolean("EXPIRE", key, expiration));
@@ -96,7 +96,7 @@ namespace System
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(timestamp < 0) throw new ArgumentOutOfRangeException(nameof(timestamp));
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisBoolean("EXPIREAT", key, timestamp));
@@ -115,7 +115,7 @@ namespace System
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisInteger("TTL", key));
@@ -139,7 +139,7 @@ namespace System
         public static string[] Keys(this IRedisClient client, string pattern)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(pattern)) throw new ArgumentNullException(nameof(pattern));
+            if(string.IsNullOrWhiteSpace(pattern)) throw new ArgumentNullException(nameof(pattern));
             return client.Execute(RedisArray.Create(new RedisString("KEYS", pattern)));
         }
 
@@ -155,7 +155,7 @@ namespace System
         public static bool Move(this IRedisClient client, string key, int database)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(database < 0) throw new ArgumentOutOfRangeException(nameof(database));
 
             return client.Execute(new RedisBoolean("MOVE", key, database));
@@ -170,7 +170,7 @@ namespace System
         public static bool Persist(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisBoolean("PERSIST", key));
         }
 
@@ -197,8 +197,8 @@ namespace System
         public static Result Rename(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException(nameof(newKey));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(newKey)) throw new ArgumentNullException(nameof(newKey));
             if(key == newKey) return "新的键名不能和旧的相同";
             return client.Execute(new RedisStatus("RENAME", key, newKey));
         }
@@ -213,8 +213,8 @@ namespace System
         public static bool RenameNx(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException(nameof(newKey));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(newKey)) throw new ArgumentNullException(nameof(newKey));
             if(key == newKey) return false;
             return client.Execute(new RedisBoolean.AllowError("RENAMENX", key, newKey));
         }
@@ -228,7 +228,7 @@ namespace System
         public static RedisType Type(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisKeyType("TYPE", key));
         }
 

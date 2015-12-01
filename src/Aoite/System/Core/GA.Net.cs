@@ -60,14 +60,14 @@ namespace System
             }
 
             /// <summary>
-            /// 将指定主机地址转换为 <see cref="System.Net.IPAddress"/> 类的新实例，并创建一个 <see cref="System.Net.IPEndPoint"/> 类的新实例。
+            /// 将指定主机地址转换为 <see cref="Net.IPAddress"/> 类的新实例，并创建一个 <see cref="Net.IPEndPoint"/> 类的新实例。
             /// </summary>
             /// <param name="host">主机地址。</param>
             /// <param name="port">主机端口。</param>
-            /// <returns>返回一个新的 <see cref="System.Net.IPEndPoint"/> 实例。</returns>
+            /// <returns>返回一个新的 <see cref="Net.IPEndPoint"/> 实例。</returns>
             public static IPEndPoint CreateEndPoint(string host, int port)
             {
-                return new IPEndPoint((string.IsNullOrEmpty(host) || host.iEquals("localhost"))
+                return new IPEndPoint((string.IsNullOrWhiteSpace(host) || host.iEquals("localhost"))
                 ? IPAddress.Any
                 : IPAddress.Parse(host), port);
             }

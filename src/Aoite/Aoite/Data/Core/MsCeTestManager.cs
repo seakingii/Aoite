@@ -25,7 +25,7 @@ namespace Aoite.Data
         /// <param name="databasePath">数据源路径。</param>
         public MsCeTestManager(string databasePath)
         {
-            if(string.IsNullOrEmpty(databasePath)) throw new ArgumentNullException(nameof(databasePath));
+            if(string.IsNullOrWhiteSpace(databasePath)) throw new ArgumentNullException(nameof(databasePath));
             this.DatabasePath = databasePath;
             GA.IO.CreateDirectory(Path.GetDirectoryName(databasePath));
             var engine = new MsSqlCeEngine(this.DatabasePath, null);

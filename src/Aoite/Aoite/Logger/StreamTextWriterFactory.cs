@@ -18,7 +18,7 @@ namespace Aoite.Logger
             get { return this._LogFolder; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value));
                 this._LogFolder = value;
             }
         }
@@ -32,7 +32,7 @@ namespace Aoite.Logger
             get { return this._LogExtension; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value));
 
                 if(value[0] != '.') this._LogExtension = "." + value;
                 else this._LogExtension = value;
@@ -59,7 +59,7 @@ namespace Aoite.Logger
         public ILogPathFactory LogPathFactory { get; private set; }
 
         /// <summary>
-        /// 指定日志的路径生成工厂，初始化一个 <see cref="Aoite.Logger.StreamTextWriterFactory"/> 类的新实例。
+        /// 指定日志的路径生成工厂，初始化一个 <see cref="StreamTextWriterFactory"/> 类的新实例。
         /// </summary>
         /// <param name="logPathFactory">日志的路径生成工厂。</param>
         public StreamTextWriterFactory(ILogPathFactory logPathFactory)

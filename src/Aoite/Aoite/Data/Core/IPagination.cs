@@ -55,16 +55,16 @@
         }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.PgParameters"/> 类的新实例。
+        /// 初始化一个 <see cref="PgParameters"/> 类的新实例。
         /// </summary>
         public PgParameters() : this(1) { }
         /// <summary>
-        /// 初始化一个 <see cref="System.PgParameters"/> 类的新实例。
+        /// 初始化一个 <see cref="PgParameters"/> 类的新实例。
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         public PgParameters(int pageNumber) : this(pageNumber, 10) { }
         /// <summary>
-        /// 初始化一个 <see cref="System.PgParameters"/> 类的新实例。
+        /// 初始化一个 <see cref="PgParameters"/> 类的新实例。
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>

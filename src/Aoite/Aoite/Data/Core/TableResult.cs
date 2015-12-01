@@ -3,7 +3,7 @@
 namespace Aoite.Data
 {
     /// <summary>
-    /// 表示以 <see cref="System.Data.DataTable"/> 对象作为返回值的查询结果。
+    /// 表示以 <see cref="Data.DataTable"/> 对象作为返回值的查询结果。
     /// </summary>
     public class TableResult : CanUpdateDbResultBase<AoiteTable>
     {

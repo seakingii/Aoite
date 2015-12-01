@@ -25,7 +25,7 @@ namespace Aoite.Logger
         static TextWriter DefaultCreateWriter() { return Console.Out; }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.CustomTextWriterFactory"/> 类的新实例。
+        /// 初始化一个 <see cref="CustomTextWriterFactory"/> 类的新实例。
         /// </summary>
         public CustomTextWriterFactory()
         {

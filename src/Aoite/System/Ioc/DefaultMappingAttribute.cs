@@ -13,7 +13,7 @@
         public Type ActualType { get { return _ActualType; } }
         
         /// <summary>
-        /// 初始化一个 <see cref="System.DefaultMappingAttribute"/> 类的新实例。
+        /// 初始化一个 <see cref="DefaultMappingAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="actualType">默认映射的实际数据类型。</param>
         public DefaultMappingAttribute(Type actualType)

@@ -12,12 +12,12 @@ namespace Aoite.Serialization
     public class BinarySerializer : Serializer
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.BinarySerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="BinarySerializer"/> 类的新实例。
         /// </summary>
         public BinarySerializer() { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.BinarySerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="BinarySerializer"/> 类的新实例。
         /// </summary>
         /// <param name="encoding">字符编码。</param>
         public BinarySerializer(Encoding encoding) : base(encoding) { }

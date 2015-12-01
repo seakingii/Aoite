@@ -21,6 +21,7 @@ namespace System.Collections.Generic
             if(collection == null) throw new ArgumentNullException(nameof(collection));
             return new GridData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
+
         /// <summary>
         /// 将指定的集合转换为数据表格。
         /// </summary>
@@ -80,7 +81,7 @@ namespace System.Collections.Generic
 
         static unsafe bool EqualsBytesShort(byte[] b1, byte[] b2)
         {
-            fixed(byte* p1 = b1, p2 = b2)
+            fixed (byte* p1 = b1, p2 = b2)
             {
                 byte* x1 = p1, x2 = p2;
                 int l = b1.Length;
@@ -162,30 +163,26 @@ namespace System.Collections.Generic
         /// <param name="end">结尾文本。如果集合为空，不包含此数据。</param>
         /// <returns>拼接后的字符串。</returns>
         public static string Join<T>(this IEnumerable<T> items, string separator = ",", string start = null, string end = null)
-        {
-            return Join(items, t => Convert.ToString(t), separator, start, end);
-        }
+            => Join(items, t => Convert.ToString(t), separator, start, end);
 
         /// <summary>
-        /// 搜索指定的对象，并返回整个 <see cref="System.Collections.Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="System.Collections.Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
         /// <returns>如果在整个 <paramref name="collection"/> 中找到 <paramref name="value"/> 的匹配项，则为第一个匹配项的从零开始的索引；否则为 -1。</returns>
         public static int IndexOf<T>(this IList<T> collection
             , T value
             , IEqualityComparer<T> comparer)
-        {
-            return IndexOf<T>(collection, value, 0, collection.Count, comparer);
-        }
+            => IndexOf<T>(collection, value, 0, collection.Count, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="System.Collections.Generic.IList&lt;T&gt;"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Generic.IList&lt;T&gt;"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="System.Collections.Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
@@ -194,15 +191,13 @@ namespace System.Collections.Generic
             , T value
             , int startIndex
             , IEqualityComparer<T> comparer)
-        {
-            return IndexOf<T>(collection, value, startIndex, collection.Count, comparer);
-        }
+            => IndexOf<T>(collection, value, startIndex, collection.Count, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="System.Collections.Generic.IList&lt;T&gt;"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Generic.IList&lt;T&gt;"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="System.Collections.Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="count">要搜索的部分中的元素数。</param>
@@ -225,26 +220,25 @@ namespace System.Collections.Generic
             }
             return -1;
         }
+
         /// <summary>
-        /// 搜索指定的对象，并返回整个 <see cref="System.Array"/> 中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回整个 <see cref="Array"/> 中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">数组元素的类型。</typeparam>
-        /// <param name="array">要搜索的从零开始的一维 <see cref="System.Array"/>。</param>
+        /// <param name="array">要搜索的从零开始的一维 <see cref="Array"/>。</param>
         /// <param name="value">要在 <paramref name="array"/> 中查找的对象。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
         /// <returns>如果在整个 <paramref name="array"/> 中找到 <paramref name="value"/> 的匹配项，则为第一个匹配项的从零开始的索引；否则为 -1。</returns>
         public static int IndexOf<T>(this T[] array
             , T value
             , IEqualityComparer<T> comparer)
-        {
-            return IndexOf<T>(array, value, 0, array.Length, comparer);
-        }
+            => IndexOf<T>(array, value, 0, array.Length, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="System.Array"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Array"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">数组元素的类型。</typeparam>
-        /// <param name="array">要搜索的从零开始的一维 <see cref="System.Array"/>。</param>
+        /// <param name="array">要搜索的从零开始的一维 <see cref="Array"/>。</param>
         /// <param name="value">要在 <paramref name="array"/> 中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
@@ -253,15 +247,13 @@ namespace System.Collections.Generic
             , T value
             , int startIndex
             , IEqualityComparer<T> comparer)
-        {
-            return IndexOf<T>(array, value, startIndex, array.Length, comparer);
-        }
+            => IndexOf<T>(array, value, startIndex, array.Length, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="System.Array"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Array"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">数组元素的类型。</typeparam>
-        /// <param name="array">要搜索的从零开始的一维<see cref="System.Array"/>。</param>
+        /// <param name="array">要搜索的从零开始的一维<see cref="Array"/>。</param>
         /// <param name="value">要在<paramref name="array"/>中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="count">要搜索的部分中的元素数。</param>
@@ -286,26 +278,23 @@ namespace System.Collections.Generic
         }
 
         /// <summary>
-        /// 搜索指定的对象，并返回整个 <see cref="System.Collections.Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="System.Collections.Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <returns>如果在整个 <paramref name="collection"/> 中找到 <paramref name="value"/> 的匹配项，则为第一个匹配项的从零开始的索引；否则为 -1。</returns>
-        public static int IndexOf<T>(this T[] collection
-            , T value)
-        {
-            return Array.IndexOf(collection, value);
-        }
+        public static int IndexOf<T>(this T[] collection, T value)
+            => Array.IndexOf(collection, value);
 
         /// <summary>
-        /// 获取与 <see cref="System.Collections.Specialized.NameValueCollection"/> 中的指定键关联的值，并将值转换为指定的类型。
+        /// 获取与 <see cref="Collections.Specialized.NameValueCollection"/> 中的指定键关联的值，并将值转换为指定的类型。
         /// </summary>
         /// <typeparam name="T">值的数据类型。</typeparam>
-        /// <param name="collection">可通过键或索引访问的关联 <see cref="System.String"/> 键和 <see cref="System.String"/> 值的集合。</param>
-        /// <param name="name">项的 <see cref="System.String"/> 键，该项包含要获取的值。键可以是 null。</param>
+        /// <param name="collection">可通过键或索引访问的关联 <see cref="String"/> 键和 <see cref="String"/> 值的集合。</param>
+        /// <param name="name">项的 <see cref="String"/> 键，该项包含要获取的值。键可以是 null。</param>
         /// <param name="defaultValue">默认值。</param>
-        /// <returns>如果找到，则为一个 <see cref="System.String"/>，包含与 <see cref="System.Collections.Specialized.NameValueCollection"/> 中的指定键关联的值的列表（此列表以逗号分隔）；否则为 null。</returns>
+        /// <returns>如果找到，则为一个 <see cref="String"/>，包含与 <see cref="Collections.Specialized.NameValueCollection"/> 中的指定键关联的值的列表（此列表以逗号分隔）；否则为 null。</returns>
         public static T Get<T>(this System.Collections.Specialized.NameValueCollection collection, string name, T defaultValue = default(T))
         {
             var value = collection.Get(name);

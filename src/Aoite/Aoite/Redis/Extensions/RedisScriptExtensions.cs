@@ -19,7 +19,7 @@ namespace System
         public static object Eval(this IRedisClient client, string script, RedisDictionary keyArgs)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException(nameof(script));
+            if(string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException(nameof(script));
             if(keyArgs == null) throw new ArgumentNullException(nameof(keyArgs));
 
             var args = RedisArgs.ConcatAll(new object[] { script, keyArgs.Keys.Count }, keyArgs.Keys, keyArgs.Values);
@@ -36,7 +36,7 @@ namespace System
         public static object EvalSHA(this IRedisClient client, string sha1, RedisDictionary keyArgs)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(sha1)) throw new ArgumentNullException(nameof(sha1));
+            if(string.IsNullOrWhiteSpace(sha1)) throw new ArgumentNullException(nameof(sha1));
             if(keyArgs == null) throw new ArgumentNullException(nameof(keyArgs));
 
             var args = RedisArgs.ConcatAll(new object[] { sha1, keyArgs.Keys.Count }, keyArgs.Keys, keyArgs.Values);
@@ -91,7 +91,7 @@ namespace System
         public static string ScriptLoad(this IRedisClient client, string script)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException(nameof(script));
+            if(string.IsNullOrWhiteSpace(script)) throw new ArgumentNullException(nameof(script));
 
             return client.Execute(new RedisString("SCRIPT LOAD", script));
         }

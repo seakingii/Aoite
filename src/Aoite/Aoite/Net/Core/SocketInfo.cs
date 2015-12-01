@@ -16,7 +16,7 @@ namespace Aoite.Net
         public IPEndPoint EndPoint { get { return this._EndPoint; } }
 
         /// <summary>
-        /// 提供主机地址和主机端口，初始化一个 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。
+        /// 提供主机地址和主机端口，初始化一个 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="host">主机地址。</param>
         /// <param name="port">主机端口。</param>
@@ -24,7 +24,7 @@ namespace Aoite.Net
             : this(GA.Net.CreateEndPoint(host, port)) { }
 
         /// <summary>
-        /// 提供网络端点，初始化一个 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。
+        /// 提供网络端点，初始化一个 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="endPoint">网络端点。</param>
         public SocketInfo(IPEndPoint endPoint)
@@ -50,9 +50,9 @@ namespace Aoite.Net
         }
 
         /// <summary>
-        /// 创建一个 <see cref="System.Net.Sockets.Socket"/>。
+        /// 创建一个 <see cref="Socket"/>。
         /// </summary>
-        /// <returns>返回一个 <see cref="System.Net.Sockets.Socket"/>。</returns>
+        /// <returns>返回一个 <see cref="Socket"/>。</returns>
         public Socket CreateSocket()
         {
             var socket = new Socket(this._EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -67,20 +67,20 @@ namespace Aoite.Net
         }
 
         /// <summary>
-        /// 将指定的端口隐式转换为 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。
+        /// 将指定的端口隐式转换为 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="port">主机端口。</param>
-        /// <returns>返回一个 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。</returns>
+        /// <returns>返回一个 <see cref="SocketInfo"/> 类的新实例。</returns>
         public static implicit operator SocketInfo(int port)
         {
             return new SocketInfo(null, port);
         }
 
         /// <summary>
-        /// 将指定的网络端点隐式转换为 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。
+        /// 将指定的网络端点隐式转换为 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="endPoint">网络端点。</param>
-        /// <returns>返回一个 <see cref="Aoite.Net.SocketInfo"/> 类的新实例。</returns>
+        /// <returns>返回一个 <see cref="SocketInfo"/> 类的新实例。</returns>
         public static implicit operator SocketInfo(IPEndPoint endPoint)
         {
             return new SocketInfo(endPoint);

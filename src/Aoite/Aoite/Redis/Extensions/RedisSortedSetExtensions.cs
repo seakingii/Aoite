@@ -21,7 +21,7 @@ namespace System
         public static long ZAdd(this IRedisClient client, string key, params RedisScoreItem[] items)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(items == null) throw new ArgumentNullException(nameof(items));
             if(items.Length == 0) return 0;
 
@@ -38,7 +38,7 @@ namespace System
         public static long ZCard(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("ZCARD", key));
         }
 
@@ -47,15 +47,15 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <returns>返回权重值包含指定区间的成员数量。</returns>
         public static long ZCount(this IRedisClient client, string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZCOUNT", key
                 , RedisArgs.GetScore(min, exclusiveMin)
@@ -73,7 +73,7 @@ namespace System
         public static double ZIncrBy(this IRedisClient client, string key, double increment, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisFloat("ZINCRBY", key, increment, member));
@@ -92,7 +92,7 @@ namespace System
         public static BinaryValue[] ZRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("ZRANGE", key, start, stop)));
         }
@@ -110,7 +110,7 @@ namespace System
         public static RedisScoreItem[] ZRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisItem<RedisScoreItem>(false, "ZRANGE", key, start, stop, "WITHSCORES"), 2));
         }
@@ -122,8 +122,8 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
@@ -134,7 +134,7 @@ namespace System
             , long? offset = null, long? count = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax) };
             if(offset.HasValue && count.HasValue)
             {
@@ -150,8 +150,8 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
@@ -162,7 +162,7 @@ namespace System
             , long? offset = null, long? count = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax), "WITHSCORES" };
             if(offset.HasValue && count.HasValue)
@@ -182,7 +182,7 @@ namespace System
         public static long? ZRank(this IRedisClient client, string key, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisInteger.Nullable("ZRANK", key, member));
@@ -198,7 +198,7 @@ namespace System
         public static long ZRem(this IRedisClient client, string key, params BinaryValue[] members)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0L;
 
@@ -217,7 +217,7 @@ namespace System
         public static long ZRemRangeByRank(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYRANK", key, start, stop));
         }
@@ -227,15 +227,15 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <returns>被移除成员的数量。</returns>
         public static long ZRemRangeByScore(this IRedisClient client, string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYSCORE", key
                 , RedisArgs.GetScore(min, exclusiveMin)
@@ -255,7 +255,7 @@ namespace System
         public static BinaryValue[] ZRevRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("ZREVRANGE", key, start, stop)));
         }
@@ -273,7 +273,7 @@ namespace System
         public static RedisScoreItem[] ZRevRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisItem<RedisScoreItem>(false, "ZREVRANGE", key, start, stop, "WITHSCORES"), 2));
         }
@@ -285,8 +285,8 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
@@ -297,7 +297,7 @@ namespace System
             , long? offset = null, long? count = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax) };
             if(offset.HasValue && count.HasValue)
             {
@@ -313,8 +313,8 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="System.Double.MinValue"/> -或- <see cref="System.Double.NegativeInfinity"/>，表示有序集的最小值。</param>
-        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="System.Double.MaxValue"/> -或- <see cref="System.Double.PositiveInfinity"/>，表示有序集的最高值。</param>
+        /// <param name="min">权重最小值。<paramref name="min"/> 可以是 <see cref="Double.MinValue"/> -或- <see cref="Double.NegativeInfinity"/>，表示有序集的最小值。</param>
+        /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
@@ -325,7 +325,7 @@ namespace System
             , long? offset = null, long? count = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax), "WITHSCORES" };
             if(offset.HasValue && count.HasValue)
@@ -345,7 +345,7 @@ namespace System
         public static long? ZRevRank(this IRedisClient client, string key, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisInteger.Nullable("ZREVRANK", key, member));
@@ -361,7 +361,7 @@ namespace System
         public static double? ZScore(this IRedisClient client, string key, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisFloat.Nullable("ZSCORE", key, member));
@@ -370,7 +370,7 @@ namespace System
         private static long ZStore(string command, IRedisClient client, string destination, RedisWeightDictionary keyWeights, RedisAggregate? aggregate)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
             if(keyWeights == null) throw new ArgumentNullException(nameof(keyWeights));
             if(keyWeights.Count == 0) return 0L;
 
@@ -446,7 +446,7 @@ namespace System
             , long? offset = null, long? count = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")
@@ -474,7 +474,7 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZLEXCOUNT", key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")
@@ -496,7 +496,7 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYLEX", key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")

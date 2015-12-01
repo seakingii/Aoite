@@ -16,7 +16,7 @@ namespace System
         Dictionary<string, AssemblyReflectionProxy> _proxies = new Dictionary<string, AssemblyReflectionProxy>();
 
         /// <summary>
-        /// 初始化一个 <see cref="System.AssemblyReflectionManager"/> 类的新实例。
+        /// 初始化一个 <see cref="AssemblyReflectionManager"/> 类的新实例。
         /// </summary>
         public AssemblyReflectionManager() { }
 
@@ -125,7 +125,7 @@ namespace System
         public bool UnloadDomain(string domainName)
         {
             // check the appdomain name is valid
-            if(string.IsNullOrEmpty(domainName))
+            if(string.IsNullOrWhiteSpace(domainName))
                 return false;
 
             // check we have an instance of the domain

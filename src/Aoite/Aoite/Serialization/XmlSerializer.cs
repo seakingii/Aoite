@@ -12,11 +12,11 @@ namespace Aoite.Serialization
     public class XmlSerializer : Serializer
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.XmlSerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="XmlSerializer"/> 类的新实例。
         /// </summary>
         public XmlSerializer() { }
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.XmlSerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="XmlSerializer"/> 类的新实例。
         /// </summary>
         /// <param name="encoding">字符编码。</param>
         public XmlSerializer(Encoding encoding) : base(encoding) { }

@@ -1,7 +1,7 @@
 ﻿namespace System
 {
     /// <summary>
-    /// 表示 <see cref="System.Result" /> 的状态。
+    /// 表示 <see cref="Result" /> 的状态。
     /// </summary>
     public class ResultStatus
     {

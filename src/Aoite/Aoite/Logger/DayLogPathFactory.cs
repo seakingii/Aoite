@@ -9,7 +9,7 @@ namespace Aoite.Logger
     public class DayLogPathFactory : ILogPathFactory
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.DayLogPathFactory"/> 类的新实例。
+        /// 初始化一个 <see cref="DayLogPathFactory"/> 类的新实例。
         /// </summary>
         public DayLogPathFactory() { }
 

@@ -12,14 +12,14 @@ namespace Aoite.Data
         /// 初始化一个 <see cref="Aoite.Data.BulkCopyArguments"/> 类的新实例。
         /// </summary>
         /// <param name="destinationTableName">服务器上目标表的名称。</param>
-        /// <param name="table">一个 <see cref="System.Data.DataTable"/>，它的行将被复制到目标表中。</param>
+        /// <param name="table">一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。</param>
         public BulkCopyArguments(string destinationTableName, DataTable table) : this(destinationTableName, table, (DataRowState)0) { }
         /// <summary>
         /// 初始化一个 <see cref="Aoite.Data.BulkCopyArguments"/> 类的新实例。
         /// </summary>
         /// <param name="destinationTableName">服务器上目标表的名称。</param>
-        /// <param name="table">一个 <see cref="System.Data.DataTable"/>，它的行将被复制到目标表中。</param>
-        /// <param name="rowState"><see cref="System.Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。</param>
+        /// <param name="table">一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。</param>
+        /// <param name="rowState"><see cref="Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。</param>
         public BulkCopyArguments(string destinationTableName, DataTable table, DataRowState rowState)
         {
             if(string.IsNullOrWhiteSpace(destinationTableName)) throw new ArgumentNullException(nameof(destinationTableName));
@@ -112,7 +112,7 @@ namespace Aoite.Data
 
         private DataTable _Table;
         /// <summary>
-        /// 获取一个 <see cref="System.Data.DataTable"/>，它的行将被复制到目标表中。
+        /// 获取一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。
         /// </summary>
         public DataTable Table
         {
@@ -124,7 +124,7 @@ namespace Aoite.Data
 
         private DataRowState _RowState;
         /// <summary>
-        /// 获取 <see cref="System.Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。
+        /// 获取 <see cref="Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。
         /// </summary>
         public DataRowState RowState
         {

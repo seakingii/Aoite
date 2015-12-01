@@ -13,19 +13,19 @@ namespace System
         private AppDomain _domain;
 
         /// <summary>
-        /// 初始化一个 <see cref="System.Isolated&lt;T&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="Isolated&lt;T&gt;"/> 类的新实例。
         /// </summary>
         public Isolated() : this(TType.Assembly.FullName, TType.FullName) { }
 
         /// <summary>
-        /// 提供程序集的显示名称和类型的完全限定名称，初始化一个 <see cref="System.Isolated&lt;T&gt;"/> 类的新实例。
+        /// 提供程序集的显示名称和类型的完全限定名称，初始化一个 <see cref="Isolated&lt;T&gt;"/> 类的新实例。
         /// </summary>
         /// <param name="assemblyFullName">程序集的显示名称。</param>
         /// <param name="typeFullName">类型的完全限定名称，包含命名空间而不是程序集。</param>
         public Isolated(string assemblyFullName, string typeFullName)
         {
-            if(string.IsNullOrEmpty(assemblyFullName)) throw new ArgumentNullException(nameof(assemblyFullName));
-            if(string.IsNullOrEmpty(typeFullName)) throw new ArgumentNullException(nameof(typeFullName));
+            if(string.IsNullOrWhiteSpace(assemblyFullName)) throw new ArgumentNullException(nameof(assemblyFullName));
+            if(string.IsNullOrWhiteSpace(typeFullName)) throw new ArgumentNullException(nameof(typeFullName));
             this._domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(), null, AppDomain.CurrentDomain.SetupInformation);
             this._Instance = new Lazy<T>(() => (T)this._domain.CreateInstanceAndUnwrap(assemblyFullName, typeFullName));
             //this._domain.ReflectionOnlyAssemblyResolve += _domain_ReflectionOnlyAssemblyResolve;
@@ -61,7 +61,7 @@ namespace System
     public class IsolatedProxy : MarshalByRefObject
     {
         /// <summary>
-        /// 初始化一个 <see cref="System.IsolatedProxy"/> 类的新实例。
+        /// 初始化一个 <see cref="IsolatedProxy"/> 类的新实例。
         /// </summary>
         public IsolatedProxy() { }
 
@@ -90,7 +90,7 @@ namespace System
         /// <summary>
         /// 获取控制此实例的生存期策略的生存期服务对象。
         /// </summary>
-        /// <returns><see cref="System.Runtime.Remoting.Lifetime.ILease"/> 类型的对象，用于控制此实例的生存期策略。这是此实例当前的生存期服务对象（如果存在）；否则为初始化为 <see cref="System.Runtime.Remoting.Lifetime.LifetimeServices.LeaseManagerPollTime"/> 属性的值的新生存期服务对象。</returns>
+        /// <returns><see cref="Runtime.Remoting.Lifetime.ILease"/> 类型的对象，用于控制此实例的生存期策略。这是此实例当前的生存期服务对象（如果存在）；否则为初始化为 <see cref="Runtime.Remoting.Lifetime.LifetimeServices.LeaseManagerPollTime"/> 属性的值的新生存期服务对象。</returns>
         public override object InitializeLifetimeService()
         {
             return null;

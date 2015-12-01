@@ -9,7 +9,7 @@ namespace Aoite.Data
     public interface IDbResult : IResult, IDisposable
     {
         /// <summary>
-        /// 获取一个值，表示查询操作的 <see cref="System.Data.Common.DbCommand"/> 对象。
+        /// 获取一个值，表示查询操作的 <see cref="Data.Common.DbCommand"/> 对象。
         /// </summary>
         DbCommand Command { get; }
 

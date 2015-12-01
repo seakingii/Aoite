@@ -30,7 +30,7 @@
                 this._Mode = NamesapceRuleMode.EndsWith;
             }
 
-            if(string.IsNullOrEmpty(expression)) throw new ArgumentOutOfRangeException(nameof(expression));
+            if(string.IsNullOrWhiteSpace(expression)) throw new ArgumentOutOfRangeException(nameof(expression));
 
             this._Expression = expression;
         }

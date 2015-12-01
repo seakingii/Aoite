@@ -12,7 +12,7 @@ namespace Aoite.Serialization
     public class ObjectWriter : ObjectFormatterBase
     {
         /// <summary>
-        /// 初始化一个类 <see cref="Aoite.Serialization.ObjectWriter"/> 的新实例。
+        /// 初始化一个类 <see cref="ObjectWriter"/> 的新实例。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
         /// <param name="encoding">序列化的编码。</param>

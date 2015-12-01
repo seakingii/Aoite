@@ -16,7 +16,7 @@ namespace Aoite.Serialization
         public Type FormatterType { get { return _FormatterType; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.SerializableUsageAttribute"/> 类的新实例。
+        /// 初始化一个 <see cref="SerializableUsageAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="formatterType">可自定义序列化的功能实现类型。</param>
         public SerializableUsageAttribute(Type formatterType)

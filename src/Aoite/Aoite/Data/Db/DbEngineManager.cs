@@ -69,7 +69,7 @@ namespace Aoite.Data
         /// <returns>如果集合已存在该唯一标识符，将会返回 false，否则返回 true。</returns>
         public void Add(string name, DbEngine engine)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             engine._Name = name;
             engine._Manager = this;

@@ -17,10 +17,7 @@ namespace System.Web
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="name">名称。</param>
         /// <returns>如果存在返回值，否则返回默认值。</returns>
-        public static T GetTemp<T>(string name)
-        {
-            return Webx.GetTemp<T>(name, null);
-        }
+        public static T GetTemp<T>(string name) => GetTemp<T>(name, null);
         /// <summary>
         /// 指定一个名称和默认值，获取当前请求的临时数据。
         /// </summary>
@@ -28,10 +25,8 @@ namespace System.Web
         /// <param name="name">名称。</param>
         /// <param name="defaultValue">自定义的默认值。</param>
         /// <returns>如果存在返回值，否则返回默认值。</returns>
-        public static T GetTemp<T>(string name, T defaultValue)
-        {
-            return Webx.GetTemp<T>(name, null);
-        }
+        public static T GetTemp<T>(string name, T defaultValue) => GetTemp<T>(name, null);
+
         /// <summary>
         /// 指定一个名称和默认值回调方法，获取当前请求的临时数据。
         /// </summary>
@@ -41,7 +36,7 @@ namespace System.Web
         /// <returns>如果存在返回值，否则执行回调方法并返回默认值。</returns>
         public static T GetTemp<T>(string name, Func<T> defaultValueCallback)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             var items = HttpContext.Current.Items;
             var value = items[name];
@@ -55,6 +50,7 @@ namespace System.Web
 
             return (T)value;
         }
+
         /// <summary>
         /// 设置当前请求的临时数据。
         /// </summary>
@@ -64,7 +60,7 @@ namespace System.Web
         /// <returns>返回设置的值。</returns>
         public static T SetTemp<T>(string name, T value)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             var items = HttpContext.Current.Items;
             if(value == null) items.Remove(name);
@@ -83,7 +79,7 @@ namespace System.Web
         /// <returns>一个包含内容 URL 的字符串。</returns>
         public static string MapUrl(string contentPath)
         {
-            if(string.IsNullOrEmpty(contentPath)) throw new ArgumentNullException(nameof(contentPath));
+            if(string.IsNullOrWhiteSpace(contentPath)) throw new ArgumentNullException(nameof(contentPath));
             var path = HttpRuntime.AppDomainAppVirtualPath ?? "/";
             return VirtualPathUtility.Combine(path, VirtualPathUtility.ToAbsolute(contentPath, path));
         }
@@ -93,10 +89,7 @@ namespace System.Web
         /// </summary>
         /// <param name="virtualPath">虚拟路径（绝对路径或相对路径）。</param>
         /// <returns>由 <paramref name="virtualPath"/> 指定的服务器物理路径。</returns>
-        public static string MapPath(string virtualPath)
-        {
-            return System.Web.Hosting.HostingEnvironment.MapPath(virtualPath);
-        }
+        public static string MapPath(string virtualPath) => Hosting.HostingEnvironment.MapPath(virtualPath);
 
         #endregion
 
@@ -112,9 +105,7 @@ namespace System.Web
         /// <param name="path">要与当前 Cookie 一起传输的虚拟路径。</param>
         /// <param name="httpOnly">指定 Cookie 是否可通过客户端脚本访问。</param>
         public static void Cookie(string name, string value, string path = null, bool httpOnly = false)
-        {
-            Cookie(name, value, DateTime.Now.AddDays(3), path ?? RootPath, httpOnly);
-        }
+            => Cookie(name, value, DateTime.Now.AddDays(3), path ?? RootPath, httpOnly);
 
         /// <summary>
         /// 新建或更新客户端的 Cookie。
@@ -141,7 +132,7 @@ namespace System.Web
         /// 指定名称，获取客户端的 Cookie 值。
         /// </summary>
         /// <param name="name">Cookie 的名称。</param>
-        /// <returns>返回 Cookie 的值。默认值为 <see cref="System.String.Empty"/>。</returns>
+        /// <returns>返回 Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
         public static string Cookie(string name)
         {
             var cookie = HttpContext.Current.Request.Cookies[name];
@@ -153,7 +144,7 @@ namespace System.Web
         /// 指定名称，移除客户端的 Cookie 值。
         /// </summary>
         /// <param name="name">Cookie 的名称。</param>
-        /// <returns>返回 Cookie 的值。默认值为 <see cref="System.String.Empty"/>。</returns>
+        /// <returns>返回 Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
         public static string CookieRemove(string name)
         {
             var value = Cookie(name);
@@ -186,7 +177,7 @@ namespace System.Web
         /// <param name="scripts">脚本的内容。</param>
         public static void AppendScripts(string scripts)
         {
-            if(string.IsNullOrEmpty(scripts)) return;
+            if(string.IsNullOrWhiteSpace(scripts)) return;
             var scriptBuilder = GetTemp<Text.StringBuilder>(SCRIPT_STRING_BUILDER, () => new Text.StringBuilder());
 
             using(var reader = new System.IO.StringReader(scripts))
@@ -255,7 +246,7 @@ namespace System.Web
                   ?? new NameValueCollection();
 
             var redisAddress = config.Get("redis.address");
-            if(!string.IsNullOrEmpty(redisAddress))
+            if(!string.IsNullOrWhiteSpace(redisAddress))
             {
                 var sp = redisAddress.Split(':');
                 if(sp.Length != 2) throw new ArgumentException("非法的 Redis 的连接地址 {0}。".Fmt(redisAddress));
@@ -272,9 +263,7 @@ namespace System.Web
         }
 
         private static IIocContainer GetContainer()
-        {
-            return HttpContext.Current.Application[ContainerName] as IIocContainer;
-        }
+            => HttpContext.Current.Application[ContainerName] as IIocContainer;
 
         /// <summary>
         /// 获取或设置用于 Webx 的服务容器。
@@ -285,7 +274,7 @@ namespace System.Web
             {
                 var container = GetContainer();
                 if(container == null)
-                    lock(string.Intern(ContainerName))
+                    lock (string.Intern(ContainerName))
                     {
                         return GetContainer() ?? SetContainer(ObjectFactory.Global);
                     }

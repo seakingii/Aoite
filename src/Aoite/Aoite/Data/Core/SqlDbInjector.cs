@@ -26,11 +26,11 @@ namespace Aoite.Data
         public override DbEngineProvider Provider { get { return DbEngineProvider.MicrosoftSqlServer; } }
 
         /// <summary>
-        /// 描述指定的 <see cref="System.Data.Common.DbParameter"/>。
+        /// 描述指定的 <see cref="Data.Common.DbParameter"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="parameter">一个 <see cref="System.Data.Common.DbParameter"/> 的实例。</param>
-        /// <returns>返回参数描述的 <see cref="System.String"/> 值。</returns>
+        /// <param name="parameter">一个 <see cref="Data.Common.DbParameter"/> 的实例。</param>
+        /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
         public override string DescribeParameter(IDbEngine engine, DbParameter parameter)
         {
             var p = parameter as SqlParameter;

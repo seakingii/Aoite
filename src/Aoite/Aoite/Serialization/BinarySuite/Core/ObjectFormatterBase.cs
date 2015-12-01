@@ -24,7 +24,7 @@ namespace Aoite.Serialization
         internal readonly List<object> ReferenceContainer = new List<object>(11);
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.ObjectFormatterBase" />类的新实例。"/>
+        /// 初始化一个 <see cref="ObjectFormatterBase" />类的新实例。"/>
         /// </summary>
         /// <param name="stream">序列化的流。</param>
         /// <param name="encoding">序列化的编码。</param>

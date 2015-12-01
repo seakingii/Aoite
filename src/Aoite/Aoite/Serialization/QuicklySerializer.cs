@@ -16,12 +16,12 @@ namespace Aoite.Serialization
              CustomAttributes
              = new System.Collections.Generic.Dictionary<Type, SerializableUsageAttribute>();
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.QuicklySerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="QuicklySerializer"/> 类的新实例。
         /// </summary>
         public QuicklySerializer() : this(Encoding.UTF8) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.QuicklySerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="QuicklySerializer"/> 类的新实例。
         /// </summary>
         /// <param name="encoding">字符编码。</param>
         public QuicklySerializer(Encoding encoding) : base(encoding) { }

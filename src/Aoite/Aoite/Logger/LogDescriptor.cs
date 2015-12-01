@@ -8,7 +8,7 @@ namespace Aoite.Logger
     public class LogDescriptor : ILogDescriptor
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.LogDescriptor"/> 类的新实例。
+        /// 初始化一个 <see cref="LogDescriptor"/> 类的新实例。
         /// </summary>
         public LogDescriptor() { }
 

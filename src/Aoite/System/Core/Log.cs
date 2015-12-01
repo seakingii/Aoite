@@ -35,8 +35,8 @@ namespace System
         /// </summary>
         public static bool IsThreadContext { get { return _threadLocalContent.Value != null; } }
         /// <summary>
-        /// 创建并返回一个 <see cref="System.LogContext"/>。返回当前线程上下文包含的 <see cref="System.LogContext"/> 或创建一个新的  <see cref="System.LogContext"/>。
-        /// <para>当释放一个 <see cref="System.LogContext"/> 后，下一次调用获取将会重新创建上下文。</para>
+        /// 创建并返回一个 <see cref="LogContext"/>。返回当前线程上下文包含的 <see cref="LogContext"/> 或创建一个新的  <see cref="LogContext"/>。
+        /// <para>当释放一个 <see cref="LogContext"/> 后，下一次调用获取将会重新创建上下文。</para>
         /// </summary>
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         public static LogContext Context
@@ -59,7 +59,7 @@ namespace System
         /// 写入消息日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public static void Info(string message, params object[] args)
         {
             Write(LogType.Info, message, args);
@@ -69,7 +69,7 @@ namespace System
         /// 写入警告日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public static void Warn(string message, params object[] args)
         {
             Write(LogType.Warn, message, args);
@@ -89,7 +89,7 @@ namespace System
         /// 写入错误日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public static void Error(string message, params object[] args)
         {
             Write(LogType.Error, message, args);
@@ -125,7 +125,7 @@ namespace System
         /// 写入消息日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public void Info(string message, params object[] args)
         {
             Write(LogType.Info, message, args);
@@ -135,7 +135,7 @@ namespace System
         /// 写入警告日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public void Warn(string message, params object[] args)
         {
             Write(LogType.Warn, message, args);
@@ -155,7 +155,7 @@ namespace System
         /// 写入错误日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
-        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="System.Object"/> 数组。</param>
+        /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
         public void Error(string message, params object[] args)
         {
             Write(LogType.Error, message, args);

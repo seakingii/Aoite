@@ -42,7 +42,7 @@ namespace Aoite.Data
         /// <summary>
         /// 指定参数集合初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
-        /// <param name="keysAndValues">应当是 <see cref="System.String"/> / <see cref="System.Object"/> 的字典集合。</param>
+        /// <param name="keysAndValues">应当是 <see cref="String"/> / <see cref="Object"/> 的字典集合。</param>
         public ExecuteParameterCollection(params object[] keysAndValues)
             : this(keysAndValues == null ? 0 : keysAndValues.Length / 2)
         {
@@ -151,7 +151,7 @@ namespace Aoite.Data
         {
             if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             var name = parameter.Name;
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("parameter.Name");
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("parameter.Name");
             if(this._innerDict.ContainsKey(name)) throw new ArgumentException("已存在此名称 " + name + " 的参数！", "parameter.Name");
             parameter.Owner = this;
             this._innerDict.Add(name, parameter);
@@ -159,9 +159,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 指定原 <see cref="System.Data.Common.DbParameter"/> 实例，添加到集合中。
+        /// 指定原 <see cref="Data.Common.DbParameter"/> 实例，添加到集合中。
         /// </summary>
-        /// <param name="sourceParameter">原 <see cref="System.Data.Common.DbParameter"/> 实例。可以为 null，表示未确定数据。</param>
+        /// <param name="sourceParameter">原 <see cref="Data.Common.DbParameter"/> 实例。可以为 null，表示未确定数据。</param>
         public ExecuteParameterCollection Add(DbParameter sourceParameter)
         {
             this.Add(new ExecuteDbParameter(sourceParameter));
@@ -209,7 +209,7 @@ namespace Aoite.Data
         /// 指定输出参数的名称和参数的类型，添加到集合中。
         /// </summary>
         /// <param name="name">参数的名称。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         public ExecuteParameterCollection Add(string name, DbType type)
         {
             return this.Add(new ExecuteParameter(name, type));
@@ -241,7 +241,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, ParameterDirection direction)
         {
@@ -253,7 +253,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type)
         {
             return this.Add(new ExecuteParameter(name, value, type));
@@ -264,7 +264,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, int size)
         {
@@ -276,7 +276,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, int size, ParameterDirection direction)
@@ -309,7 +309,7 @@ namespace Aoite.Data
         {
             if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             var name = parameter.Name;
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("parameter.Name");
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("parameter.Name");
 
             return this.Remove(name);
         }
@@ -349,9 +349,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 从特定的 <see cref="System.Array"/> 索引开始，将集合的元素复制到一个 <see cref="System.Array"/> 中。
+        /// 从特定的 <see cref="Array"/> 索引开始，将集合的元素复制到一个 <see cref="Array"/> 中。
         /// </summary>
-        /// <param name="parameters">作为从集合复制的元素的目标位置的一维 <see cref="System.Array"/>。<see cref="System.Array"/> 必须具有从零开始的索引。</param>
+        /// <param name="parameters">作为从集合复制的元素的目标位置的一维 <see cref="Array"/>。<see cref="Array"/> 必须具有从零开始的索引。</param>
         /// <param name="arrayIndex"><paramref name="parameters"/> 中从零开始的索引，从此处开始复制。</param>
         public void CopyTo(ExecuteParameter[] parameters, int arrayIndex)
         {

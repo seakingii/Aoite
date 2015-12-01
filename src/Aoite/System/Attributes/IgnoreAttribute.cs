@@ -12,7 +12,7 @@
         public static readonly Type Type = typeof(IgnoreAttribute);
 
         /// <summary>
-        /// 初始化一个 <see cref="System.IgnoreAttribute"/> 类的新实例。
+        /// 初始化一个 <see cref="IgnoreAttribute"/> 类的新实例。
         /// </summary>
         public IgnoreAttribute() { }
     }

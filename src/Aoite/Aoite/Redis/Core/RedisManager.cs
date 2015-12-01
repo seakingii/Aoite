@@ -65,12 +65,12 @@ namespace Aoite.Redis
         public string Password { get { return this._Password; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisManager"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisManager"/> 类的新实例。
         /// </summary>
         public RedisManager() : this(DefaultAddress, DefaultPassword) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisManager"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisManager"/> 类的新实例。
         /// </summary>
         /// <param name="address">Redis 的连接地址。</param>
         /// <param name="password">Redis 的连接密码。</param>

@@ -15,7 +15,7 @@ namespace Aoite.Serialization
         internal readonly byte[] DefaultBuffer = new byte[16];
 
         /// <summary>
-        /// 初始化一个类 <see cref="Aoite.Serialization.ObjectReader"/> 的新实例。
+        /// 初始化一个类 <see cref="ObjectReader"/> 的新实例。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
         /// <param name="encoding">序列化的编码。</param>

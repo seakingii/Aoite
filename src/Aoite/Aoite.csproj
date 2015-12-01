@@ -419,7 +419,9 @@
     <Compile Include="System\Attributes\IgnoreAttribute.cs" />
     <Compile Include="System\Attributes\IKeyAttribute.cs" />
     <Compile Include="System\Collections\Generic\ConsistentHash`1.cs" />
-    <Compile Include="System\Core\Ajob.cs" />
+    <Compile Include="System\Core\Ajob.cs">
+      <DependentUpon>IAsyncJob.cs</DependentUpon>
+    </Compile>
     <Compile Include="System\Core\AssemblyReflectionProxy.cs" />
     <Compile Include="System\Core\BinaryValue.cs" />
     <Compile Include="System\Core\BinaryValue~Implicit.cs">

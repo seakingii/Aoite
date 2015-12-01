@@ -28,7 +28,7 @@ namespace System
         public static void AddParameter(this DbCommand dbCommand, string name, object value)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             var p = dbCommand.CreateParameter();
             p.ParameterName = name;
@@ -48,6 +48,7 @@ namespace System
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
             return dbCommand.Parameters[index].Value.CastTo<T>();
         }
+
         /// <summary>
         /// 获取指定参数名称的值。
         /// </summary>
@@ -58,10 +59,11 @@ namespace System
         public static T GetValue<T>(this DbCommand dbCommand, string name)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             return dbCommand.Parameters[name].Value.CastTo<T>();
         }
+
         /// <summary>
         /// 将指定的执行命令转换成完整字符串形式。
         /// </summary>
@@ -454,9 +456,7 @@ namespace System
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<int> Remove<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
-        {
-            return RemoveAnonymous<TEntity>(engine, entity, tableName);
-        }
+            => RemoveAnonymous<TEntity>(engine, entity, tableName);
 
         #endregion
 
@@ -469,9 +469,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, object objectInstance)
-        {
-            return RemoveWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
-        }
+            => RemoveWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
 
         /// <summary>
         /// 提供匹配条件，执行一个删除的命令。
@@ -480,9 +478,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>  
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps)
-        {
-            return RemoveWhere<TEntity>(engine, CreateWhere(engine, ps), ps);
-        }
+            => RemoveWhere<TEntity>(engine, CreateWhere(engine, ps), ps);
 
         /// <summary>
         /// 提供匹配条件，执行一个删除的命令。
@@ -541,41 +537,36 @@ namespace System
         #region FineOne
 
         /// <summary>
-        /// 获取指定 Id 值的数据源对象。
+        /// 获取指定 <paramref name="id"/> 值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="id">字段“Id”的值。</param>
         public static DbResult<TEntity> FindOne<TEntity>(this IDbEngine engine, object id)
-        {
-            return FindOne<TEntity, TEntity>(engine, id);
-        }
+            => FindOne<TEntity, TEntity>(engine, id);
+
         /// <summary>
-        /// 获取指定 Id 键值的数据源对象。
+        /// 获取指定 <paramref name="id"/> 键值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyName">主键的列名。</param>
         /// <param name="keyValue">主键的列值。</param>
         public static DbResult<TEntity> FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue)
-        {
-            return FindOne<TEntity, TEntity>(engine, keyName, keyValue);
-        }
+            => FindOne<TEntity, TEntity>(engine, keyName, keyValue);
 
         /// <summary>
-        /// 获取指定 Id 值的数据源对象。
+        /// 获取指定 <paramref name="id"/> 值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="id">字段“Id”的值。</param>
         public static DbResult<TView> FindOne<TEntity, TView>(this IDbEngine engine, object id)
-        {
-            return FindOne<TEntity, TView>(engine, null, id);
-        }
+            => FindOne<TEntity, TView>(engine, null, id);
 
         /// <summary>
-        /// 获取指定 Id 键值的数据源对象。
+        /// 获取指定 <paramref name="id"/> 键值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
@@ -589,7 +580,7 @@ namespace System
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
-            if(string.IsNullOrEmpty(keyName))
+            if(string.IsNullOrWhiteSpace(keyName))
             {
                 var prop = m1.Properties.FirstOrDefault(p => p.IsKey);
                 if(prop == null) keyName = DefaultKeyName;
@@ -613,9 +604,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<TEntity> FindOneWhere<TEntity>(this IDbEngine engine, object objectInstance)
-        {
-            return FindOneWhere<TEntity, TEntity>(engine, objectInstance);
-        }
+            => FindOneWhere<TEntity, TEntity>(engine, objectInstance);
+
         /// <summary>
         /// 提供匹配条件，获取一个对象。
         /// </summary>
@@ -623,9 +613,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<TEntity> FindOneWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps = null)
-        {
-            return FindOneWhere<TEntity, TEntity>(engine, ps);
-        }
+            => FindOneWhere<TEntity, TEntity>(engine, ps);
+        
         /// <summary>
         /// 提供匹配条件，获取一个对象。
         /// </summary>
@@ -634,9 +623,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<TEntity> FindOneWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
-        {
-            return FindOneWhere<TEntity, TEntity>(engine, where, ps);
-        }
+            => FindOneWhere<TEntity, TEntity>(engine, where, ps);
 
         /// <summary>
         /// 提供匹配条件，获取一个对象。
@@ -646,9 +633,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<TView> FindOneWhere<TEntity, TView>(this IDbEngine engine, object objectInstance)
-        {
-            return FindOneWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance));
-        }
+            => FindOneWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance));
+        
         /// <summary>
         /// 提供匹配条件，获取一个对象。
         /// </summary>
@@ -657,9 +643,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<TView> FindOneWhere<TEntity, TView>(this IDbEngine engine, ExecuteParameterCollection ps = null)
-        {
-            return FindOneWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps);
-        }
+            => FindOneWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps);
+        
         /// <summary>
         /// 提供匹配条件，获取一个对象。
         /// </summary>
@@ -676,7 +661,7 @@ namespace System
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
             var fields = CreateFields<TEntity, TView>(engine);
             var commandText = "SELECT TOP 1 " + fields + " FROM " + parSetting.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
-            if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
+            if(!string.IsNullOrWhiteSpace(where)) commandText += " WHERE " + where;
             return engine.Execute(commandText, ps).ToEntity<TView>();
         }
 
@@ -691,9 +676,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<List<TEntity>> FindAllWhere<TEntity>(this IDbEngine engine, object objectInstance)
-        {
-            return FindAllWhere<TEntity, TEntity>(engine, objectInstance);
-        }
+            => FindAllWhere<TEntity, TEntity>(engine, objectInstance);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -701,9 +685,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<List<TEntity>> FindAllWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps = null)
-        {
-            return FindAllWhere<TEntity, TEntity>(engine, ps);
-        }
+            => FindAllWhere<TEntity, TEntity>(engine, ps);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -712,9 +695,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<List<TEntity>> FindAllWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
-        {
-            return FindAllWhere<TEntity, TEntity>(engine, where, ps);
-        }
+            => FindAllWhere<TEntity, TEntity>(engine, where, ps);
 
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
@@ -724,9 +705,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<List<TView>> FindAllWhere<TEntity, TView>(this IDbEngine engine, object objectInstance)
-        {
-            return FindAllWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance));
-        }
+            => FindAllWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance));
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -735,9 +715,8 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<List<TView>> FindAllWhere<TEntity, TView>(this IDbEngine engine, ExecuteParameterCollection ps = null)
-        {
-            return FindAllWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps);
-        }
+            => FindAllWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -754,7 +733,7 @@ namespace System
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
             var fields = CreateFields<TEntity, TView>(engine);
             var commandText = "SELECT " + fields + " FROM " + parSetting.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
-            if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
+            if(!string.IsNullOrWhiteSpace(where)) commandText += " WHERE " + where;
             return engine.Execute(commandText, ps).ToEntities<TView>();
         }
 
@@ -770,9 +749,8 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, object objectInstance)
-        {
-            return FindAllPage<TEntity, TEntity>(engine, page, objectInstance);
-        }
+            => FindAllPage<TEntity, TEntity>(engine, page, objectInstance);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -781,9 +759,8 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
-        {
-            return FindAllPage<TEntity, TEntity>(engine, page, ps);
-        }
+            => FindAllPage<TEntity, TEntity>(engine, page, ps);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -793,9 +770,7 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
-        {
-            return FindAllPage<TEntity, TEntity>(engine, page, where, ps);
-        }
+            => FindAllPage<TEntity, TEntity>(engine, page, where, ps);
 
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
@@ -806,9 +781,8 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, object objectInstance)
-        {
-            return FindAllPage<TEntity, TView>(engine, page, new ExecuteParameterCollection(objectInstance));
-        }
+            => FindAllPage<TEntity, TView>(engine, page, new ExecuteParameterCollection(objectInstance));
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -818,9 +792,8 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
-        {
-            return FindAllPage<TEntity, TView>(engine, page, CreateWhere(engine, ps), ps);
-        }
+            => FindAllPage<TEntity, TView>(engine, page, CreateWhere(engine, ps), ps);
+        
         /// <summary>
         /// 提供匹配条件，获取对象的列表。
         /// </summary>
@@ -839,7 +812,7 @@ namespace System
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
             var fields = CreateFields<TEntity, TView>(engine);
             var commandText = "SELECT " + fields + " FROM " + parSetting.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
-            if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
+            if(!string.IsNullOrWhiteSpace(where)) commandText += " WHERE " + where;
             return engine.Execute(commandText, ps).ToEntities<TView>(page);
         }
 
@@ -854,9 +827,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
         public static Result<bool> Exists<TEntity>(this IDbEngine engine, object keyValue)
-        {
-            return Exists<TEntity>(engine, null, keyValue);
-        }
+            => Exists<TEntity>(engine, null, keyValue);
 
         /// <summary>
         /// 判断指定的主键的列名的值是否已存在。
@@ -867,7 +838,7 @@ namespace System
         /// <param name="keyValue">主键的列值。</param>
         public static Result<bool> Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue)
         {
-            if(string.IsNullOrEmpty(keyName))
+            if(string.IsNullOrWhiteSpace(keyName))
             {
                 var prop = TypeMapper.Instance<TEntity>.Mapper.Properties.FirstOrDefault(p => p.IsKey);
                 if(prop == null) keyName = DefaultKeyName;
@@ -917,7 +888,7 @@ namespace System
 
             var commandText = "SELECT 1 FROM "
                 + engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
-            if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
+            if(!string.IsNullOrWhiteSpace(where)) commandText += " WHERE " + where;
             var r = engine.Execute(commandText, ps).ToScalar();
             if(r.IsFailed) return r.Exception;
             return r.Value != null;
@@ -939,6 +910,7 @@ namespace System
             if(objectInstance == null) throw new ArgumentNullException(nameof(objectInstance));
             return RowCount<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
         }
+
         /// <summary>
         /// 获取数据表的总行数。
         /// </summary>
@@ -947,9 +919,8 @@ namespace System
         /// <param name="ps">参数集合。</param>
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps)
-        {
-            return RowCount<TEntity>(engine, CreateWhere(engine, ps));
-        }
+            => RowCount<TEntity>(engine, CreateWhere(engine, ps));
+
         /// <summary>
         /// 获取数据表的总行数。
         /// </summary>
@@ -963,7 +934,7 @@ namespace System
             if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var commandText = "SELECT COUNT(*) FROM " + engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
-            if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
+            if(!string.IsNullOrWhiteSpace(where)) commandText += " WHERE " + where;
             return engine.Execute(commandText, ps).ToScalar<long>();
         }
 
@@ -1011,7 +982,7 @@ namespace System
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             if(ps == null || ps.Count == 0) return null;
-            if(string.IsNullOrEmpty(binary)) throw new ArgumentNullException(nameof(binary));
+            if(string.IsNullOrWhiteSpace(binary)) throw new ArgumentNullException(nameof(binary));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var builder = new StringBuilder();

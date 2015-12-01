@@ -24,7 +24,7 @@ namespace Aoite.Logger
 
         private IAsyncJob _ajob;
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.LoggerBase"/> 类的新实例。
+        /// 初始化一个 <see cref="LoggerBase"/> 类的新实例。
         /// </summary>
         public LoggerBase()
         {

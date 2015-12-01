@@ -9,7 +9,7 @@ namespace Aoite.Logger
     public class HourLogPathFactory : ILogPathFactory
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Logger.HourLogPathFactory"/> 类的新实例。
+        /// 初始化一个 <see cref="HourLogPathFactory"/> 类的新实例。
         /// </summary>
         public HourLogPathFactory() { }
 

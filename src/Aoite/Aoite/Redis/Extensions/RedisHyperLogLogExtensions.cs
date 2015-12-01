@@ -19,7 +19,7 @@ namespace System
         public static bool PFAdd(this IRedisClient client, string key, params BinaryValue[] elements)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(elements == null) throw new ArgumentNullException(nameof(elements));
             if(elements.Length == 0) return false;
 
@@ -50,7 +50,7 @@ namespace System
         public static Result PFMerge(this IRedisClient client, string destKey, params string[] sourceKeys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(destKey)) throw new ArgumentNullException(nameof(destKey));
+            if(string.IsNullOrWhiteSpace(destKey)) throw new ArgumentNullException(nameof(destKey));
             if(sourceKeys == null) throw new ArgumentNullException(nameof(sourceKeys));
             if(sourceKeys.Length == 0) return Result.SuccessedString;
 

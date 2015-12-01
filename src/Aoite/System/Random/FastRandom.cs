@@ -21,7 +21,7 @@ namespace System
         #region Constructors
 
         /// <summary>
-        /// 使用与时间相关的默认种子值，初始化 <see cref="System.FastRandom"/> 类的新实例。
+        /// 使用与时间相关的默认种子值，初始化 <see cref="FastRandom"/> 类的新实例。
         /// </summary>
         public FastRandom()
         {
@@ -29,7 +29,7 @@ namespace System
         }
 
         /// <summary>
-        /// 使用指定的种子值初始化 <see cref="System.FastRandom"/> 类的新实例。
+        /// 使用指定的种子值初始化 <see cref="FastRandom"/> 类的新实例。
         /// </summary>
         /// <param name="seed">用来计算伪随机数序列起始值的数字。如果指定的是负数，则使用其绝对值。</param>
         public FastRandom(int seed)
@@ -63,7 +63,7 @@ namespace System
         /// <summary>
         /// 返回非负随机数。 
         /// </summary>
-        /// <returns>大于等于零且小于 <see cref="System.Int32.MaxValue"/> 的 32 位带符号整数。</returns>
+        /// <returns>大于等于零且小于 <see cref="Int32.MaxValue"/> 的 32 位带符号整数。</returns>
         public int Next()
         {
             uint t = (x ^ (x << 11));
@@ -284,9 +284,9 @@ namespace System
         #region Public Methods [Methods not present on System.Random]
 
         /// <summary>
-        /// 返回非负的 <see cref="System.UInt32.MaxValue"/> 随机数。 
+        /// 返回非负的 <see cref="UInt32.MaxValue"/> 随机数。 
         /// </summary>
-        /// <returns>大于等于零且小于 <see cref="System.UInt32.MaxValue"/> 的 32 位无符号整数。</returns>
+        /// <returns>大于等于零且小于 <see cref="UInt32.MaxValue"/> 的 32 位无符号整数。</returns>
         public uint NextUInt()
         {
             uint t = (x ^ (x << 11));
@@ -295,9 +295,9 @@ namespace System
         }
 
         /// <summary>
-        /// 返回非负的 <see cref="System.Int32.MaxValue"/> 随机数。 
+        /// 返回非负的 <see cref="Int32.MaxValue"/> 随机数。 
         /// </summary>        
-        /// <returns>大于等于零且小于 <see cref="System.Int32.MaxValue"/> 的 32 位有符号整数。</returns>  
+        /// <returns>大于等于零且小于 <see cref="Int32.MaxValue"/> 的 32 位有符号整数。</returns>  
         public int NextInt()
         {
             uint t = (x ^ (x << 11));
@@ -313,7 +313,7 @@ namespace System
         /// <summary>
         /// 返回一个随机的布尔值。
         /// </summary>
-        /// <returns>一个 <see cref="System.Boolean"/> 的随机值。</returns>
+        /// <returns>一个 <see cref="Boolean"/> 的随机值。</returns>
         public bool NextBool()
         {
             if(bitMask == 1)

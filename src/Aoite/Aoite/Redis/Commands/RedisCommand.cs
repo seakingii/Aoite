@@ -20,7 +20,7 @@ namespace Aoite.Redis.Commands
 
         internal RedisCommand(string command, params object[] args)
         {
-            if(string.IsNullOrEmpty(command)) throw new ArgumentNullException(nameof(command));
+            if(string.IsNullOrWhiteSpace(command)) throw new ArgumentNullException(nameof(command));
             if(args == null) throw new ArgumentNullException(nameof(args));
             _command = command;
             _args = args;

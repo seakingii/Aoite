@@ -21,7 +21,7 @@ namespace System
         public static long SAdd(this IRedisClient client, string key, params BinaryValue[] members)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0;
 
@@ -38,7 +38,7 @@ namespace System
         public static long SCard(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("SCARD", key));
         }
 
@@ -67,7 +67,7 @@ namespace System
         public static long SDiffStore(this IRedisClient client, string destination, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
             if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
@@ -100,7 +100,7 @@ namespace System
         public static long SInterStore(this IRedisClient client, string destination, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
             if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
@@ -118,7 +118,7 @@ namespace System
         public static bool SIsMember(this IRedisClient client, string key, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisBoolean("SISMEMBER", key, member));
         }
@@ -132,7 +132,7 @@ namespace System
         public static BinaryValue[] SMembers(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("SMEMBERS", key)));
         }
@@ -148,8 +148,8 @@ namespace System
         public static bool SMove(this IRedisClient client, string source, string destination, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
 
             return client.Execute(new RedisBoolean("SMOVE", source, destination, member));
         }
@@ -163,7 +163,7 @@ namespace System
         public static BinaryValue SPop(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("SPOP", key));
         }
@@ -177,7 +177,7 @@ namespace System
         public static BinaryValue SRandMember(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("SRANDMEMBER", key));
         }
@@ -195,7 +195,7 @@ namespace System
         public static BinaryValue[] SRandMember(this IRedisClient client, string key, long count)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("SRANDMEMBER", key, count)));
         }
@@ -210,7 +210,7 @@ namespace System
         public static long SRem(this IRedisClient client, string key, params BinaryValue[] members)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0L;
 
@@ -243,7 +243,7 @@ namespace System
         public static long SUnionStore(this IRedisClient client, string destination, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
             if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 

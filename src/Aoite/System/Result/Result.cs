@@ -40,7 +40,7 @@
         /// </summary>
         public virtual string Message { get { return this._Message; } set { this.ToFailded(value); } }
         /// <summary>
-        /// 获取或设置执行时发生的错误。结果状态 <see cref="System.ResultStatus.Succeed"/> 时，该值为 null 值。
+        /// 获取或设置执行时发生的错误。结果状态 <see cref="ResultStatus.Succeed"/> 时，该值为 null 值。
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         [Ignore]
@@ -71,14 +71,14 @@
         public virtual int Status { get { return this._Status; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.Result"/> 类的新实例。
+        /// 初始化一个 <see cref="Result"/> 类的新实例。
         /// </summary>
         public Result() { }
 
         /// <summary>
-        /// 指定引发的异常和状态码，初始化一个 <see cref="System.Result"/> 类的新实例。
+        /// 指定引发的异常和状态码，初始化一个 <see cref="Result"/> 类的新实例。
         /// </summary>
-        /// <param name="exception">引发异常的 <see cref="System.Exception"/>。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="exception">引发异常的 <see cref="Exception"/>。如果为 null 值，将不会更改返回结果的状态。</param>
         /// <param name="status">结果的状态码。</param>
         public Result(Exception exception, int status = ResultStatus.Failed)
         {
@@ -86,7 +86,7 @@
         }
 
         /// <summary>
-        /// 指定描述错误的信息和状态码，初始化一个 <see cref="System.Result"/> 类的新实例。
+        /// 指定描述错误的信息和状态码，初始化一个 <see cref="Result"/> 类的新实例。
         /// </summary>
         /// <param name="mssage">描述错误的信息。如果为 null 值，将不会更改返回结果的状态。</param>
         /// <param name="status">结果的状态码。</param>
@@ -116,9 +116,9 @@
         #region implicit operator
 
         /// <summary>
-        /// <see cref="System.Result"/> 和 <see cref="System.Exception"/> 的隐式转换。
+        /// <see cref="Result"/> 和 <see cref="Exception"/> 的隐式转换。
         /// </summary>
-        /// <param name="exception">引发异常的 <see cref="System.Exception"/>。</param>
+        /// <param name="exception">引发异常的 <see cref="Exception"/>。</param>
         /// <returns>表示一个异常的结果。</returns>
         public static implicit operator Result(Exception exception)
         {
@@ -127,7 +127,7 @@
         }
 
         /// <summary>
-        /// <see cref="System.Result"/> 和 <see cref="System.String"/> 的隐式转换。
+        /// <see cref="Result"/> 和 <see cref="String"/> 的隐式转换。
         /// </summary>
         /// <param name="message">描述异常结果的信息。</param>
         /// <returns>表示一个异常的结果。</returns>
@@ -138,7 +138,7 @@
         }
 
         /// <summary>
-        /// <see cref="System.String"/> 和 <see cref="System.Result"/> 的隐式转换。
+        /// <see cref="String"/> 和 <see cref="Result"/> 的隐式转换。
         /// </summary>
         /// <param name="result">返回结果。</param>
         /// <returns>返回字符串形式的结果。如果该结果为 null 值，则返回 null 值。</returns>
@@ -149,7 +149,7 @@
         }
 
         /// <summary>
-        /// <see cref="System.Boolean"/> 和 <see cref="System.Result"/> 的隐式转换。
+        /// <see cref="Boolean"/> 和 <see cref="Result"/> 的隐式转换。
         /// </summary>
         /// <param name="result">返回结果。</param>
         /// <returns>如果结果非空并且状态为成功返回 true，否则返回 false。</returns>

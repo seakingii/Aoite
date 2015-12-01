@@ -32,7 +32,7 @@
     /// <returns>返回一个实例。</returns>
     public delegate object InstanceCreatorCallback(object[] lastMappingArguments);
     /// <summary>
-    /// 通过 <see cref="System.Object&lt;T&gt;"/> 获取实例时，动态设置后期映射的参数值数组。
+    /// 通过 <see cref="Object&lt;T&gt;"/> 获取实例时，动态设置后期映射的参数值数组。
     /// </summary>
     /// <param name="type">当前依赖注入与控制反转的数据类型。</param>
     /// <returns>返回后期映射的参数值数组。</returns>

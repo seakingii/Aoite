@@ -93,9 +93,9 @@ namespace System
         static extern int UuidCreateSequential(out Guid guid);
 
         /// <summary>
-        /// 初始化一个有顺序规则 <see cref="System.Guid"/> 的新实例。
+        /// 初始化一个有顺序规则 <see cref="Guid"/> 的新实例。
         /// </summary>
-        /// <returns>返回一个 <see cref="System.Guid"/> 的新实例。</returns>
+        /// <returns>返回一个 <see cref="Guid"/> 的新实例。</returns>
         public static Guid NewComb()
         {
             const int RPC_S_OK = 0;
@@ -193,7 +193,7 @@ namespace System
         /// <returns>若 <paramref name="path"/> 是绝对路径，则返回本身，否则返回基于当前应用程序目录的绝对路径。</returns>
         public static string FullPath(string path)
         {
-            if(string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
+            if(string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
 
             if(Path.IsPathRooted(path)) return path;
             return Path.Combine(AppDirectory, path);
@@ -220,7 +220,7 @@ namespace System
             }
         }
         /// <summary>
-        /// 使用指定的对象数组和格式设置信息向 <see cref="System.Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入错误消息。
+        /// 使用指定的对象数组和格式设置信息向 <see cref="Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入错误消息。
         /// </summary>
         /// <param name="format">包含零个或多个格式项的格式字符串，这些项与 <paramref name="args"/> 数组中的对象相对应。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="object"/> 数组。</param>
@@ -231,7 +231,7 @@ namespace System
         }
 
         /// <summary>
-        /// 使用指定的对象数组和格式设置信息向 <see cref="System.Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入警告信息。
+        /// 使用指定的对象数组和格式设置信息向 <see cref="Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入警告信息。
         /// </summary>
         /// <param name="format">包含零个或多个格式项的格式字符串，这些项与 <paramref name="args"/> 数组中的对象相对应。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="object"/> 数组。</param>
@@ -242,7 +242,7 @@ namespace System
         }
 
         /// <summary>
-        /// 使用指定的对象数组和格式设置信息向 <see cref="System.Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入信息性消息。
+        /// 使用指定的对象数组和格式设置信息向 <see cref="Diagnostics.Trace.Listeners"/> 集合中的跟踪侦听器中写入信息性消息。
         /// </summary>
         /// <param name="format">包含零个或多个格式项的格式字符串，这些项与 <paramref name="args"/> 数组中的对象相对应。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="object"/> 数组。</param>
@@ -254,9 +254,9 @@ namespace System
 
         /// <summary>
         /// 释放并关闭所有线程上下文的上下文对象。非【主线程】的其他线程一单使用其下列对象，就应该的调用此方法进行释放:
-        /// <para><see cref="System.Db.Context"/></para>
-        /// <para><see cref="System.Log.Context"/></para>
-        /// <para><see cref="Aoite.Redis.RedisManager.Context"/></para>
+        /// <para><see cref="Db.Context"/></para>
+        /// <para><see cref="Log.Context"/></para>
+        /// <para><see cref="RedisManager.Context"/></para>
         /// </summary>
         public static void ResetContexts()
         {
@@ -442,7 +442,7 @@ namespace System
         public static Assembly[] LoadAssemblies(string assemblies)
         {
             List<Assembly> AssemblyList = new List<Assembly>();
-            if(string.IsNullOrEmpty(assemblies))
+            if(string.IsNullOrWhiteSpace(assemblies))
             {
                 AssemblyList.Add(Assembly.GetEntryAssembly());
             }

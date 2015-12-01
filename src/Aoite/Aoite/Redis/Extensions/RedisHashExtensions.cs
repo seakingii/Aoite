@@ -20,7 +20,7 @@ namespace System
         public static long HDel(this IRedisClient client, string key, params string[] fields)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(fields == null) throw new ArgumentNullException(nameof(fields));
             if(fields.Length == 0) return 0L;
 
@@ -38,8 +38,8 @@ namespace System
         public static bool HExists(this IRedisClient client, string key, string field)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(field)) throw new ArgumentNullException(nameof(field));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(field)) throw new ArgumentNullException(nameof(field));
 
             return client.Execute(new RedisBoolean("HEXISTS", key, field));
         }
@@ -54,8 +54,8 @@ namespace System
         public static BinaryValue HGet(this IRedisClient client, string key, string field)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(field)) throw new ArgumentNullException(nameof(field));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(field)) throw new ArgumentNullException(nameof(field));
 
             return client.Execute(new RedisValue("HGET", key, field));
         }
@@ -69,7 +69,7 @@ namespace System
         public static RedisFieldItem[] HGetAll(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisItem<RedisFieldItem>(false, "HGETALL", key), 2));
         }
@@ -84,7 +84,7 @@ namespace System
         public static T HGetAll<T>(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             var typeMapper = TypeMapper.Instance<T>.Mapper;
             var items = HGetAll(client, key);
@@ -109,8 +109,8 @@ namespace System
         public static long HIncrBy(this IRedisClient client, string key, string field, long increment = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(field)) throw new ArgumentNullException(nameof(field));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(field)) throw new ArgumentNullException(nameof(field));
 
             return client.Execute(new RedisInteger("HINCRBY", key, field, increment));
         }
@@ -126,7 +126,7 @@ namespace System
         public static double HIncrByFloat(this IRedisClient client, string key, string field, double increment = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("HINCRBYFLOAT", key, field, increment));
         }
 
@@ -141,8 +141,8 @@ namespace System
         public static long HDecrBy(this IRedisClient client, string key, string field, long decrement = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(field)) throw new ArgumentNullException(nameof(field));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(field)) throw new ArgumentNullException(nameof(field));
 
             return client.Execute(new RedisInteger("HINCRBY", key, field, -decrement));
         }
@@ -158,7 +158,7 @@ namespace System
         public static double HDecrByFloat(this IRedisClient client, string key, string field, double decrement = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("HINCRBYFLOAT", key, field, -decrement));
         }
 
@@ -171,7 +171,7 @@ namespace System
         public static string[] HKeys(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(RedisArray.Create(new RedisString("HKEYS", key)));
         }
 
@@ -184,7 +184,7 @@ namespace System
         public static long HLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("HLEN", key));
         }
 
@@ -198,7 +198,7 @@ namespace System
         public static BinaryValue[] HMGet(this IRedisClient client, string key, params string[] fields)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(fields == null) throw new ArgumentNullException(nameof(fields));
             if(fields.Length == 0) return new BinaryValue[0];
             var args = RedisArgs.ConcatFirst(key, fields).ToArray();
@@ -276,7 +276,7 @@ namespace System
         public static bool HSet(this IRedisClient client, string key, string field, BinaryValue value, bool nx = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(nx)
             {
                 return client.Execute(new RedisBoolean("HSETNX", key, field, value));
@@ -296,7 +296,7 @@ namespace System
         public static BinaryValue[] HVals(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(RedisArray.Create(new RedisValue("HVALS", key)));
         }
 

@@ -36,8 +36,8 @@ namespace Aoite.Data
         /// <param name="server">服务器地址。</param>
         public MsSqlTestManager(string connectionString, string server)
         {
-            if(string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
-            if(string.IsNullOrEmpty(server)) throw new ArgumentNullException(nameof(server));
+            if(string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentNullException(nameof(connectionString));
+            if(string.IsNullOrWhiteSpace(server)) throw new ArgumentNullException(nameof(server));
 
             m_masterEngine = new MsSqlEngine(connectionString);
             var dbDire = GA.FullPath("_databases");

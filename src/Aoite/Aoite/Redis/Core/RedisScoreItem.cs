@@ -20,12 +20,12 @@ namespace Aoite.Redis
         public BinaryValue Member { get { return this._Member; } set { this._Member = value; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisScoreItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisScoreItem"/> 类的新实例。
         /// </summary>
         public RedisScoreItem() { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisScoreItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisScoreItem"/> 类的新实例。
         /// </summary>
         /// <param name="score">权重值。</param>
         /// <param name="member">成员。</param>

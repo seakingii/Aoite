@@ -23,99 +23,79 @@ namespace System
                 ? Activator.CreateInstance(type)
                 : null;
         }
+
         /// <summary>
-        /// 判断一个类型是否为 <see cref="System.Data.DataTable"/> 或 <see cref="System.Data.DataSet"/> 的类型。
+        /// 判断一个类型是否为 <see cref="Data.DataTable"/> 或 <see cref="Data.DataSet"/> 的类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
-        /// <returns>如果类型为 <see cref="System.Data.DataTable"/> 或 <see cref="System.Data.DataSet"/>，则返回 true，否则返回 false。</returns>
+        /// <returns>如果类型为 <see cref="Data.DataTable"/> 或 <see cref="Data.DataSet"/>，则返回 true，否则返回 false。</returns>
         public static bool IsDataType(this Type type)
-        {
-            if(type == null) return false;
-            return Types.DataTable.IsAssignableFrom(type) || Types.DataSet.IsAssignableFrom(type);
-        }
+            => type != null && (Types.DataTable.IsAssignableFrom(type) || Types.DataSet.IsAssignableFrom(type));
+
         /// <summary>
         /// 判断类型是否为匿名类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <returns>如果为匿名类型返回 true，否则返回 false。</returns>
-        public static bool IsAnonymous(this Type type) 
-        {
-            if(type == null) return false;
-
-            return !type.IsPublic
+        public static bool IsAnonymous(this Type type)
+            => type != null
+                && !type.IsPublic
                 && type.IsSealed
                 && type.Name.Contains("AnonymousType")
                 && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
-                //&& Attribute.IsDefined(type, typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)
                 ;
-        }
+
         /// <summary>
         /// 判断一个类型是否为可空类型。
         /// </summary>
         /// <param name="type">需要判断的类型。</param>
         /// <returns>如果为 true 则是一个可空类型，否则为 false。</returns>
-        public static bool IsNullable(this Type type)
-        {
-            return type != null && Nullable.GetUnderlyingType(type) != null;
-            //return type.IsValueType && type.IsGenericType && type.GetGenericTypeDefinition().Equals(Types.Nullable);
-        }
+        public static bool IsNullable(this Type type) => type != null && Nullable.GetUnderlyingType(type) != null;
+
         /// <summary>
         /// 尝试获取可空类型的真实类型。
         /// </summary>
         /// <param name="type">需要判断的类型。</param>
         /// <returns>返回可空类型的真实类型，若当前类型非可空类型则返回原始值。</returns>
         public static Type GetNullableType(this Type type)
-        {
-            if(type == null) return null;
-
-            return Nullable.GetUnderlyingType(type) ?? type;
-            //return (type.IsValueType && type.IsGenericType && type.GetGenericTypeDefinition().Equals(Types.Nullable))
-            //    ? type.GetGenericArguments()[0]
-            //    : type;
-        }
+            => type == null ? null : (Nullable.GetUnderlyingType(type) ?? type);
 
         /// <summary>
-        /// 判断当前类型是否可以从 <see cref="System.String"/> 类型进行转换。
+        /// 判断当前类型是否可以从 <see cref="String"/> 类型进行转换。
         /// </summary>
         /// <param name="type">需要判断的类型。</param>
         /// <returns>如果可以转换返回 true，否则返回 false。</returns>
         public static bool HasStringConverter(this Type type)
-        {
-            return type != null && System.ComponentModel.TypeDescriptor.GetConverter(type).CanConvertFrom(Types.String);
-        }
+            => type != null && System.ComponentModel.TypeDescriptor.GetConverter(type).CanConvertFrom(Types.String);
+
         /// <summary>
         /// 获取一个值，指示当前类型是否为简单类型。
         /// </summary>
         /// <param name="type">需要判断的类型。</param>
         /// <returns>如果为简单类型返回 true，否则返回 false。</returns>
         public static bool IsSimpleType(this Type type)
-        {
-            return type != null && type.IsPrimitive ||
+            => type != null && type.IsPrimitive ||
                    type.Equals(Types.String) ||
                    type.Equals(Types.Guid) ||
                    type.Equals(Types.DateTime) ||
                    type.Equals(Types.Decimal) ||
                    type.Equals(Types.DateTimeOffset) ||
                    type.Equals(Types.TimeSpan);
-        }
+
         /// <summary>
         /// 判断一个类型是否为数字类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <returns>如果类型为任意数字类型则返回 true，否则返回 false。</returns>
-        public static bool IsNumber(this Type type)
-        {
-            return type != null && Array.IndexOf(Types.NumberTypes, type) > -1;
-        }
+        public static bool IsNumber(this Type type) => type != null && Array.IndexOf(Types.NumberTypes, type) > -1;
+
         /// <summary>
         /// 判断一个类型是否为浮点数类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
-        /// <returns>如果类型为 <see cref="System.Single"/>、<see cref="System.Double"/> 或 <see cref="System.Decimal"/> 则返回 true，否则返回 false。</returns>
-        public static bool IsNumberFloat(this Type type)
-        {
-            return type != null && Array.IndexOf(Types.NumberFloatTypes, type) > -1;
-        }
+        /// <returns>如果类型为 <see cref="Single"/>、<see cref="Double"/> 或 <see cref="Decimal"/> 则返回 true，否则返回 false。</returns>
+        public static bool IsNumberFloat(this Type type) => type != null && Array.IndexOf(Types.NumberFloatTypes, type) > -1;
+
         private static string GetSimpleType(Type type, short numericPrecision, short numericScale)
         {
             switch(Type.GetTypeCode(type))
@@ -222,10 +202,8 @@ namespace System
         /// <typeparam name="T">特性的数据类型。</typeparam>
         /// <param name="member">成员。</param>
         /// <returns>如果存在标志，则返回这个值，否则返回一个默认值。</returns>
-        public static T GetAttribute<T>(this MemberInfo member)
-        {
-            return member.GetAttributes<T>().FirstOrDefault();
-        }
+        public static T GetAttribute<T>(this MemberInfo member) => member.GetAttributes<T>().FirstOrDefault();
+
         /// <summary>
         /// 返回由 <typeparamref name="T"/> 标识的特性。
         /// </summary>
@@ -233,20 +211,16 @@ namespace System
         /// <param name="member">成员。</param>
         /// <param name="inherit">指定是否搜索该成员的继承链以查找这些属性。</param>
         /// <returns>如果存在标志，则返回这个值，否则返回一个默认值。</returns>
-        public static T GetAttribute<T>(this MemberInfo member, bool inherit)
-        {
-            return member.GetAttributes<T>(inherit).FirstOrDefault();
-        }
+        public static T GetAttribute<T>(this MemberInfo member, bool inherit) => member.GetAttributes<T>(inherit).FirstOrDefault();
+
         /// <summary>
         /// 返回由 <typeparamref name="T"/> 标识的特性（包括继承链）。
         /// </summary>
         /// <typeparam name="T">特性的数据类型。</typeparam>
         /// <param name="member">成员。</param>
         /// <returns>返回特性的集合枚举器。</returns>
-        public static IEnumerable<T> GetAttributes<T>(this MemberInfo member)
-        {
-            return GetAttributes<T>(member, true);
-        }
+        public static IEnumerable<T> GetAttributes<T>(this MemberInfo member) => GetAttributes<T>(member, true);
+
         /// <summary>
         /// 返回由 <typeparamref name="T"/> 标识的特性的数组。
         /// </summary>
@@ -277,8 +251,6 @@ namespace System
             {
                 var s_value = Convert.ToString(value);
                 return Enum.Parse(type, s_value, true);
-                //if(s_value.All(Char.IsDigit)) value = Convert.ChangeType(value, Enum.GetUnderlyingType(type));
-                //else value = Enum.Parse(type, s_value, true);
             }
             return Enum.ToObject(type, value);
         }
@@ -296,8 +268,7 @@ namespace System
 
             if(realType.IsInstanceOfType(value)) return value;
             if(realType == Types.Boolean) return Types.TrueStrings.IndexOf<string>(value.ToString(), StringComparer.OrdinalIgnoreCase) != -1;
-            //try
-            //{
+
             if(realType == Types.Guid)
             {
                 if(value is byte[]) return new Guid((byte[])value);
@@ -335,11 +306,6 @@ namespace System
                 case TypeCode.UInt64: return Convert.ToUInt64(value);
             }
             return Convert.ChangeType(value, realType);
-            //}
-            //catch(Exception)
-            //{
-            //    return type.GetDefaultValue();
-            //}
         }
     }
 }

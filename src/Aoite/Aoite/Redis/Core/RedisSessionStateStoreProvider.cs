@@ -84,7 +84,7 @@ namespace Aoite.Redis
         /// </summary>
         public RedisManager RedisManager { get { return this._redisManager; } }
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisSessionStateStoreProvider"/>
+        /// 初始化一个 <see cref="RedisSessionStateStoreProvider"/>
         /// </summary>
         public RedisSessionStateStoreProvider()
             : this(SessionStateUtility.GetSessionStaticObjects) { }
@@ -136,23 +136,23 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 由 <see cref="System.Web.SessionState.SessionStateModule"/> 对象调用，以便进行每次请求初始化。
+        /// 由 <see cref="Web.SessionState.SessionStateModule"/> 对象调用，以便进行每次请求初始化。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         public override void InitializeRequest(HttpContext context) { }
 
         /// <summary>
-        ///在请求结束时由 <see cref="System.Web.SessionState.SessionStateModule"/> 对象调用。
+        ///在请求结束时由 <see cref="Web.SessionState.SessionStateModule"/> 对象调用。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         public override void EndRequest(HttpContext context) { }
 
         /// <summary>
-        /// 创建要用于当前请求的新 <see cref="System.Web.SessionState.SessionStateStoreData"/> 对象。
+        /// 创建要用于当前请求的新 <see cref="Web.SessionState.SessionStateStoreData"/> 对象。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
-        /// <param name="timeout">新 <see cref="System.Web.SessionState.SessionStateStoreData"/> 的会话状态 <see cref="System.Web.SessionState.HttpSessionState.Timeout"/> 值。</param>
-        /// <returns>当前请求的新 <see cref="System.Web.SessionState.SessionStateStoreData"/>。</returns>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
+        /// <param name="timeout">新 <see cref="Web.SessionState.SessionStateStoreData"/> 的会话状态 <see cref="Web.SessionState.HttpSessionState.Timeout"/> 值。</param>
+        /// <returns>当前请求的新 <see cref="Web.SessionState.SessionStateStoreData"/>。</returns>
         public override SessionStateStoreData CreateNewStoreData(HttpContext context, int timeout)
         {
             return new SessionStateStoreData(new SessionStateItemCollection(),
@@ -163,9 +163,9 @@ namespace Aoite.Redis
         /// <summary>
         /// 将新的会话状态项添加到数据存储区中。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
-        /// <param name="id">当前请求的 <see cref="System.Web.SessionState.HttpSessionState.SessionID"/>。</param>
-        /// <param name="timeout">当前请求的会话 <see cref="System.Web.SessionState.HttpSessionState.Timeout"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
+        /// <param name="id">当前请求的 <see cref="Web.SessionState.HttpSessionState.SessionID"/>。</param>
+        /// <param name="timeout">当前请求的会话 <see cref="Web.SessionState.HttpSessionState.Timeout"/>。</param>
         public override void CreateUninitializedItem(HttpContext context, string id, int timeout)
         {
             this._redisManager.AcquireRelease(client => this.UpdateSessionState(client
@@ -191,13 +191,13 @@ namespace Aoite.Redis
         /// <summary>
         /// 从会话数据存储区中返回只读会话状态数据。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
-        /// <param name="id">当前请求的 <see cref="System.Web.SessionState.HttpSessionState.SessionID"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
+        /// <param name="id">当前请求的 <see cref="Web.SessionState.HttpSessionState.SessionID"/>。</param>
         /// <param name="locked">当此方法返回时，如果请求的会话项在会话数据存储区被锁定，请包含一个设置为 true 的布尔值；否则请包含一个设置为 false 的布尔值。</param>
-        /// <param name="lockAge">当此方法返回时，请包含一个设置为会话数据存储区中的项锁定时间的 <see cref="System.TimeSpan"/> 对象。</param>
-        /// <param name="lockId">当此方法返回时，请包含一个设置为当前请求的锁定标识符的对象。有关锁定标识符的详细信息，请参见 <see cref="System.Web.SessionState.SessionStateStoreProviderBase"/> 类摘要中的“锁定会话存储区数据”。</param>
-        /// <param name="actions">当此方法返回时，请包含 <see cref="System.Web.SessionState.SessionStateActions"/> 值之一，指示当前会话是否为未初始化的无 Cookie 会话。</param>
-        /// <returns>使用会话数据存储区中的会话值和信息填充的 <see cref="System.Web.SessionState.SessionStateStoreData"/>。</returns>
+        /// <param name="lockAge">当此方法返回时，请包含一个设置为会话数据存储区中的项锁定时间的 <see cref="TimeSpan"/> 对象。</param>
+        /// <param name="lockId">当此方法返回时，请包含一个设置为当前请求的锁定标识符的对象。有关锁定标识符的详细信息，请参见 <see cref="Web.SessionState.SessionStateStoreProviderBase"/> 类摘要中的“锁定会话存储区数据”。</param>
+        /// <param name="actions">当此方法返回时，请包含 <see cref="Web.SessionState.SessionStateActions"/> 值之一，指示当前会话是否为未初始化的无 Cookie 会话。</param>
+        /// <returns>使用会话数据存储区中的会话值和信息填充的 <see cref="Web.SessionState.SessionStateStoreData"/>。</returns>
         public override SessionStateStoreData GetItem(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
             return this.GetItem(false, context, id, out locked, out lockAge, out lockId, out actions);
@@ -206,13 +206,13 @@ namespace Aoite.Redis
         /// <summary>
         /// 从会话数据存储区中返回只读会话状态数据。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
-        /// <param name="id">当前请求的 <see cref="System.Web.SessionState.HttpSessionState.SessionID"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
+        /// <param name="id">当前请求的 <see cref="Web.SessionState.HttpSessionState.SessionID"/>。</param>
         /// <param name="locked">当此方法返回时，如果请求的会话项在会话数据存储区被锁定，请包含一个设置为 true 的布尔值；否则请包含一个设置为 false 的布尔值。</param>
-        /// <param name="lockAge">当此方法返回时，请包含一个设置为会话数据存储区中的项锁定时间的 <see cref="System.TimeSpan"/> 对象。</param>
-        /// <param name="lockId">当此方法返回时，请包含一个设置为当前请求的锁定标识符的对象。有关锁定标识符的详细信息，请参见 <see cref="System.Web.SessionState.SessionStateStoreProviderBase"/> 类摘要中的“锁定会话存储区数据”。</param>
-        /// <param name="actions">当此方法返回时，请包含 <see cref="System.Web.SessionState.SessionStateActions"/> 值之一，指示当前会话是否为未初始化的无 Cookie 会话。</param>
-        /// <returns>使用会话数据存储区中的会话值和信息填充的 <see cref="System.Web.SessionState.SessionStateStoreData"/>。</returns>
+        /// <param name="lockAge">当此方法返回时，请包含一个设置为会话数据存储区中的项锁定时间的 <see cref="TimeSpan"/> 对象。</param>
+        /// <param name="lockId">当此方法返回时，请包含一个设置为当前请求的锁定标识符的对象。有关锁定标识符的详细信息，请参见 <see cref="Web.SessionState.SessionStateStoreProviderBase"/> 类摘要中的“锁定会话存储区数据”。</param>
+        /// <param name="actions">当此方法返回时，请包含 <see cref="Web.SessionState.SessionStateActions"/> 值之一，指示当前会话是否为未初始化的无 Cookie 会话。</param>
+        /// <returns>使用会话数据存储区中的会话值和信息填充的 <see cref="Web.SessionState.SessionStateStoreData"/>。</returns>
         public override SessionStateStoreData GetItemExclusive(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
             return this.GetItem(true, context, id, out locked, out lockAge, out lockId, out actions);
@@ -271,7 +271,7 @@ namespace Aoite.Redis
         /// <summary>
         /// 释放对会话数据存储区中项的锁定。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         /// <param name="id">当前请求的会话标识符。</param>
         /// <param name="lockId">当前请求的锁定标识符。</param>
         public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)
@@ -301,10 +301,10 @@ namespace Aoite.Redis
         /// <summary>
         /// 删除会话数据存储区中的项数据。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         /// <param name="id">当前请求的会话标识符。</param>
         /// <param name="lockId">当前请求的锁定标识符。</param>
-        /// <param name="item">表示将从数据存储区中删除的项的 <see cref="System.Web.SessionState.SessionStateStoreData"/>。</param>
+        /// <param name="item">表示将从数据存储区中删除的项的 <see cref="Web.SessionState.SessionStateStoreData"/>。</param>
         public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
         {
             var key = this.GetRedisKey(id);
@@ -325,7 +325,7 @@ namespace Aoite.Redis
         /// <summary>
         /// 更新会话数据存储区中的项的到期日期和时间。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         /// <param name="id">当前请求的会话标识符。</param>
         public override void ResetItemTimeout(HttpContext context, string id)
         {
@@ -339,9 +339,9 @@ namespace Aoite.Redis
         /// <summary>
         /// 使用当前请求中的值更新会话状态数据存储区中的会话项信息，并清除对数据的锁定。
         /// </summary>
-        /// <param name="context">当前请求的 <see cref="System.Web.HttpContext"/>。</param>
+        /// <param name="context">当前请求的 <see cref="Web.HttpContext"/>。</param>
         /// <param name="id">当前请求的会话标识符。</param>
-        /// <param name="item">包含要存储的当前会话值的 <see cref="System.Web.SessionState.SessionStateStoreData"/> 对象。</param>
+        /// <param name="item">包含要存储的当前会话值的 <see cref="Web.SessionState.SessionStateStoreData"/> 对象。</param>
         /// <param name="lockId">当前请求的锁定标识符。</param>
         /// <param name="newItem">如果为 true，则将会话项标识为新项；如果为 false，则将会话项标识为现有的项。</param>
         public override void SetAndReleaseItemExclusive(HttpContext context, string id, SessionStateStoreData item, object lockId, bool newItem)
@@ -367,9 +367,9 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 设置对 Global.asax 文件中定义的 Session_OnEnd 事件的 <see cref="System.Web.SessionState.SessionStateItemExpireCallback"/> 委托的引用。
+        /// 设置对 Global.asax 文件中定义的 Session_OnEnd 事件的 <see cref="Web.SessionState.SessionStateItemExpireCallback"/> 委托的引用。
         /// </summary>
-        /// <param name="expireCallback">对 Global.asax 文件中定义的 Session_OnEnd 事件的 <see cref="System.Web.SessionState.SessionStateItemExpireCallback"/> 委托。</param>
+        /// <param name="expireCallback">对 Global.asax 文件中定义的 Session_OnEnd 事件的 <see cref="Web.SessionState.SessionStateItemExpireCallback"/> 委托。</param>
         /// <returns>如果会话状态存储提供程序支持调用 Session_OnEnd 事件，则为 true；否则为 false。</returns>
         public override bool SetItemExpireCallback(SessionStateItemExpireCallback expireCallback)
         {
@@ -377,7 +377,7 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 释放由 <see cref="Aoite.Redis.RedisSessionStateStoreProvider"/> 实现使用的所有资源。
+        /// 释放由 <see cref="RedisSessionStateStoreProvider"/> 实现使用的所有资源。
         /// </summary>
         public override void Dispose()
         {

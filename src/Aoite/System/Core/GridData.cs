@@ -6,7 +6,7 @@
     public abstract class GridData
     {
         /// <summary>
-        /// 初始化一个 <see cref="System.GridData&lt;TModel&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="GridData&lt;TModel&gt;"/> 类的新实例。
         /// </summary>
         public GridData() { }
         /// <summary>
@@ -27,7 +27,7 @@
     public class GridData<TModel> : GridData
     {
         /// <summary>
-        /// 初始化一个 <see cref="System.GridData&lt;TModel&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="GridData&lt;TModel&gt;"/> 类的新实例。
         /// </summary>
         public GridData() { }
 

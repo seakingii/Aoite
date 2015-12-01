@@ -33,7 +33,7 @@ namespace System
         public object TypeDefaultValue { get { return this._LazyTypeDefaultValue.Value; } }
 
         /// <summary>
-        /// 指定属性元数据，初始化一个 <see cref="System.PropertyMapper"/> 类的新实例。
+        /// 指定属性元数据，初始化一个 <see cref="PropertyMapper"/> 类的新实例。
         /// </summary>
         /// <param name="typeMapper">类型的映射器。</param>
         /// <param name="property">成员的属性元数据。</param>

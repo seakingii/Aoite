@@ -94,7 +94,7 @@ namespace Aoite.Serialization
         private static void AddTypeName(Type type, ref StringBuilder builder)
         {
             var ns = type.Namespace;
-            if(!string.IsNullOrEmpty(ns))
+            if(!string.IsNullOrWhiteSpace(ns))
             {
                 AddNamespace(ns, ref builder);
                 builder.Append('.');
@@ -252,7 +252,7 @@ namespace Aoite.Serialization
                 }
                 i++;
             }
-            if(string.IsNullOrEmpty(assemblyName))
+            if(string.IsNullOrWhiteSpace(assemblyName))
             {
                 assemblyName = "mscorlib";
             }

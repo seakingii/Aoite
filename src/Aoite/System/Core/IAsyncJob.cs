@@ -46,7 +46,7 @@
         /// <summary>
         /// 等待完成执行过程。
         /// </summary>
-        /// <param name="millisecondsTimeout">等待的毫秒数，或为 <see cref="System.Threading.Timeout.Infinite"/>(-1)，表示无限期等待。</param>
+        /// <param name="millisecondsTimeout">等待的毫秒数，或为 <see cref="Threading.Timeout.Infinite"/>(-1)，表示无限期等待。</param>
         /// <returns>如果在分配的时间内完成执行，则为 true；否则为 false。</returns>
         bool Wait(int millisecondsTimeout = System.Threading.Timeout.Infinite);
 

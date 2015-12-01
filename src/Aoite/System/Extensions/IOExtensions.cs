@@ -41,9 +41,7 @@ namespace System
         /// <param name="stream">当前流。</param>
         /// <param name="bytes">字节序列。</param>
         public static void WriteBytes(this Stream stream, byte[] bytes)
-        {
-            IOExtensions.WriteBytes(stream, bytes, bytes.Length);
-        }
+           => WriteBytes(stream, bytes, bytes.Length);
 
         /// <summary>
         /// 向当前流写入字节序列。
@@ -52,8 +50,6 @@ namespace System
         /// <param name="bytes">字节序列。</param>
         /// <param name="count">要写入当前流的字节数。</param>
         public static void WriteBytes(this Stream stream, byte[] bytes, int count)
-        {
-            stream.Write(bytes, 0, count);
-        }
+            => stream.Write(bytes, 0, count);
     }
 }

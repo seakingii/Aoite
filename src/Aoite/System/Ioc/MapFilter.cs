@@ -64,19 +64,19 @@ namespace System
         }
 
         /// <summary>
-        /// 指定筛选器的命名空间表达式，初始化一个 <see cref="System.MapFilter"/> 类的新实例。
+        /// 指定筛选器的命名空间表达式，初始化一个 <see cref="MapFilter"/> 类的新实例。
         /// </summary>
         /// <param name="namespaceExpression">筛选器的命名空间表达式。可以是一个完整的命名空间，也可以是“*”起始，或者以“*”结尾。符号“*”只能出现一次。通过“|”可以同时包含多个命名空间。</param>
         public MapFilter(string namespaceExpression)
         {
-            if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
+            if(string.IsNullOrWhiteSpace(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
             var nes = namespaceExpression.Split('|');
             List<NamesapceRule> rules = new List<NamesapceRule>(nes.Length);
             //var refreshAllTypes = false;
             foreach(var ne in nes)
             {
                 var t_ne = ne.Trim();
-                if(string.IsNullOrEmpty(t_ne)) continue;
+                if(string.IsNullOrWhiteSpace(t_ne)) continue;
                 if(t_ne[0] == '$')
                 {
                     this.LoadAssembly(t_ne.Remove(0, 1));
@@ -135,7 +135,7 @@ namespace System
         /// </summary>
         /// <param name="allTypes">当前应用程序所有已加载的类型。</param>
         /// <param name="expectType">预期定义的类型。</param>
-        /// <returns>如果找到返回一个 <see cref="System.Type"/> 的实例，否则返回 null 值。</returns>
+        /// <returns>如果找到返回一个 <see cref="Type"/> 的实例，否则返回 null 值。</returns>
         public virtual Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType)
         {
             if(allTypes == null) throw new ArgumentNullException(nameof(allTypes));

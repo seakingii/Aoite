@@ -146,7 +146,7 @@ namespace System
             /// <returns>如果这是一个合法的路径，将会返回 true，否则返回 false。</returns>
             public static bool IsValidName(string filename)
             {
-                if(string.IsNullOrEmpty(filename)) return false;
+                if(string.IsNullOrWhiteSpace(filename)) return false;
                 foreach(var c in Path.GetInvalidFileNameChars()) if(filename.Contains(c)) return false;
                 return true;
             }

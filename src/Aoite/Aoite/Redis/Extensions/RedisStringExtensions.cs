@@ -21,7 +21,7 @@ namespace System
         public static long Append(this IRedisClient client, string key, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(value == null) throw new ArgumentNullException(nameof(value));
 
             return client.Execute(new RedisInteger("APPEND", key, value));
@@ -37,7 +37,7 @@ namespace System
         public static long DecrBy(this IRedisClient client, string key, long decrement = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(decrement != 1)
             {
                 return client.Execute(new RedisInteger("DECRBY", key, decrement));
@@ -58,7 +58,7 @@ namespace System
         public static double DecrByFloat(this IRedisClient client, string key, double decrement = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("INCRBYFLOAT", key, -decrement));
         }
 
@@ -71,7 +71,7 @@ namespace System
         public static BinaryValue Get(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisValue("GET", key));
         }
 
@@ -86,7 +86,7 @@ namespace System
         public static BinaryValue GetRange(this IRedisClient client, string key, long start, long end)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("GETRANGE", key, start, end));
         }
@@ -101,7 +101,7 @@ namespace System
         public static BinaryValue GetSet(this IRedisClient client, string key, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisValue("GETSET", key, value));
         }
 
@@ -115,7 +115,7 @@ namespace System
         public static long IncrBy(this IRedisClient client, string key, long increment = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(increment != 1)
             {
                 return client.Execute(new RedisInteger("INCRBY", key, increment));
@@ -136,7 +136,7 @@ namespace System
         public static double IncrByFloat(this IRedisClient client, string key, double increment = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("INCRBYFLOAT", key, increment));
         }
 
@@ -234,7 +234,7 @@ namespace System
             , RedisKeyBehavior behavior = RedisKeyBehavior.None)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             List<object> args = new List<object>(5);
             args.Add(key);
@@ -262,7 +262,7 @@ namespace System
         public static long SetRange(this IRedisClient client, string key, long offset, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
             return client.Execute(new RedisInteger("SETRANGE", key, offset, value));
         }
@@ -276,7 +276,7 @@ namespace System
         public static long StrLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("STRLEN", key));
         }
 

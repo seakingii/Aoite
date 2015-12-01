@@ -29,12 +29,12 @@ namespace System
         private Encoding _Encoding;
 
         /// <summary>
-        /// 初始化一个 <see cref="System.Serializer"/> 类的新实例。
+        /// 初始化一个 <see cref="Serializer"/> 类的新实例。
         /// </summary>
         public Serializer() { }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.Serializer"/> 类的新实例。
+        /// 初始化一个 <see cref="Serializer"/> 类的新实例。
         /// </summary>
         /// <param name="encoding">字符编码。</param>
         public Serializer(Encoding encoding)
@@ -43,12 +43,12 @@ namespace System
         }
 
         /// <summary>
-        /// 表示读取后发生，其中 sender 参数是一个 <see cref="System.Result"/> 返回值。
+        /// 表示读取后发生，其中 sender 参数是一个 <see cref="Result"/> 返回值。
         /// </summary>
         public event EventHandler ReadFinish;
 
         /// <summary>
-        /// 表示写入后发生，其中 sender 参数是一个 <see cref="System.Result"/> 返回值。
+        /// 表示写入后发生，其中 sender 参数是一个 <see cref="Result"/> 返回值。
         /// </summary>
         public event EventHandler WriteFinish;
 
@@ -76,7 +76,7 @@ namespace System
         /// <returns>返回序列化对象的结果。</returns>
         public Result<TData> Read<TData>(string path)
         {
-            if(string.IsNullOrEmpty(path))
+            if(string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
             using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -90,7 +90,7 @@ namespace System
         /// <returns>返回序列化对象的结果。</returns>
         public Result<object> Read(string path)
         {
-            if(string.IsNullOrEmpty(path))
+            if(string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
             using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -153,7 +153,7 @@ namespace System
         /// <returns>返回序列化对象的结果。</returns>
         public Result<TData> ReadString<TData>(string content, Encoding encoding = null)
         {
-            if(string.IsNullOrEmpty(content))
+            if(string.IsNullOrWhiteSpace(content))
                 return new ArgumentNullException("data");
             using(MemoryStream stream = new MemoryStream((encoding ?? this.Encoding).GetBytes(content)))
             {
@@ -168,7 +168,7 @@ namespace System
         /// <returns>返回序列化对象的结果。</returns>
         public Result<object> ReadString(string content, Encoding encoding = null)
         {
-            if(string.IsNullOrEmpty(content))
+            if(string.IsNullOrWhiteSpace(content))
                 return new ArgumentNullException("data");
             using(MemoryStream stream = new MemoryStream((encoding ?? this.Encoding).GetBytes(content)))
             {
@@ -319,7 +319,7 @@ namespace System
         }
 
         /// <summary>
-        /// 表示引发 <see cref="System.Serializer.ReadFinish"/> 事件。
+        /// 表示引发 <see cref="Serializer.ReadFinish"/> 事件。
         /// </summary>
         /// <param name="result">读取的返回值。</param>
         protected virtual void OnReadFinish(object result)
@@ -329,7 +329,7 @@ namespace System
         }
 
         /// <summary>
-        /// 表示引发 <see cref="System.Serializer.WriteFinish"/> 事件。
+        /// 表示引发 <see cref="Serializer.WriteFinish"/> 事件。
         /// </summary>
         /// <param name="result">写入的返回值。</param>
         protected virtual void OnWriteFinish(object result)

@@ -19,12 +19,12 @@
         public virtual Exception Exception { get { return this._Exception; } set { this._Exception = value; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.ExceptionEventArgs "/> 类的新实例。
+        /// 初始化一个 <see cref="ExceptionEventArgs "/> 类的新实例。
         /// </summary>
         public ExceptionEventArgs() { }
 
         /// <summary>
-        /// 提供一个错误，初始化一个 <see cref="System.ExceptionEventArgs "/> 类的新实例。
+        /// 提供一个错误，初始化一个 <see cref="ExceptionEventArgs "/> 类的新实例。
         /// </summary>
         /// <param name="exception">一个错误。</param>
         public ExceptionEventArgs(Exception exception)
@@ -33,7 +33,7 @@
         }
 
         /// <summary>
-        /// 提供错误的描述，初始化一个 <see cref="System.ExceptionEventArgs "/> 类的新实例。
+        /// 提供错误的描述，初始化一个 <see cref="ExceptionEventArgs "/> 类的新实例。
         /// </summary>
         /// <param name="message">错误的描述。</param>
         public ExceptionEventArgs(string message) : this(new Exception(message)) { }

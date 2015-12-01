@@ -20,12 +20,12 @@ namespace Aoite.Redis
         public BinaryValue Value { get { return this._Value; } set { this._Value = value; } }
         
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisFieldItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisFieldItem"/> 类的新实例。
         /// </summary>
         public RedisFieldItem() { }
         
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisFieldItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisFieldItem"/> 类的新实例。
         /// </summary>
         /// <param name="field">域名。</param>
         /// <param name="value">域值。</param>

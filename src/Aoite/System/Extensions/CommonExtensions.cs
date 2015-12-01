@@ -38,9 +38,7 @@ namespace System
         /// <param name="value">请求类型转换的值。</param>
         /// <returns>返回一个数据类型的值，或一个 null 值。</returns>
         public static T CastTo<T>(this object value)
-        {
-            return (T)CastTo(value, typeof(T));
-        }
+            => (T)CastTo(value, typeof(T));
 
         /// <summary>
         /// 尝试将给定值转换为指定的数据类型。
@@ -49,9 +47,7 @@ namespace System
         /// <param name="type">要转换的数据类型。</param>
         /// <returns>返回一个数据类型的值，或一个 null 值。</returns>
         public static object CastTo(this object value, Type type)
-        {
-            return type.ChangeType(value);
-        }
+            => type.ChangeType(value);
 
         /// <summary>
         /// 将 <paramref name="target"/> 所有的属性值复制到当前对象。
@@ -63,9 +59,7 @@ namespace System
         /// <param name="targetStrategy">复制目标的策略。</param>
         /// <returns>返回 <paramref name="source"/>。</returns>
         public static TSource CopyFrom<TSource, TTarget>(this TSource source, TTarget target, CopyToStrategy targetStrategy = CopyToStrategy.Default)
-        {
-            return CopyTo<TSource>(target, source, targetStrategy);
-        }
+            => CopyTo<TSource>(target, source, targetStrategy);
 
         /// <summary>
         /// 将当前对象所有的属性值复制成一个新的 <typeparamref name="TTarget"/> 实例。
@@ -167,14 +161,12 @@ namespace System
             foreach(var item in collection) yield return func(item);
         }
         /// <summary>
-        /// 返回表示当前对象的 <see cref="System.String"/>，如果 <paramref name="obj"/> 是一个 null 值，将返回 <see cref="System.String.Empty"/>。
+        /// 返回表示当前对象的 <see cref="String"/>，如果 <paramref name="obj"/> 是一个 null 值，将返回 <see cref="String.Empty"/>。
         /// </summary>
         /// <param name="obj">一个对象。</param>
-        /// <returns>返回 <paramref name="obj"/> 的 <see cref="System.String"/> 或 <see cref="System.String.Empty"/>。</returns>
+        /// <returns>返回 <paramref name="obj"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
         public static string ToStringOrEmpty(this object obj)
-        {
-            return obj == null ? string.Empty : obj.ToString();
-        }
+            => obj == null ? string.Empty : obj.ToString();
 
         /// <summary>
         /// 尝试释放当前对象使用的所有资源
@@ -190,10 +182,7 @@ namespace System
         /// </summary>
         /// <param name="value">一个二进制值。</param>
         /// <returns>如果包含返回 true，否则返回 false。</returns>
-        public static bool HasValue(this BinaryValue value)
-        {
-            return BinaryValue.HasValue(value);
-        }
+        public static bool HasValue(this BinaryValue value) => BinaryValue.HasValue(value);
 
         /// <summary>
         /// 将指定的金额转换为中文表示。

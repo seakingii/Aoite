@@ -54,7 +54,7 @@ namespace System
                 {
                     foreach(ConnectionStringSettings conn in ConfigurationManager.ConnectionStrings)
                     {
-                        if(!string.IsNullOrEmpty(conn.Name))
+                        if(!string.IsNullOrWhiteSpace(conn.Name))
                         {
                             string connectionString = conn.ConnectionString;
                             string name = conn.Name;
@@ -160,7 +160,7 @@ namespace System
             }
         }
         /// <summary>
-        /// 释放并关闭当前线程上下文的 <see cref="System.Db.Context"/>。
+        /// 释放并关闭当前线程上下文的 <see cref="Db.Context"/>。
         /// </summary>
         public static void ResetContext()
         {

@@ -14,8 +14,8 @@ namespace Aoite.Data
 
         private DbType? _Type;
         /// <summary>
-        /// 获取或设置参数的 <see cref="System.Data.DbType"/>。
-        /// <para>默认值为 <see cref="System.Data.DbType.String"/>。</para>
+        /// 获取或设置参数的 <see cref="Data.DbType"/>。
+        /// <para>默认值为 <see cref="Data.DbType.String"/>。</para>
         /// </summary>
         public virtual DbType Type { get { return this._Type ?? DbType.String; } set { this._Type = value; } }
 
@@ -42,7 +42,7 @@ namespace Aoite.Data
             get { return this._Name; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value));
                 if(this._Name.iEquals(value)) return;
                 if(this._Owner != null) this._Owner.ChangedName(this._Name, value);
                 this._Name = value;
@@ -96,7 +96,7 @@ namespace Aoite.Data
         /// 指定输出参数的名称和参数的类型，初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         public ExecuteParameter(string name, DbType type)
             : this(name, null, type, -1, ParameterDirection.Output) { }
 
@@ -121,7 +121,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         public ExecuteParameter(string name, ParameterDirection direction, DbType type)
             : this(name, DBNull.Value, type, -1, direction) { }
 
@@ -130,7 +130,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         public ExecuteParameter(string name, ParameterDirection direction, DbType type, int size)
             : this(name, DBNull.Value, type, size, direction) { }
@@ -149,7 +149,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         public ExecuteParameter(string name, object value, DbType type)
             : this(name, value, type, -1, ParameterDirection.Input) { }
 
@@ -158,7 +158,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         public ExecuteParameter(string name, object value, DbType type, int size)
             : this(name, value, type, size, ParameterDirection.Input) { }
@@ -168,7 +168,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameter(string name, object value, DbType type, ParameterDirection direction)
             : this(name, value, (DbType?)type, -1, direction) { }
@@ -178,7 +178,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameter(string name, object value, DbType type, int size, ParameterDirection direction)
@@ -189,7 +189,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="System.Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         private ExecuteParameter(string name, object value, DbType? type, int size, ParameterDirection direction)
@@ -204,10 +204,10 @@ namespace Aoite.Data
         #endregion
 
         /// <summary>
-        /// 指定 <see cref="System.Data.Common.DbCommand"/>，生成一个 <see cref="System.Data.Common.DbParameter"/>。
+        /// 指定 <see cref="Data.Common.DbCommand"/>，生成一个 <see cref="Data.Common.DbParameter"/>。
         /// </summary>
-        /// <param name="command">一个 <see cref="System.Data.Common.DbCommand"/>。</param>
-        /// <returns>返回一个已生成的 <see cref="System.Data.Common.DbParameter"/>。</returns>
+        /// <param name="command">一个 <see cref="Data.Common.DbCommand"/>。</param>
+        /// <returns>返回一个已生成的 <see cref="Data.Common.DbParameter"/>。</returns>
         public virtual DbParameter CreateParameter(DbCommand command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));

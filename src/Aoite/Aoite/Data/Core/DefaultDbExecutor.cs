@@ -44,9 +44,9 @@ namespace Aoite.Data
         public virtual ExecuteCommand Command { get { return this._Command; } }
 
         /// <summary>
-        /// 提供一个 <see cref="System.Data.Common.DbCommand"/> 的实例，创建一个关联的数据适配器。
+        /// 提供一个 <see cref="Data.Common.DbCommand"/> 的实例，创建一个关联的数据适配器。
         /// </summary>
-        /// <param name="command">一个 <see cref="System.Data.Common.DbCommand"/> 的实例。</param>
+        /// <param name="command">一个 <see cref="Data.Common.DbCommand"/> 的实例。</param>
         /// <returns>返回一个关联的数据适配器。</returns>
         protected virtual DbDataAdapter CreateDataAdapter(DbCommand command)
         {
@@ -75,9 +75,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 创建一个关联执行器的 <see cref="System.Data.Common.DbCommand"/> 的实例。
+        /// 创建一个关联执行器的 <see cref="Data.Common.DbCommand"/> 的实例。
         /// </summary>
-        /// <returns>返回一个关联执行器的 <see cref="System.Data.Common.DbCommand"/> 的实例。</returns>
+        /// <returns>返回一个关联执行器的 <see cref="Data.Common.DbCommand"/> 的实例。</returns>
         protected virtual DbCommand CreateDbCommand()
         {
             var dbCommand = this._engineInjector.CreateDbCommand(this._Engine, this._Command, this._connection);

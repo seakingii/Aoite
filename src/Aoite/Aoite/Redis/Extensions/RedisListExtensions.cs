@@ -81,8 +81,8 @@ namespace System
         public static BinaryValue BRPopLPush(this IRedisClient client, string source, string destination, long timeout)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
             if(timeout < 0) throw new ArgumentOutOfRangeException(nameof(timeout));
 
             return client.Execute(new RedisValue("BRPOPLPUSH", source, destination, timeout));
@@ -113,7 +113,7 @@ namespace System
         public static BinaryValue LIndex(this IRedisClient client, string key, long index)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("LINDEX", key, index));
         }
@@ -130,8 +130,8 @@ namespace System
         public static long LInsert(this IRedisClient client, string key, RedisInsertPosition position, string pivot, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            if(string.IsNullOrEmpty(pivot)) throw new ArgumentNullException(nameof(pivot));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(pivot)) throw new ArgumentNullException(nameof(pivot));
             return client.Execute(new RedisInteger("LINSERT", key
                 , position == RedisInsertPosition.Before ? "BEFORE" : "AFTER"
                 , pivot, value));
@@ -146,7 +146,7 @@ namespace System
         public static long LLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("LLEN", key));
         }
 
@@ -159,7 +159,7 @@ namespace System
         public static BinaryValue LPop(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("LPOP", key));
         }
@@ -175,7 +175,7 @@ namespace System
         public static long LPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
@@ -193,7 +193,7 @@ namespace System
         public static long LPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
@@ -211,7 +211,7 @@ namespace System
         public static BinaryValue[] LRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("LRANGE", key, start, stop)));
         }
@@ -231,7 +231,7 @@ namespace System
         public static long LRem(this IRedisClient client, string key, long count, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("LREM", key, count, value));
         }
 
@@ -248,7 +248,7 @@ namespace System
         public static Result LSet(this IRedisClient client, string key, long index, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisStatus("LSET", key, index, value));
         }
@@ -264,7 +264,7 @@ namespace System
         public static Result LTrim(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisStatus("LTRIM", key, start, stop));
         }
@@ -278,7 +278,7 @@ namespace System
         public static BinaryValue RPop(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("RPOP", key));
         }
@@ -293,8 +293,8 @@ namespace System
         public static BinaryValue RPopLPush(this IRedisClient client, string source, string destination)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(string.IsNullOrWhiteSpace(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrWhiteSpace(destination)) throw new ArgumentNullException(nameof(destination));
 
             return client.Execute(new RedisValue("RPOPLPUSH", source, destination));
         }
@@ -310,7 +310,7 @@ namespace System
         public static long RPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
@@ -328,7 +328,7 @@ namespace System
         public static long RPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();

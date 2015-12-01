@@ -20,7 +20,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.LockSlim"/> 类的新实例。
+        /// 初始化一个 <see cref="LockSlim"/> 类的新实例。
         /// </summary>
         public LockSlim()
         {
@@ -28,7 +28,7 @@ namespace System
         }
 
         /// <summary>
-        /// 提供锁定递归策略，初始化一个 <see cref="System.LockSlim"/> 类的新实例。
+        /// 提供锁定递归策略，初始化一个 <see cref="LockSlim"/> 类的新实例。
         /// </summary>
         /// <param name="recursionPolicy">锁定递归策略。</param>
         public LockSlim(LockRecursionPolicy recursionPolicy)

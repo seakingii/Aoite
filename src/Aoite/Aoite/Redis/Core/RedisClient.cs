@@ -23,7 +23,7 @@ namespace Aoite.Redis
         public long Id { get { return _Id; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisClient"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisClient"/> 类的新实例。
         /// </summary>
         /// <param name="address">Redis 的连接地址。</param>
         /// <param name="password">Redis 的连接密码。</param>
@@ -69,7 +69,7 @@ namespace Aoite.Redis
 
         /// <summary>
         /// 开始一个新的事务。
-        /// <para>在事务期间请勿通过 <see cref="Aoite.Redis.IRedisClient"/> 执行任何命令。</para>
+        /// <para>在事务期间请勿通过 <see cref="IRedisClient"/> 执行任何命令。</para>
         /// </summary>
         /// <returns>如果事务已存在，将会抛出一个错误，否则返回一个新的事务。</returns>
         public virtual IRedisTransaction BeginTransaction()

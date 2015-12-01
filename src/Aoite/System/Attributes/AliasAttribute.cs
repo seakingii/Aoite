@@ -12,11 +12,11 @@
         /// </summary>
         public string Name { get { return this._Name; } set { this._Name = value; } }
         /// <summary>
-        /// 初始化一个 <see cref="System.AliasAttribute"/> 类的新实例。
+        /// 初始化一个 <see cref="AliasAttribute"/> 类的新实例。
         /// </summary>
         public AliasAttribute() { }
         /// <summary>
-        /// 提供别名，初始化一个 <see cref="System.AliasAttribute"/> 类的新实例。
+        /// 提供别名，初始化一个 <see cref="AliasAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="name">别名。</param>
         public AliasAttribute(string name)

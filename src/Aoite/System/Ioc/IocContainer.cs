@@ -42,7 +42,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.IocContainer"/> 类的新实例。
+        /// 初始化一个 <see cref="IocContainer"/> 类的新实例。
         /// </summary>
         public IocContainer()
         {
@@ -51,7 +51,7 @@ namespace System
         }
 
         /// <summary>
-        /// 提供父级服务容器，初始化一个 <see cref="System.IocContainer"/> 类的新实例。
+        /// 提供父级服务容器，初始化一个 <see cref="IocContainer"/> 类的新实例。
         /// </summary>
         /// <param name="parentLocator">父级服务容器，</param>
         public IocContainer(IIocContainer parentLocator)
@@ -239,7 +239,7 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddValue(string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             if(callback == null) throw new ArgumentNullException(nameof(callback));
 
             if(this._hasParent && promote) this._parentLocator.AddValue(name, callback, singletonMode, promote);
@@ -252,7 +252,7 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void RemoveValue(string name, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             if(this._hasParent && promote) this._parentLocator.RemoveValue(name, promote);
             this.MapRemove(name);
@@ -265,7 +265,7 @@ namespace System
         /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         public virtual object GetValue(string name, params object[] lastMappingValues)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             var box = this.FindInstanceBox(name);
             if(box != null) return box.GetInstance(lastMappingValues);
@@ -280,7 +280,7 @@ namespace System
         /// <returns>如果存在返回 true，否则返回 false。</returns>
         public virtual bool ContainsValue(string name, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             return this.MapContains(name)
                 || (promote && this._hasParent && this._parentLocator.ContainsValue(name, promote));
@@ -308,7 +308,7 @@ namespace System
         public virtual void AddValue(Type serviceType, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             if(callback == null) throw new ArgumentNullException(nameof(callback));
 
             if(this._hasParent && promote) this._parentLocator.AddValue(serviceType, name, callback, singletonMode, promote);
@@ -324,7 +324,7 @@ namespace System
         public virtual void RemoveValue(Type serviceType, string name, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             if(this._hasParent && promote) this._parentLocator.RemoveValue(serviceType, name, promote);
 
@@ -340,7 +340,7 @@ namespace System
         public virtual object GetValue(Type serviceType, string name, params object[] lastMappingValues)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             var box = this.FindInstanceBox(serviceType, name);
             if(box != null) return box.GetInstance(lastMappingValues);
@@ -358,7 +358,7 @@ namespace System
         public virtual bool ContainsValue(Type serviceType, string name, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
             return this.MapContains(serviceType, name)
                 || (promote && this._hasParent && this._parentLocator.ContainsValue(serviceType, name, promote));

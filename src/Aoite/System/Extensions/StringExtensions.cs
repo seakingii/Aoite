@@ -15,9 +15,7 @@ namespace System
         /// <param name="encoding">编码方式。</param>
         /// <returns>返回加密后的字符串。</returns>
         public static string ToMd5(this string text, Encoding encoding = null)
-        {
-            return DataSecurity.Crypto(SecurityAlgorithms.MD5, text, encoding).ToLower();
-        }
+            => DataSecurity.Crypto(SecurityAlgorithms.MD5, text, encoding).ToLower();
 
         /// <summary>
         /// 将当前字符串转换为智能小写模式。
@@ -26,7 +24,7 @@ namespace System
         /// <returns>返回一个新的字符串。</returns>
         public static string ToCamelCase(this string s)
         {
-            if(string.IsNullOrEmpty(s)) return s;
+            if(string.IsNullOrWhiteSpace(s)) return s;
 
             if(!char.IsUpper(s[0])) return s;
 
@@ -42,26 +40,22 @@ namespace System
         /// <param name="encoding">编码。为 null 值表示 UTF8 的编码。</param>
         /// <returns>返回一个字节组。</returns>
         public static byte[] ToBytes(this string value, Encoding encoding = null)
-        {
-            return (encoding ?? GA.UTF8).GetBytes(value);
-        }
+            => (encoding ?? GA.UTF8).GetBytes(value);
 
         /// <summary>
-        /// 忽略被比较字符串的大小写，确定两个指定的 <see cref="System.String"/> 实例是否具有同一值。
+        /// 忽略被比较字符串的大小写，确定两个指定的 <see cref="String"/> 实例是否具有同一值。
         /// </summary>
-        /// <param name="a"><see cref="System.String"/>第一个 <see cref="System.String"/> 的实例。</param>
-        /// <param name="b"><see cref="System.String"/>第二个 <see cref="System.String"/> 的实例。</param>
+        /// <param name="a"><see cref="String"/>第一个 <see cref="String"/> 的实例。</param>
+        /// <param name="b"><see cref="String"/>第二个 <see cref="String"/> 的实例。</param>
         /// <returns>如果 <paramref name="a"/> 参数的值等于 <paramref name="b"/> 参数的值，则为 true；否则为 false。</returns>
         public static bool iEquals(this string a, string b)
-        {
-            return string.Equals(a, b, StringComparison.CurrentCultureIgnoreCase);
-        }
+            => string.Equals(a, b, StringComparison.CurrentCultureIgnoreCase);
 
         /// <summary>
         /// 忽略被比较字符串的大小写，确定在使用指定的比较选项进行比较时此字符串实例的开头是否与指定的字符串匹配。
         /// </summary>
-        /// <param name="a"><see cref="System.String"/>第一个 <see cref="System.String"/> 的实例。</param>
-        /// <param name="b"><see cref="System.String"/>第二个 <see cref="System.String"/> 的实例。</param>
+        /// <param name="a"><see cref="String"/>第一个 <see cref="String"/> 的实例。</param>
+        /// <param name="b"><see cref="String"/>第二个 <see cref="String"/> 的实例。</param>
         /// <returns>如果 <paramref name="b"/> 参数与此字符串的开头匹配，则为 true；否则为 false。 </returns>
         public static bool iStartsWith(this string a, string b)
         {
@@ -72,8 +66,8 @@ namespace System
         /// <summary>
         /// 忽略被比较字符串的大小写，确定使用指定的比较选项进行比较时此字符串实例的结尾是否与指定的字符串匹配。
         /// </summary>
-        /// <param name="a"><see cref="System.String"/>第一个 <see cref="System.String"/> 的实例。</param>
-        /// <param name="b"><see cref="System.String"/>第二个 <see cref="System.String"/> 的实例。</param>
+        /// <param name="a"><see cref="String"/>第一个 <see cref="String"/> 的实例。</param>
+        /// <param name="b"><see cref="String"/>第二个 <see cref="String"/> 的实例。</param>
         /// <returns>如果 <paramref name="b"/> 参数与此字符串的结尾匹配，则为 true；否则为 false。 </returns>
         public static bool iEndsWith(this string a, string b)
         {
@@ -82,10 +76,10 @@ namespace System
         }
 
         /// <summary>
-        /// 忽略被比较字符串的大小写，返回一个值，该值指示指定的 <see cref="System.String"/> 对象是否出现在此字符串中。
+        /// 忽略被比较字符串的大小写，返回一个值，该值指示指定的 <see cref="String"/> 对象是否出现在此字符串中。
         /// </summary>
-        /// <param name="a"><see cref="System.String"/>第一个 <see cref="System.String"/> 的实例。</param>
-        /// <param name="b"><see cref="System.String"/>第二个 <see cref="System.String"/> 的实例。</param>
+        /// <param name="a"><see cref="String"/>第一个 <see cref="String"/> 的实例。</param>
+        /// <param name="b"><see cref="String"/>第二个 <see cref="String"/> 的实例。</param>
         /// <returns>如果 <paramref name="b"/> 参数出现在此字符串中，或者 <paramref name="b"/> 为空字符串 ("")，则为 true；否则为 false。 </returns>
         public static bool iContains(this string a, string b)
         {
@@ -99,9 +93,7 @@ namespace System
         /// <param name="input">当前字符串。</param>
         /// <returns>返回一个新的字符串。</returns>
         public static string ToLiking(this string input)
-        {
-            return string.Concat("%", input, "%");
-        }
+            => string.Concat("%", input, "%");
 
         /// <summary>
         /// 将指定字符串中的格式项替换为指定数组中相应对象的字符串表示形式。
@@ -110,19 +102,15 @@ namespace System
         /// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象。</param>
         /// <returns><paramref name="format"/> 的副本，其中的格式项已替换为 <paramref name="args"/> 中相应对象的字符串表示形式。</returns>
         public static string Fmt(this string format, params object[] args)
-        {
-            return string.Format(format, args);
-        }
+            => string.Format(format, args);
 
         /// <summary>
-        /// 返回表示当前 <see cref="System.String"/>，如果 <paramref name="input"/> 是一个 null 值，将返回 <see cref="System.String.Empty"/>。
+        /// 返回表示当前 <see cref="String"/>，如果 <paramref name="input"/> 是一个 null 值，将返回 <see cref="String.Empty"/>。
         /// </summary>
         /// <param name="input">一个字符串。</param>
-        /// <returns>返回 <paramref name="input"/> 的 <see cref="System.String"/> 或 <see cref="System.String.Empty"/>。</returns>
+        /// <returns>返回 <paramref name="input"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
         public static string ToStringOrEmpty(this string input)
-        {
-            return input ?? string.Empty;
-        }
+            => input ?? string.Empty;
 
         /// <summary>
         /// 判定当前字符串是否是一个空的字符串。
@@ -130,9 +118,7 @@ namespace System
         /// <param name="input">当前字符串。</param>
         /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
         public static bool IsNull(this string input)
-        {
-            return string.IsNullOrWhiteSpace(input);
-        }
+            => string.IsNullOrWhiteSpace(input);
 
         /// <summary>
         /// 将指定的字节数组转换成十六进制的字符串。
@@ -140,9 +126,7 @@ namespace System
         /// <param name="source">一个字节数组。</param>
         /// <returns>由字节数组转换后的十六进制的字符串。</returns>
         public static string ToHexString(this byte[] source)
-        {
-            return BitConverter.ToString(source).Replace("-", string.Empty);
-        }
+            => BitConverter.ToString(source).Replace("-", string.Empty);
 
         /// <summary>
         /// 指定整串字符串的最大长度，剪裁字符串数据，超出部分将会在结尾添加“...”。
@@ -154,7 +138,7 @@ namespace System
         public static string CutString(this string input, int maxLength, string ellipsis = "...")
         {
             if(input == null || input.Length <= maxLength) return input;
-            if(string.IsNullOrEmpty(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
+            if(string.IsNullOrWhiteSpace(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
             maxLength = maxLength - ellipsis.Length;
             return input.Substring(0, maxLength) + ellipsis;
         }
@@ -167,7 +151,7 @@ namespace System
         /// <returns>返回一个新的字符串。</returns>
         public static string Starts(this string input, int length)
         {
-            if(string.IsNullOrEmpty(input)) return string.Empty;
+            if(string.IsNullOrWhiteSpace(input)) return string.Empty;
             return length >= input.Length ? input : input.Substring(0, length);
         }
 
@@ -179,7 +163,7 @@ namespace System
         /// <returns>返回一个新的字符串。</returns>
         public static string Ends(this string input, int length)
         {
-            if(string.IsNullOrEmpty(input)) return string.Empty;
+            if(string.IsNullOrWhiteSpace(input)) return string.Empty;
             return length >= input.Length ? input : input.Substring(input.Length - length);
         }
         
@@ -189,18 +173,9 @@ namespace System
         /// <param name="val">目标字符串。</param>
         /// <param name="count">要删除的字长度。</param>
         /// <returns>返回删除后的字符串。</returns>
-        [Obsolete("请调用 RemoveStarts。后期将会移除此方法。")]
-        [System.ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)]
-        public static string RemoveStart(this string val, int count = 1) { return RemoveStarts(val, count); }
-        /// <summary>
-        /// 删除当前字符串的开头的字符串。
-        /// </summary>
-        /// <param name="val">目标字符串。</param>
-        /// <param name="count">要删除的字长度。</param>
-        /// <returns>返回删除后的字符串。</returns>
         public static string RemoveStarts(this string val, int count = 1)
         {
-            if(string.IsNullOrEmpty(val) || val.Length < count) return val;
+            if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;
             return val.Remove(0, count);
         }
         
@@ -210,18 +185,9 @@ namespace System
         /// <param name="val">目标字符串。</param>
         /// <param name="count">要删除的字长度。</param>
         /// <returns>返回删除后的字符串。</returns>
-        [Obsolete("请调用 RemoveEnds。后期将会移除此方法。")]
-        [System.ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)]
-        public static string RemoveEnd(this string val, int count = 1) { return RemoveEnds(val, count); }
-        /// <summary>
-        /// 删除当前字符串的结尾的字符串。
-        /// </summary>
-        /// <param name="val">目标字符串。</param>
-        /// <param name="count">要删除的字长度。</param>
-        /// <returns>返回删除后的字符串。</returns>
         public static string RemoveEnds(this string val, int count = 1)
         {
-            if(string.IsNullOrEmpty(val) || val.Length < count) return val;
+            if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;
             return val.Remove(val.Length - count);
         }
     }

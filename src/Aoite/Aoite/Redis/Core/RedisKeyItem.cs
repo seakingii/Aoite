@@ -20,12 +20,12 @@ namespace Aoite.Redis
         public BinaryValue Value { get { return this._Value; } set { this._Value = value; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisKeyItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisKeyItem"/> 类的新实例。
         /// </summary>
         public RedisKeyItem() { }
         
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Redis.RedisKeyItem"/> 类的新实例。
+        /// 初始化一个 <see cref="RedisKeyItem"/> 类的新实例。
         /// </summary>
         /// <param name="key">键名。</param>
         /// <param name="value">键值。</param>

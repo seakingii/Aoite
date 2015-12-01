@@ -43,12 +43,12 @@ namespace System
         public int Count { get { return this._Queue.Count; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="System.ObjectPool&lt;T&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="ObjectPool&lt;T&gt;"/> 类的新实例。
         /// </summary>
         public ObjectPool() : this(null) { }
 
         /// <summary>
-        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="System.ObjectPool&lt;T&gt;"/> 类的新实例。
+        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="ObjectPool&lt;T&gt;"/> 类的新实例。
         /// </summary>
         /// <param name="objectFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         public ObjectPool(Func<T> objectFactory)
@@ -105,11 +105,6 @@ namespace System
             {
                 callback(t);
             }
-            //catch(Exception ex)
-            //{
-            //    GA.TraceError(ex.ToString());
-            //    throw;
-            //}
             finally
             {
                 this.Release(t);

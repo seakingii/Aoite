@@ -55,7 +55,7 @@ namespace System
         public static Result ClientKill(this IRedisClient client, string ip, int port)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
+            if(string.IsNullOrWhiteSpace(ip)) throw new ArgumentNullException(nameof(ip));
 
             return client.Execute(new RedisStatus("CLIENT KILL", ip + ":" + port));
         }
@@ -105,7 +105,7 @@ namespace System
         public static Result ClientSetName(this IRedisClient client, string connectionName)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(connectionName)) throw new ArgumentNullException(nameof(connectionName));
+            if(string.IsNullOrWhiteSpace(connectionName)) throw new ArgumentNullException(nameof(connectionName));
             if(connectionName.Contains(' ')) connectionName = connectionName.Replace(' ', '_');
             return client.Execute(new RedisStatus("CLIENT SETNAME", connectionName));
         }
@@ -118,7 +118,7 @@ namespace System
         public static RedisKeyItem[] ConfigGet(this IRedisClient client, string parameter)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException(nameof(parameter));
+            if(string.IsNullOrWhiteSpace(parameter)) throw new ArgumentNullException(nameof(parameter));
             return client.Execute(RedisArray.Create(new RedisItem<RedisKeyItem>(false, "CONFIG GET", parameter), 2));
         }
         /// <summary>
@@ -153,7 +153,7 @@ namespace System
         public static Result ConfigSet(this IRedisClient client, string parameter, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException(nameof(parameter));
+            if(string.IsNullOrWhiteSpace(parameter)) throw new ArgumentNullException(nameof(parameter));
             return client.Execute(new RedisStatus("CONFIG SET", parameter, value));
         }
 

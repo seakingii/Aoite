@@ -26,11 +26,11 @@ namespace Aoite.Data
         public virtual DefaultParameterSettings ParameterSettings { get { return DefaultParameterSettings.Default; } }
 
         /// <summary>
-        /// 描述指定的 <see cref="System.Data.Common.DbParameter"/>。
+        /// 描述指定的 <see cref="Data.Common.DbParameter"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="parameter">一个 <see cref="System.Data.Common.DbParameter"/> 的实例。</param>
-        /// <returns>返回参数描述的 <see cref="System.String"/> 值。</returns>
+        /// <param name="parameter">一个 <see cref="Data.Common.DbParameter"/> 的实例。</param>
+        /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
         public abstract string DescribeParameter(IDbEngine engine, DbParameter parameter);
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Aoite.Data
         /// <returns>返回一个命令对象。</returns>
         protected virtual DbCommand CreateDbCommand(IDbEngine engine, string commandText)
         {
-            if(string.IsNullOrEmpty(commandText)) throw new ArgumentNullException(nameof(commandText));
+            if(string.IsNullOrWhiteSpace(commandText)) throw new ArgumentNullException(nameof(commandText));
 
             DbCommand comm = this.Factory.CreateCommand();
 
@@ -87,7 +87,7 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 将参数集合填充到 <see cref="System.Data.Common.DbCommand"/>。
+        /// 将参数集合填充到 <see cref="Data.Common.DbCommand"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">命令对象。</param>

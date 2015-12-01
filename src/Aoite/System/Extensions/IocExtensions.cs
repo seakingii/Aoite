@@ -1,7 +1,7 @@
 ﻿using System;
 
 /// <summary>
-/// 表示 <see cref="System.IIocContainer"/> 的扩展方法。
+/// 表示 <see cref="IIocContainer"/> 的扩展方法。
 /// </summary>
 public static class IocExtensions
 {
@@ -293,7 +293,7 @@ public static class IocExtensions
     public static IIocContainer AutoMapFromConfig(this IIocContainer container, string appSettingKey)
     {
         var namespaceExpression = System.Configuration.ConfigurationManager.AppSettings[appSettingKey];
-        if(string.IsNullOrEmpty(namespaceExpression))
+        if(string.IsNullOrWhiteSpace(namespaceExpression))
             throw new System.Configuration.SettingsPropertyNotFoundException("configuration/appSettings/add[key='" + appSettingKey + "'] 不存在。");
         AutoMap(container, new MapFilter(namespaceExpression));
         return container;
@@ -307,7 +307,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AutoMap(this IIocContainer container, string namespaceExpression, string actualTypeFullNameFormat = null)
     {
-        if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
+        if(string.IsNullOrWhiteSpace(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
         return AutoMap(container, new MapFilter(namespaceExpression) { ActualTypeFullNameFormat = actualTypeFullNameFormat });
     }
     /*

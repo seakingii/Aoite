@@ -12,11 +12,11 @@ namespace Aoite.Serialization
         private JavaScriptSerializer _serializer = new JavaScriptSerializer();
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Serialization.JsonSerializer"/> 类的新实例。
+        /// 初始化一个 <see cref="JsonSerializer"/> 类的新实例。
         /// </summary>
         public JsonSerializer() : this(new JavaScriptSerializer()) { }
         /// <summary>
-        /// 提供一个 <see cref="System.Web.Script.Serialization.JavaScriptSerializer"/>，初始化一个 <see cref="Aoite.Serialization.JsonSerializer"/> 类的新实例。
+        /// 提供一个 <see cref="JavaScriptSerializer"/>，初始化一个 <see cref="JsonSerializer"/> 类的新实例。
         /// </summary>
         /// <param name="javaScriptSerializer"></param>
         public JsonSerializer(JavaScriptSerializer javaScriptSerializer)

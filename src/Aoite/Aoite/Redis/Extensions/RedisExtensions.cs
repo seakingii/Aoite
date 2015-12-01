@@ -25,7 +25,7 @@ namespace System
         public static IDisposable Lock(this IRedisClient client, string key, TimeSpan? timeout = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             var realSpan = timeout ?? DefaultLockTimeout;
             if(!SpinWait.SpinUntil(() => client.HSet(LockKey, key, 1, nx: true), realSpan))

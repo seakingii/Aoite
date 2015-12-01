@@ -302,7 +302,7 @@ namespace System
         /// 创建指定 <paramref name="type"/> 的动态构造函数。
         /// </summary>
         /// <param name="type">构造函数的定义类。</param>
-        /// <param name="types">表示需要的构造函数的参数个数、顺序和类型的 <see cref="System.Type"/> 对象的数组。- 或 -<see cref="System.Type"/> 对象的空数组，用于获取不带参数的构造函数。这样的空数组由 static 字段 <see cref="System.Type.EmptyTypes"/> 提供。</param>
+        /// <param name="types">表示需要的构造函数的参数个数、顺序和类型的 <see cref="Type"/> 对象的数组。- 或 -<see cref="Type"/> 对象的空数组，用于获取不带参数的构造函数。这样的空数组由 static 字段 <see cref="Type.EmptyTypes"/> 提供。</param>
         /// <returns>返回一个绑定到实例构造函数的委托。</returns>
         public static DynamicConstructorHandler CreateConstructorHandler(this Type type, params Type[] types)
         {

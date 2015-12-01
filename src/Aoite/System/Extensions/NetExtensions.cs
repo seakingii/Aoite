@@ -12,7 +12,7 @@ namespace System
         /// <summary>
         /// 强制停止。
         /// </summary>
-        /// <param name="socket">一个 <see cref="System.Net.Sockets.Socket"/>。</param>
+        /// <param name="socket">一个 <see cref="Net.Sockets.Socket"/>。</param>
         /// <param name="disposing">指示是否释放 Socket 对象，并且不再使用。</param>
         public static void Shutdown(this Socket socket, bool disposing)
         {
@@ -29,11 +29,12 @@ namespace System
             }
             if(disposing) socket.Dispose();
         }
+
         /// <summary>
-        /// 将指定主机地址转换为 <see cref="System.Net.IPAddress"/> 类的新实例，并创建一个 <see cref="System.Net.IPEndPoint"/> 类的新实例。
+        /// 将指定主机地址转换为 <see cref="IPAddress"/> 类的新实例，并创建一个 <see cref="IPEndPoint"/> 类的新实例。
         /// </summary>
-        /// <param name="hp">一个 <see cref="Aoite.Net.IHostPort"/> 类的实现。</param>
-        /// <returns>返回一个新的 <see cref="System.Net.IPEndPoint"/> 实例。</returns>
+        /// <param name="hp">一个 <see cref="IHostPort"/> 类的实现。</param>
+        /// <returns>返回一个新的 <see cref="IPEndPoint"/> 实例。</returns>
         public static IPEndPoint ToIPEndPoint(this IHostPort hp)
         {
             if(hp == null) throw new ArgumentNullException(nameof(hp));
@@ -57,7 +58,7 @@ namespace System
         /// </summary>
         /// <param name="server">服务端。</param>
         /// <param name="endPoint">远程主机。</param>
-        /// <param name="timeout">表示等待的毫秒数的 <see cref="System.TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="System.TimeSpan"/>。</param>
+        /// <param name="timeout">表示等待的毫秒数的 <see cref="TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="TimeSpan"/>。</param>
         public static void Connect(this Socket server, EndPoint endPoint, TimeSpan timeout)
         {
             var asyncResult = server.BeginConnect(endPoint, null, null);
@@ -71,7 +72,7 @@ namespace System
         /// <param name="server">服务端。</param>
         /// <param name="host">远程主机的名称。</param>
         /// <param name="port">远程主机的端口号。</param>
-        /// <param name="timeout">表示等待的毫秒数的 <see cref="System.TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="System.TimeSpan"/>。</param>
+        /// <param name="timeout">表示等待的毫秒数的 <see cref="TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="TimeSpan"/>。</param>
         public static void Connect(this TcpClient server, string host, int port, TimeSpan timeout)
         {
             var asyncResult = server.BeginConnect(host, port, null, null);
@@ -83,8 +84,8 @@ namespace System
         /// 开始一个对远程主机连接的异步请求。
         /// </summary>
         /// <param name="server">服务端。</param>
-        /// <param name="endPoint">打算连接到的 <see cref="System.Net.IPEndPoint"/>。</param>
-        /// <param name="timeout">表示等待的毫秒数的 <see cref="System.TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="System.TimeSpan"/>。</param>
+        /// <param name="endPoint">打算连接到的 <see cref="IPEndPoint"/>。</param>
+        /// <param name="timeout">表示等待的毫秒数的 <see cref="TimeSpan"/>，或表示 -1 毫秒（无限期等待）的 <see cref="TimeSpan"/>。</param>
         public static void Connect(this TcpClient server, IPEndPoint endPoint, TimeSpan timeout)
         {
             var asyncResult = server.BeginConnect(endPoint.Address, endPoint.Port, null, null);

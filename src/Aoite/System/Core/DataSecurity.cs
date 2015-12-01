@@ -118,19 +118,19 @@ namespace System
     public enum SecurityAlgorithms
     {
         /// <summary>
-        /// 使用 <see cref="System.Security.Cryptography.SHA1"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
+        /// 使用 <see cref="Security.Cryptography.SHA1"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
         /// </summary>
         SHA1,
         /// <summary>
-        /// 使用 <see cref="System.Security.Cryptography.SHA256"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
+        /// 使用 <see cref="Security.Cryptography.SHA256"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
         /// </summary>
         SHA256,
         /// <summary>
-        /// 使用 <see cref="System.Security.Cryptography.SHA384"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
+        /// 使用 <see cref="Security.Cryptography.SHA384"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
         /// </summary>
         SHA384,
         /// <summary>
-        /// 使用 <see cref="System.Security.Cryptography.SHA512"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
+        /// 使用 <see cref="Security.Cryptography.SHA512"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
         /// </summary>
         SHA512,
         /// <summary>

@@ -33,10 +33,10 @@ namespace System
         public static IDictionary<string, List<Type>> AllTypes { get { return _AllTypes; } }
 
         /// <summary>
-        /// 获取指定 <see cref="System.Type"/> 的完全限定名，获取匹配的  <see cref="System.Type"/>。
+        /// 获取指定 <see cref="Type"/> 的完全限定名，获取匹配的  <see cref="Type"/>。
         /// </summary>
         /// <param name="fullName">完全限定名。</param>
-        /// <returns>返回一个匹配的  <see cref="System.Type"/>，或一个 null 值。</returns>
+        /// <returns>返回一个匹配的  <see cref="Type"/>，或一个 null 值。</returns>
         public static Type GetType(string fullName)
         {
             List<Type> types;
@@ -99,7 +99,7 @@ namespace System
                      && a.FullName.IndexOf("CppCodeProvider") == -1
                      && a.FullName.IndexOf("WebMatrix") == -1
                      && a.FullName.IndexOf("SMDiagnostics") == -1
-                     && !String.IsNullOrEmpty(a.Location);
+                     && !string.IsNullOrWhiteSpace(a.Location);
         }
 
         static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
