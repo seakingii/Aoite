@@ -256,7 +256,7 @@ namespace System
         /// 释放并关闭所有线程上下文的上下文对象。非【主线程】的其他线程一单使用其下列对象，就应该的调用此方法进行释放:
         /// <para><see cref="Db.Context"/></para>
         /// <para><see cref="Log.Context"/></para>
-        /// <para><see cref="RedisManager.Context"/></para>
+        /// <para><see cref="Aoite.Redis.RedisManager.Context"/></para>
         /// </summary>
         public static void ResetContexts()
         {

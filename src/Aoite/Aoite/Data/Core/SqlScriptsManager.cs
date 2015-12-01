@@ -19,7 +19,7 @@ namespace Aoite.Data
         /// 从指定的目录解析所有脚本文件。
         /// </summary>
         /// <param name="folder">要搜索的目录。</param>
-        /// <param name="searchPattern">要与 <paramref name="folder"/> 中的文件名匹配的搜索字符串。此参数不能以两个句点（“..”）结束，不能在 <see cref="IO.Path.DirectorySeparatorChar"/> 或 <see cref="IO.Path.AltDirectorySeparatorChar"/> 的前面包含两个句点（“..”），也不能包含 <see cref="IO.Path.InvalidPathChars"/> 中的任何字符。</param>
+        /// <param name="searchPattern">要与 <paramref name="folder"/> 中的文件名匹配的搜索字符串。此参数不能以两个句点（“..”）结束，不能在 <see cref="System.IO.Path.DirectorySeparatorChar"/> 或 <see cref="System.IO.Path.AltDirectorySeparatorChar"/> 的前面包含两个句点（“..”），也不能包含 <see cref="System.IO.Path.InvalidPathChars"/> 中的任何字符。</param>
         public void ParseFolder(string folder, string searchPattern = "*.sql")
         {
             if(Directory.Exists(folder))

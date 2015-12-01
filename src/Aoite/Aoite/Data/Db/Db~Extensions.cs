@@ -237,7 +237,7 @@ namespace System
         /// 添加 SELECT 的字段。
         /// </summary>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select(params string[] fields)
         {
             return Engine.Select(fields);
@@ -248,7 +248,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select<TEntity>(params string[] fields)
         {
             return Engine.Select<TEntity>(fields);

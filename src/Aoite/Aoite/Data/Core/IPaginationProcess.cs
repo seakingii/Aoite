@@ -14,7 +14,7 @@ namespace Aoite.Data
         string CreateTotalCountCommand(string commandText);
 
         /// <summary>
-        /// 对指定的 <see cref="Data.Common.DbCommand"/> 进行分页处理。
+        /// 对指定的 <see cref="DbCommand"/> 进行分页处理。
         /// </summary>
         /// <param name="pageNumber">从 1 开始的页码。</param>
         /// <param name="pageSize">页的大小。</param>

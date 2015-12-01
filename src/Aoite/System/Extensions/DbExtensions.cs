@@ -512,7 +512,7 @@ namespace System
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select(this IDbEngine engine, params string[] fields)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -525,7 +525,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select<TEntity>(this IDbEngine engine, params string[] fields)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -546,7 +546,7 @@ namespace System
             => FindOne<TEntity, TEntity>(engine, id);
 
         /// <summary>
-        /// 获取指定 <paramref name="id"/> 键值的数据源对象。
+        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
@@ -566,7 +566,7 @@ namespace System
             => FindOne<TEntity, TView>(engine, null, id);
 
         /// <summary>
-        /// 获取指定 <paramref name="id"/> 键值的数据源对象。
+        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>

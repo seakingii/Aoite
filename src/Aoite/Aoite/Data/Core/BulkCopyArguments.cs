@@ -9,17 +9,17 @@ namespace Aoite.Data
     public class BulkCopyArguments
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.BulkCopyArguments"/> 类的新实例。
+        /// 初始化一个 <see cref="BulkCopyArguments"/> 类的新实例。
         /// </summary>
         /// <param name="destinationTableName">服务器上目标表的名称。</param>
-        /// <param name="table">一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。</param>
+        /// <param name="table">一个 <see cref="DataTable"/>，它的行将被复制到目标表中。</param>
         public BulkCopyArguments(string destinationTableName, DataTable table) : this(destinationTableName, table, (DataRowState)0) { }
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.BulkCopyArguments"/> 类的新实例。
+        /// 初始化一个 <see cref="BulkCopyArguments"/> 类的新实例。
         /// </summary>
         /// <param name="destinationTableName">服务器上目标表的名称。</param>
-        /// <param name="table">一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。</param>
-        /// <param name="rowState"><see cref="Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。</param>
+        /// <param name="table">一个 <see cref="DataTable"/>，它的行将被复制到目标表中。</param>
+        /// <param name="rowState"><see cref="DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。</param>
         public BulkCopyArguments(string destinationTableName, DataTable table, DataRowState rowState)
         {
             if(string.IsNullOrWhiteSpace(destinationTableName)) throw new ArgumentNullException(nameof(destinationTableName));
@@ -96,7 +96,7 @@ namespace Aoite.Data
 
         private RowsCopiedDelegate _RowsCopied;
         /// <summary>
-        /// 获取或设置在每次处理完 <see cref="Aoite.Data.BulkCopyArguments.NotifyAfter"/> 属性指定的行数时发生。
+        /// 获取或设置在每次处理完 <see cref="BulkCopyArguments.NotifyAfter"/> 属性指定的行数时发生。
         /// </summary>
         public RowsCopiedDelegate RowsCopied
         {
@@ -112,7 +112,7 @@ namespace Aoite.Data
 
         private DataTable _Table;
         /// <summary>
-        /// 获取一个 <see cref="Data.DataTable"/>，它的行将被复制到目标表中。
+        /// 获取一个 <see cref="DataTable"/>，它的行将被复制到目标表中。
         /// </summary>
         public DataTable Table
         {
@@ -124,7 +124,7 @@ namespace Aoite.Data
 
         private DataRowState _RowState;
         /// <summary>
-        /// 获取 <see cref="Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。
+        /// 获取 <see cref="DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。
         /// </summary>
         public DataRowState RowState
         {

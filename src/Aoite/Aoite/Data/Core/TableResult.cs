@@ -3,12 +3,12 @@
 namespace Aoite.Data
 {
     /// <summary>
-    /// 表示以 <see cref="Data.DataTable"/> 对象作为返回值的查询结果。
+    /// 表示以 <see cref="System.Data.DataTable"/> 对象作为返回值的查询结果。
     /// </summary>
     public class TableResult : CanUpdateDbResultBase<AoiteTable>
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.TableResult"/> 类的新实例。
+        /// 初始化一个 <see cref="TableResult"/> 类的新实例。
         /// </summary>
         public TableResult() { }
 

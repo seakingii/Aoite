@@ -26,14 +26,14 @@ namespace Aoite.Redis
         /// <summary>
         /// 用序列化数据初始化 <see cref="RedisDictionary"/> 类的新实例。
         /// </summary>
-        /// <param name="info">一个 <see cref="Runtime.Serialization.SerializationInfo"/> 对象，它包含序列化 <see cref="RedisDictionary"/> 所需的信息。</param>
-        /// <param name="context"><see cref="Runtime.Serialization.StreamingContext"/> 结构，该结构包含与 <see cref="RedisDictionary"/> 相关联的序列化流的源和目标。</param>
+        /// <param name="info">一个 <see cref="SerializationInfo"/> 对象，它包含序列化 <see cref="RedisDictionary"/> 所需的信息。</param>
+        /// <param name="context"><see cref="StreamingContext"/> 结构，该结构包含与 <see cref="RedisDictionary"/> 相关联的序列化流的源和目标。</param>
         protected RedisDictionary(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="Collections.IDictionary"/> 中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="System.Collections.IDictionary"/> 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
-        /// <param name="dictionary"><see cref="Collections.IDictionary"/>，它的元素被复制到新的 <see cref="RedisDictionary"/></param>
+        /// <param name="dictionary"><see cref="System.Collections.IDictionary"/>，它的元素被复制到新的 <see cref="RedisDictionary"/></param>
         public RedisDictionary(System.Collections.IDictionary dictionary)
             : base(dictionary.Count)
         {

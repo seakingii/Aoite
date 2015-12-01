@@ -9,12 +9,12 @@ namespace Aoite.Data
     public class TableAttribute : AliasAttribute
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.TableAttribute"/> 类的新实例。
+        /// 初始化一个 <see cref="TableAttribute"/> 类的新实例。
         /// </summary>
         public TableAttribute() { }
 
         /// <summary>
-        /// 指定名称，初始化一个 <see cref="Aoite.Data.TableAttribute"/> 类的新实例。
+        /// 指定名称，初始化一个 <see cref="TableAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="name">名称。</param>
         public TableAttribute(string name) : base(name) { }

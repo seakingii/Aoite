@@ -159,9 +159,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 指定原 <see cref="Data.Common.DbParameter"/> 实例，添加到集合中。
+        /// 指定原 <see cref="DbParameter"/> 实例，添加到集合中。
         /// </summary>
-        /// <param name="sourceParameter">原 <see cref="Data.Common.DbParameter"/> 实例。可以为 null，表示未确定数据。</param>
+        /// <param name="sourceParameter">原 <see cref="DbParameter"/> 实例。可以为 null，表示未确定数据。</param>
         public ExecuteParameterCollection Add(DbParameter sourceParameter)
         {
             this.Add(new ExecuteDbParameter(sourceParameter));
@@ -209,7 +209,7 @@ namespace Aoite.Data
         /// 指定输出参数的名称和参数的类型，添加到集合中。
         /// </summary>
         /// <param name="name">参数的名称。</param>
-        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="DbType"/>。</param>
         public ExecuteParameterCollection Add(string name, DbType type)
         {
             return this.Add(new ExecuteParameter(name, type));
@@ -241,7 +241,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="DbType"/>。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, ParameterDirection direction)
         {
@@ -253,7 +253,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="DbType"/>。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type)
         {
             return this.Add(new ExecuteParameter(name, value, type));
@@ -264,7 +264,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, int size)
         {
@@ -276,7 +276,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        /// <param name="type">参数的 <see cref="Data.DbType"/>。</param>
+        /// <param name="type">参数的 <see cref="DbType"/>。</param>
         /// <param name="size">参数的长度。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
         public ExecuteParameterCollection Add(string name, object value, DbType type, int size, ParameterDirection direction)

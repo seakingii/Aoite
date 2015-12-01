@@ -5,20 +5,20 @@ using System.Data.Common;
 namespace Aoite.Data
 {
     /// <summary>
-    /// 表示一个包含 <see cref="Data.Common.DbParameter"/> 实例的执行命令参数。
+    /// 表示一个包含 <see cref="DbParameter"/> 实例的执行命令参数。
     /// </summary>
     public class ExecuteDbParameter : ExecuteParameter
     {
         private DbParameter _SourceParameter;
         /// <summary>
-        /// 获取或设置原 <see cref="Data.Common.DbParameter"/> 实例。
+        /// 获取或设置原 <see cref="DbParameter"/> 实例。
         /// </summary>
         public DbParameter SourceParameter { get { return this._SourceParameter; } set { this._SourceParameter = value; } }
 
         #region Properties
 
         /// <summary>
-        /// 获取或设置参数的 <see cref="Data.DbType"/>。
+        /// 获取或设置参数的 <see cref="DbType"/>。
         /// </summary>
         public override DbType Type { get { return this._SourceParameter.DbType; } set { this._SourceParameter.DbType = value; } }
 
@@ -59,9 +59,9 @@ namespace Aoite.Data
         #endregion
 
         /// <summary>
-        /// 指定原 <see cref="Data.Common.DbParameter"/> 实例，初始化一个 <see cref="Aoite.Data.ExecuteDbParameter"/> 类的新实例。
+        /// 指定原 <see cref="DbParameter"/> 实例，初始化一个 <see cref="Aoite.Data.ExecuteDbParameter"/> 类的新实例。
         /// </summary>
-        /// <param name="sourceParameter">原 <see cref="Data.Common.DbParameter"/> 实例。</param>
+        /// <param name="sourceParameter">原 <see cref="DbParameter"/> 实例。</param>
         public ExecuteDbParameter(DbParameter sourceParameter)
         {
             if(sourceParameter == null) throw new ArgumentNullException(nameof(sourceParameter));
@@ -69,10 +69,10 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 指定 <see cref="Data.Common.DbCommand"/>，生成一个 <see cref="Data.Common.DbParameter"/>。
+        /// 指定 <see cref="DbCommand"/>，生成一个 <see cref="DbParameter"/>。
         /// </summary>
-        /// <param name="command">一个 <see cref="Data.Common.DbCommand"/>。</param>
-        /// <returns>返回一个已生成的 <see cref="Data.Common.DbParameter"/>。</returns>
+        /// <param name="command">一个 <see cref="DbCommand"/>。</param>
+        /// <returns>返回一个已生成的 <see cref="DbParameter"/>。</returns>
         public override DbParameter CreateParameter(DbCommand command)
         {
             return this._SourceParameter;

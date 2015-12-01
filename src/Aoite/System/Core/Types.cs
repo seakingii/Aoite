@@ -29,7 +29,7 @@
         public static readonly Type BinaryValue = typeof(System.BinaryValue);
 
         /// <summary>
-        /// 表示 <see cref="ICustomSerializable"/> 的类型。
+        /// 表示 <see cref="Aoite.Serialization.ICustomSerializable"/> 的类型。
         /// </summary>
         public static readonly Type ISerializable = typeof(Aoite.Serialization.ICustomSerializable);
 
@@ -180,19 +180,19 @@
         #region 数据类型
 
         /// <summary>
-        /// 表示 <see cref="Data.DataSet"/> 的类型。
+        /// 表示 <see cref="DataSet"/> 的类型。
         /// </summary>
         public static readonly Type DataSet = typeof(System.Data.DataSet);
         /// <summary>
-        /// 表示 <see cref="Data.DataTable"/> 的类型。
+        /// 表示 <see cref="DataTable"/> 的类型。
         /// </summary>
         public static readonly Type DataTable = typeof(System.Data.DataTable);
         /// <summary>
-        /// 表示 <see cref="Data.DataRow"/> 的类型。
+        /// 表示 <see cref="DataRow"/> 的类型。
         /// </summary>
         public static readonly Type DataRow = typeof(System.Data.DataRow);
         /// <summary>
-        /// 表示 <see cref="Data.DataColumn"/> 的类型。
+        /// 表示 <see cref="DataColumn"/> 的类型。
         /// </summary>
         public static readonly Type DataColumn = typeof(System.Data.DataColumn);
 

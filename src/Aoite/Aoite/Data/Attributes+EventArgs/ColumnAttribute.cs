@@ -9,19 +9,19 @@ namespace Aoite.Data
     public class ColumnAttribute : AliasAttribute, IKeyAttribute
     {
         /// <summary>
-        /// 指示当前属性是否为主要成员，初始化一个 <see cref="Aoite.Data.ColumnAttribute"/> 类的新实例。
+        /// 指示当前属性是否为主要成员，初始化一个 <see cref="ColumnAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="isPrimaryKey">指示当前属性是否为主要成员。</param>
         public ColumnAttribute(bool isPrimaryKey) : this(null, isPrimaryKey) { }
 
         /// <summary>
-        /// 指定名称，初始化一个 <see cref="Aoite.Data.ColumnAttribute"/> 类的新实例。
+        /// 指定名称，初始化一个 <see cref="ColumnAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="name">名称。</param>
         public ColumnAttribute(string name) : this(name, false) { }
 
         /// <summary>
-        /// 指定名称和指示当前属性是否为主要成员，初始化一个 <see cref="Aoite.Data.ColumnAttribute"/> 类的新实例。
+        /// 指定名称和指示当前属性是否为主要成员，初始化一个 <see cref="ColumnAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="name">名称。</param>
         /// <param name="isKey">指示当前属性是否为主要成员。</param>
@@ -32,7 +32,7 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 初始化一个空的 <see cref="Aoite.Data.ColumnAttribute"/> 类的新实例。
+        /// 初始化一个空的 <see cref="ColumnAttribute"/> 类的新实例。
         /// </summary>
         public ColumnAttribute() { }
 

@@ -1,5 +1,6 @@
 ﻿using Aoite.Reflection;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 
@@ -25,10 +26,10 @@ namespace System
         }
 
         /// <summary>
-        /// 判断一个类型是否为 <see cref="Data.DataTable"/> 或 <see cref="Data.DataSet"/> 的类型。
+        /// 判断一个类型是否为 <see cref="DataTable"/> 或 <see cref="DataSet"/> 的类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
-        /// <returns>如果类型为 <see cref="Data.DataTable"/> 或 <see cref="Data.DataSet"/>，则返回 true，否则返回 false。</returns>
+        /// <returns>如果类型为 <see cref="DataTable"/> 或 <see cref="DataSet"/>，则返回 true，否则返回 false。</returns>
         public static bool IsDataType(this Type type)
             => type != null && (Types.DataTable.IsAssignableFrom(type) || Types.DataSet.IsAssignableFrom(type));
 

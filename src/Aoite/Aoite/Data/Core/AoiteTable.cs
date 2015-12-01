@@ -19,12 +19,12 @@ namespace Aoite.Data
     public class AoiteTable : DataTable
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.AoiteTable"/> 类的新实例。
+        /// 初始化一个 <see cref="AoiteTable"/> 类的新实例。
         /// </summary>
         public AoiteTable() { }
 
         /// <summary>
-        /// 使用 <see cref="Runtime.Serialization.SerializationInfo"/> 和 <see cref="Runtime.Serialization.StreamingContext"/> 初始化 <see cref="Aoite.Data.AoiteTable"/> 类的新实例。
+        /// 使用 <see cref="SerializationInfo"/> 和 <see cref="StreamingContext"/> 初始化 <see cref="AoiteTable"/> 类的新实例。
         /// </summary>
         /// <param name="info">将对象序列化或反序列化所需的数据。</param>
         /// <param name="context">给定序列化流的源和目的地。</param>
@@ -40,10 +40,10 @@ namespace Aoite.Data
         public long TotalRowCount { get; internal set; }
 
         /// <summary>
-        /// 用序列化 <see cref="Aoite.Data.AoiteTable"/> 所需的数据填充序列化信息对象。
+        /// 用序列化 <see cref="AoiteTable"/> 所需的数据填充序列化信息对象。
         /// </summary>
-        /// <param name="info">一个 <see cref="Runtime.Serialization.SerializationInfo"/> 对象，它包含与 <see cref="Aoite.Data.AoiteTable"/> 关联的序列化数据。</param>
-        /// <param name="context">一个 <see cref="Runtime.Serialization.StreamingContext"/> 对象，它包含与 <see cref="Aoite.Data.AoiteTable"/> 关联的序列化流的源和目标。</param>
+        /// <param name="info">一个 <see cref="SerializationInfo"/> 对象，它包含与 <see cref="AoiteTable"/> 关联的序列化数据。</param>
+        /// <param name="context">一个 <see cref="StreamingContext"/> 对象，它包含与 <see cref="AoiteTable"/> 关联的序列化流的源和目标。</param>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

@@ -26,10 +26,10 @@ namespace Aoite.Data
         public virtual DefaultParameterSettings ParameterSettings { get { return DefaultParameterSettings.Default; } }
 
         /// <summary>
-        /// 描述指定的 <see cref="Data.Common.DbParameter"/>。
+        /// 描述指定的 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="parameter">一个 <see cref="Data.Common.DbParameter"/> 的实例。</param>
+        /// <param name="parameter">一个 <see cref="DbParameter"/> 的实例。</param>
         /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
         public abstract string DescribeParameter(IDbEngine engine, DbParameter parameter);
 
@@ -87,7 +87,7 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 将参数集合填充到 <see cref="Data.Common.DbCommand"/>。
+        /// 将参数集合填充到 <see cref="DbCommand"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">命令对象。</param>

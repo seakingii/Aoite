@@ -28,13 +28,13 @@
         /// 添加 ORDER BY 的字段。
         /// </summary>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         ISelect OrderBy(params string[] fields);
         /// <summary>
         /// 添加 GROUP BY 的字段。
         /// </summary>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
+        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
         ISelect GroupBy(params string[] fields);
     }
 }
