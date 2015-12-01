@@ -287,6 +287,8 @@
     <Compile Include="Aoite\Data\Core\TableResult.cs">
       <DependentUpon>IDbResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Aoite\Dbx\ExecuteParameter.cs" />
+    <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
     <Compile Include="Aoite\Logger\ILogger.cs" />
     <Compile Include="Aoite\Logger\LoggerBase.cs">
       <DependentUpon>ILogger.cs</DependentUpon>
@@ -451,7 +453,7 @@
     <Compile Include="System\Core\ExceptionEventArgs.cs" />
     <Compile Include="System\Extensions\CollectionsExtensions.cs" />
     <Compile Include="System\Extensions\CommonExtensions.cs" />
-    <Compile Include="System\Extensions\DbExtensions.cs" />
+    <Compile Include="Aoite\Data\Db\DbExtensions.cs" />
     <Compile Include="System\Extensions\IocExtensions.cs" />
     <Compile Include="System\Extensions\IOExtensions.cs" />
     <Compile Include="System\Extensions\MapperExtensions.cs" />
@@ -539,6 +541,7 @@
       <DependentUpon>BinaryValue.cs</DependentUpon>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

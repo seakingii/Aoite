@@ -74,7 +74,7 @@ namespace Aoite.Data
         /// 获取指定参数索引的参数内容。
         /// </summary>
         /// <param name="index">参数索引。</param>
-        /// <returns>获取一个 <see cref="Aoite.Data.ExecuteParameter"/> 的参数实例。</returns>
+        /// <returns>获取一个 <see cref="ExecuteParameter"/> 的参数实例。</returns>
         public ExecuteParameter this[int index]
         {
             get
@@ -87,7 +87,7 @@ namespace Aoite.Data
         /// 获取或设置指定参数名称的参数内容。
         /// </summary>
         /// <param name="name">参数名称。</param>
-        /// <returns>获取一个 <see cref="Aoite.Data.ExecuteParameter"/> 的参数实例。</returns>
+        /// <returns>获取一个 <see cref="ExecuteParameter"/> 的参数实例。</returns>
         public ExecuteParameter this[string name]
         {
             get

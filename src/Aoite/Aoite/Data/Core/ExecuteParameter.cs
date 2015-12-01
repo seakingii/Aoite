@@ -81,19 +81,19 @@ namespace Aoite.Data
         #region Ctors
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         public ExecuteParameter() { }
 
         /// <summary>
-        /// 指定输出参数的名称，初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 指定输出参数的名称，初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         public ExecuteParameter(string name)
             : this(name, null, null, -1, ParameterDirection.Output) { }
 
         /// <summary>
-        /// 指定输出参数的名称和参数的类型，初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 指定输出参数的名称和参数的类型，初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="type">参数的 <see cref="DbType"/>。</param>
@@ -101,7 +101,7 @@ namespace Aoite.Data
             : this(name, null, type, -1, ParameterDirection.Output) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -109,7 +109,7 @@ namespace Aoite.Data
             : this(name, value, null, -1, ParameterDirection.Input) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
@@ -117,7 +117,7 @@ namespace Aoite.Data
             : this(name, DBNull.Value, null, -1, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
@@ -126,7 +126,7 @@ namespace Aoite.Data
             : this(name, DBNull.Value, type, -1, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="direction">指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</param>
@@ -136,7 +136,7 @@ namespace Aoite.Data
             : this(name, DBNull.Value, type, size, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -145,7 +145,7 @@ namespace Aoite.Data
             : this(name, value, null, -1, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -154,7 +154,7 @@ namespace Aoite.Data
             : this(name, value, type, -1, ParameterDirection.Input) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -164,7 +164,7 @@ namespace Aoite.Data
             : this(name, value, type, size, ParameterDirection.Input) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -174,7 +174,7 @@ namespace Aoite.Data
             : this(name, value, (DbType?)type, -1, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
@@ -185,7 +185,7 @@ namespace Aoite.Data
             : this(name, value, (DbType?)type, size, direction) { }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameter"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>

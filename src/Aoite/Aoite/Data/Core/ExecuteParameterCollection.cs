@@ -16,12 +16,12 @@ namespace Aoite.Data
         private readonly Dictionary<string, ExecuteParameter> _innerDict;
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         public ExecuteParameterCollection() : this(4) { }
 
         /// <summary>
-        /// 指定初始容量初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 指定初始容量初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         /// <param name="capacity">集合可包含的初始元素数。</param>
         public ExecuteParameterCollection(int capacity)
@@ -30,38 +30,35 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        public ExecuteParameterCollection(object objectInstance)
-            : this()
+        public ExecuteParameterCollection(object objectInstance) : this()
         {
             this.AddObject(objectInstance);
         }
 
         /// <summary>
-        /// 指定参数集合初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 指定参数集合初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         /// <param name="keysAndValues">应当是 <see cref="String"/> / <see cref="Object"/> 的字典集合。</param>
-        public ExecuteParameterCollection(params object[] keysAndValues)
-            : this(keysAndValues == null ? 0 : keysAndValues.Length / 2)
+        public ExecuteParameterCollection(params object[] keysAndValues) : this(keysAndValues == null ? 0 : keysAndValues.Length / 2)
         {
             if(keysAndValues == null) return;
 
             if(keysAndValues.Length % 2 != 0) throw new ArgumentException("参数长度无效！长度必须为 2 的倍数。", "keysAndValues");
 
-            for(int i = 0; i < keysAndValues.Length; )
+            for(int i = 0; i < keysAndValues.Length;)
             {
                 this.Add(keysAndValues[i++].ToString(), keysAndValues[i++]);
             }
         }
 
         /// <summary>
-        /// 指定参数数组初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 指定参数数组初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         /// <param name="source">参数数组。</param>
-        public ExecuteParameterCollection(params ExecuteParameter[] source)
-            : this(source == null ? 0 : source.Length)
+        public ExecuteParameterCollection(params ExecuteParameter[] source) : this(source == null ? 0 : source.Length)
         {
             foreach(var item in source)
             {
@@ -70,11 +67,10 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 指定原参数集合初始化一个 <see cref="Aoite.Data.ExecuteParameterCollection"/> 类的新实例。
+        /// 指定原参数集合初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
         /// <param name="source">原参数集合。</param>
-        public ExecuteParameterCollection(ExecuteParameterCollection source)
-            : this(source == null ? 0 : source.Count)
+        public ExecuteParameterCollection(ExecuteParameterCollection source): this(source == null ? 0 : source.Count)
         {
             foreach(var item in source)
             {
@@ -86,7 +82,7 @@ namespace Aoite.Data
         /// 获取或设置指定参数名称的参数内容。
         /// </summary>
         /// <param name="name">参数名称。</param>
-        /// <returns>获取一个 <see cref="Aoite.Data.ExecuteParameter"/> 的参数实例。</returns>
+        /// <returns>获取一个 <see cref="ExecuteParameter"/> 的参数实例。</returns>
         public ExecuteParameter this[string name]
         {
             get
@@ -105,7 +101,7 @@ namespace Aoite.Data
         /// 获取指定参数索引的参数内容。
         /// </summary>
         /// <param name="index">参数索引。</param>
-        /// <returns>获取一个 <see cref="Aoite.Data.ExecuteParameter"/> 的参数实例。</returns>
+        /// <returns>获取一个 <see cref="ExecuteParameter"/> 的参数实例。</returns>
         public ExecuteParameter this[int index]
         {
             get
@@ -144,9 +140,9 @@ namespace Aoite.Data
         void ICollection<ExecuteParameter>.Add(ExecuteParameter parameter) { this.Add(parameter); }
 
         /// <summary>
-        /// 指定一个 <see cref="Aoite.Data.ExecuteParameter"/> 实例，添加到集合中。
+        /// 指定一个 <see cref="ExecuteParameter"/> 实例，添加到集合中。
         /// </summary>
-        /// <param name="parameter">要添加的 <see cref="Aoite.Data.ExecuteParameter"/> 实例。</param>
+        /// <param name="parameter">要添加的 <see cref="ExecuteParameter"/> 实例。</param>
         public ExecuteParameterCollection Add(ExecuteParameter parameter)
         {
             if(parameter == null) throw new ArgumentNullException(nameof(parameter));
@@ -285,7 +281,7 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 移除指定参数名的 <see cref="Aoite.Data.ExecuteParameter"/> 项。
+        /// 移除指定参数名的 <see cref="ExecuteParameter"/> 项。
         /// </summary>
         /// <param name="name">参数名。</param>
         /// <returns>如果已从集合中成功移除项，则为 true；否则为 false。如果在集合中没有找到项，该方法也会返回 false。</returns>
@@ -301,9 +297,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 移除指定的 <see cref="Aoite.Data.ExecuteParameter"/> 项。
+        /// 移除指定的 <see cref="ExecuteParameter"/> 项。
         /// </summary>
-        /// <param name="parameter">要移除的 <see cref="Aoite.Data.ExecuteParameter"/>。</param>
+        /// <param name="parameter">要移除的 <see cref="ExecuteParameter"/>。</param>
         /// <returns>如果已从集合中成功移除项，则为 true；否则为 false。如果在集合中没有找到项，该方法也会返回 false。</returns>
         public bool Remove(ExecuteParameter parameter)
         {
@@ -338,9 +334,9 @@ namespace Aoite.Data
         }
 
         /// <summary>
-        /// 确定集合是否包含特定的参数 <see cref="Aoite.Data.ExecuteParameter"/>。
+        /// 确定集合是否包含特定的参数 <see cref="ExecuteParameter"/>。
         /// </summary>
-        /// <param name="parameter">要查找的 <see cref="Aoite.Data.ExecuteParameter"/>。</param>
+        /// <param name="parameter">要查找的 <see cref="ExecuteParameter"/>。</param>
         /// <returns>如果在集合中找到项，则为 true；否则为 false。</returns>
         public bool Contains(ExecuteParameter parameter)
         {

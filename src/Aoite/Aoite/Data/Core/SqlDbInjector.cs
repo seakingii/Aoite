@@ -176,7 +176,6 @@ namespace Aoite.Data
         /// <param name="filename">备份文件路径。</param>
         public DbResult<int> RestoreReplaceFile(string dbname, string filename)
         {
-            //RESTORE DATABASE 后面无法跟参数。
             return this.Execute("RESTORE DATABASE " + dbname + " FROM DISK=@filename WITH REPLACE;", "@filename", filename)
                        .ToNonQuery();
         }
