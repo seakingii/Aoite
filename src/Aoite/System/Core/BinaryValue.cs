@@ -143,20 +143,14 @@ namespace System
         /// </summary>
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="Byte"/>[] 的新实例。</returns>
-        public static implicit operator byte[](BinaryValue value)
-        {
-            if(value == null) return null;
-            return value._ByteArray;
-        }
+        public static implicit operator byte[] (BinaryValue value) => value == null ? null : value._ByteArray;
+
         /// <summary>
         /// <see cref="Byte"/>[] 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="Byte"/>[] 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(byte[] value)
-        {
-            return new BinaryValue(value);
-        }
+        public static implicit operator BinaryValue(byte[] value) => new BinaryValue(value);
 
         /// <summary>
         /// <see cref="BinaryValue"/> 和 <see cref="Decimal"/> 的隐式转换。
@@ -175,6 +169,7 @@ namespace System
                 };
             return new decimal(bits);
         }
+
         /// <summary>
         /// <see cref="Decimal"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
@@ -196,42 +191,28 @@ namespace System
         /// </summary>
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="Guid"/> 的新实例。</returns>
-        public static implicit operator Guid(BinaryValue value)
-        {
-            if(!HasValue(value)) return default(Guid);
-            return new Guid(value._ByteArray);
-        }
+        public static implicit operator Guid(BinaryValue value) => HasValue(value) ? new Guid(value._ByteArray) : default(Guid);
+
         /// <summary>
         /// <see cref="Guid"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="Guid"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(Guid value)
-        {
-            return new BinaryValue(value.ToByteArray());
-        }
+        public static implicit operator BinaryValue(Guid value) => new BinaryValue(value.ToByteArray());
 
         /// <summary>
         /// <see cref="BinaryValue"/> 和 <see cref="String"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="String"/> 的新实例。</returns>
-        public static implicit operator String(BinaryValue value)
-        {
-            if(!HasValue(value)) return null;
-            return value.ToString();
-        }
+        public static implicit operator String(BinaryValue value) => HasValue(value) ? value.ToString() : null;
 
         /// <summary>
         /// <see cref="String"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="String"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(String value)
-        {
-            if(value == null) return null;
-            return new BinaryValue(GA.UTF8.GetBytes(value));
-        }
+        public static implicit operator BinaryValue(String value) => value == null ? null : new BinaryValue(GA.UTF8.GetBytes(value));
 
         /// <summary>
         /// <see cref="BinaryValue"/> 和 <see cref="DateTime"/> 的隐式转换。
@@ -239,19 +220,14 @@ namespace System
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="DateTime"/> 的新实例。</returns>
         public static implicit operator DateTime(BinaryValue value)
-        {
-            if(!HasValue(value)) return default(DateTime);
-            return DateTime.FromBinary(BitConverter.ToInt64(value._ByteArray, 0));
-        }
+            => HasValue(value) ? DateTime.FromBinary(BitConverter.ToInt64(value._ByteArray, 0)) : default(DateTime);
+
         /// <summary>
         /// <see cref="DateTime"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="DateTime"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(DateTime value)
-        {
-            return new BinaryValue(BitConverter.GetBytes(value.ToBinary()));
-        }
+        public static implicit operator BinaryValue(DateTime value) => new BinaryValue(BitConverter.GetBytes(value.ToBinary()));
 
         /// <summary>
         /// <see cref="BinaryValue"/> 和 <see cref="DateTimeOffset"/> 的隐式转换。
@@ -259,19 +235,14 @@ namespace System
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="DateTimeOffset"/> 的新实例。</returns>
         public static implicit operator DateTimeOffset(BinaryValue value)
-        {
-            if(!HasValue(value)) return default(DateTimeOffset);
-            return new DateTimeOffset(DateTime.FromBinary(BitConverter.ToInt64(value._ByteArray, 0)));
-        }
+             => HasValue(value) ? new DateTimeOffset(DateTime.FromBinary(BitConverter.ToInt64(value._ByteArray, 0))) : default(DateTimeOffset);
+
         /// <summary>
         /// <see cref="DateTimeOffset"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="DateTimeOffset"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(DateTimeOffset value)
-        {
-            return new BinaryValue(BitConverter.GetBytes(value.DateTime.ToBinary()));
-        }
+        public static implicit operator BinaryValue(DateTimeOffset value) => new BinaryValue(BitConverter.GetBytes(value.DateTime.ToBinary()));
 
         /// <summary>
         /// <see cref="BinaryValue"/> 和 <see cref="TimeSpan"/> 的隐式转换。
@@ -279,19 +250,14 @@ namespace System
         /// <param name="value">一个二进制的值。</param>
         /// <returns>返回一个 <see cref="TimeSpan"/> 的新实例。</returns>
         public static implicit operator TimeSpan(BinaryValue value)
-        {
-            if(!HasValue(value)) return default(TimeSpan);
-            return new TimeSpan(BitConverter.ToInt64(value._ByteArray, 0));
-        }
+            => HasValue(value) ? new TimeSpan(BitConverter.ToInt64(value._ByteArray, 0)) : default(TimeSpan);
+
         /// <summary>
         /// <see cref="TimeSpan"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="TimeSpan"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
-        public static implicit operator BinaryValue(TimeSpan value)
-        {
-            return new BinaryValue(BitConverter.GetBytes(value.Ticks));
-        }
+        public static implicit operator BinaryValue(TimeSpan value) => new BinaryValue(BitConverter.GetBytes(value.Ticks));
 
         /// <summary>
         /// 返回当前值的 UTF8 编码字符串。

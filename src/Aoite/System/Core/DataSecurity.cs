@@ -50,10 +50,7 @@ namespace System
         /// <param name="salt">加盐值。</param>
         /// <param name="encoding">编码方式。</param>
         /// <returns>返回 44 位加盐散列后的文本。</returns>
-        public static string GenerateSaltedHash(string text, out Guid salt, Encoding encoding = null)
-        {
-            return GenerateSaltedHash(text, salt = Guid.NewGuid(), encoding);
-        }
+        public static string GenerateSaltedHash(string text, out Guid salt, Encoding encoding = null) => GenerateSaltedHash(text, salt = Guid.NewGuid(), encoding);
 
         /// <summary>
         /// 生产成指定字符串和加盐值，并返回 44 位加盐散列后的文本。
@@ -86,30 +83,15 @@ namespace System
             return algorithm.ComputeHash(plainTextWithSaltBytes);
         }
 
-        internal static SHA1 CreateSHA1()
-        {
-            return SHA1.Create();
-        }
+        internal static SHA1 CreateSHA1() => SHA1.Create();
 
-        internal static SHA256 CreateSHA256()
-        {
-            return SHA256.Create();
-        }
+        internal static SHA256 CreateSHA256() => SHA256.Create();
 
-        internal static SHA384 CreateSHA384()
-        {
-            return SHA384.Create();
-        }
+        internal static SHA384 CreateSHA384() => SHA384.Create();
 
-        internal static SHA512 CreateSHA512()
-        {
-            return SHA512.Create();
-        }
+        internal static SHA512 CreateSHA512() => SHA512.Create();
 
-        internal static MD5 CreateMD5()
-        {
-            return MD5CryptoServiceProvider.Create();
-        }
+        internal static MD5 CreateMD5() => MD5CryptoServiceProvider.Create();
     }
 
     /// <summary>

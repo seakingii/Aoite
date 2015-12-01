@@ -1,10 +1,14 @@
-﻿namespace System
+﻿using System.Runtime.Serialization;
+
+namespace System
 {
     /// <summary>
     /// 表示一个 <see cref="Result"/> 的异常。
     /// </summary>
+    [Serializable]
     public class ResultException : Exception
     {
+        const string STATUS_NAME = "Result_Status";
         /// <summary>
         /// 获取或设置执行的状态码。
         /// </summary>
@@ -24,9 +28,17 @@
         public ResultException(string message, int status = ResultStatus.Failed)
             : base(message)
         {
-            if(status == ResultStatus.Succeed) throw new ArgumentOutOfRangeException("status", "不能用 " + ResultStatus.Succeed + " 表示一个错误的状态，因为 " + ResultStatus.Succeed + " 被认定为成功的状态。");
+            if(status == ResultStatus.Succeed)
+                throw new ArgumentOutOfRangeException(nameof(status), "不能用 " + ResultStatus.Succeed + " 表示一个错误的状态，因为 " + ResultStatus.Succeed + " 被认定为成功的状态。");
             base.HResult = status;
         }
+
+        /// <summary>
+        /// 用序列化数据初始化 <see cref="ResultException"/> 类的新实例。
+        /// </summary>
+        /// <param name="info"><see cref="SerializationInfo"/>，它存有有关所引发异常的序列化的对象数据。</param>
+        /// <param name="context"><see cref="StreamingContext"/>，它包含有关源或目标的上下文信息。</param>
+        protected ResultException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         /// <summary>
         /// 将当前错误转换为 <see cref="Result"/> 类的新实例。

@@ -36,9 +36,8 @@ namespace System
         /// <param name="objectInstance">匿名参数集合实例。</param>
         /// <param name="binary">二元运算符。</param>
         public static WhereParameters Parse(object objectInstance, string binary = "AND")
-        {
-            return Parse(new ExecuteParameterCollection(objectInstance), binary);
-        }
+            => Parse(new ExecuteParameterCollection(objectInstance), binary);
+
         /// <summary>
         /// 解析匿名对象参数集合，并用 AND 符拼接 WHERE 语句。
         /// </summary>
@@ -46,9 +45,7 @@ namespace System
         /// <param name="objectInstance">匿名参数集合实例。</param>
         /// <param name="binary">二元运算符。</param>
         public static WhereParameters Parse(IDbEngine engine, object objectInstance, string binary = "AND")
-        {
-            return Parse(engine, new ExecuteParameterCollection(objectInstance), binary);
-        }
+            => Parse(engine, new ExecuteParameterCollection(objectInstance), binary);
 
         /// <summary>
         /// 解析参数集合，并用 AND 符拼接 WHERE 语句。
@@ -56,9 +53,7 @@ namespace System
         /// <param name="ps">参数集合。</param>
         /// <param name="binary">二元运算符。</param>
         public static WhereParameters Parse(ExecuteParameterCollection ps = null, string binary = "AND")
-        {
-            return Parse(Db.Engine, ps, binary);
-        }
+            => Parse(Db.Engine, ps, binary);
 
         /// <summary>
         /// 解析参数集合，并用 AND 符拼接 WHERE 语句。
@@ -67,8 +62,6 @@ namespace System
         /// <param name="ps">参数集合。</param>
         /// <param name="binary">二元运算符。</param>
         public static WhereParameters Parse(IDbEngine engine, ExecuteParameterCollection ps = null, string binary = "AND")
-        {
-            return new WhereParameters(engine.CreateWhere(ps, binary), ps);
-        }
+            => new WhereParameters(engine.CreateWhere(ps, binary), ps);
     }
 }

@@ -21,7 +21,7 @@ namespace System
             /// <returns>返回创建后的地址。</returns>
             public static DirectoryInfo CreateDirectory(string path)
             {
-                lock(string.Intern(path))
+                lock (string.Intern(path))
                 {
                     var info = new DirectoryInfo(path);
                     if(!info.Exists) info.Create();
@@ -151,8 +151,10 @@ namespace System
                 return true;
             }
         }
+
         private static readonly Task preCompletedTask = GetCompletedTask();
         private static readonly Task preCanceledTask = GetPreCanceledTask();
+
         private static Task GetPreCanceledTask()
         {
             var source = new TaskCompletionSource<object>();
@@ -166,35 +168,29 @@ namespace System
             source.TrySetResult(null);
             return source.Task;
         }
+
         /// <summary>
         /// 创建将在时间延迟后完成的任务。
         /// </summary>
         /// <param name="delay">完成返回任务的等待时间跨度。</param>
         /// <returns>表示时间延迟的任务。</returns>
-        public static Task Delay(TimeSpan delay)
-        {
-            return Delay((int)delay.TotalMilliseconds);
-        }
+        public static Task Delay(TimeSpan delay) => Delay((int)delay.TotalMilliseconds);
+
         /// <summary>
         /// 创建将在时间延迟后完成的任务。
         /// </summary>
         /// <param name="delay">完成返回任务的等待时间跨度。</param>
         /// <param name="cancellationToken">将在完成“已返回”任务之前选中的取消标记。</param>
         /// <returns>表示时间延迟的任务。</returns>
-        public static Task Delay(TimeSpan delay, CancellationToken cancellationToken)
-        {
-            return Delay((int)delay.TotalMilliseconds, cancellationToken);
-        }
+        public static Task Delay(TimeSpan delay, CancellationToken cancellationToken) => Delay((int)delay.TotalMilliseconds, cancellationToken);
 
         /// <summary>
         /// 创建将在时间延迟后完成的任务。
         /// </summary>
         /// <param name="delay">在完成返回任务之前要等待的毫秒数。</param>
         /// <returns>表示时间延迟的任务。</returns>
-        public static Task Delay(int delay)
-        {
-            return Delay(delay, CancellationToken.None);
-        }
+        public static Task Delay(int delay) => Delay(delay, CancellationToken.None);
+
         /// <summary>
         /// 创建将在时间延迟后完成的任务。
         /// </summary>

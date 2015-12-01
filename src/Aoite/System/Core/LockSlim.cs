@@ -11,13 +11,7 @@ namespace System
         /// <summary>
         /// 获取实际的读写锁对象。
         /// </summary>
-        public ReaderWriterLockSlim Slim
-        {
-            get
-            {
-                return this._Slim;
-            }
-        }
+        public ReaderWriterLockSlim Slim { get { return this._Slim; } }
 
         /// <summary>
         /// 初始化一个 <see cref="LockSlim"/> 类的新实例。

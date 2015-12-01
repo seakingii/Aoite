@@ -26,10 +26,8 @@ namespace System
                 _threadLocalContent.Value.Dispose();
             }
         }
-        internal static void ClearContext()
-        {
-            _threadLocalContent.Value = null;
-        }
+        internal static void ClearContext() => _threadLocalContent.Value = null;
+
         /// <summary>
         /// 获取一个值，指示当前上下文在线程中是否已创建。
         /// </summary>
@@ -60,20 +58,14 @@ namespace System
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public static void Info(string message, params object[] args)
-        {
-            Write(LogType.Info, message, args);
-        }
+        public static void Info(string message, params object[] args) => Write(LogType.Info, message, args);
 
         /// <summary>
         /// 写入警告日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public static void Warn(string message, params object[] args)
-        {
-            Write(LogType.Warn, message, args);
-        }
+        public static void Warn(string message, params object[] args) => Write(LogType.Warn, message, args);
 
         /// <summary>
         /// 写入错误日志。
@@ -90,10 +82,7 @@ namespace System
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public static void Error(string message, params object[] args)
-        {
-            Write(LogType.Error, message, args);
-        }
+        public static void Error(string message, params object[] args) => Write(LogType.Error, message, args);
     }
 
     /// <summary>
@@ -126,20 +115,14 @@ namespace System
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public void Info(string message, params object[] args)
-        {
-            Write(LogType.Info, message, args);
-        }
+        public void Info(string message, params object[] args) => Write(LogType.Info, message, args);
 
         /// <summary>
         /// 写入警告日志。
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public void Warn(string message, params object[] args)
-        {
-            Write(LogType.Warn, message, args);
-        }
+        public void Warn(string message, params object[] args) => Write(LogType.Warn, message, args);
 
         /// <summary>
         /// 写入错误日志。
@@ -156,17 +139,15 @@ namespace System
         /// </summary>
         /// <param name="message">日志的信息。</param>
         /// <param name="args">包含零个或多个要格式化的对象的 <see cref="Object"/> 数组。</param>
-        public void Error(string message, params object[] args)
-        {
-            Write(LogType.Error, message, args);
-        }
+        public void Error(string message, params object[] args) => Write(LogType.Error, message, args);
 
         /// <summary>
         /// 执行与释放或重置托管资源相关的应用程序定义的任务。
         /// </summary>
         protected override void DisposeManaged()
         {
-            if(this._logger != null) { this._logger.Write(this._Items.ToArray()); }
+            if(this._logger != null) this._logger.Write(this._Items.ToArray());
+
             this._logger = null;
             this._Items = null;
             Log.ClearContext();

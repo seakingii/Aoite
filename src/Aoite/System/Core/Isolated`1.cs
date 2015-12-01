@@ -82,18 +82,12 @@ namespace System
         /// 执行一个孤立的回调方法。
         /// </summary>
         /// <param name="callback">回调方法。</param>
-        public void Callback(Action callback)
-        {
-            callback();
-        }
+        public void Callback(Action callback) => callback();
 
         /// <summary>
         /// 获取控制此实例的生存期策略的生存期服务对象。
         /// </summary>
         /// <returns><see cref="Runtime.Remoting.Lifetime.ILease"/> 类型的对象，用于控制此实例的生存期策略。这是此实例当前的生存期服务对象（如果存在）；否则为初始化为 <see cref="Runtime.Remoting.Lifetime.LifetimeServices.LeaseManagerPollTime"/> 属性的值的新生存期服务对象。</returns>
-        public override object InitializeLifetimeService()
-        {
-            return null;
-        }
+        public override object InitializeLifetimeService() => null;
     }
 }

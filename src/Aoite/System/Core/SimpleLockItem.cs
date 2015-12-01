@@ -8,10 +8,8 @@
             if(disposing == null) throw new ArgumentNullException(nameof(disposing));
             this._disposing = disposing;
         }
-        void IDisposable.Dispose()
-        {
-            this._disposing();
-        }
+
+        void IDisposable.Dispose() => this._disposing();
 
         internal static void TimeoutError(string key, TimeSpan timeout)
         {

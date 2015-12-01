@@ -21,13 +21,7 @@ namespace Aoite.CommandModel
             const long money = 500L;
 
             var service = this.New(Nickname1);
-            //AddExecutor(f => f.Mock<AddCommand>((context, command) =>
-            //{
-            //    Assert.Equal(Nickname1, command.Nickname);
-            //    Assert.Equal(money, command.Money);
-            //}));
-            var type = Assert.Throws<TypeInitializationException>(() => service.Initialize(money));
-            Assert.IsType<NotSupportedException>(type.InnerException);
+            Assert.Throws<NotSupportedException>(() => service.Initialize(money));
         }
 
         [Fact]

@@ -45,8 +45,10 @@ namespace Aoite.Logger.Text
                 Type = LogType.Info
             });
             System.Threading.Thread.Sleep(1001);
+
             var path = GA.FullPath(LogFolder, "2015年02月", "01.log");
             Assert.Equal(now.ToString("HH:mm:ss.ffff") + " [消息] 测试内容。\r\n", GA.IO.ShareReadAllText(path, Encoding.UTF8));
         }
+
     }
 }

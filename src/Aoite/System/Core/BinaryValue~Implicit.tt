@@ -32,25 +32,20 @@ namespace System
     {
 #>
         /// <summary>
-        /// <see cref="BinaryValue"/> 和 <see cref="<#=type.FullName #>"/> 的隐式转换。
+        /// <see cref="BinaryValue"/> 和 <see cref="<#=type.Name #>"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个二进制的值。</param>
-        /// <returns>返回一个 <see cref="<#=type.FullName #>"/> 的新实例。</returns>
+        /// <returns>返回一个 <see cref="<#=type.Name #>"/> 的新实例。</returns>
         public static implicit operator <#=type.Name #>(BinaryValue value)
-        {
-            if(!HasValue(value)) return default(<#=type.Name #>);
-            return BitConverter.To<#=type.Name #>(value._ByteArray, 0);
-        }
+            => HasValue(value) ? BitConverter.To<#=type.Name #>(value._ByteArray, 0) : default(<#=type.Name #>);
 
         /// <summary>
-        /// <see cref="<#=type.FullName #>"/> 和 <see cref="BinaryValue"/> 的隐式转换。
+        /// <see cref="<#=type.Name #>"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
-        /// <param name="value">一个 <see cref="<#=type.FullName #>"/> 的新实例。</param>
+        /// <param name="value">一个 <see cref="<#=type.Name #>"/> 的新实例。</param>
         /// <returns>一个二进制的值。</returns>
         public static implicit operator BinaryValue(<#=type.Name #> value)
-        {
-            return new BinaryValue(BitConverter.GetBytes(value));
-        }
+            => new BinaryValue(BitConverter.GetBytes(value));
 
 <#
     }

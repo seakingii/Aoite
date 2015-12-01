@@ -12,11 +12,10 @@
     /// </summary>
     public class ExceptionEventArgs : EventArgs
     {
-        private Exception _Exception;
         /// <summary>
         /// 获取一个值，表示抛出的错误。
         /// </summary>
-        public virtual Exception Exception { get { return this._Exception; } set { this._Exception = value; } }
+        public virtual Exception Exception { get; set; }
 
         /// <summary>
         /// 初始化一个 <see cref="ExceptionEventArgs "/> 类的新实例。
@@ -29,7 +28,7 @@
         /// <param name="exception">一个错误。</param>
         public ExceptionEventArgs(Exception exception)
         {
-            this._Exception = exception;
+            this.Exception = exception;
         }
 
         /// <summary>
@@ -42,11 +41,6 @@
         /// 创建并返回当前异常的字符串表示形式。
         /// </summary>
         /// <returns>当前异常的字符串表示形式。</returns>
-        public override string ToString()
-        {
-            if(this.Exception == null)
-                return base.ToString();
-            return this.Exception.ToString();
-        }
+        public override string ToString() => this.Exception == null ? base.ToString() : this.Exception.ToString();
     }
 }

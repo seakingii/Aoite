@@ -418,7 +418,7 @@
     <Compile Include="System\Attributes\IAliasAttribute.cs" />
     <Compile Include="System\Attributes\IgnoreAttribute.cs" />
     <Compile Include="System\Attributes\IKeyAttribute.cs" />
-    <Compile Include="System\Collections\Generic\ConsistentHash`1.cs" />
+    <Compile Include="System\Core\ConsistentHash`1.cs" />
     <Compile Include="System\Core\Ajob.cs">
       <DependentUpon>IAsyncJob.cs</DependentUpon>
     </Compile>
@@ -500,9 +500,11 @@
     <Compile Include="System\Mapping\ITypeMapper.cs" />
     <Compile Include="System\Mapping\PropertyMapper.cs" />
     <Compile Include="System\Mapping\TypeMapper.cs" />
-    <Compile Include="System\Pool\IObjectRelease.cs" />
-    <Compile Include="System\Pool\ObjectPool`1.cs" />
-    <Compile Include="System\Random\FastRandom.cs" />
+    <Compile Include="System\Core\IObjectRelease.cs">
+      <DependentUpon>ObjectPool`1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System\Core\ObjectPool`1.cs" />
+    <Compile Include="System\Core\FastRandom.cs" />
     <Compile Include="System\Result\IResult.cs" />
     <Compile Include="System\Result\IResult`1.cs">
       <DependentUpon>IResult.cs</DependentUpon>

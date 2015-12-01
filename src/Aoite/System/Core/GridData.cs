@@ -56,9 +56,6 @@
         /// 获取行的数据。
         /// </summary>
         /// <returns>行的数据。</returns>
-        public override Array GetRows()
-        {
-            return this.Rows;
-        }
+        public override Array GetRows() => this.Rows;
     }
 }

@@ -48,10 +48,7 @@ namespace System
                 return _Task.Wait(millisecondsTimeout);
             }
 
-            public void Cancel()
-            {
-                this._calcelSource.Cancel();
-            }
+            public void Cancel() => this._calcelSource.Cancel();
 
             public bool WaitForNextTask()
             {
@@ -60,19 +57,11 @@ namespace System
                     || this._calcelSource.IsCancellationRequested;
             }
 
-            public void RunTask()
-            {
-                _Job(this);
-            }
+            public void RunTask() => _Job(this);
 
-            public void Delay(int millisecondsDelay)
-            {
-                Thread.CurrentThread.Join(millisecondsDelay);
-            }
-            public void Delay(TimeSpan timeSpanDelay)
-            {
-                Thread.CurrentThread.Join(timeSpanDelay);
-            }
+            public void Delay(int millisecondsDelay) => Thread.CurrentThread.Join(millisecondsDelay);
+
+            public void Delay(TimeSpan timeSpanDelay) => Thread.CurrentThread.Join(timeSpanDelay);
 
         }
 
@@ -116,9 +105,7 @@ namespace System
         /// <param name="state">自定义数据。</param>
         /// <returns>返回异步任务的标识</returns>
         public static IAsyncJob Once(AsyncJobHandler job, double milliseconds = 0, object state = null)
-        {
-            return Once(job, TimeSpan.FromMilliseconds(milliseconds), state);
-        }
+            => Once(job, TimeSpan.FromMilliseconds(milliseconds), state);
 
         /// <summary>
         /// 指定间隔时间执行一次 <paramref name="job"/>。
@@ -128,9 +115,7 @@ namespace System
         /// <param name="state">自定义数据。</param>
         /// <returns>返回异步任务的标识</returns>
         public static IAsyncJob Once(AsyncJobHandler job, TimeSpan interval, object state = null)
-        {
-            return new AsyncJob(job, interval, state).Start(OnceInvoke, TaskCreationOptions.PreferFairness);
-        }
+            => new AsyncJob(job, interval, state).Start(OnceInvoke, TaskCreationOptions.PreferFairness);
 
         /// <summary>
         /// 指定间隔 <paramref name="milliseconds"/> 毫秒后重复执行 <paramref name="job"/>。
@@ -140,9 +125,7 @@ namespace System
         /// <param name="state">自定义数据。</param>
         /// <returns>返回异步任务的标识</returns>
         public static IAsyncJob Loop(AsyncJobHandler job, double milliseconds = 0, object state = null)
-        {
-            return Loop(job, TimeSpan.FromMilliseconds(milliseconds), state);
-        }
+            => Loop(job, TimeSpan.FromMilliseconds(milliseconds), state);
 
         /// <summary>
         /// 指定间隔时间重复执行 <paramref name="job"/>。
@@ -152,9 +135,7 @@ namespace System
         /// <param name="state">自定义数据。</param>
         /// <returns>返回异步任务的标识</returns>
         public static IAsyncJob Loop(AsyncJobHandler job, TimeSpan interval, object state = null)
-        {
-            return new AsyncJob(job, interval, state).Start(LoopInvoke, TaskCreationOptions.LongRunning);
-        }
+            => new AsyncJob(job, interval, state).Start(LoopInvoke, TaskCreationOptions.LongRunning);
 
         /// <summary>
         /// 等待所有的异步任务完成。
@@ -175,8 +156,6 @@ namespace System
         /// </summary>
         /// <param name="jobs">异步任务列表。</param>
         public static void WaitAll(IEnumerable<IAsyncJob> jobs)
-        {
-            WaitAll(jobs.ToArray());
-        }
+            => WaitAll(jobs.ToArray());
     }
 }

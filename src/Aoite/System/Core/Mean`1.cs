@@ -10,6 +10,7 @@ namespace System
     {
         private Func<Lazy<T>> _lazyCreater;
         private Lazy<T> _lazy;
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数。
         /// </summary>
@@ -18,6 +19,7 @@ namespace System
             this._lazyCreater = () => new Lazy<T>();
             this.Reset();
         }
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数和指定的初始化模式。
         /// </summary>
@@ -27,6 +29,7 @@ namespace System
             this._lazyCreater = () => new Lazy<T>(isThreadSafe);
             this.Reset();
         }
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数。
         /// </summary>
@@ -36,6 +39,7 @@ namespace System
             this._lazyCreater = () => new Lazy<T>(valueFactory);
             this.Reset();
         }
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例，其中使用 T 的默认构造函数和指定的线程安全性模式。
         /// </summary>
@@ -45,6 +49,7 @@ namespace System
             this._lazyCreater = () => new Lazy<T>(mode);
             this.Reset();
         }
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数和初始化模式。
         /// </summary>
@@ -55,6 +60,7 @@ namespace System
             this._lazyCreater = () => new Lazy<T>(valueFactory, isThreadSafe);
             this.Reset();
         }
+
         /// <summary>
         /// 初始化 <see cref="Mean&lt;T&gt;"/> 类的新实例，其中使用指定的初始化函数和线程安全性模式。
         /// </summary>

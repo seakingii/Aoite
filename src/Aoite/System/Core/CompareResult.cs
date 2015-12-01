@@ -27,9 +27,6 @@
         /// 返回比较结果的描述。
         /// </summary>
         /// <returns>返回一个字符串。</returns>
-        public override string ToString()
-        {
-            return "{0} 预期为“{1}”，实际为“{2}”。".Fmt(Name, Value1 ?? "<NULL>", Value2 ?? "<NULL>");
-        }
+        public override string ToString() => "{0} 预期为“{1}”，实际为“{2}”。".Fmt(Name, Value1 ?? "<NULL>", Value2 ?? "<NULL>");
     }
 }
