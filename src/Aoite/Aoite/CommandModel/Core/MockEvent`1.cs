@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -15,10 +12,10 @@ namespace Aoite.CommandModel
         CommandExecutedHandler<TCommand> _executed;
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.MockEvent&lt;TCommand&gt;"/> 类的新实例。
+        /// 初始化 <see cref="MockEvent&lt;TCommand&gt;"/> 类的新实例。
         /// </summary>
-        /// <param name="executing">命令模型执行前发生的方法。</param>
-        /// <param name="executed">命令模型执行后发生的方法。</param>
+        /// <param name="executing">命令模型执行前发生的方法。可以为 null 值。</param>
+        /// <param name="executed">命令模型执行后发生的方法。可以为 null 值。</param>
         public MockEvent(CommandExecutingHandler<TCommand> executing, CommandExecutedHandler<TCommand> executed)
         {
             this._executing = executing;
@@ -31,10 +28,7 @@ namespace Aoite.CommandModel
         /// <param name="context">执行的上下文。</param>
         /// <param name="command">执行的命令模型。</param>
         public virtual bool RaiseExecuting(IContext context, TCommand command)
-        {
-            if(this._executing != null) return this._executing(context, command);
-            return true;
-        }
+            => this._executing == null || this._executing(context, command);
 
         /// <summary>
         /// 命令模型执行后发生的方法。
@@ -43,9 +37,6 @@ namespace Aoite.CommandModel
         /// <param name="command">执行的命令模型。</param>
         /// <param name="exception">抛出的异常。</param>
         public virtual void RaiseExecuted(IContext context, TCommand command, Exception exception)
-        {
-            var ev = this._executed;
-            if(ev != null) ev(context, command, exception);
-        }
+            => this._executed?.Invoke(context, command, exception);
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示 <see cref="System.Result"/> 的扩展。
@@ -18,7 +13,7 @@ namespace System
         public static TResult ThrowIfFailded<TResult>(this TResult result)
             where TResult : Result
         {
-            if(result == null) throw new ArgumentNullException("result");
+            if(result == null) throw new ArgumentNullException(nameof(result));
 
             if(result.IsFailed)
             {
@@ -38,7 +33,7 @@ namespace System
         public static TResult ToFailded<TResult>(this TResult result, Exception exception, int status = ResultStatus.Failed)
            where TResult : Result
         {
-            if(result == null) throw new ArgumentNullException("result");
+            if(result == null) throw new ArgumentNullException(nameof(result));
 
             if(exception != null)
             {
@@ -59,7 +54,7 @@ namespace System
         public static TResult ToFailded<TResult>(this TResult result, string message, int status = ResultStatus.Failed)
             where TResult : Result
         {
-            if(result == null) throw new ArgumentNullException("result");
+            if(result == null) throw new ArgumentNullException(nameof(result));
 
             if(message != null)
             {
@@ -77,7 +72,7 @@ namespace System
         public static TResult ToSuccessed<TResult>(this TResult result)
             where TResult : Result
         {
-            if(result == null) throw new ArgumentNullException("result");
+            if(result == null) throw new ArgumentNullException(nameof(result));
 
             result._Status = ResultStatus.Succeed;
             result._Message = null;
@@ -95,7 +90,7 @@ namespace System
         public static TResult ToSuccessed<TResult, TValue>(this TResult result, TValue value)
             where TResult : Result<TValue>
         {
-            if(result == null) throw new ArgumentNullException("result");
+            if(result == null) throw new ArgumentNullException(nameof(result));
 
             result._Value = value;
             return ToSuccessed(result);

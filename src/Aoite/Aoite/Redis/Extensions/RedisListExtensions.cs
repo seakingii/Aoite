@@ -1,9 +1,6 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -22,9 +19,9 @@ namespace System
         /// <returns>在指定时间内，如果列表为空，返回一个 null。否则，返回一个含有键值的元素项。</returns>
         public static RedisKeyItem BLPop(this IRedisClient client, long timeout, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(timeout < 0) throw new ArgumentOutOfRangeException("timeout");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(timeout < 0) throw new ArgumentOutOfRangeException(nameof(timeout));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return null;
 
             var args = RedisArgs.ConcatLast(keys, timeout).ToArray();
@@ -52,9 +49,9 @@ namespace System
         /// <returns>在指定时间内，如果列表为空，返回一个 null。否则，返回一个含有键值的元素项。</returns>
         public static RedisKeyItem BRPop(this IRedisClient client, long timeout, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(timeout < 0) throw new ArgumentOutOfRangeException("timeout");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(timeout < 0) throw new ArgumentOutOfRangeException(nameof(timeout));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return null;
 
             var args = RedisArgs.ConcatLast(keys, timeout).ToArray();
@@ -83,10 +80,10 @@ namespace System
         /// <returns>在指定时间内，如果列表为空，返回一个 null。否则，返回元素项的值。</returns>
         public static BinaryValue BRPopLPush(this IRedisClient client, string source, string destination, long timeout)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException("source");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
-            if(timeout < 0) throw new ArgumentOutOfRangeException("timeout");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(timeout < 0) throw new ArgumentOutOfRangeException(nameof(timeout));
 
             return client.Execute(new RedisValue("BRPOPLPUSH", source, destination, timeout));
         }
@@ -115,8 +112,8 @@ namespace System
         /// <returns>返回列表中下标为 <paramref name="index"/> 的元素。如果 <paramref name="index"/> 参数的值不在列表的区间范围内(out of range)，返回 null。</returns>
         public static BinaryValue LIndex(this IRedisClient client, string key, long index)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("LINDEX", key, index));
         }
@@ -132,9 +129,9 @@ namespace System
         /// <returns>返回插入的结果。</returns>
         public static long LInsert(this IRedisClient client, string key, RedisInsertPosition position, string pivot, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(string.IsNullOrEmpty(pivot)) throw new ArgumentNullException("pivot");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrEmpty(pivot)) throw new ArgumentNullException(nameof(pivot));
             return client.Execute(new RedisInteger("LINSERT", key
                 , position == RedisInsertPosition.Before ? "BEFORE" : "AFTER"
                 , pivot, value));
@@ -148,8 +145,8 @@ namespace System
         /// <returns>返回列表 <paramref name="key"/> 的长度。</returns>
         public static long LLen(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("LLEN", key));
         }
 
@@ -161,8 +158,8 @@ namespace System
         /// <returns>返回列表的头元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
         public static BinaryValue LPop(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("LPOP", key));
         }
@@ -177,9 +174,9 @@ namespace System
         /// <returns>返回执行命令列表的总长度。</returns>
         public static long LPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
             return client.Execute(new RedisInteger("LPUSH", args));
@@ -195,9 +192,9 @@ namespace System
         /// <returns>返回执行命令列表的总长度。</returns>
         public static long LPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
             return client.Execute(new RedisInteger("LPUSHX", args));
@@ -213,8 +210,8 @@ namespace System
         /// <returns>返回包含指定区间内的元素。</returns>
         public static BinaryValue[] LRange(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("LRANGE", key, start, stop)));
         }
@@ -233,8 +230,8 @@ namespace System
         /// <returns>返回被移除元素的数量。</returns>
         public static long LRem(this IRedisClient client, string key, long count, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("LREM", key, count, value));
         }
 
@@ -250,8 +247,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result LSet(this IRedisClient client, string key, long index, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisStatus("LSET", key, index, value));
         }
@@ -266,8 +263,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result LTrim(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisStatus("LTRIM", key, start, stop));
         }
@@ -280,8 +277,8 @@ namespace System
         /// <returns>返回列表的尾元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
         public static BinaryValue RPop(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("RPOP", key));
         }
@@ -295,9 +292,9 @@ namespace System
         /// <returns>如果列表为空，返回一个 null。否则，返回元素项的值。</returns>
         public static BinaryValue RPopLPush(this IRedisClient client, string source, string destination)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException("source");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
 
             return client.Execute(new RedisValue("RPOPLPUSH", source, destination));
         }
@@ -312,9 +309,9 @@ namespace System
         /// <returns>返回执行命令列表的总长度。</returns>
         public static long RPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
             return client.Execute(new RedisInteger("RPUSH", args));
@@ -330,9 +327,9 @@ namespace System
         /// <returns>返回执行命令列表的总长度。</returns>
         public static long RPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             var args = RedisArgs.ConcatFirst(key, values).ToArray();
             return client.Execute(new RedisInteger("RPUSHX", args));

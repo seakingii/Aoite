@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 数据源查询的操作类型。

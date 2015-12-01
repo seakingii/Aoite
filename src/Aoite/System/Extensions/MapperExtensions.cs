@@ -1,9 +1,5 @@
 ﻿using Aoite.Data;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -20,8 +16,8 @@ namespace System
         /// <returns>返回一个映射目标的新实例。</returns>
         public static IMapTo From(this TypeMapper mapper, DataRow row)
         {
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(row == null) throw new ArgumentNullException("row");
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(row == null) throw new ArgumentNullException(nameof(row));
 
             return new DataRowToObjectMapper()
             {
@@ -37,8 +33,8 @@ namespace System
         /// <returns>返回一个映射目标的新实例。</returns>
         public static IMapTo From(this TypeMapper mapper, IDataReader reader)
         {
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(reader == null) throw new ArgumentNullException("reader");
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(reader == null) throw new ArgumentNullException(nameof(reader));
 
             return new DataReaderToObjectMapper()
             {
@@ -54,8 +50,8 @@ namespace System
         /// <returns>返回一个映射目标的新实例。</returns>
         public static IMapTo<DataRow> From(this TypeMapper mapper, object entity)
         {
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
 
             return new ObjectToRowMapper()
             {

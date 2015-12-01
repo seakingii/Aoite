@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Aoite.Logger
 {
@@ -62,7 +58,7 @@ namespace Aoite.Logger
         /// <param name="items">日志项的数组。</param>
         public void Write(params LogItem[] items)
         {
-            if(items == null) throw new ArgumentNullException("items");
+            if(items == null) throw new ArgumentNullException(nameof(items));
             if(this.Asynchronous)
             {
                 foreach(var item in items)

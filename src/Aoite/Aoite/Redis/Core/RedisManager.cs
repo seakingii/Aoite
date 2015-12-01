@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Aoite.Net;
-using System.Threading;
 
 namespace Aoite.Redis
 {
@@ -31,7 +27,7 @@ namespace Aoite.Redis
         {
             get
             {
-                if(DefaultAddress == null) throw new ArgumentNullException("没有配置默认的 Redis 连接地址。");
+                if(DefaultAddress == null) throw new NotSupportedException("没有配置默认的 Redis 连接地址。");
 
                 if(ThreadClient.Value == null) ThreadClient.Value = new RedisClient(DefaultAddress, DefaultPassword);
                 return ThreadClient.Value;

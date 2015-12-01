@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
 namespace System
 {
@@ -35,7 +31,7 @@ namespace System
         /// <param name="propertyInfo">成员的属性元数据。</param>
         public DynamicProperty(PropertyInfo propertyInfo)
         {
-            if(propertyInfo == null) throw new ArgumentNullException("propertyInfo");
+            if(propertyInfo == null) throw new ArgumentNullException(nameof(propertyInfo));
             this._Property = propertyInfo;
             this.lazy_setValue = new Lazy<DynamicMemberSetter>(this._Property.CreatePropertySetter);
             this.lazy_getValue = new Lazy<DynamicMemberGetter>(this._Property.CreatePropertyGetter);

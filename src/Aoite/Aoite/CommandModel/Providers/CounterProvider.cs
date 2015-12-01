@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -14,7 +11,7 @@ namespace Aoite.CommandModel
         const string RedisHashKey = "$RedisCounterProvider$";
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.CounterProvider"/> 类的新实例。
+        /// 初始化一个 <see cref="CounterProvider"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public CounterProvider(IIocContainer container) : base(container) { }
@@ -29,8 +26,7 @@ namespace Aoite.CommandModel
         /// <returns>返回递增的序列。</returns>
         public virtual long Increment(string key, long increment = 1)
         {
-
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             if(!GA.IsUnitTestRuntime)
             {

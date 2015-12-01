@@ -1,7 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Threading;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 定义一个可重复使用的对象。

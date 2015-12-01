@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -82,7 +80,7 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddService(Type serviceType, bool singletonMode = false, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             if(this._hasParent && promote) this._parentLocator.AddService(serviceType, singletonMode, promote);
 
@@ -98,8 +96,8 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddService(Type serviceType, Type actualType, bool singletonMode = false, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(actualType == null) throw new ArgumentNullException("actualType");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(actualType == null) throw new ArgumentNullException(nameof(actualType));
 
             if(this._hasParent && promote) this._parentLocator.AddService(serviceType, actualType, singletonMode, promote);
 
@@ -125,8 +123,8 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddService(Type serviceType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(callback == null) throw new ArgumentNullException("callback");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
 
             if(this._hasParent && promote) this._parentLocator.AddService(serviceType, callback, singletonMode, promote);
 
@@ -141,7 +139,7 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void RemoveService(Type serviceType, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             if(this._hasParent && promote) this._parentLocator.RemoveService(serviceType, promote);
 
@@ -189,7 +187,7 @@ namespace System
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
         protected virtual object GetService(Type serviceType, bool autoResolving, object[] lastMappingValues)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             //- 确保类型在当前容器的获取行为是独立的。
             lock(string.Intern(this.UUID + serviceType.AssemblyQualifiedName))
@@ -217,7 +215,7 @@ namespace System
         /// <returns>如果存在返回 true，否则返回 false。</returns>
         public virtual bool ContainsService(Type serviceType, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             return this.MapContains(serviceType)
                 || (promote && this._hasParent && this._parentLocator.ContainsService(serviceType, promote));
         }
@@ -241,8 +239,8 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddValue(string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
-            if(callback == null) throw new ArgumentNullException("callback");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
 
             if(this._hasParent && promote) this._parentLocator.AddValue(name, callback, singletonMode, promote);
             this.Map(name, singletonMode ? new SingletonInstanceBox(name, callback) : new InstanceBox(name, callback));
@@ -254,7 +252,7 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void RemoveValue(string name, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             if(this._hasParent && promote) this._parentLocator.RemoveValue(name, promote);
             this.MapRemove(name);
@@ -267,7 +265,7 @@ namespace System
         /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         public virtual object GetValue(string name, params object[] lastMappingValues)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             var box = this.FindInstanceBox(name);
             if(box != null) return box.GetInstance(lastMappingValues);
@@ -282,7 +280,7 @@ namespace System
         /// <returns>如果存在返回 true，否则返回 false。</returns>
         public virtual bool ContainsValue(string name, bool promote = false)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             return this.MapContains(name)
                 || (promote && this._hasParent && this._parentLocator.ContainsValue(name, promote));
@@ -309,9 +307,9 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void AddValue(Type serviceType, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
-            if(callback == null) throw new ArgumentNullException("callback");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
 
             if(this._hasParent && promote) this._parentLocator.AddValue(serviceType, name, callback, singletonMode, promote);
 
@@ -325,8 +323,8 @@ namespace System
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         public virtual void RemoveValue(Type serviceType, string name, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             if(this._hasParent && promote) this._parentLocator.RemoveValue(serviceType, name, promote);
 
@@ -341,8 +339,8 @@ namespace System
         /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         public virtual object GetValue(Type serviceType, string name, params object[] lastMappingValues)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             var box = this.FindInstanceBox(serviceType, name);
             if(box != null) return box.GetInstance(lastMappingValues);
@@ -359,8 +357,8 @@ namespace System
         /// <returns>如果存在返回 true，否则返回 false。</returns>
         public virtual bool ContainsValue(Type serviceType, string name, bool promote = false)
         {
-            if(serviceType == null) throw new ArgumentNullException("serviceType");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             return this.MapContains(serviceType, name)
                 || (promote && this._hasParent && this._parentLocator.ContainsValue(serviceType, name, promote));

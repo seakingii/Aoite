@@ -1,8 +1,6 @@
 ﻿using Aoite.Redis.Commands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Redis
 {
@@ -14,7 +12,7 @@ namespace Aoite.Redis
 
         public RedisTransaction(RedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             this._client = client;
             this._client._tranCommands = new LinkedList<RedisCommand>();
         }
@@ -27,7 +25,7 @@ namespace Aoite.Redis
 
         public T Execute<T>(RedisCommand<T> command)
         {
-            if(command == null) throw new ArgumentNullException("command");
+            if(command == null) throw new ArgumentNullException(nameof(command));
 
             this.ThrowWhenDisposed();
             this._client._tranCommands.AddLast(command);

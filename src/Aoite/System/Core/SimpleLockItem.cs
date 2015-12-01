@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     class SimpleLockItem : IDisposable
     {
         Action _disposing;
         public SimpleLockItem(Action disposing)
         {
-            if(disposing == null) throw new ArgumentNullException("disposing");
+            if(disposing == null) throw new ArgumentNullException(nameof(disposing));
             this._disposing = disposing;
         }
         void IDisposable.Dispose()

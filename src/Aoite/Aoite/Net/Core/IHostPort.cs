@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.Net
+﻿namespace Aoite.Net
 {
     /// <summary>
     /// 定义一个包含主机地址和主机端口的接口。

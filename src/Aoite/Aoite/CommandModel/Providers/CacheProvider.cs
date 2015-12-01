@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -14,11 +11,10 @@ namespace Aoite.CommandModel
         const string RedisHashKey = "$RedisCacheProvider$";
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.CacheProvider"/> 类的新实例。
+        /// 初始化一个 <see cref="CacheProvider"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public CacheProvider(IIocContainer container) : base(container) { }
-
 
         private string GetMoneryCache(string key)
         {
@@ -39,7 +35,7 @@ namespace Aoite.CommandModel
         /// <param name="value">缓存值。</param>
         public virtual void Set(string key, object value)
         {
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             if(!GA.IsUnitTestRuntime)
             {
@@ -75,7 +71,7 @@ namespace Aoite.CommandModel
         /// <returns>返回缓存值，或一个 null 值。</returns>
         public virtual object Get(string key, Func<object> valueFactory = null)
         {
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             if(!GA.IsUnitTestRuntime)
             {
@@ -113,14 +109,14 @@ namespace Aoite.CommandModel
         /// <returns>存在返回 true，否则返回 false。</returns>
         public virtual bool Exists(string key)
         {
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             if(!GA.IsUnitTestRuntime)
             {
                 var redisProvider = this.Container.GetFixedService<IRedisProvider>();
                 if(redisProvider != null) return redisProvider.GetRedisClient().HExists(RedisHashKey, key);
             }
-            return this.MemoryExists(key); ;
+            return this.MemoryExists(key);
         }
     }
 }

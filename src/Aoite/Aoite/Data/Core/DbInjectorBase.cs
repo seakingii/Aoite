@@ -48,8 +48,8 @@ namespace Aoite.Data
         /// <returns>返回一个命令对象。</returns>
         public DbCommand CreateDbCommand(IDbEngine engine, ExecuteCommand command, DbConnection conn = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(command == null) throw new ArgumentNullException("exeCommand");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(command == null) throw new ArgumentNullException(nameof(command));
             if(conn == null) conn = this.CreateConnection(engine);
 
             var dbCommand = this.CreateDbCommand(engine, command.CommandText);
@@ -72,7 +72,7 @@ namespace Aoite.Data
         /// <returns>返回一个命令对象。</returns>
         protected virtual DbCommand CreateDbCommand(IDbEngine engine, string commandText)
         {
-            if(string.IsNullOrEmpty(commandText)) throw new ArgumentNullException("commandText");
+            if(string.IsNullOrEmpty(commandText)) throw new ArgumentNullException(nameof(commandText));
 
             DbCommand comm = this.Factory.CreateCommand();
 
@@ -141,9 +141,9 @@ namespace Aoite.Data
         /// <returns>返回一个查询命令。</returns>
         public virtual ExecuteCommand CreateInsertCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
             if(mapper.Count == 0) throw new NotSupportedException("{0} 的插入操作没有找到任何属性。".Fmt(entity.GetType().FullName));
 
             var parameterSettings = this.ParameterSettings;
@@ -180,9 +180,9 @@ namespace Aoite.Data
         /// <returns>返回一个查询命令。</returns>
         public virtual ExecuteCommand CreateUpdateCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
 
             var parameterSettings = this.ParameterSettings;
             var setBuilder = new StringBuilder("UPDATE ")
@@ -229,9 +229,9 @@ namespace Aoite.Data
         /// <returns>返回一个查询命令。</returns>
         public virtual ExecuteCommand CreateDeleteCommand(IDbEngine engine, TypeMapper mapper, object entityOrPKValue, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(mapper == null) throw new ArgumentNullException("mapper");
-            if(entityOrPKValue == null) throw new ArgumentNullException("entityOrPKValue");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(entityOrPKValue == null) throw new ArgumentNullException(nameof(entityOrPKValue));
 
             var type = entityOrPKValue.GetType();
             if(type.IsSimpleType()) return CreateDeleteCommandWithPK(engine, mapper, entityOrPKValue, tableName);

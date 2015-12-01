@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Aoite.CommandModel
@@ -13,7 +10,7 @@ namespace Aoite.CommandModel
     public class LockProvider : CommandModelContainerProviderBase, ILockProvider
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.LockProvider"/> 类的新实例。
+        /// 初始化一个 <see cref="LockProvider"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public LockProvider(IIocContainer container) : base(container) { }
@@ -26,7 +23,7 @@ namespace Aoite.CommandModel
         /// <returns>返回一个锁。</returns>
         public virtual IDisposable Lock(string key, TimeSpan? timeout = null)
         {
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
             var redisProvider = this.Container.GetFixedService<IRedisProvider>();
             if(redisProvider != null)

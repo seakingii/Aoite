@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -17,12 +15,12 @@ namespace Aoite.CommandModel
 
         private IExecutorAttribute[] _executorAttributes;
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.ExecutorMetadata&lt;TCommand&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecutorMetadata&lt;TCommand&gt;"/> 类的新实例。
         /// </summary>
         /// <param name="executor">命令模型的执行器。</param>
         public ExecutorMetadata(IExecutor<TCommand> executor)
         {
-            if(executor == null) throw new ArgumentNullException("executor");
+            if(executor == null) throw new ArgumentNullException(nameof(executor));
 
             var executorType = executor.GetType();
             var attrs = new List<IExecutorAttribute>(executorType.GetAttributes<IExecutorAttribute>());

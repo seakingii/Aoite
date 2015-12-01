@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace System
 {
@@ -70,7 +69,7 @@ namespace System
         /// <param name="namespaceExpression">筛选器的命名空间表达式。可以是一个完整的命名空间，也可以是“*”起始，或者以“*”结尾。符号“*”只能出现一次。通过“|”可以同时包含多个命名空间。</param>
         public MapFilter(string namespaceExpression)
         {
-            if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException("namespaceExpression");
+            if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
             var nes = namespaceExpression.Split('|');
             List<NamesapceRule> rules = new List<NamesapceRule>(nes.Length);
             //var refreshAllTypes = false;
@@ -86,7 +85,7 @@ namespace System
                 else rules.Add(new NamesapceRule(t_ne));
             }
             //if(refreshAllTypes) ObjectFactory.RefreshAllTypes();
-            if(rules.Count == 0) throw new ArgumentOutOfRangeException("namespaceExpression");
+            if(rules.Count == 0) throw new ArgumentOutOfRangeException(nameof(namespaceExpression));
             this._Rules = rules.ToArray();
         }
 
@@ -112,8 +111,8 @@ namespace System
         /// <returns>如果启用单例模式则返回 true，否则返回 false。</returns>
         public virtual bool IsSingletonMode(Type expectType, Type actualType)
         {
-            if(expectType == null) throw new ArgumentNullException("expectType");
-            if(actualType == null) throw new ArgumentNullException("actualType");
+            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
+            if(actualType == null) throw new ArgumentNullException(nameof(actualType));
             return false;
         }
 
@@ -124,7 +123,7 @@ namespace System
         /// <returns>如果 <paramref name="type"/> 是一个预期的类型返回 true，否则返回 false。</returns>
         public virtual bool IsExpectType(Type type)
         {
-            if(type == null) throw new ArgumentNullException("expectType");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             return type.IsInterface
                 && type.IsPublic
                 && !type.IsDefined(IgnoreAttribute.Type, true)
@@ -139,8 +138,8 @@ namespace System
         /// <returns>如果找到返回一个 <see cref="System.Type"/> 的实例，否则返回 null 值。</returns>
         public virtual Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType)
         {
-            if(allTypes == null) throw new ArgumentNullException("allTypes");
-            if(expectType == null) throw new ArgumentNullException("expectType");
+            if(allTypes == null) throw new ArgumentNullException(nameof(allTypes));
+            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
             var fullNames = GetAllActualType(expectType);
             if(this._ActualTypeFullNameFormat != null) fullNames.Add(GetActualType(this._ActualTypeFullNameFormat, expectType));
             return FindActualType(allTypes, expectType, fullNames);

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Logger
 {
@@ -23,8 +20,8 @@ namespace Aoite.Logger
         /// <returns>返回日志项的字符串形式。</returns>
         public virtual string Describe(ILogger logger, LogItem item)
         {
-            if(logger == null) throw new ArgumentNullException("logger");
-            if(item == null) throw new ArgumentNullException("item");
+            if(logger == null) throw new ArgumentNullException(nameof(logger));
+            if(item == null) throw new ArgumentNullException(nameof(item));
             return item.ToString();
         }
     }

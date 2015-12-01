@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 
@@ -45,7 +42,7 @@ namespace Aoite.Data
             get { return this._Name; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
                 if(this._Name.iEquals(value)) return;
                 if(this._Owner != null) this._Owner.ChangedName(this._Name, value);
                 this._Name = value;
@@ -213,7 +210,7 @@ namespace Aoite.Data
         /// <returns>返回一个已生成的 <see cref="System.Data.Common.DbParameter"/>。</returns>
         public virtual DbParameter CreateParameter(DbCommand command)
         {
-            if(command == null) throw new ArgumentNullException("command");
+            if(command == null) throw new ArgumentNullException(nameof(command));
             var adorner = this._Value as IParameterAdorner;
             if(adorner != null) return adorner.Render(command, this);
 

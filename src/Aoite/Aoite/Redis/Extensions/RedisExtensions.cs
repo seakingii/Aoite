@@ -1,8 +1,4 @@
 ﻿using Aoite.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace System
@@ -28,8 +24,8 @@ namespace System
         /// <exception cref="System.TimeoutException">获取锁超时。</exception>
         public static IDisposable Lock(this IRedisClient client, string key, TimeSpan? timeout = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             var realSpan = timeout ?? DefaultLockTimeout;
             if(!SpinWait.SpinUntil(() => client.HSet(LockKey, key, 1, nx: true), realSpan))

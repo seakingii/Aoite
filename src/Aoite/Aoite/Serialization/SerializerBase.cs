@@ -1,6 +1,4 @@
 ﻿using Aoite.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -79,7 +77,7 @@ namespace System
         public Result<TData> Read<TData>(string path)
         {
             if(string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return this.Read<TData>(stream);
@@ -93,7 +91,7 @@ namespace System
         public Result<object> Read(string path)
         {
             if(string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return this.Read(stream);

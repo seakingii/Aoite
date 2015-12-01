@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -24,8 +21,8 @@ namespace System
         /// <returns>返回一个图像对象。</returns>
         public static Image Create(string code, int width = 0, int height = 0, string familyName = "Arial")
         {
-            if(string.IsNullOrEmpty(code)) throw new ArgumentNullException("code");
-            if(string.IsNullOrEmpty(familyName)) throw new ArgumentNullException("familyName");
+            if(string.IsNullOrEmpty(code)) throw new ArgumentNullException(nameof(code));
+            if(string.IsNullOrEmpty(familyName)) throw new ArgumentNullException(nameof(familyName));
             if(width < 1) width = code.Sum(c => GA.UTF8.GetBytes(new char[] { c }).Length == 1 ? 12 : 22);
 
             Bitmap image = new Bitmap(width, height < 1 ? 22 : height);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -32,8 +31,8 @@ namespace System.Collections.Generic
         /// <param name="weight">节点权重值。</param>
         public ConsistentHash(IEnumerable<TNode> nodes, int weight)
         {
-            if(nodes == null) throw new ArgumentNullException("nodes");
-            if(weight < 1) throw new ArgumentOutOfRangeException("weight");
+            if(nodes == null) throw new ArgumentNullException(nameof(nodes));
+            if(weight < 1) throw new ArgumentOutOfRangeException(nameof(weight));
             this._weight = weight;
 
             foreach(TNode node in nodes)
@@ -49,7 +48,7 @@ namespace System.Collections.Generic
         /// <param name="node">节点。</param>
         public void Add(TNode node)
         {
-            if(node == null) throw new ArgumentNullException("node");
+            if(node == null) throw new ArgumentNullException(nameof(node));
             this.Add(node, true);
         }
 
@@ -74,7 +73,7 @@ namespace System.Collections.Generic
         /// <returns>成功返回 true，否则返回 false。</returns>
         public bool Remove(TNode node)
         {
-            if(node == null) throw new ArgumentNullException("node");
+            if(node == null) throw new ArgumentNullException(nameof(node));
             for(int i = 0; i < _weight; i++)
             {
                 int hash = BetterHash(node.GetHashCode().ToString() + i);
@@ -126,7 +125,7 @@ namespace System.Collections.Generic
         /// <returns>返回一个节点。</returns>
         public TNode GetNode(string key)
         {
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             int hash = BetterHash(key);
 
@@ -142,7 +141,7 @@ namespace System.Collections.Generic
         /// <returns>返回一个节点。</returns>
         public TNode GetNode(byte[] key)
         {
-            if(key == null) throw new ArgumentNullException("key");
+            if(key == null) throw new ArgumentNullException(nameof(key));
 
             int hash = (int)MurmurHash2.Hash(key);
             int first = First_ge(this._keys, hash);

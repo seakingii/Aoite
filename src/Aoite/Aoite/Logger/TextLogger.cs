@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Logger
 {
@@ -19,7 +16,7 @@ namespace Aoite.Logger
             get { return this._TextWriterFactory; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 this._TextWriterFactory = value;
             }
         }
@@ -33,7 +30,7 @@ namespace Aoite.Logger
             get { return this._Descriptor; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 this._Descriptor = value;
             }
         }
@@ -45,8 +42,8 @@ namespace Aoite.Logger
         /// <param name="descriptor">日志描述器。</param>
         public TextLogger(ITextWriterFactory textWriterfactory, ILogDescriptor descriptor)
         {
-            if(textWriterfactory == null) throw new ArgumentNullException("textWriterfactory");
-            if(descriptor == null) throw new ArgumentNullException("descriptor");
+            if(textWriterfactory == null) throw new ArgumentNullException(nameof(textWriterfactory));
+            if(descriptor == null) throw new ArgumentNullException(nameof(descriptor));
 
             this._TextWriterFactory = textWriterfactory;
             this._Descriptor = descriptor;

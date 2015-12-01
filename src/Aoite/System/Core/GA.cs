@@ -46,7 +46,7 @@ namespace System
         /// <param name="exception">抛出的异常。不允许为 null 值。</param>
         public static void OnGlobalError(object sender, Exception exception)
         {
-            if(exception == null) throw new ArgumentNullException("exception");
+            if(exception == null) throw new ArgumentNullException(nameof(exception));
             System.Diagnostics.Trace.TraceError(exception.ToString());
 
             var handler = GlobalError;
@@ -193,7 +193,7 @@ namespace System
         /// <returns>若 <paramref name="path"/> 是绝对路径，则返回本身，否则返回基于当前应用程序目录的绝对路径。</returns>
         public static string FullPath(string path)
         {
-            if(string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
+            if(string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 
             if(Path.IsPathRooted(path)) return path;
             return Path.Combine(AppDirectory, path);
@@ -205,7 +205,7 @@ namespace System
         /// <returns>基于当前应用程序目录的绝对路径。</returns>
         public static string FullPath(params string[] paths)
         {
-            if(paths == null || paths.Length == 0) throw new ArgumentNullException("paths");
+            if(paths == null || paths.Length == 0) throw new ArgumentNullException(nameof(paths));
             if(paths.Length == 1)
             {
                 return FullPath(paths[0]);
@@ -485,7 +485,7 @@ namespace System
         /// <returns>如果返回 null 值，表示不支持此类型的随机生成。</returns>
         public static object CreateMockValue(Type type)
         {
-            if(type == null) throw new ArgumentNullException("valueType");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             type = type.GetNullableType();
 
             if(type == Types.Guid) return Guid.NewGuid();

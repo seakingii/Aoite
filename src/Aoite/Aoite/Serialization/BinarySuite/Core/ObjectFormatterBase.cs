@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Aoite.Serialization
@@ -31,7 +30,7 @@ namespace Aoite.Serialization
         /// <param name="encoding">序列化的编码。</param>
         public ObjectFormatterBase(Stream stream, Encoding encoding)
         {
-            if(stream == null) throw new ArgumentNullException("stream");
+            if(stream == null) throw new ArgumentNullException(nameof(stream));
             this.Stream = stream;
             this.Encoding = encoding ?? Encoding.UTF8;
         }

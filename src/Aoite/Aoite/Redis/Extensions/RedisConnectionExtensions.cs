@@ -1,9 +1,5 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -19,7 +15,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result Ping(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisStatus.Pong("PING"));
         }
 
@@ -30,7 +26,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result Quit(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisStatus("QUIT"));
         }
 
@@ -42,8 +38,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result Select(this IRedisClient client, int index)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(index < 0) throw new ArgumentOutOfRangeException("index");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(index < 0) throw new ArgumentOutOfRangeException(nameof(index));
             return client.Execute(new RedisStatus("SELECT", index));
         }
     }

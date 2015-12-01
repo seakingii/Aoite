@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace System
 {
@@ -139,7 +136,7 @@ namespace System
         /// <returns>返回一个固定长度的随机字符串。</returns>
         public string NextString(int length, CharacterType type = CharacterType.Default)
         {
-            if(length < 1) throw new ArgumentOutOfRangeException("length");
+            if(length < 1) throw new ArgumentOutOfRangeException(nameof(length));
             char[] chars = new char[length];
             List<char> charsArray = new List<char>(40);
             if(type.HasFlag(CharacterType.UpperCase)) charsArray.AddRange(UpperCaseCharacters);
@@ -163,8 +160,8 @@ namespace System
         /// <returns>一个字符串长度大于等于 <paramref name="minLength"/> 且小于 <paramref name="maxLength"/> 的字符串。</returns>
         public string NextString(int minLength, int maxLength, CharacterType type = CharacterType.Default)
         {
-            if(minLength < 1) throw new ArgumentOutOfRangeException("minLength");
-            if(maxLength < 1) throw new ArgumentOutOfRangeException("maxLength");
+            if(minLength < 1) throw new ArgumentOutOfRangeException(nameof(minLength));
+            if(maxLength < 1) throw new ArgumentOutOfRangeException(nameof(maxLength));
             if(minLength > maxLength) throw new ArgumentOutOfRangeException("maxLength", maxLength, "minLength 大于 maxLength");
             return this.NextString(this.Next(minLength, maxLength), type);
 
@@ -197,7 +194,7 @@ namespace System
         /// <param name="buffer">包含随机数的字节数组。</param>
         public void NextBytes(byte[] buffer)
         {
-            if(buffer == null) throw new ArgumentNullException("buffer");
+            if(buffer == null) throw new ArgumentNullException(nameof(buffer));
 
             // Fill up the bulk of the buffer in chunks of 4 bytes at a time.
             uint x = this.x, y = this.y, z = this.z, w = this.w;

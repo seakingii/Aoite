@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Aoite.Logger
@@ -20,7 +18,7 @@ namespace Aoite.Logger
             get { return this._LogFolder; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
                 this._LogFolder = value;
             }
         }
@@ -34,7 +32,7 @@ namespace Aoite.Logger
             get { return this._LogExtension; }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
 
                 if(value[0] != '.') this._LogExtension = "." + value;
                 else this._LogExtension = value;
@@ -50,7 +48,7 @@ namespace Aoite.Logger
             get { return this._Encoding; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 this._Encoding = value;
             }
         }
@@ -66,7 +64,7 @@ namespace Aoite.Logger
         /// <param name="logPathFactory">日志的路径生成工厂。</param>
         public StreamTextWriterFactory(ILogPathFactory logPathFactory)
         {
-            if(logPathFactory == null) throw new ArgumentNullException("logPathFactory");
+            if(logPathFactory == null) throw new ArgumentNullException(nameof(logPathFactory));
             this.LogPathFactory = logPathFactory;
 
             this.LogFolder = GA.FullPath("Logs");
@@ -94,7 +92,7 @@ namespace Aoite.Logger
         /// <param name="callback">回调方法。</param>
         public void Process(Action<TextWriter> callback)
         {
-            if(callback == null) throw new ArgumentNullException("callback");
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
             var writer = this.CreateWriter();
             callback(writer);
             writer.Flush();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 一个依赖注入与控制反转的实例对象获取器，支持更高级的扩展。

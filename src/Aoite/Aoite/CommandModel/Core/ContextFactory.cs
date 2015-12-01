@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -12,7 +9,7 @@ namespace Aoite.CommandModel
     public class ContextFactory : CommandModelContainerProviderBase, IContextFactory
     {
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.ContextFactory"/> 类的新实例。
+        /// 初始化 <see cref="ContextFactory"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public ContextFactory(IIocContainer container)  : base(container) { }

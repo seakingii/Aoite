@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Logger
 {
@@ -20,7 +17,7 @@ namespace Aoite.Logger
             get { return this._CreateWriter; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 this._CreateWriter = value;
             }
         }
@@ -41,7 +38,7 @@ namespace Aoite.Logger
         /// <param name="callback">回调方法。</param>
         public void Process(Action<TextWriter> callback)
         {
-            if(callback == null) throw new ArgumentNullException("callback");
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
             callback(this._CreateWriter());
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections.Concurrent;
 namespace System
 {
@@ -73,7 +72,7 @@ namespace System
         /// <returns>返回一个实体映射器。</returns>
         public static TypeMapper Create(Type type)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             return Cacher.GetOrAdd(type, OnCreate);
         }
 

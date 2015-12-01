@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个异步任务的委托。

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace System
@@ -93,8 +91,8 @@ namespace System
         /// <returns>返回 <paramref name="target"/>。</returns>
         public static TTarget CopyTo<TTarget>(this object source, TTarget target, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
-            if(source == null) throw new ArgumentNullException("source");
-            if(target == null) throw new ArgumentNullException("target");
+            if(source == null) throw new ArgumentNullException(nameof(source));
+            if(target == null) throw new ArgumentNullException(nameof(target));
 
             var sMapper = TypeMapper.Create(source.GetType());
             var tMapper = TypeMapper.Create(target.GetType());
@@ -146,7 +144,7 @@ namespace System
         public static void Each<T>(this IEnumerable<T> collection, Action<T> action)
         {
             if(collection == null) return;
-            if(action == null) throw new ArgumentNullException("action");
+            if(action == null) throw new ArgumentNullException(nameof(action));
             foreach(var item in collection) action(item);
         }
 
@@ -161,7 +159,7 @@ namespace System
         public static T2[] Each<T, T2>(this IEnumerable<T> collection, Func<T, T2> func)
         {
             if(collection == null) return null;
-            if(func == null) throw new ArgumentNullException("action");
+            if(func == null) throw new ArgumentNullException(nameof(func));
             return InnerEach(collection, func).ToArray();
         }
         private static IEnumerable<T2> InnerEach<T, T2>(IEnumerable<T> collection, Func<T, T2> func)

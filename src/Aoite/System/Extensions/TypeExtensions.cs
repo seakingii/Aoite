@@ -1,9 +1,7 @@
 ﻿using Aoite.Reflection;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace System
 {
@@ -173,7 +171,7 @@ namespace System
         /// <returns>返回一个字段或一个 null 值。</returns>
         public static FieldInfo FindField(this Type type, string name)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
 
             return type.GetField(name, Flags.StaticInstanceAnyVisibility);
         }
@@ -186,7 +184,7 @@ namespace System
         /// <returns>返回一个属性或一个 null 值。</returns>
         public static PropertyInfo FindProperty(this Type type, string name)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             return type.GetProperty(name, Flags.StaticInstanceAnyVisibility);
         }
 
@@ -199,7 +197,7 @@ namespace System
         /// <returns>返回一个方法或一个 null 值。</returns>
         public static MethodInfo FindMethod(this Type type, string name, params Type[] types)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             if(types == null || types.Length == 0) return type.GetMethod(name, Flags.StaticInstanceAnyVisibility);
             return type.GetMethod(name, Flags.StaticInstanceAnyVisibility, null, types, null);
         }
@@ -212,7 +210,7 @@ namespace System
         /// <returns>返回一个构造函数或一个 null 值。</returns>
         public static ConstructorInfo FindConstructor(this Type type, params Type[] types)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             return type.GetConstructor(Flags.InstanceAnyVisibility, null, types ?? System.Type.EmptyTypes, null);
         }
 
@@ -258,7 +256,7 @@ namespace System
         /// <returns>返回特性的集合枚举器。</returns>
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo member, bool inherit)
         {
-            if(member == null) throw new ArgumentNullException("member");
+            if(member == null) throw new ArgumentNullException(nameof(member));
             foreach(T item in member.GetCustomAttributes(typeof(T), inherit))
             {
                 yield return item;

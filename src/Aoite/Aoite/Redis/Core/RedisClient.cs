@@ -2,8 +2,6 @@
 using Aoite.Redis.Commands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Redis
 {
@@ -53,7 +51,7 @@ namespace Aoite.Redis
         /// <returns>返回执行后的返回值。</returns>
         public virtual T Execute<T>(RedisCommand<T> command)
         {
-            if(command == null) throw new ArgumentNullException("command");
+            if(command == null) throw new ArgumentNullException(nameof(command));
             this.ThrowWhenDisposed();
             if(this._tranCommands != null) throw new RedisException("Redis 事务期间，禁止通过非事务方式调用。");
 

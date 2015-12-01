@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个默认映射的目标数据类型的特性。
@@ -23,7 +18,7 @@ namespace System
         /// <param name="actualType">默认映射的实际数据类型。</param>
         public DefaultMappingAttribute(Type actualType)
         {
-            if(actualType == null) throw new ArgumentNullException("type");
+            if(actualType == null) throw new ArgumentNullException(nameof(actualType));
             this._ActualType = actualType;
         }
     }

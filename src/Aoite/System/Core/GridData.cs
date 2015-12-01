@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个表格数据源。
@@ -47,7 +42,7 @@ namespace System
             {
                 var rowCount = this.Rows == null ? 0 : this.Rows.Length;
                 if(rowCount == 0) throw new NotSupportedException("没有数据。");
-                if(index < 0 || index >= rowCount) throw new ArgumentOutOfRangeException("index");
+                if(index < 0 || index >= rowCount) throw new ArgumentOutOfRangeException(nameof(index));
                 return this.Rows[index];
             }
         }

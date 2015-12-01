@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -20,9 +17,7 @@ namespace Aoite.CommandModel
         public static TService CreateMockService<TService>(Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
             where TService : IContainerProvider, new()
-        {
-            return CreateMockService<TService>(null, mockFactoryCallback, redisProvider);
-        }
+            => CreateMockService<TService>(null, mockFactoryCallback, redisProvider);
 
         /// <summary>
         /// 创建一个模拟的服务。
@@ -33,7 +28,7 @@ namespace Aoite.CommandModel
         /// <param name="redisProvider">Redis 提供程序。若为 null 值表示启用基于应用程序域各种提供程序的服务容器。</param>
         /// <returns>返回服务的实例。</returns>
         public static TService CreateMockService<TService>(object user = null
-            , Action<CommandModel.MockExecutorFactory> mockFactoryCallback = null
+            , Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
             where TService : IContainerProvider, new()
         {
@@ -50,11 +45,9 @@ namespace Aoite.CommandModel
         /// <param name="redisProvider">Redis 提供程序。若为 null 值表示启用基于应用程序域各种提供程序的服务容器。</param>
         /// <returns>返回一个服务容器。</returns>
         public static IIocContainer CreateContainer(object user = null
-            , Action<CommandModel.MockExecutorFactory> mockFactoryCallback = null
+            , Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
-        {
-            return CreateContainer(new UserFactory(c => user), mockFactoryCallback, redisProvider);
-        }
+            => CreateContainer(new UserFactory(c => user), mockFactoryCallback, redisProvider);
 
         /// <summary>
         /// 创建一个用于命令模型的服务容器。
@@ -64,7 +57,7 @@ namespace Aoite.CommandModel
         /// <param name="redisProvider">Redis 提供程序。若为 null 值表示启用基于应用程序域各种提供程序的服务容器。</param>
         /// <returns>返回一个服务容器。</returns>
         public static IIocContainer CreateContainer(IUserFactory userFactory
-            , Action<CommandModel.MockExecutorFactory> mockFactoryCallback = null
+            , Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
         {
             if(userFactory == null) userFactory = new UserFactory(c => null);
@@ -75,9 +68,9 @@ namespace Aoite.CommandModel
 
             if(mockFactoryCallback != null)
             {
-                var executorFactory = new Aoite.CommandModel.MockExecutorFactory(container);
+                var executorFactory = new MockExecutorFactory(container);
                 mockFactoryCallback(executorFactory);
-                container.AddService<CommandModel.IExecutorFactory>(executorFactory);
+                container.AddService<IExecutorFactory>(executorFactory);
             }
             if(Db.Engine == null)
             {
@@ -90,7 +83,7 @@ namespace Aoite.CommandModel
 
         internal static dynamic GetUser(this IIocContainer container)
         {
-            if(container == null) throw new ArgumentNullException("container");
+            if(container == null) throw new ArgumentNullException(nameof(container));
             var userFactory = container.GetFixedService<IUserFactory>();
             return userFactory == null ? null : userFactory.GetUser(container);
         }

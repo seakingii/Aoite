@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
 
 namespace System
@@ -157,7 +154,7 @@ namespace System
         public static string CutString(this string input, int maxLength, string ellipsis = "...")
         {
             if(input == null || input.Length <= maxLength) return input;
-            if(string.IsNullOrEmpty(ellipsis)) throw new ArgumentNullException("ellipsis");
+            if(string.IsNullOrEmpty(ellipsis)) throw new ArgumentNullException(nameof(ellipsis));
             maxLength = maxLength - ellipsis.Length;
             return input.Substring(0, maxLength) + ellipsis;
         }

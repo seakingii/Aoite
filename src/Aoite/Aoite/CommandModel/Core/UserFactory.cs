@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -10,23 +7,21 @@ namespace Aoite.CommandModel
     /// </summary>
     public class UserFactory : IUserFactory
     {
-        readonly Func<IIocContainer, object> _getUserFunc;
-        //readonly Action<IIocContainer, object> _setUserFunc;
-        //readonly Action<IIocContainer> _clearUserFunc;
+        readonly Func<IIocContainer, object> _getUserCallback;
 
         /// <summary>
-        /// 指定一个委托，初始化一个 <see cref="Aoite.CommandModel.UserFactory"/> 类的新实例。
+        /// 指定一个委托，初始化一个 <see cref="UserFactory"/> 类的新实例。
         /// </summary>
-        /// <param name="getUserFunc">获取用户的委托。</param>
-        public UserFactory(Func<IIocContainer, object> getUserFunc)
+        /// <param name="getUserCallback">获取用户的委托。</param>
+        public UserFactory(Func<IIocContainer, object> getUserCallback)
         {
-            if(getUserFunc == null) throw new ArgumentNullException("getUserFunc");
-            this._getUserFunc = getUserFunc;
+            if(getUserCallback == null) throw new ArgumentNullException(nameof(getUserCallback));
+            this._getUserCallback = getUserCallback;
         }
 
         object IUserFactory.GetUser(IIocContainer container)
         {
-            return this._getUserFunc(container);
+            return this._getUserCallback(container);
         }
     }
 }

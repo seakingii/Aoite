@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -83,7 +79,7 @@ namespace Aoite.Data
         /// <param name="injector">数据源查询与交互的注入器。</param>
         public DbEngine(string connectionString, IDbInjector injector)
         {
-            if(injector == null) throw new ArgumentNullException("injector");
+            if(injector == null) throw new ArgumentNullException(nameof(injector));
 
             this._Injector = injector;
             this._ConnectionString = connectionString;

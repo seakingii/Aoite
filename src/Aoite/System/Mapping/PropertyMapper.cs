@@ -1,9 +1,4 @@
-﻿using Aoite.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
 namespace System
 {
@@ -45,7 +40,7 @@ namespace System
         public PropertyMapper(TypeMapper typeMapper, PropertyInfo property)
             : base(property)
         {
-            if(typeMapper == null) throw new ArgumentNullException("typeMapper");
+            if(typeMapper == null) throw new ArgumentNullException(nameof(typeMapper));
             this.TypeMapper = typeMapper;
             this.IsIgnore = property.GetAttribute<IgnoreAttribute>() != null;
             this._LazyTypeDefaultValue = new Lazy<object>(property.PropertyType.GetDefaultValue);

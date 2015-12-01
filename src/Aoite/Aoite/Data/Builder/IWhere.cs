@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 一个 WHERE SQL 语句生成的实现。

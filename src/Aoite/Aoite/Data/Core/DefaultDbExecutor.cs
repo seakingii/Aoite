@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -24,7 +22,7 @@ namespace Aoite.Data
         /// <param name="command">执行的命令。</param>
         public DefaultDbExecutor(IDbEngine engine, ExecuteCommand command)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             this._Engine = engine;
             this._Command = command;
             this._owner = engine.Owner;

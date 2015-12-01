@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个命名空间的规则。
@@ -34,7 +30,7 @@ namespace System
                 this._Mode = NamesapceRuleMode.EndsWith;
             }
 
-            if(string.IsNullOrEmpty(expression)) throw new ArgumentOutOfRangeException("expression");
+            if(string.IsNullOrEmpty(expression)) throw new ArgumentOutOfRangeException(nameof(expression));
 
             this._Expression = expression;
         }

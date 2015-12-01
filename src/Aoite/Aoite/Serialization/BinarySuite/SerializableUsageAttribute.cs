@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Serialization
 {
@@ -24,7 +21,7 @@ namespace Aoite.Serialization
         /// <param name="formatterType">可自定义序列化的功能实现类型。</param>
         public SerializableUsageAttribute(Type formatterType)
         {
-            if(formatterType == null) throw new ArgumentNullException("formatterType");
+            if(formatterType == null) throw new ArgumentNullException(nameof(formatterType));
             if(!Types.ISerializable.IsAssignableFrom(formatterType)) throw new ArgumentException("类型 {0} 没有实现 {1} 的接口。".Fmt(formatterType.FullName, Types.ISerializable.FullName), "type");
             if(formatterType.IsInterface || formatterType.IsAbstract) throw new ArgumentException("类型 {0} 不能是一个接口或基类。".Fmt(Types.ISerializable.FullName), "type");
             this._FormatterType = formatterType;

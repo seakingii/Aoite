@@ -1,9 +1,7 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -22,9 +20,9 @@ namespace System
         /// <returns>返回被成功添加的新成员的数量，不包括那些被更新的、已经存在的成员。</returns>
         public static long ZAdd(this IRedisClient client, string key, params RedisScoreItem[] items)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(items == null) throw new ArgumentNullException("items");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(items == null) throw new ArgumentNullException(nameof(items));
             if(items.Length == 0) return 0;
 
             var args = RedisArgs.Parse(key, items).ToArray();
@@ -39,8 +37,8 @@ namespace System
         /// <returns>返回集合 <paramref name="key"/> 的基数。</returns>
         public static long ZCard(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("ZCARD", key));
         }
 
@@ -56,8 +54,8 @@ namespace System
         /// <returns>返回权重值包含指定区间的成员数量。</returns>
         public static long ZCount(this IRedisClient client, string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZCOUNT", key
                 , RedisArgs.GetScore(min, exclusiveMin)
@@ -74,9 +72,9 @@ namespace System
         /// <returns>返回递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的 <paramref name="member"/> 的权重值。</returns>
         public static double ZIncrBy(this IRedisClient client, string key, double increment, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(member == null) throw new ArgumentNullException("member");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisFloat("ZINCRBY", key, increment, member));
         }
@@ -93,8 +91,8 @@ namespace System
         /// <returns>返回指定区间内的有序集成员的列表。</returns>
         public static BinaryValue[] ZRange(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("ZRANGE", key, start, stop)));
         }
@@ -111,8 +109,8 @@ namespace System
         /// <returns>返回指定区间内的有序集成员（含成员的权重值）的列表。</returns>
         public static RedisScoreItem[] ZRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisItem<RedisScoreItem>(false, "ZRANGE", key, start, stop, "WITHSCORES"), 2));
         }
@@ -135,8 +133,8 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax) };
             if(offset.HasValue && count.HasValue)
             {
@@ -163,8 +161,8 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax), "WITHSCORES" };
             if(offset.HasValue && count.HasValue)
@@ -183,9 +181,9 @@ namespace System
         /// <returns>如果 <paramref name="member"/> 是有序集 <paramref name="key"/> 的成员，返回 <paramref name="member"/> 的排名。否则返回 null 值。</returns>
         public static long? ZRank(this IRedisClient client, string key, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(member == null) throw new ArgumentNullException("member");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisInteger.Nullable("ZRANK", key, member));
         }
@@ -199,9 +197,9 @@ namespace System
         /// <returns>返回被成功移除的成员的数量，不包括被忽略的成员。</returns>
         public static long ZRem(this IRedisClient client, string key, params BinaryValue[] members)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(members == null) throw new ArgumentNullException("members");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0L;
 
             var args = RedisArgs.ConcatFirst(key, members).ToArray();
@@ -218,8 +216,8 @@ namespace System
         /// <returns>被移除成员的数量。</returns>
         public static long ZRemRangeByRank(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYRANK", key, start, stop));
         }
@@ -236,8 +234,8 @@ namespace System
         /// <returns>被移除成员的数量。</returns>
         public static long ZRemRangeByScore(this IRedisClient client, string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYSCORE", key
                 , RedisArgs.GetScore(min, exclusiveMin)
@@ -256,8 +254,8 @@ namespace System
         /// <returns>返回指定区间内的有序集成员的列表。</returns>
         public static BinaryValue[] ZRevRange(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("ZREVRANGE", key, start, stop)));
         }
@@ -274,8 +272,8 @@ namespace System
         /// <returns>返回指定区间内的有序集成员（含成员的权重值）的列表。</returns>
         public static RedisScoreItem[] ZRevRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisItem<RedisScoreItem>(false, "ZREVRANGE", key, start, stop, "WITHSCORES"), 2));
         }
@@ -298,8 +296,8 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax) };
             if(offset.HasValue && count.HasValue)
             {
@@ -326,8 +324,8 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key, RedisArgs.GetScore(min, exclusiveMin), RedisArgs.GetScore(max, exclusiveMax), "WITHSCORES" };
             if(offset.HasValue && count.HasValue)
@@ -346,9 +344,9 @@ namespace System
         /// <returns>如果 <paramref name="member"/> 是有序集 <paramref name="key"/> 的成员，返回 <paramref name="member"/> 的排名。否则返回 null 值。</returns>
         public static long? ZRevRank(this IRedisClient client, string key, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(member == null) throw new ArgumentNullException("member");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisInteger.Nullable("ZREVRANK", key, member));
         }
@@ -362,18 +360,18 @@ namespace System
         /// <returns>如果 <paramref name="member"/> 是有序集 <paramref name="key"/> 的成员，返回 <paramref name="member"/> 的权重值。否则返回 null 值。</returns>
         public static double? ZScore(this IRedisClient client, string key, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(member == null) throw new ArgumentNullException("member");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(member == null) throw new ArgumentNullException(nameof(member));
 
             return client.Execute(new RedisFloat.Nullable("ZSCORE", key, member));
         }
 
         private static long ZStore(string command, IRedisClient client, string destination, RedisWeightDictionary keyWeights, RedisAggregate? aggregate)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
-            if(keyWeights == null) throw new ArgumentNullException("keyWeights");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(keyWeights == null) throw new ArgumentNullException(nameof(keyWeights));
             if(keyWeights.Count == 0) return 0L;
 
             IEnumerable<object> args = new object[] { destination, keyWeights.Count };
@@ -447,8 +445,8 @@ namespace System
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             IEnumerable<object> args = new object[] { key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")
@@ -475,8 +473,8 @@ namespace System
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZLEXCOUNT", key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")
@@ -497,8 +495,8 @@ namespace System
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisInteger("ZREMRANGEBYLEX", key
                 , RedisArgs.GetBinaryValue(min, exclusiveMin, "-")

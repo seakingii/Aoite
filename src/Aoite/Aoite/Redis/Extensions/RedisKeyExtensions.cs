@@ -1,9 +1,6 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -20,8 +17,8 @@ namespace System
         /// <returns>返回被删除键的数量。</returns>
         public static long Del(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0L;
 
             return client.Execute(new RedisInteger("DEL", keys));
@@ -35,8 +32,8 @@ namespace System
         /// <returns>如果 <paramref name="key"/> 存在，那么返回 true。否则返回 false。</returns>
         public static bool Exists(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisBoolean("EXISTS", key));
         }
 
@@ -65,9 +62,9 @@ namespace System
         public static bool Expire(this IRedisClient client, string key, long expiration
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(expiration < 0) throw new ArgumentOutOfRangeException("expiration");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(expiration < 0) throw new ArgumentOutOfRangeException(nameof(expiration));
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisBoolean("EXPIRE", key, expiration));
             else
@@ -98,9 +95,9 @@ namespace System
         public static bool ExpireAt(this IRedisClient client, string key, long timestamp
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(timestamp < 0) throw new ArgumentOutOfRangeException("timestamp");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(timestamp < 0) throw new ArgumentOutOfRangeException(nameof(timestamp));
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisBoolean("EXPIREAT", key, timestamp));
             else
@@ -117,8 +114,8 @@ namespace System
         public static long Ttl(this IRedisClient client, string key
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             if(timeUnit == RedisExpireTimeUnit.EX)
                 return client.Execute(new RedisInteger("TTL", key));
@@ -141,8 +138,8 @@ namespace System
         /// <returns>返回符合给定模式的键列表。</returns>
         public static string[] Keys(this IRedisClient client, string pattern)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(pattern)) throw new ArgumentNullException("pattern");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(pattern)) throw new ArgumentNullException(nameof(pattern));
             return client.Execute(RedisArray.Create(new RedisString("KEYS", pattern)));
         }
 
@@ -157,9 +154,9 @@ namespace System
         /// <returns>如果移动成功返回 true，否则返回 false。</returns>
         public static bool Move(this IRedisClient client, string key, int database)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(database < 0) throw new ArgumentOutOfRangeException("database");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(database < 0) throw new ArgumentOutOfRangeException(nameof(database));
 
             return client.Execute(new RedisBoolean("MOVE", key, database));
         }
@@ -172,8 +169,8 @@ namespace System
         /// <returns>如果生存时间移除成功，那么返回 true。否则返回 false。</returns>
         public static bool Persist(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisBoolean("PERSIST", key));
         }
 
@@ -184,7 +181,7 @@ namespace System
         /// <returns>当数据库不为空时，返回一个键。当数据库为空时，返回 null。</returns>
         public static string RandomKey(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisString("RANDOMKEY"));
         }
 
@@ -199,9 +196,9 @@ namespace System
         /// <returns>返回一个状态的结果。</returns>
         public static Result Rename(this IRedisClient client, string key, string newKey)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException("newKey");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException(nameof(newKey));
             if(key == newKey) return "新的键名不能和旧的相同";
             return client.Execute(new RedisStatus("RENAME", key, newKey));
         }
@@ -215,9 +212,9 @@ namespace System
         /// <returns>返回一个状态的结果。</returns>
         public static bool RenameNx(this IRedisClient client, string key, string newKey)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException("newKey");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(string.IsNullOrEmpty(newKey)) throw new ArgumentNullException(nameof(newKey));
             if(key == newKey) return false;
             return client.Execute(new RedisBoolean.AllowError("RENAMENX", key, newKey));
         }
@@ -230,8 +227,8 @@ namespace System
         /// <returns>返回储存的值的类型。</returns>
         public static RedisType Type(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisKeyType("TYPE", key));
         }
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
 namespace Aoite.Data
@@ -24,8 +22,8 @@ namespace Aoite.Data
         /// <param name="rowState"><see cref="System.Data.DataRowState"/> 枚举中的一个值。只有与行状态匹配的行才会被复制到目标表中。</param>
         public BulkCopyArguments(string destinationTableName, DataTable table, DataRowState rowState)
         {
-            if(string.IsNullOrEmpty(destinationTableName)) throw new ArgumentNullException("destinationTableName");
-            if(table == null) throw new ArgumentNullException("table");
+            if(string.IsNullOrWhiteSpace(destinationTableName)) throw new ArgumentNullException(nameof(destinationTableName));
+            if(table == null) throw new ArgumentNullException(nameof(table));
 
             this._DestinationTableName = destinationTableName;
             this._Table = table;

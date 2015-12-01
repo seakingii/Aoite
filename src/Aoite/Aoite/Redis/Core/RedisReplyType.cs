@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.Redis
+﻿namespace Aoite.Redis
 {
     /// <summary>
     /// 表示 Redis 的回复类型。

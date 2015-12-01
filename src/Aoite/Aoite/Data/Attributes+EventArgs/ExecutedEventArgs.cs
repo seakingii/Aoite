@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 数据源查询与交互完成后的事件委托。

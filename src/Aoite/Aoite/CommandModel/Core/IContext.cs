@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -30,7 +27,7 @@ namespace Aoite.CommandModel
         /// <returns>返回一个值。</returns>
         object this[object key] { get; set; }
         /// <summary>
-        /// 获取上下文中的 <see cref="System.IDbEngine"/> 实例。该实例应不为 null 值，且线程唯一。
+        /// 获取上下文中的 <see cref="IDbEngine"/> 实例。该实例应不为 null 值，且线程唯一。
         /// <para>* 不应在执行器中开启事务。</para>
         /// </summary>
         IDbEngine Engine { get; }

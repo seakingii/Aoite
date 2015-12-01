@@ -1,12 +1,9 @@
 ﻿using Aoite.Data;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Web.UI.WebControls;
 
 namespace System
 {
@@ -30,8 +27,8 @@ namespace System
         /// <param name="value">参数值。</param>
         public static void AddParameter(this DbCommand dbCommand, string name, object value)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             var p = dbCommand.CreateParameter();
             p.ParameterName = name;
@@ -48,7 +45,7 @@ namespace System
         /// <returns>返回强类型的值。</returns>
         public static T GetValue<T>(this DbCommand dbCommand, int index)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
             return dbCommand.Parameters[index].Value.CastTo<T>();
         }
         /// <summary>
@@ -60,8 +57,8 @@ namespace System
         /// <returns>返回强类型的值。</returns>
         public static T GetValue<T>(this DbCommand dbCommand, string name)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             return dbCommand.Parameters[name].Value.CastTo<T>();
         }
@@ -72,7 +69,7 @@ namespace System
         /// <returns>返回一个完整执行命令的字符串形式。</returns>
         public static string ToFullString(this ExecuteCommand command)
         {
-            if(command == null) throw new ArgumentNullException("command");
+            if(command == null) throw new ArgumentNullException(nameof(command));
             StringBuilder builder = new StringBuilder(command.CommandText);
             if(command.Parameters != null)
             {
@@ -95,7 +92,7 @@ namespace System
         /// <returns>返回一个实体集合</returns>
         public static List<TEntity> ExecuteEntities<TEntity>(this DbCommand dbCommand)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
 
             var mapper = TypeMapper.Instance<TEntity>.Mapper;
             using(var reader = dbCommand.ExecuteReader())
@@ -118,7 +115,7 @@ namespace System
         /// <returns>返回一个实体集合</returns>
         public static List<dynamic> ExecuteEntities(this DbCommand dbCommand)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
 
             List<dynamic> value = new List<dynamic>();
             using(var reader = dbCommand.ExecuteReader())
@@ -139,7 +136,7 @@ namespace System
         /// <returns>结果集中第一行的第一列</returns>
         public static TValue ExecuteScalar<TValue>(this DbCommand dbCommand)
         {
-            if(dbCommand == null) throw new ArgumentNullException("dbCommand");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
 
             var value = dbCommand.ExecuteScalar();
             if(Convert.IsDBNull(value)) value = default(TValue);
@@ -155,8 +152,8 @@ namespace System
         /// <returns>返回一张表。</returns>
         public static AoiteTable ExecuteTable(this DbCommand dbCommand, DbDataAdapter dataAdpater)
         {
-            if(dbCommand == null) throw new ArgumentNullException("command");
-            if(dataAdpater == null) throw new ArgumentNullException("dataAdpater");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+            if(dataAdpater == null) throw new ArgumentNullException(nameof(dataAdpater));
 
             AoiteTable table = new AoiteTable();
             dataAdpater.Fill(table);
@@ -175,8 +172,8 @@ namespace System
         public static TDataSet ExecuteDataSet<TDataSet>(this DbCommand dbCommand, DbDataAdapter dataAdpater)
             where TDataSet : DataSet, new()
         {
-            if(dbCommand == null) throw new ArgumentNullException("command");
-            if(dataAdpater == null) throw new ArgumentNullException("dataAdpater");
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+            if(dataAdpater == null) throw new ArgumentNullException(nameof(dataAdpater));
 
             TDataSet dataSet = new TDataSet();
             dataAdpater.Fill(dataSet);
@@ -228,8 +225,8 @@ namespace System
         /// <returns>返回执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, ExecuteCommand command)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(command == null) throw new ArgumentNullException("command");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(command == null) throw new ArgumentNullException(nameof(command));
 
             return engine.Owner.Injector.CreateExecutor(engine, command);
         }
@@ -309,8 +306,8 @@ namespace System
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<int> AddAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
             return engine.ExecuteAED<TEntity>(mapper => engine.Owner.Injector.CreateInsertCommand(engine, mapper, entity, tableName));
         }
 
@@ -341,8 +338,8 @@ namespace System
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<int> ModifyAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
             return engine.ExecuteAED<TEntity>(mapper => engine.Owner.Injector.CreateUpdateCommand(engine, mapper, entity, tableName));
         }
 
@@ -396,8 +393,8 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<int> ModifyWhere<TEntity>(this IDbEngine engine, object entity, string where, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(entity == null) throw new ArgumentNullException("entity");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
 
             var mapper1 = TypeMapper.Instance<TEntity>.Mapper;
             var mapper2 = TypeMapper.Create(entity.GetType());
@@ -443,8 +440,8 @@ namespace System
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<int> RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(entityOrPKValues == null) throw new ArgumentNullException("entityOrPKValues");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entityOrPKValues == null) throw new ArgumentNullException(nameof(entityOrPKValues));
             return engine.ExecuteAED<TEntity>(mapper => engine.Owner.Injector.CreateDeleteCommand(engine, mapper, entityOrPKValues, tableName));
         }
 
@@ -496,7 +493,7 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<int> RemoveWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var mapper1 = TypeMapper.Instance<TEntity>.Mapper;
             var parSettings = engine.Owner.Injector.ParameterSettings;
@@ -522,7 +519,7 @@ namespace System
         /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
         public static ISelect Select(this IDbEngine engine, params string[] fields)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             return new SelectCommandBuilder(engine).Select(fields);
         }
 
@@ -535,7 +532,7 @@ namespace System
         /// <returns>返回 <see cref="Aoite.Data.ISelect"/> 的实例。</returns>
         public static ISelect Select<TEntity>(this IDbEngine engine, params string[] fields)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             return new SelectCommandBuilder(engine).Select(fields).From(engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name));
         }
 
@@ -587,8 +584,8 @@ namespace System
         /// <param name="keyValue">主键的列值。</param>
         public static DbResult<TView> FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
-            if(keyValue == null) throw new ArgumentNullException("keyValue");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(keyValue == null) throw new ArgumentNullException(nameof(keyValue));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
@@ -673,7 +670,7 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<TView> FindOneWhere<TEntity, TView>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
@@ -751,7 +748,7 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<List<TView>> FindAllWhere<TEntity, TView>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
@@ -835,8 +832,8 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
         {
-            if(page == null) throw new ArgumentNullException("page");
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(page == null) throw new ArgumentNullException(nameof(page));
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
@@ -891,7 +888,7 @@ namespace System
         /// <param name="objectInstance">匿名参数集合实例。</param>
         public static Result<bool> ExistsWhere<TEntity>(this IDbEngine engine, object objectInstance)
         {
-            if(objectInstance == null) throw new ArgumentNullException("objectInstance");
+            if(objectInstance == null) throw new ArgumentNullException(nameof(objectInstance));
             return ExistsWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
         }
 
@@ -903,7 +900,7 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static Result<bool> ExistsWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps)
         {
-            if(ps == null || ps.Count == 0) throw new ArgumentNullException("objectInstance");
+            if(ps == null || ps.Count == 0) throw new ArgumentNullException(nameof(ps));
             return ExistsWhere<TEntity>(engine, CreateWhere(engine, ps), ps);
         }
 
@@ -916,7 +913,7 @@ namespace System
         /// <param name="ps">参数集合实例。</param>
         public static Result<bool> ExistsWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var commandText = "SELECT 1 FROM "
                 + engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
@@ -939,7 +936,7 @@ namespace System
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, object objectInstance)
         {
-            if(objectInstance == null) throw new ArgumentNullException("objectInstance");
+            if(objectInstance == null) throw new ArgumentNullException(nameof(objectInstance));
             return RowCount<TEntity>(engine, new ExecuteParameterCollection(objectInstance));
         }
         /// <summary>
@@ -963,7 +960,7 @@ namespace System
         /// <returns>返回一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, string where = null, ExecuteParameterCollection ps = null)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var commandText = "SELECT COUNT(*) FROM " + engine.Owner.Injector.ParameterSettings.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name);
             if(!string.IsNullOrEmpty(where)) commandText += " WHERE " + where;
@@ -983,7 +980,7 @@ namespace System
         /// <returns>返回一个字段的列表。</returns>
         public static string CreateFields<TEntity, TView>(this IDbEngine engine)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             string fields = "*";
             var m1 = TypeMapper.Instance<TEntity>.Mapper;
@@ -1012,9 +1009,9 @@ namespace System
         /// <returns>返回一个条件查询语句。</returns>
         public static string CreateWhere(this IDbEngine engine, ExecuteParameterCollection ps, string binary = "AND")
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             if(ps == null || ps.Count == 0) return null;
-            if(string.IsNullOrEmpty(binary)) throw new ArgumentNullException("binary");
+            if(string.IsNullOrEmpty(binary)) throw new ArgumentNullException(nameof(binary));
 
             var parSetting = engine.Owner.Injector.ParameterSettings;
             var builder = new StringBuilder();
@@ -1037,7 +1034,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result<long> GetLastIdentity<TEntity>(this IDbEngine engine)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             var command = engine.Owner.Injector.CreateLastIdentityCommand(engine, TypeMapper.Instance<TEntity>.Mapper);
             return engine.Execute(command).ToScalar<long>();
         }

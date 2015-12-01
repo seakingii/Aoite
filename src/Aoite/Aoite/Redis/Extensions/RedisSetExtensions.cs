@@ -1,9 +1,7 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -22,9 +20,9 @@ namespace System
         /// <returns>返回被添加到集合中的新成员的数量，不包括被忽略的成员。</returns>
         public static long SAdd(this IRedisClient client, string key, params BinaryValue[] members)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(members == null) throw new ArgumentNullException("members");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0;
 
             var args = RedisArgs.ConcatFirst(key, members).ToArray();
@@ -39,8 +37,8 @@ namespace System
         /// <returns>返回集合 <paramref name="key"/> 的基数。</returns>
         public static long SCard(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("SCARD", key));
         }
 
@@ -52,8 +50,8 @@ namespace System
         /// <returns>返回一个包含差集成员列表。</returns>
         public static BinaryValue[] SDiff(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return new BinaryValue[0];
 
             return client.Execute(RedisArray.Create(new RedisValue("SDIFF", keys)));
@@ -68,9 +66,9 @@ namespace System
         /// <returns>返回结果集中的成员数量。</returns>
         public static long SDiffStore(this IRedisClient client, string destination, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
             var args = RedisArgs.ConcatFirst(destination, keys).ToArray();
@@ -85,8 +83,8 @@ namespace System
         /// <returns>返回一个包含交集成员列表。</returns>
         public static BinaryValue[] SInter(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return new BinaryValue[0];
 
             return client.Execute(RedisArray.Create(new RedisValue("SINTER", keys)));
@@ -101,9 +99,9 @@ namespace System
         /// <returns>返回结果集中的成员数量。</returns>
         public static long SInterStore(this IRedisClient client, string destination, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
             var args = RedisArgs.ConcatFirst(destination, keys).ToArray();
@@ -119,8 +117,8 @@ namespace System
         /// <returns>存在返回 true，否则返回 false。</returns>
         public static bool SIsMember(this IRedisClient client, string key, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisBoolean("SISMEMBER", key, member));
         }
@@ -133,8 +131,8 @@ namespace System
         /// <returns>返回一个集合的所有成员。</returns>
         public static BinaryValue[] SMembers(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("SMEMBERS", key)));
         }
@@ -149,9 +147,9 @@ namespace System
         /// <returns>返回一个值，表示移动是否成功。</returns>
         public static bool SMove(this IRedisClient client, string source, string destination, BinaryValue member)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException("source");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(source)) throw new ArgumentNullException(nameof(source));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
 
             return client.Execute(new RedisBoolean("SMOVE", source, destination, member));
         }
@@ -164,8 +162,8 @@ namespace System
         /// <returns>返回被移除的随机成员。当 <paramref name="key"/> 不存在或 <paramref name="key"/> 是空集时，返回 null。</returns>
         public static BinaryValue SPop(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("SPOP", key));
         }
@@ -178,8 +176,8 @@ namespace System
         /// <returns>返回一个的随机成员。当 <paramref name="key"/> 不存在或 <paramref name="key"/> 是空集时，返回 null。</returns>
         public static BinaryValue SRandMember(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("SRANDMEMBER", key));
         }
@@ -196,8 +194,8 @@ namespace System
         /// <returns>返回一组的随机成员。当 <paramref name="key"/> 不存在或 <paramref name="key"/> 是空集时，返回空数组。</returns>
         public static BinaryValue[] SRandMember(this IRedisClient client, string key, long count)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(RedisArray.Create(new RedisValue("SRANDMEMBER", key, count)));
         }
@@ -211,9 +209,9 @@ namespace System
         /// <returns>返回被成功移除的成员的数量，不包括被忽略的成员。</returns>
         public static long SRem(this IRedisClient client, string key, params BinaryValue[] members)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(members == null) throw new ArgumentNullException("members");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(members == null) throw new ArgumentNullException(nameof(members));
             if(members.Length == 0) return 0L;
 
             var args = RedisArgs.ConcatFirst(key, members).ToArray();
@@ -228,8 +226,8 @@ namespace System
         /// <returns>返回一个包含并集成员列表。</returns>
         public static BinaryValue[] SUnion(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return new BinaryValue[0];
 
             return client.Execute(RedisArray.Create(new RedisValue("SUNION", keys)));
@@ -244,9 +242,9 @@ namespace System
         /// <returns>返回结果集中的成员数量。</returns>
         public static long SUnionStore(this IRedisClient client, string destination, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException("destination");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(destination)) throw new ArgumentNullException(nameof(destination));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
             var args = RedisArgs.ConcatFirst(destination, keys).ToArray();

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -17,9 +15,7 @@ namespace Aoite.CommandModel
         /// <param name="eventStore">事件的仓库。</param>
         /// <param name="event">事件。</param>
         public static void Register<TCommand>(this IEventStore eventStore, IEvent<TCommand> @event) where TCommand : ICommand
-        {
-            eventStore.Register(typeof(TCommand), @event);
-        }
+            => eventStore.Register(typeof(TCommand), @event);
 
         /// <summary>
         /// 注销指定命令模型类型的一个事件。
@@ -28,9 +24,7 @@ namespace Aoite.CommandModel
         /// <param name="eventStore">事件的仓库。</param>
         /// <param name="event">事件。</param>
         public static void Unregister<TCommand>(this IEventStore eventStore, IEvent<TCommand> @event) where TCommand : ICommand
-        {
-            eventStore.Unregister(typeof(TCommand), @event);
-        }
+            => eventStore.Unregister(typeof(TCommand), @event);
 
         /// <summary>
         /// 注销指定命令模型类型的所有事件。
@@ -38,9 +32,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
         /// <param name="eventStore">事件的仓库。</param>
         public static void UnregisterAll<TCommand>(this IEventStore eventStore) where TCommand : ICommand
-        {
-            eventStore.UnregisterAll(typeof(TCommand));
-        }
+            => eventStore.UnregisterAll(typeof(TCommand));
 
         /// <summary>
         /// 提供批量锁的功能。
@@ -49,9 +41,7 @@ namespace Aoite.CommandModel
         /// <param name="keys">锁的键名列表。</param>
         /// <returns>返回一个批量锁。</returns>
         public static IDisposable MultipleLock(this ILockProvider provider, params string[] keys)
-        {
-            return MultipleLock(provider, null, keys);
-        }
+            => MultipleLock(provider, null, keys);
 
         /// <summary>
         /// 提供批量锁的功能。
@@ -61,14 +51,12 @@ namespace Aoite.CommandModel
         /// <param name="keys">锁的键名列表。</param>
         /// <returns>返回一个批量锁。</returns>
         public static IDisposable MultipleLock(this ILockProvider provider, TimeSpan timeout, params string[] keys)
-        {
-            return MultipleLock(provider, timeout, keys);
-        }
+            => MultipleLock(provider, timeout, keys);
 
         private static IDisposable MultipleLock(ILockProvider provider, TimeSpan? timeout, params string[] keys)
         {
-            if(provider == null) throw new ArgumentNullException("provider");
-            if(keys == null || keys.Length == 0) throw new ArgumentNullException("keys");
+            if(provider == null) throw new ArgumentNullException(nameof(provider));
+            if(keys == null || keys.Length == 0) throw new ArgumentNullException(nameof(keys));
 
             Stack<IDisposable> stack = new Stack<IDisposable>(keys.Length);
             foreach(var key in keys)
@@ -77,6 +65,7 @@ namespace Aoite.CommandModel
             }
             return new MultipleLockKeys(stack);
         }
+
         class MultipleLockKeys : IDisposable
         {
             Stack<IDisposable> _stack;

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Aoite.Net
 {
@@ -32,7 +29,7 @@ namespace Aoite.Net
         /// <param name="endPoint">网络端点。</param>
         public SocketInfo(IPEndPoint endPoint)
         {
-            if(endPoint == null) throw new ArgumentNullException("endPoint");
+            if(endPoint == null) throw new ArgumentNullException(nameof(endPoint));
             this._EndPoint = endPoint;
         }
 

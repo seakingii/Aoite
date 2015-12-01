@@ -162,7 +162,7 @@ namespace System
         /// <param name="jobs">异步任务列表。</param>
         public static void WaitAll(params IAsyncJob[] jobs)
         {
-            if(jobs == null) throw new ArgumentNullException("jobs");
+            if(jobs == null) throw new ArgumentNullException(nameof(jobs));
 
             foreach(var job in jobs)
             {

@@ -1,9 +1,5 @@
 ﻿using Aoite.Data;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -34,7 +30,6 @@ namespace System
             }
             set
             {
-                //if(value == null) throw new ArgumentNullException("value");
                 lock(SyncObjectM)
                 {
                     _Manager = value;

@@ -1,9 +1,6 @@
 ﻿using Aoite.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace System.Collections.Generic
 {
@@ -21,7 +18,7 @@ namespace System.Collections.Generic
         /// <returns>返回一个实体的数据集合。。</returns>
         public static GridData<TEntity> ToGrid<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
-            if(collection == null) throw new ArgumentNullException("collection");
+            if(collection == null) throw new ArgumentNullException(nameof(collection));
             return new GridData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
         /// <summary>
@@ -33,7 +30,7 @@ namespace System.Collections.Generic
         /// <returns>返回一张表。</returns>
         public static AoiteTable ToTable<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
-            if(collection == null) throw new ArgumentNullException("collection");
+            if(collection == null) throw new ArgumentNullException(nameof(collection));
             var mp = TypeMapper.Instance<TEntity>.Mapper;
             AoiteTable table = new AoiteTable() { TableName = mp.Name };
             foreach(var p in mp.Properties) table.Columns.Add(p.Name, p.Property.PropertyType);
@@ -59,7 +56,7 @@ namespace System.Collections.Generic
         /// <returns>如果字典包含具有指定键的元素则返回对应的值，否则返回默认值。</returns>
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
-            if(dict == null) throw new ArgumentNullException("dict");
+            if(dict == null) throw new ArgumentNullException(nameof(dict));
             TValue value;
             if(dict.TryGetValue(key, out value)) return value;
             return default(TValue);
@@ -105,12 +102,12 @@ namespace System.Collections.Generic
         /// <param name="max">固定枚举元素数，为 0 则随机。</param>
         public static IEnumerable<T> RandomAny<T>(this IEnumerable<T> e, int max = 0)
         {
-            if(e == null) throw new ArgumentNullException("e");
+            if(e == null) throw new ArgumentNullException(nameof(e));
 
             long tick = DateTime.Now.Ticks;
             List<T> list = new List<T>(e);
             if(max < 1) max = FastRandom.Instance.Next(1, list.Count);
-            if(max > list.Count) throw new ArgumentOutOfRangeException("max");
+            if(max > list.Count) throw new ArgumentOutOfRangeException(nameof(max));
 
             for(int i = 0; i < max; i++)
             {
@@ -127,7 +124,7 @@ namespace System.Collections.Generic
         /// <param name="e">枚举。</param>
         public static T RandomOne<T>(this IEnumerable<T> e)
         {
-            if(e == null) throw new ArgumentNullException("e");
+            if(e == null) throw new ArgumentNullException(nameof(e));
             return RandomAny(e, 1).First();
         }
 
@@ -217,9 +214,9 @@ namespace System.Collections.Generic
             , int count
             , IEqualityComparer<T> comparer)
         {
-            if(collection == null) throw new ArgumentNullException("collection");
-            if((startIndex < 0) || (startIndex > collection.Count)) throw new ArgumentOutOfRangeException("startIndex");
-            if((count < 0) || (count > (collection.Count - startIndex))) throw new ArgumentOutOfRangeException("count");
+            if(collection == null) throw new ArgumentNullException(nameof(collection));
+            if((startIndex < 0) || (startIndex > collection.Count)) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if((count < 0) || (count > (collection.Count - startIndex))) throw new ArgumentOutOfRangeException(nameof(count));
             int num = startIndex + count;
 
             for(int i = startIndex; i < num; i++)
@@ -276,9 +273,9 @@ namespace System.Collections.Generic
             , int count
             , IEqualityComparer<T> comparer)
         {
-            if(array == null) throw new ArgumentNullException("array");
-            if((startIndex < 0) || (startIndex > array.Length)) throw new ArgumentOutOfRangeException("startIndex");
-            if((count < 0) || (count > (array.Length - startIndex))) throw new ArgumentOutOfRangeException("count");
+            if(array == null) throw new ArgumentNullException(nameof(array));
+            if((startIndex < 0) || (startIndex > array.Length)) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if((count < 0) || (count > (array.Length - startIndex))) throw new ArgumentOutOfRangeException(nameof(count));
             int num = startIndex + count;
 
             for(int i = startIndex; i < num; i++)

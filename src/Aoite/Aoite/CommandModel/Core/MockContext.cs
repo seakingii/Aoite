@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -10,14 +7,13 @@ namespace Aoite.CommandModel
     /// </summary>
     public class MockContext : Context
     {
-        private dynamic _User;
         /// <summary>
         /// 获取执行命令模型的用户。该属性可能返回 null 值。
         /// </summary>
-        public override dynamic User { get { return this._User; } }
+        public override dynamic User { get; }
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.Context"/> 类的新实例。
+        /// 初始化 <see cref="Context"/> 类的新实例。
         /// </summary>
         /// <param name="user">模拟的用户。</param>
         /// <param name="command">命令模型。</param>
@@ -25,7 +21,7 @@ namespace Aoite.CommandModel
         public MockContext(object user, IIocContainer container, ICommand command)
             : base(container, command)
         {
-            this._User = user;
+            this.User = user;
         }
     }
 }

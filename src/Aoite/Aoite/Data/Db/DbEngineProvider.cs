@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个数据源查询与交互引擎的提供程序。

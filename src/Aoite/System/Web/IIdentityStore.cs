@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Web
+﻿namespace System.Web
 {
     /// <summary>
     /// 定义一个客户端唯一标识的存储功能。

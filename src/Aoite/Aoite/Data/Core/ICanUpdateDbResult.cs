@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 表示一个可更新的查询结果。

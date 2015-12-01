@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Aoite.CommandModel.Core
@@ -52,6 +49,13 @@ namespace Aoite.CommandModel.Core
         {
             public void Execute(IContext context, Simple4<T1, T2> command) { }
         }
+        class Simple4_Error<T1, T2> : ICommand
+        { }
+
+        class Simple4_ErrorExecutor<T1, T2, T3> : IExecutor<Simple4_Error<T1, T2>>
+        {
+            public void Execute(IContext context, Simple4_Error<T1, T2> command) { }
+        }
 
         class Simple5<T1, T2> : ICommand
         {
@@ -63,6 +67,16 @@ namespace Aoite.CommandModel.Core
                 public void Execute(IContext context, Simple5<T1, T2> command) { }
             }
         }
+        class Simple5_Error<T1, T2> : ICommand
+        {
+            public T1 T1Property { get; set; }
+            public T2 T2Property { get; set; }
+            class Executor<T3> : IExecutor<Simple5_Error<T1, T2>>
+            {
+                public void Execute(IContext context, Simple5_Error<T1, T2> command) { }
+            }
+        }
+
 
         [BindingExecutor(typeof(TestSimple6))]
         class Simple6 : ICommand { }
@@ -95,13 +109,36 @@ namespace Aoite.CommandModel.Core
             Assert.IsType<Simple3Executor>(factory.Create(new Simple3()).Executor);
             //- 泛型
             Assert.IsType<Simple4Executor<int, string>>(factory.Create(new Simple4<int, string>()).Executor);
+
+            Assert.Throws<NotSupportedException>(() => factory.Create(new Simple4_Error<int, string>()));
+
             //- 嵌套
             Assert.IsType(Simple5<int, string>.ExecutorType, factory.Create(new Simple5<int, string>()).Executor);
+
+            Assert.Throws<NotSupportedException>(() => factory.Create(new Simple5_Error<int, string>()));
 
             //- 特性
             Assert.IsType<TestSimple6>(factory.Create(new Simple6()).Executor);
             //- 特性泛型
             Assert.IsType<TestSimple7<string, double>>(factory.Create(new Simple7<string, double>()).Executor);
         }
+
+        [Fact]
+        public void Test11()
+        {
+            var t1 = typeof(CC1234<,>);
+            var t2 = t1.GetNestedType("C1`1");
+            var t3 = t1.GetNestedType("C2");
+
+            Assert.NotNull(t1);
+            Assert.NotNull(t2);
+            Assert.NotNull(t3);
+        }
+    }
+
+    public class CC1234<T1, T2>
+    {
+        public class C1<T3> { }
+        public class C2 { }
     }
 }

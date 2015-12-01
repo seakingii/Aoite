@@ -1,9 +1,7 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -20,7 +18,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result BgRewriteAof(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("BGREWRITEAOF"));
         }
@@ -31,7 +29,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result BgSave(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("BGSAVE"));
         }
@@ -43,7 +41,7 @@ namespace System
         /// <returns>如果连接没有设置名字，那么返回空白回复；如果有设置名字，那么返回名字。</returns>
         public static string ClientGetName(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisString("CLIENT GETNAME"));
         }
@@ -56,8 +54,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ClientKill(this IRedisClient client, string ip, int port)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(ip)) throw new ArgumentNullException("ip");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
 
             return client.Execute(new RedisStatus("CLIENT KILL", ip + ":" + port));
         }
@@ -72,7 +70,7 @@ namespace System
         /// <returns>Returns the number of clients killed.</returns>
         public static long ClientKill(this IRedisClient client, string addr = null, string id = null, string type = null, bool? skipMe = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             var args = new List<string>();
             if(addr != null)
@@ -92,7 +90,7 @@ namespace System
         /// <returns>如果连接没有设置名字，那么返回空白回复；如果有设置名字，那么返回名字。</returns>
         public static string ClientList(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisString("CLIENT LIST"));
         }
@@ -106,8 +104,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ClientSetName(this IRedisClient client, string connectionName)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(connectionName)) throw new ArgumentNullException("connectionName");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(connectionName)) throw new ArgumentNullException(nameof(connectionName));
             if(connectionName.Contains(' ')) connectionName = connectionName.Replace(' ', '_');
             return client.Execute(new RedisStatus("CLIENT SETNAME", connectionName));
         }
@@ -119,8 +117,8 @@ namespace System
         /// <returns>返回给定配置参数和值。</returns>
         public static RedisKeyItem[] ConfigGet(this IRedisClient client, string parameter)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException("parameter");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException(nameof(parameter));
             return client.Execute(RedisArray.Create(new RedisItem<RedisKeyItem>(false, "CONFIG GET", parameter), 2));
         }
         /// <summary>
@@ -130,7 +128,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ConfigResetStat(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("CONFIG RESETSTAT"));
         }
@@ -141,7 +139,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ConfigRewrite(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("CONFIG REWRITE"));
         }
@@ -154,8 +152,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ConfigSet(this IRedisClient client, string parameter, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException("parameter");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(parameter)) throw new ArgumentNullException(nameof(parameter));
             return client.Execute(new RedisStatus("CONFIG SET", parameter, value));
         }
 
@@ -166,7 +164,7 @@ namespace System
         /// <returns>返回当前数据库的键的数量。</returns>
         public static long DbSize(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisInteger("DBSIZE"));
         }
@@ -178,7 +176,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result FlushAll(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("FLUSHALL"));
         }
@@ -189,7 +187,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result FlushDb(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisStatus("FLUSHDB"));
         }
@@ -202,7 +200,7 @@ namespace System
         /// <returns>返回一个字符串。</returns>
         public static string Info(this IRedisClient client, string section = null)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Execute(new RedisString("INFO", section == null ? new object[0] : new object[] { section }));
         }
@@ -214,7 +212,7 @@ namespace System
         /// <returns>返回一个时间。</returns>
         public static DateTime LastSave(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisDate("LASTSAVE"));
         }
 
@@ -226,7 +224,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result Save(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisStatus("SAVE"));
         }
     }

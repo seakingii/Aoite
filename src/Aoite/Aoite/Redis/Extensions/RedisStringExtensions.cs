@@ -1,9 +1,7 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -22,9 +20,9 @@ namespace System
         /// <returns>返回追加 <paramref name="value"/> 之后，<paramref name="key"/> 中的总字节长度。</returns>
         public static long Append(this IRedisClient client, string key, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(value == null) throw new ArgumentNullException("value");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(value == null) throw new ArgumentNullException(nameof(value));
 
             return client.Execute(new RedisInteger("APPEND", key, value));
         }
@@ -38,8 +36,8 @@ namespace System
         /// <returns>返回递减 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
         public static long DecrBy(this IRedisClient client, string key, long decrement = 1)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             if(decrement != 1)
             {
                 return client.Execute(new RedisInteger("DECRBY", key, decrement));
@@ -59,8 +57,8 @@ namespace System
         /// <returns>返回递减浮点数 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
         public static double DecrByFloat(this IRedisClient client, string key, double decrement = 1.0)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("INCRBYFLOAT", key, -decrement));
         }
 
@@ -72,8 +70,8 @@ namespace System
         /// <returns>当 <paramref name="key"/> 不存在时，返回 null ，否则返回 <paramref name="key"/> 的值。</returns>
         public static BinaryValue Get(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisValue("GET", key));
         }
 
@@ -87,8 +85,8 @@ namespace System
         /// <returns>当 <paramref name="key"/> 不存在时，返回 null ，否则返回 <paramref name="key"/> 的值。</returns>
         public static BinaryValue GetRange(this IRedisClient client, string key, long start, long end)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             return client.Execute(new RedisValue("GETRANGE", key, start, end));
         }
@@ -102,8 +100,8 @@ namespace System
         /// <returns>当 <paramref name="key"/> 不存在时，返回 null ，否则返回 <paramref name="key"/> 的旧值。</returns>
         public static BinaryValue GetSet(this IRedisClient client, string key, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisValue("GETSET", key, value));
         }
 
@@ -116,8 +114,8 @@ namespace System
         /// <returns>返回递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
         public static long IncrBy(this IRedisClient client, string key, long increment = 1)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             if(increment != 1)
             {
                 return client.Execute(new RedisInteger("INCRBY", key, increment));
@@ -137,8 +135,8 @@ namespace System
         /// <returns>返回递增浮点数 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
         public static double IncrByFloat(this IRedisClient client, string key, double increment = 1.0)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisFloat("INCRBYFLOAT", key, increment));
         }
 
@@ -150,8 +148,8 @@ namespace System
         /// <returns>返回值的数组。如果给定的键里面，有某个键不存在，那么这个键对应的值为 null 值 。</returns>
         public static BinaryValue[] MGet(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return new BinaryValue[0];
             return client.Execute(RedisArray.Create(new RedisValue("MGET", keys)));
         }
@@ -164,8 +162,8 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result MSet(this IRedisClient client, RedisDictionary keyValues)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keyValues == null) throw new ArgumentNullException("keyValues");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keyValues == null) throw new ArgumentNullException(nameof(keyValues));
             if(keyValues.Count == 0) return Result.Successfully;
 
             var args = RedisArgs.Parse(keyValues).ToArray();
@@ -180,8 +178,8 @@ namespace System
         /// <returns>当所有键都成功设置返回 true，否则返回 false。</returns>
         public static bool MSetNx(this IRedisClient client, RedisDictionary keyValues)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keyValues == null) throw new ArgumentNullException("keyValues");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keyValues == null) throw new ArgumentNullException(nameof(keyValues));
             if(keyValues.Count == 0) return false;
 
             var args = RedisArgs.Parse(keyValues).ToArray();
@@ -235,8 +233,8 @@ namespace System
             , RedisExpireTimeUnit timeUnit = RedisExpireTimeUnit.EX
             , RedisKeyBehavior behavior = RedisKeyBehavior.None)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
 
             List<object> args = new List<object>(5);
             args.Add(key);
@@ -263,9 +261,9 @@ namespace System
         /// <returns>返回修改之后的字节总长度。</returns>
         public static long SetRange(this IRedisClient client, string key, long offset, BinaryValue value)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(offset < 0) throw new ArgumentOutOfRangeException("offset");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
             return client.Execute(new RedisInteger("SETRANGE", key, offset, value));
         }
 
@@ -277,8 +275,8 @@ namespace System
         /// <returns>返回值的字节总长度。</returns>
         public static long StrLen(this IRedisClient client, string key)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             return client.Execute(new RedisInteger("STRLEN", key));
         }
 

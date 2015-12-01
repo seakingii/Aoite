@@ -1,10 +1,6 @@
 ﻿using Aoite.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace System
 {
@@ -40,7 +36,7 @@ namespace System
         /// <returns>返回一个新的 <see cref="System.Net.IPEndPoint"/> 实例。</returns>
         public static IPEndPoint ToIPEndPoint(this IHostPort hp)
         {
-            if(hp == null) throw new ArgumentNullException("hp");
+            if(hp == null) throw new ArgumentNullException(nameof(hp));
             return GA.Net.CreateEndPoint(hp.Host, hp.Port);
         }
 
@@ -51,7 +47,7 @@ namespace System
         /// <returns>返回当前实例。</returns>
         public static IPEndPoint ToLoopback(this IPEndPoint endPoint)
         {
-            if(endPoint == null) throw new ArgumentNullException("endPoint");
+            if(endPoint == null) throw new ArgumentNullException(nameof(endPoint));
             if(endPoint.Address == IPAddress.Any) endPoint.Address = IPAddress.Loopback;
             return endPoint;
         }

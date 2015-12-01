@@ -1,9 +1,6 @@
 ﻿using Aoite.CommandModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
 
 namespace System.Web
 {
@@ -44,7 +41,7 @@ namespace System.Web
         /// <returns>如果存在返回值，否则执行回调方法并返回默认值。</returns>
         public static T GetTemp<T>(string name, Func<T> defaultValueCallback)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             var items = HttpContext.Current.Items;
             var value = items[name];
@@ -67,7 +64,7 @@ namespace System.Web
         /// <returns>返回设置的值。</returns>
         public static T SetTemp<T>(string name, T value)
         {
-            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if(string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
             var items = HttpContext.Current.Items;
             if(value == null) items.Remove(name);
@@ -86,7 +83,7 @@ namespace System.Web
         /// <returns>一个包含内容 URL 的字符串。</returns>
         public static string MapUrl(string contentPath)
         {
-            if(string.IsNullOrEmpty(contentPath)) throw new ArgumentNullException("contentPath");
+            if(string.IsNullOrEmpty(contentPath)) throw new ArgumentNullException(nameof(contentPath));
             var path = HttpRuntime.AppDomainAppVirtualPath ?? "/";
             return VirtualPathUtility.Combine(path, VirtualPathUtility.ToAbsolute(contentPath, path));
         }
@@ -215,7 +212,10 @@ namespace System.Web
             var content = scriptBuilder.ToString();
             return new HtmlString(
 @"    <script type=""text/javascript"">
-        $(function () {" + content + @"        });    </script>");
+        $(function () {
+" + content + @"
+        });
+    </script>");
         }
 
         #endregion
@@ -293,7 +293,7 @@ namespace System.Web
             }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 SetContainer(value);
             }
         }

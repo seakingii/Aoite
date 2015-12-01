@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -47,7 +44,7 @@ namespace Aoite.Data
             }
             set
             {
-                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+                if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
                 if(this._SourceParameter.ParameterName.iEquals(value)) return;
                 if(this.Owner != null) this.Owner.ChangedName(this._SourceParameter.ParameterName, value);
                 this._SourceParameter.ParameterName = value;
@@ -67,7 +64,7 @@ namespace Aoite.Data
         /// <param name="sourceParameter">原 <see cref="System.Data.Common.DbParameter"/> 实例。</param>
         public ExecuteDbParameter(DbParameter sourceParameter)
         {
-            if(sourceParameter == null) throw new ArgumentNullException("sourceParameter");
+            if(sourceParameter == null) throw new ArgumentNullException(nameof(sourceParameter));
             this._SourceParameter = sourceParameter;
         }
 

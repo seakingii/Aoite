@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -17,8 +15,8 @@ namespace Aoite.CommandModel
         /// </summary>
         public event CommandExecutingHandler<TCommand> Executing
         {
-            add { lock(_ExecutingEvents) _ExecutingEvents.Add(value); }
-            remove { lock(_ExecutingEvents)_ExecutingEvents.Remove(value); }
+            add { lock (_ExecutingEvents) _ExecutingEvents.Add(value); }
+            remove { lock (_ExecutingEvents) _ExecutingEvents.Remove(value); }
         }
 
         /// <summary>
@@ -27,7 +25,7 @@ namespace Aoite.CommandModel
         public event CommandExecutedHandler<TCommand> Executed;
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.Event&lt;TCommand&gt;"/> 类的新实例。
+        /// 初始化 <see cref="Event&lt;TCommand&gt;"/> 类的新实例。
         /// </summary>
         public Event() { }
 
@@ -38,7 +36,7 @@ namespace Aoite.CommandModel
         /// <param name="command">执行的命令模型。</param>
         public virtual bool RaiseExecuting(IContext context, TCommand command)
         {
-            lock(_ExecutingEvents)
+            lock (_ExecutingEvents)
             {
                 foreach(var item in this._ExecutingEvents)
                 {
@@ -55,9 +53,6 @@ namespace Aoite.CommandModel
         /// <param name="command">执行的命令模型。</param>
         /// <param name="exception">抛出的异常。</param>
         public virtual void RaiseExecuted(IContext context, TCommand command, Exception exception)
-        {
-            var ev = this.Executed;
-            if(ev != null) ev(context, command, exception);
-        }
+            => this.Executed?.Invoke(context, command, exception);
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -13,7 +10,7 @@ namespace Aoite.Data
 
         public void To(TTo to)
         {
-            if(to == null) throw new ArgumentNullException("to");
+            if(to == null) throw new ArgumentNullException(nameof(to));
             this.ToValue = to;
             this.Fill();
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {/*
     /// <summary>
     /// 基于 ORACLE 的分页。

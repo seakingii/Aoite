@@ -1,8 +1,5 @@
 ﻿using Aoite.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -13,7 +10,7 @@ namespace Aoite.CommandModel
     public class RedisProvider : CommandModelContainerProviderBase, IRedisProvider
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.RedisProvider"/> 类的新实例
+        /// 初始化一个 <see cref="RedisProvider"/> 类的新实例
         /// </summary>
         /// <param name="container">服务容器。</param>
         public RedisProvider(IIocContainer container) : base(container) { }

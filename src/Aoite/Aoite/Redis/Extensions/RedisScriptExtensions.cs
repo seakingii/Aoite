@@ -1,9 +1,6 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -21,9 +18,9 @@ namespace System
         /// <returns>返回执行脚本后的值。</returns>
         public static object Eval(this IRedisClient client, string script, RedisDictionary keyArgs)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException("script");
-            if(keyArgs == null) throw new ArgumentNullException("keyArgs");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException(nameof(script));
+            if(keyArgs == null) throw new ArgumentNullException(nameof(keyArgs));
 
             var args = RedisArgs.ConcatAll(new object[] { script, keyArgs.Keys.Count }, keyArgs.Keys, keyArgs.Values);
             return client.Execute(new RedisObject("EVAL", args.ToArray()));
@@ -38,9 +35,9 @@ namespace System
         /// <returns>返回执行脚本后的值。</returns>
         public static object EvalSHA(this IRedisClient client, string sha1, RedisDictionary keyArgs)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(sha1)) throw new ArgumentNullException("sha1");
-            if(keyArgs == null) throw new ArgumentNullException("keyArgs");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(sha1)) throw new ArgumentNullException(nameof(sha1));
+            if(keyArgs == null) throw new ArgumentNullException(nameof(keyArgs));
 
             var args = RedisArgs.ConcatAll(new object[] { sha1, keyArgs.Keys.Count }, keyArgs.Keys, keyArgs.Values);
             return client.Execute(new RedisObject("EVALSHA", args.ToArray()));
@@ -54,8 +51,8 @@ namespace System
         /// <returns>返回一个数组。脚本已经被保存在缓存当中为 true，否则为 false。</returns>
         public static bool[] ScriptExists(this IRedisClient client, params string[] scripts)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(scripts == null) throw new ArgumentNullException("scripts");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(scripts == null) throw new ArgumentNullException(nameof(scripts));
             if(scripts.Length == 0) return new bool[0];
             return client.Execute(RedisArray.Create(new RedisBoolean("SCRIPT EXISTS", scripts)));
         }
@@ -67,7 +64,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ScriptFlush(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisStatus("SCRIPT FLUSH"));
         }
 
@@ -81,7 +78,7 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result ScriptKill(this IRedisClient client)
         {
-            if(client == null) throw new ArgumentNullException("client");
+            if(client == null) throw new ArgumentNullException(nameof(client));
             return client.Execute(new RedisStatus("SCRIPT KILL"));
         }
 
@@ -93,8 +90,8 @@ namespace System
         /// <returns>返回给定 <paramref name="script"/> 的 SHA1 校验和。</returns>
         public static string ScriptLoad(this IRedisClient client, string script)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException("script");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(script)) throw new ArgumentNullException(nameof(script));
 
             return client.Execute(new RedisString("SCRIPT LOAD", script));
         }

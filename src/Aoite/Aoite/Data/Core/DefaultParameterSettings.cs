@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aoite.Data
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 默认的参数配置信息。

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace System
 {
@@ -28,8 +24,8 @@ namespace System
         /// <param name="typeFullName">类型的完全限定名称，包含命名空间而不是程序集。</param>
         public Isolated(string assemblyFullName, string typeFullName)
         {
-            if(string.IsNullOrEmpty(assemblyFullName)) throw new ArgumentNullException("assemblyFullName");
-            if(string.IsNullOrEmpty(typeFullName)) throw new ArgumentNullException("typeFullName");
+            if(string.IsNullOrEmpty(assemblyFullName)) throw new ArgumentNullException(nameof(assemblyFullName));
+            if(string.IsNullOrEmpty(typeFullName)) throw new ArgumentNullException(nameof(typeFullName));
             this._domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(), null, AppDomain.CurrentDomain.SetupInformation);
             this._Instance = new Lazy<T>(() => (T)this._domain.CreateInstanceAndUnwrap(assemblyFullName, typeFullName));
             //this._domain.ReflectionOnlyAssemblyResolve += _domain_ReflectionOnlyAssemblyResolve;

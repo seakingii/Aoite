@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -38,7 +35,7 @@ namespace Aoite.Data
 
         internal DbContext(DbEngine engine)
         {
-            if(engine == null) throw new ArgumentNullException("engine");
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
             this._Engine = engine;
             //if(!(this.IsUnitTestTime = (engine == DbUnitTest.Instance)))
             this._Connection = engine.CreateConnection();

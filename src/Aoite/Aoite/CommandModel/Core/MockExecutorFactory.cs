@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -13,7 +11,7 @@ namespace Aoite.CommandModel
         private Dictionary<Type, IExecutorMetadata> Executors = new Dictionary<Type, IExecutorMetadata>();
 
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.CommandModel.MockExecutorFactory"/> 类的新实例。
+        /// 初始化一个 <see cref="MockExecutorFactory"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public MockExecutorFactory(IIocContainer container) : base(container) { }
@@ -33,7 +31,7 @@ namespace Aoite.CommandModel
         IExecutorMetadata<TCommand> IExecutorFactory.Create<TCommand>(TCommand command)
         {
             var executor = Executors.TryGetValue(typeof(TCommand)) as IExecutorMetadata<TCommand>;
-            if(executor == null) throw new NotImplementedException("没有模拟实现命令 {0} 的执行器。".Fmt(typeof(TCommand).FullName));
+            if(executor == null) throw new NotImplementedException($"没有模拟实现命令 { typeof(TCommand).FullName } 的执行器。");
             return executor;
         }
     }

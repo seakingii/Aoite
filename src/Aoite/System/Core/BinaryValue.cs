@@ -1,8 +1,4 @@
 ﻿using Aoite.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -115,7 +111,7 @@ namespace System
         /// <returns>返回一个二进制值解析后的值。</returns>
         public object Parse(Type type)
         {
-            if(type == null) throw new ArgumentNullException("type");
+            if(type == null) throw new ArgumentNullException(nameof(type));
             type = type.GetNullableType();
             if(type == Types.BinaryValue) return this;
             if(type == Types.ByteArray) return this._ByteArray;

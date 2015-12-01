@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 /// <summary>
 /// 表示 <see cref="System.IIocContainer"/> 的扩展方法。
@@ -20,7 +17,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, bool singletonMode = false, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddService(typeof(TService), singletonMode, promote);
         return container;
@@ -38,7 +35,7 @@ public static class IocExtensions
     public static IIocContainer AddService<TService, TActual>(this IIocContainer container, bool singletonMode = false, bool promote = false)
         where TActual : TService
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddService(typeof(TService), typeof(TActual), singletonMode, promote);
         return container;
@@ -54,7 +51,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, TService serviceInstance, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddService(typeof(TService), serviceInstance, promote);
         return container;
@@ -71,7 +68,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddService(typeof(TService), callback, singletonMode, promote);
         return container;
@@ -86,7 +83,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer RemoveService<TService>(this IIocContainer container, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.RemoveService(typeof(TService), promote);
         return container;
@@ -101,7 +98,7 @@ public static class IocExtensions
     /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
     public static TService GetService<TService>(this IIocContainer container, params object[] lastMappingValues)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         var service = container.GetService(typeof(TService), lastMappingValues);
         if(service == null) return default(TService);
@@ -117,7 +114,7 @@ public static class IocExtensions
     /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
     public static TService GetFixedService<TService>(this IIocContainer container, params object[] lastMappingValues)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         var service = container.GetFixedService(typeof(TService), lastMappingValues);
         if(service == null) return default(TService);
@@ -164,7 +161,7 @@ public static class IocExtensions
     /// <returns>如果存在返回 true，否则返回 false。</returns>
     public static bool ContainsService<TService>(this IIocContainer container, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         return container.ContainsService(typeof(TService), promote);
     }
@@ -184,7 +181,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AddValue<TService>(this IIocContainer container, string name, object value, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddValue(typeof(TService), name, value, promote);
         return container;
@@ -201,7 +198,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AddValue<TService>(this IIocContainer container, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.AddValue(typeof(TService), name, callback, singletonMode, promote);
         return container;
@@ -216,7 +213,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer RemoveValue<TService>(this IIocContainer container, string name, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         container.RemoveValue(typeof(TService), name, promote);
         return container;
@@ -231,7 +228,7 @@ public static class IocExtensions
     /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
     public static object GetValue<TService>(this IIocContainer container, string name, params object[] lastMappingValues)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         return container.GetValue(typeof(TService), name, lastMappingValues);
     }
@@ -245,7 +242,7 @@ public static class IocExtensions
     /// <returns>如果存在返回 true，否则返回 false。</returns>
     public static bool ContainsValue<TService>(this IIocContainer container, string name, bool promote = false)
     {
-        if(container == null) throw new ArgumentNullException("container");
+        if(container == null) throw new ArgumentNullException(nameof(container));
 
         return container.ContainsValue(typeof(TService), name, promote);
     }
@@ -263,8 +260,8 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AutoMap(this IIocContainer container, IMapFilter mapFilter, Action<Type> expectTypeHandler = null)
     {
-        if(container == null) throw new ArgumentNullException("container");
-        if(mapFilter == null) throw new ArgumentNullException("mapFilter");
+        if(container == null) throw new ArgumentNullException(nameof(container));
+        if(mapFilter == null) throw new ArgumentNullException(nameof(mapFilter));
 
         var allTypes = ObjectFactory.AllTypes;
         var hasHandler = expectTypeHandler != null;
@@ -310,7 +307,7 @@ public static class IocExtensions
     /// <returns>返回服务容器。</returns>
     public static IIocContainer AutoMap(this IIocContainer container, string namespaceExpression, string actualTypeFullNameFormat = null)
     {
-        if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException("namespaceExpression");
+        if(string.IsNullOrEmpty(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));
         return AutoMap(container, new MapFilter(namespaceExpression) { ActualTypeFullNameFormat = actualTypeFullNameFormat });
     }
     /*

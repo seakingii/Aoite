@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.CommandModel
+﻿namespace Aoite.CommandModel
 {
     /// <summary>
     /// 表示一个包含返回值的命令模型。

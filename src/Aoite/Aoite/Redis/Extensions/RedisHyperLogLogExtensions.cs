@@ -1,9 +1,6 @@
 ﻿using Aoite.Redis;
 using Aoite.Redis.Commands;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace System
 {
@@ -21,9 +18,9 @@ namespace System
         /// <returns>返回一个值，如果 HyperLogLog 的内部储存被修改了，那么返回 true， 否则返回 false。</returns>
         public static bool PFAdd(this IRedisClient client, string key, params BinaryValue[] elements)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
-            if(elements == null) throw new ArgumentNullException("elements");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if(elements == null) throw new ArgumentNullException(nameof(elements));
             if(elements.Length == 0) return false;
 
             var args = RedisArgs.ConcatFirst(key, elements).ToArray();
@@ -37,8 +34,8 @@ namespace System
         /// <returns>给定单个键时，返回储存在给定键的 HyperLogLog 的近似基数。给定多个键时，返回所有给定 HyperLogLog 的并集的近似基数，这个近似基数是通过将所有给定 HyperLogLog 合并至一个临时 HyperLogLog 来计算得出的。</returns>
         public static long PFCount(this IRedisClient client, params string[] keys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(keys == null) throw new ArgumentNullException("keys");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(keys == null) throw new ArgumentNullException(nameof(keys));
             if(keys.Length == 0) return 0;
 
             return client.Execute(new RedisInteger("PFCOUNT", keys));
@@ -52,9 +49,9 @@ namespace System
         /// <returns>返回一个结果。</returns>
         public static Result PFMerge(this IRedisClient client, string destKey, params string[] sourceKeys)
         {
-            if(client == null) throw new ArgumentNullException("client");
-            if(string.IsNullOrEmpty(destKey)) throw new ArgumentNullException("destKey");
-            if(sourceKeys == null) throw new ArgumentNullException("elements");
+            if(client == null) throw new ArgumentNullException(nameof(client));
+            if(string.IsNullOrEmpty(destKey)) throw new ArgumentNullException(nameof(destKey));
+            if(sourceKeys == null) throw new ArgumentNullException(nameof(sourceKeys));
             if(sourceKeys.Length == 0) return Result.SuccessedString;
 
             var args = RedisArgs.ConcatFirst(destKey, sourceKeys).ToArray();

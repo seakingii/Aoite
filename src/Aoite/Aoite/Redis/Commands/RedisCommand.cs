@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.Redis.Commands
 {
@@ -23,8 +20,8 @@ namespace Aoite.Redis.Commands
 
         internal RedisCommand(string command, params object[] args)
         {
-            if(string.IsNullOrEmpty(command)) throw new ArgumentNullException("command");
-            if(args == null) throw new ArgumentNullException("args");
+            if(string.IsNullOrEmpty(command)) throw new ArgumentNullException(nameof(command));
+            if(args == null) throw new ArgumentNullException(nameof(args));
             _command = command;
             _args = args;
         }
@@ -53,44 +50,44 @@ namespace Aoite.Redis.Commands
 
             public static RedisCommand<bool> Boolean(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisBoolean(command, args);
             }
             public static RedisCommand<DateTime> Date(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisDate(command, args);
             }
             public static RedisCommand<double> Float(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisFloat(command, args);
             }
             public static RedisCommand<long> Integer(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisInteger(command, args);
             }
             public static RedisCommand<T> Item<T>(bool checkType, string command, params object[] args)
                 where T : IRedisItem
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisItem<T>(checkType, command, args);
             }
 
             public static RedisCommand<RedisType> KeyType(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisKeyType(command, args);
             }
             public static RedisCommand<object> Object(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisObject(command, args);
             }
             public static RedisCommand<object> Object(string command, params object args)
             {
-                if(command == null) throw new ArgumentNullException("command");
+                if(command == null) throw new ArgumentNullException(nameof(command));
                 return new RedisObject(command, args);
             }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.CommandModel
+﻿namespace Aoite.CommandModel
 {
     /// <summary>
     /// 定义一个支持缓存的命令模型。

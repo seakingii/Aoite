@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -19,18 +16,18 @@ namespace Aoite.CommandModel
             get { return _Container; }
             set
             {
-                if(value == null) throw new ArgumentNullException("value");
+                if(value == null) throw new ArgumentNullException(nameof(value));
                 this._Container = value;
             }
         }
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.CommandModelContainerProviderBase"/> 类的新实例。
+        /// 初始化 <see cref="CommandModelContainerProviderBase"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public CommandModelContainerProviderBase(IIocContainer container)
         {
-            if(container == null) throw new ArgumentNullException("container");
+            if(container == null) throw new ArgumentNullException(nameof(container));
             this._Container = container;
         }
     }

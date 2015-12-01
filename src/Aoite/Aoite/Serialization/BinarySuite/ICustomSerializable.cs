@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Aoite.Serialization
+﻿namespace Aoite.Serialization
 {
     /// <summary>
     /// 定义一个可自定义序列化的功能。

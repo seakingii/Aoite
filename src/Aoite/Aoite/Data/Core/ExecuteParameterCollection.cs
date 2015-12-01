@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 
 namespace Aoite.Data
 {
@@ -150,7 +149,7 @@ namespace Aoite.Data
         /// <param name="parameter">要添加的 <see cref="Aoite.Data.ExecuteParameter"/> 实例。</param>
         public ExecuteParameterCollection Add(ExecuteParameter parameter)
         {
-            if(parameter == null) throw new ArgumentNullException("parameter");
+            if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             var name = parameter.Name;
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("parameter.Name");
             if(this._innerDict.ContainsKey(name)) throw new ArgumentException("已存在此名称 " + name + " 的参数！", "parameter.Name");
@@ -308,7 +307,7 @@ namespace Aoite.Data
         /// <returns>如果已从集合中成功移除项，则为 true；否则为 false。如果在集合中没有找到项，该方法也会返回 false。</returns>
         public bool Remove(ExecuteParameter parameter)
         {
-            if(parameter == null) throw new ArgumentNullException("parameter");
+            if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             var name = parameter.Name;
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("parameter.Name");
 
@@ -334,7 +333,7 @@ namespace Aoite.Data
         /// <returns>如果在集合中找到项，则为 true；否则为 false。</returns>
         public bool Contains(string name)
         {
-            if(name == null) throw new ArgumentNullException("name");
+            if(name == null) throw new ArgumentNullException(nameof(name));
             return this._innerDict.ContainsKey(name);
         }
 
@@ -345,7 +344,7 @@ namespace Aoite.Data
         /// <returns>如果在集合中找到项，则为 true；否则为 false。</returns>
         public bool Contains(ExecuteParameter parameter)
         {
-            if(parameter == null) throw new ArgumentNullException("parameter");
+            if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             return this.Contains(parameter.Name);
         }
 

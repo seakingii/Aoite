@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 
 namespace Aoite.CommandModel
 {
@@ -16,7 +14,7 @@ namespace Aoite.CommandModel
             Executors = new System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>();
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.ExecutorFactory"/> 类的新实例。
+        /// 初始化 <see cref="ExecutorFactory"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public ExecutorFactory(IIocContainer container) : base(container) { }
@@ -29,8 +27,16 @@ namespace Aoite.CommandModel
         /// <returns>返回命令模型的执行器元数据。</returns>
         public virtual IExecutorMetadata<TCommand> Create<TCommand>(TCommand command) where TCommand : ICommand
         {
-            if(command == null) throw new ArgumentNullException("command");
-            return Singleton<TCommand>.Instance;
+            if(command == null) throw new ArgumentNullException(nameof(command));
+            try
+            {
+                return Singleton<TCommand>.Instance;
+            }
+            catch(TypeInitializationException ex)
+            {
+                if(ex.InnerException != null) throw ex.InnerException;
+                throw;
+            }
         }
 
         static class Singleton<TCommand> where TCommand : ICommand
@@ -41,31 +47,40 @@ namespace Aoite.CommandModel
             static Type CreateCommandExecutorType(Type commandType)
             {
                 var bea = commandType.GetAttribute<BindingExecutorAttribute>();
-                Type type = null;
-                if(bea != null) type = bea.Type;
-                else
-                {
-                    type = commandType.GetNestedType(ExecutorNameSuffix
-                       , System.Reflection.BindingFlags.Public
-                       | System.Reflection.BindingFlags.NonPublic);
-                }
+                var isNestedType = bea == null;
+                var type = isNestedType
+                    ? commandType.GetNestedType(ExecutorNameSuffix, BindingFlags.Public | BindingFlags.NonPublic) //- 从当前命令的内部类中找到 Executor 类型。
+                    : bea.Type; //- 命令通过特性指定了执行器类型
+
                 if(commandType.IsGenericType)
                 {
                     var gs = commandType.GetGenericArguments();
+                    var gsLength = gs.Length;
                     if(type == null)
                     {
+                        isNestedType = false;
+                        //- 没有通过特性指定了执行器类型，并且没有内部类“Executor”，那么通过“同命名空间”去寻找
                         var name = commandType.GetGenericTypeDefinition().FullName;
-                        var gsLength = gs.Length;
                         var gsSuffix = "`" + gsLength;
                         var commandSuffix = CommandNameSuffix + gsSuffix;
                         if(name.EndsWith(commandSuffix)) name = name.RemoveEnds(commandSuffix.Length);
                         else if(name.EndsWith(gsSuffix)) name = name.RemoveEnds(gsSuffix.Length);
 
+                        //-名字为 xxx.xxx.xxx.TestCommand`n 调整为  xxx.xxx.xxx.TestExecutor`n 
                         type = ObjectFactory.GetType(name + ExecutorNameSuffix + gsSuffix);
                         if(type == null) return null;
-                        if(!type.IsGenericType || !type.IsGenericTypeDefinition || type.GetGenericArguments().Length != gsLength)
-                            throw new ArgumentException("泛型命令模型 {0} 的执行器 {1}，匹配条件失败（非泛型或参数数量不匹配）。");
+
                     }
+                    /*
+                        public class CC1234<T1, T2>  //- 泛型，参数2
+                        {
+                            public class C1<T3> { }  //- 泛型，参数3
+                            public class C2 { }      //- 泛型，参数2
+                        }
+                    */
+                    if(!type.IsGenericType || !type.IsGenericTypeDefinition || type.GetGenericArguments().Length != gsLength)
+                        throw new NotSupportedException($"泛型命令模型 { commandType.FullName } 的执行器 { type.FullName }，匹配条件失败（非泛型或参数数量不匹配）。");
+
                     type = type.MakeGenericType(gs);
                 }
                 else if(type == null)

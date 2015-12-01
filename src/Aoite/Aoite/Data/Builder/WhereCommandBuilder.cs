@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Aoite.Data
@@ -62,7 +61,7 @@ namespace Aoite.Data
 
         private void Append<T>(string fieldName, string namePrefix, T[] values)
         {
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             this.BeginGroup();
             int index = 0;
@@ -78,7 +77,7 @@ namespace Aoite.Data
 
         private void Append<T>(bool isNotIn, string fieldName, string namePrefix, T[] values)
         {
-            if(values == null || values.Length == 0) throw new ArgumentNullException("values");
+            if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
             this.Sql(fieldName);
             this.Sql(isNotIn ? " NOT IN " : " IN ");
             this.BeginGroup();

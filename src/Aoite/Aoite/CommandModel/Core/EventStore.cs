@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Aoite.CommandModel
 {
@@ -15,15 +13,13 @@ namespace Aoite.CommandModel
             Events = new System.Collections.Concurrent.ConcurrentDictionary<string, List<IEvent>>();
 
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.EventStore"/> 类的新实例。
+        /// 初始化 <see cref="EventStore"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public EventStore(IIocContainer container) : base(container) { }
 
         private string GetKey(Type commandType)
-        {
-            return commandType.FullName;
-        }
+            => commandType.FullName;
 
         /// <summary>
         /// 注册一个事件到指定的命令模型类型。
@@ -33,7 +29,7 @@ namespace Aoite.CommandModel
         public virtual void Register(Type commandType, IEvent @event)
         {
             var key = this.GetKey(commandType);
-            Events.AddOrUpdate(key, k => new List<IEvent>() { @event }, (k, l) =>
+            Events.AddOrUpdate(key, k => new List<IEvent> { @event }, (k, l) =>
             {
                 l.Add(@event);
                 return l;

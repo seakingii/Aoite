@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Aoite.CommandModel
@@ -13,7 +10,7 @@ namespace Aoite.CommandModel
     public class CommandBus : CommandModelContainerProviderBase, ICommandBus
     {
         /// <summary>
-        /// 初始化 <see cref="Aoite.CommandModel.CommandBus"/> 类的新实例。
+        /// 初始化 <see cref="CommandBus"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public CommandBus(IIocContainer container) : base(container) { }
@@ -30,7 +27,7 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            if(command == null) throw new ArgumentNullException("command");
+            if(command == null) throw new ArgumentNullException(nameof(command));
 
             var contextFactory = this.Container.GetService<IContextFactory>();
             var executorFactory = this.Container.GetService<IExecutorFactory>();
@@ -79,8 +76,8 @@ namespace Aoite.CommandModel
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
             //- https://github.com/StephenCleary/AspNetBackgroundTasks/blob/master/src/AspNetBackgroundTasks/Internal/RegisteredTasks.cs
-            //- 如何解决升级维护时，异步任务丢失？IRegisteredObject？
-            if(command == null) throw new ArgumentNullException("command");
+            //TODO: 如何解决升级维护时，异步任务丢失？IRegisteredObject？
+            if(command == null) throw new ArgumentNullException(nameof(command));
 
             return Task.Factory.StartNew(() =>
             {
@@ -88,7 +85,12 @@ namespace Aoite.CommandModel
                 {
                     return this.Execute(command, executing, executed);
                 }
-                finally { GA.ResetContexts(); }
+                finally
+                {
+                    GA.ResetContexts();//- 这里开了一个线程，线程结束后就会释放所有上下文。
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
             });
 
         }
