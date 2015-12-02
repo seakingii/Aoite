@@ -268,6 +268,10 @@
         /// </summary>
         public static readonly Type Guid = typeof(System.Guid);
         /// <summary>
+        /// 表示 <see cref="System.Data.SqlTypes.SqlGuid"/> 的类型。
+        /// </summary>
+        public static readonly Type SqlGuid = typeof(System.Data.SqlTypes.SqlGuid);
+        /// <summary>
         /// 表示 <see cref="Int16"/> 的类型。
         /// </summary>
         public static readonly Type Int16 = typeof(System.Int16);

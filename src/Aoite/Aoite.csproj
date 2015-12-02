@@ -287,8 +287,10 @@
     <Compile Include="Aoite\Data\Core\TableResult.cs">
       <DependentUpon>IDbResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Aoite\Dbx\ExecuteCommand.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameter.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
+    <Compile Include="Aoite\Dbx\IExecuteParameter.cs" />
     <Compile Include="Aoite\Logger\ILogger.cs" />
     <Compile Include="Aoite\Logger\LoggerBase.cs">
       <DependentUpon>ILogger.cs</DependentUpon>

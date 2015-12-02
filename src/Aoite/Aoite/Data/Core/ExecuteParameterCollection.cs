@@ -13,7 +13,7 @@ namespace Aoite.Data
     public class ExecuteParameterCollection : ICollection<ExecuteParameter>
     {
         private readonly static Type ExecuteParameterType = typeof(ExecuteParameter);
-        private readonly Dictionary<string, ExecuteParameter> _innerDict;
+        private readonly Dictionary<string, ExecuteParameter> _parameters;
 
         /// <summary>
         /// 初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
@@ -26,7 +26,7 @@ namespace Aoite.Data
         /// <param name="capacity">集合可包含的初始元素数。</param>
         public ExecuteParameterCollection(int capacity)
         {
-            this._innerDict = new Dictionary<string, ExecuteParameter>(capacity, StringComparer.CurrentCultureIgnoreCase);
+            this._parameters = new Dictionary<string, ExecuteParameter>(capacity, StringComparer.CurrentCultureIgnoreCase);
         }
 
         /// <summary>
@@ -88,12 +88,12 @@ namespace Aoite.Data
             get
             {
                 ExecuteParameter value;
-                this._innerDict.TryGetValue(name, out value);
+                this._parameters.TryGetValue(name, out value);
                 return value;
             }
             set
             {
-                this._innerDict[name] = value;
+                this._parameters[name] = value;
             }
         }
 
@@ -106,7 +106,7 @@ namespace Aoite.Data
         {
             get
             {
-                return this._innerDict.Values.ElementAtOrDefault(index);
+                return this._parameters.Values.ElementAtOrDefault(index);
             }
         }
 
@@ -148,9 +148,9 @@ namespace Aoite.Data
             if(parameter == null) throw new ArgumentNullException(nameof(parameter));
             var name = parameter.Name;
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("parameter.Name");
-            if(this._innerDict.ContainsKey(name)) throw new ArgumentException("已存在此名称 " + name + " 的参数！", "parameter.Name");
+            if(this._parameters.ContainsKey(name)) throw new ArgumentException("已存在此名称 " + name + " 的参数！", "parameter.Name");
             parameter.Owner = this;
-            this._innerDict.Add(name, parameter);
+            this._parameters.Add(name, parameter);
             return this;
         }
 
@@ -185,11 +185,11 @@ namespace Aoite.Data
         internal void ChangedName(string oldName, string newName)
         {
             ExecuteParameter p;
-            if(!this._innerDict.TryGetValue(oldName, out p)) throw new Exception("没在当前参数集合找到参数 " + oldName);
-            if(this._innerDict.ContainsKey(newName)) throw new Exception("已存在同名参数 " + newName);
+            if(!this._parameters.TryGetValue(oldName, out p)) throw new Exception("没在当前参数集合找到参数 " + oldName);
+            if(this._parameters.ContainsKey(newName)) throw new Exception("已存在同名参数 " + newName);
 
-            this._innerDict.Remove(oldName);
-            this._innerDict.Add(newName, p);
+            this._parameters.Remove(oldName);
+            this._parameters.Add(newName, p);
         }
 
         /// <summary>
@@ -288,10 +288,10 @@ namespace Aoite.Data
         public bool Remove(string name)
         {
             ExecuteParameter p;
-            if(this._innerDict.TryGetValue(name, out p))
+            if(this._parameters.TryGetValue(name, out p))
             {
                 p.Owner = null;
-                return this._innerDict.Remove(name);
+                return this._parameters.Remove(name);
             }
             return false;
         }
@@ -315,11 +315,11 @@ namespace Aoite.Data
         /// </summary>
         public void Clear()
         {
-            foreach(var item in this._innerDict.Values)
+            foreach(var item in this._parameters.Values)
             {
                 item.Owner = null;
             }
-            this._innerDict.Clear();
+            this._parameters.Clear();
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace Aoite.Data
         public bool Contains(string name)
         {
             if(name == null) throw new ArgumentNullException(nameof(name));
-            return this._innerDict.ContainsKey(name);
+            return this._parameters.ContainsKey(name);
         }
 
         /// <summary>
@@ -351,24 +351,24 @@ namespace Aoite.Data
         /// <param name="arrayIndex"><paramref name="parameters"/> 中从零开始的索引，从此处开始复制。</param>
         public void CopyTo(ExecuteParameter[] parameters, int arrayIndex)
         {
-            this._innerDict.Values.CopyTo(parameters, arrayIndex);
+            this._parameters.Values.CopyTo(parameters, arrayIndex);
         }
 
         /// <summary>
         /// 获取集合中包含的元素数。
         /// </summary>
-        public int Count { get { return this._innerDict.Count; } }
+        public int Count { get { return this._parameters.Count; } }
 
         bool ICollection<ExecuteParameter>.IsReadOnly { get { return false; } }
 
         IEnumerator<ExecuteParameter> IEnumerable<ExecuteParameter>.GetEnumerator()
         {
-            return this._innerDict.Values.GetEnumerator();
+            return this._parameters.Values.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this._innerDict.Values.GetEnumerator();
+            return this._parameters.Values.GetEnumerator();
         }
 
     }

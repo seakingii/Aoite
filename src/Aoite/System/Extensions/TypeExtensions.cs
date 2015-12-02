@@ -32,7 +32,7 @@ namespace System
         /// <returns>如果类型为 <see cref="DataTable"/> 或 <see cref="DataSet"/>，则返回 true，否则返回 false。</returns>
         public static bool IsDataType(this Type type)
             => type != null && (Types.DataTable.IsAssignableFrom(type) || Types.DataSet.IsAssignableFrom(type));
-
+        
         /// <summary>
         /// 判断类型是否为匿名类型。
         /// </summary>
@@ -81,7 +81,8 @@ namespace System
                    type.Equals(Types.DateTime) ||
                    type.Equals(Types.Decimal) ||
                    type.Equals(Types.DateTimeOffset) ||
-                   type.Equals(Types.TimeSpan);
+                   type.Equals(Types.TimeSpan) ||
+                   type.Equals(Types.SqlGuid);
 
         /// <summary>
         /// 判断一个类型是否为数字类型。
