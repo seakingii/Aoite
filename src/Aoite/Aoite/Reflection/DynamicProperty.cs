@@ -7,11 +7,10 @@ namespace System
     /// </summary>
     public class DynamicProperty
     {
-        private PropertyInfo _Property;
         /// <summary>
         /// 获取成员的属性元数据。
         /// </summary>
-        public virtual PropertyInfo Property { get { return this._Property; } }
+        public virtual PropertyInfo Property { get; }
 
         private Lazy<DynamicMemberSetter> lazy_setValue;
         /// <summary>
@@ -32,9 +31,9 @@ namespace System
         public DynamicProperty(PropertyInfo propertyInfo)
         {
             if(propertyInfo == null) throw new ArgumentNullException(nameof(propertyInfo));
-            this._Property = propertyInfo;
-            this.lazy_setValue = new Lazy<DynamicMemberSetter>(this._Property.CreatePropertySetter);
-            this.lazy_getValue = new Lazy<DynamicMemberGetter>(this._Property.CreatePropertyGetter);
+            this.Property = propertyInfo;
+            this.lazy_setValue = new Lazy<DynamicMemberSetter>(this.Property.CreatePropertySetter);
+            this.lazy_getValue = new Lazy<DynamicMemberGetter>(this.Property.CreatePropertyGetter);
         }
     }
 }

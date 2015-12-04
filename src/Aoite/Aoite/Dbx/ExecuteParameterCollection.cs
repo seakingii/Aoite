@@ -21,6 +21,7 @@ namespace Aoite.Dbx
 
         bool ICollection<IExecuteParameter>.IsReadOnly { get { return false; } }
 
+        #region Ctors
 
         /// <summary>
         /// 使用默认容量，初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
@@ -73,11 +74,15 @@ namespace Aoite.Dbx
         /// <param name="parameters">参数集合。</param>
         public ExecuteParameterCollection(ICollection<IExecuteParameter> parameters) : this(parameters == null ? 0 : parameters.Count)
         {
+            if(parameters == null) throw new ArgumentNullException(nameof(parameters));
+
             foreach(var item in parameters)
             {
                 this.Add(item);
             }
         }
+
+        #endregion
 
         /// <summary>
         /// 获取指定参数索引的执行参数。
@@ -202,5 +207,24 @@ namespace Aoite.Dbx
         IEnumerator<IExecuteParameter> IEnumerable<IExecuteParameter>.GetEnumerator() => this._innerDict.Values.GetEnumerator();
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._innerDict.Values.GetEnumerator();
+
+        /// <summary> 
+        /// 返回当前查询参数集合的字符串形式。
+        /// </summary>
+        public override string ToString()
+        {
+            if(this.Count == 0) return string.Empty;
+            var builder = new StringBuilder().AppendLine().Append("{");
+            foreach(var p in this)
+            {
+                builder.AppendLine()
+                       .Append(' ', 4)
+                       .Append(p.Name)
+                       .Append(" = ")
+                       .Append(p.Value is string ? string.Concat("'", p.Value, "'") : p.Value);
+            }
+            builder.AppendLine().Append("}");
+            return builder.ToString();
+        }
     }
 }

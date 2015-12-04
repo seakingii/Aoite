@@ -10,21 +10,21 @@ namespace System
         /// <summary>
         /// 获取或设置映射器的名称。
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string Name { get; }
         /// <summary>
         /// 获取一个值，指示是否为唯一标识。
         /// </summary>
-        public virtual bool IsKey { get; private set; }
+        public virtual bool IsKey { get; }
 
         /// <summary>
         /// 获取属性所属的类型映射器。
         /// </summary>
-        public virtual TypeMapper TypeMapper { get; private set; }
+        public virtual TypeMapper TypeMapper { get; }
 
         /// <summary>
         /// 获取或设置一个值，该值指示当前成员是否已标识忽略标识。
         /// </summary>
-        public virtual bool IsIgnore { get; set; } 
+        public virtual bool IsIgnore { get; }
 
         private Lazy<object> _LazyTypeDefaultValue;
         /// <summary>

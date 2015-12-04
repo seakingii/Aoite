@@ -290,7 +290,11 @@
     <Compile Include="Aoite\Dbx\ExecuteCommand.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameter.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
+    <Compile Include="Aoite\Dbx\IEngine.cs" />
+    <Compile Include="Aoite\Dbx\IEngineProvider.cs" />
     <Compile Include="Aoite\Dbx\IExecuteParameter.cs" />
+    <Compile Include="Aoite\Dbx\NamePoint.cs" />
+    <Compile Include="Aoite\Dbx\SqlEngineProvider.cs" />
     <Compile Include="Aoite\Logger\ILogger.cs" />
     <Compile Include="Aoite\Logger\LoggerBase.cs">
       <DependentUpon>ILogger.cs</DependentUpon>

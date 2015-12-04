@@ -8,7 +8,8 @@
     <ProjectGuid>{58B2D2E2-E7FC-4CF4-BA1C-3684F7A63F19}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Aoite.Tests</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>Aoite.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -80,6 +81,7 @@
     <Compile Include="Aoite\Data\Samples\SelectCommandBuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SimpleDataTests.cs" />
     <Compile Include="Aoite\Data\Samples\WhereCommandBuilderTests.cs" />
+    <Compile Include="Aoite\Dbx\ExecuteCommandTests.cs" />
     <Compile Include="Aoite\Logger\Text\DefaultLogDescriptorTests.cs" />
     <Compile Include="Aoite\Logger\Text\LogPathFactoriesTests.cs" />
     <Compile Include="Aoite\Logger\Text\StreamTextWriterFactoryTests.cs" />
