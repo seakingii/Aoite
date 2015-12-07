@@ -95,7 +95,7 @@ namespace System
         /// <summary>
         /// 初始化一个有顺序规则 <see cref="Guid"/> 的新实例。
         /// </summary>
-        /// <returns>返回一个 <see cref="Guid"/> 的新实例。</returns>
+        /// <returns>一个 <see cref="Guid"/> 的新实例。</returns>
         public static Guid NewComb()
         {
             const int RPC_S_OK = 0;
@@ -110,7 +110,7 @@ namespace System
         /// 将指定的命令行进行拆分。
         /// </summary>
         /// <param name="commandLine">命令行。</param>
-        /// <returns>返回命令行。</returns>
+        /// <returns>命令行。</returns>
         public static string[] ToCommandLines(string commandLine)
         {
             int numberOfArgs;
@@ -414,7 +414,7 @@ namespace System
         /// <typeparam name="T">对象的数据类型。</typeparam>
         /// <param name="t1">第一个对象的实例。</param>
         /// <param name="t2">第二个对象的实例。</param>
-        /// <returns>返回两个对象的比较结果。</returns>
+        /// <returns>两个对象的比较结果。</returns>
         public static CompareResult Compare<T>(this T t1, T t2) where T : class
         {
             var type = typeof(T);
@@ -438,7 +438,7 @@ namespace System
         /// 加载指定程序集列表的程序集（避免程序集的延迟加载）。
         /// </summary>
         /// <param name="assemblies">程序集列表。</param>
-        /// <returns>返回已加载的程序集列表。</returns>
+        /// <returns>已加载的程序集列表。</returns>
         public static Assembly[] LoadAssemblies(string assemblies)
         {
             List<Assembly> AssemblyList = new List<Assembly>();
@@ -525,7 +525,7 @@ namespace System
         /// 创建一个模拟对象。
         /// </summary>
         /// <typeparam name="TModel">对象的数据类型。</typeparam>
-        /// <returns>返回要一个模拟的对象。</returns>
+        /// <returns>要一个模拟的对象。</returns>
         public static TModel CreateMockModel<TModel>()
         {
             var mapper = TypeMapper.Instance<TModel>.Mapper;

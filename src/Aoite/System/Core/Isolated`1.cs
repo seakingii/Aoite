@@ -13,12 +13,12 @@ namespace System
         private AppDomain _domain;
 
         /// <summary>
-        /// 初始化一个 <see cref="Isolated&lt;T&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="Isolated{T}"/> 类的新实例。
         /// </summary>
         public Isolated() : this(TType.Assembly.FullName, TType.FullName) { }
 
         /// <summary>
-        /// 提供程序集的显示名称和类型的完全限定名称，初始化一个 <see cref="Isolated&lt;T&gt;"/> 类的新实例。
+        /// 提供程序集的显示名称和类型的完全限定名称，初始化一个 <see cref="Isolated{T}"/> 类的新实例。
         /// </summary>
         /// <param name="assemblyFullName">程序集的显示名称。</param>
         /// <param name="typeFullName">类型的完全限定名称，包含命名空间而不是程序集。</param>

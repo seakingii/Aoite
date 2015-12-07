@@ -3,12 +3,12 @@
     /// <summary>
     /// 表示一个表格数据源。
     /// </summary>
-    public abstract class GridData
+    public abstract class PageData
     {
         /// <summary>
-        /// 初始化一个 <see cref="GridData&lt;TModel&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="PageData{TModel}"/> 类的新实例。
         /// </summary>
-        public GridData() { }
+        public PageData() { }
         /// <summary>
         /// 获取或设置行的总数。
         /// </summary>
@@ -24,18 +24,18 @@
     /// 表示一个表格数据源。
     /// </summary>
     /// <typeparam name="TModel">数据源的行数据类型。</typeparam>
-    public class GridData<TModel> : GridData
+    public class PageData<TModel> : PageData
     {
         /// <summary>
-        /// 初始化一个 <see cref="GridData&lt;TModel&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="PageData{TModel}"/> 类的新实例。
         /// </summary>
-        public GridData() { }
+        public PageData() { }
 
         /// <summary>
         /// 获取指定索引的数据。
         /// </summary>
         /// <param name="index">数据的索引。</param>
-        /// <returns>返回一个数据。</returns>
+        /// <returns>一个数据。</returns>
         public TModel this[int index]
         {
             get

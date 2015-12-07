@@ -5,13 +5,13 @@
     /// </summary>
     /// <param name="instance">调用的实例。使用 null 值表示静态方法。</param>
     /// <param name="parameters">方法的参数列表。</param>
-    /// <returns>返回方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
+    /// <returns>方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
     public delegate object DynamicMethodInvoker(object instance, params object[] parameters);
     /// <summary>
     /// 表示一个动态成员的获取器委托。
     /// </summary>
     /// <param name="instance">调用的实例。使用 null 值表示静态成员。</param>
-    /// <returns>返回成员的值。</returns>
+    /// <returns>成员的值。</returns>
     public delegate object DynamicMemberGetter(object instance);
     /// <summary>
     /// 表示一个动态成员的设置器委托。
@@ -23,6 +23,6 @@
     /// 表示动态创建实例的委托。
     /// </summary>
     /// <param name="parameters">构造函数的参数值集合。</param>
-    /// <returns>返回一个动态创建的实例。</returns>
+    /// <returns>一个动态创建的实例。</returns>
     public delegate object DynamicConstructorHandler(params object[] parameters);
 }

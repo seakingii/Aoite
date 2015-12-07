@@ -109,7 +109,7 @@ namespace System
         /// <param name="index">下标(index)参数 start 和 stop 都以 0 为底，也就是说，以 0 表示列表的第一个元素，以 1 表示列表的第二个元素，以此类推。
         /// <para>也可以使用负数下标，以 -1 表示列表的最后一个元素，-2 表示列表的倒数第二个元素，以此类推。</para>
         /// </param>
-        /// <returns>返回列表中下标为 <paramref name="index"/> 的元素。如果 <paramref name="index"/> 参数的值不在列表的区间范围内(out of range)，返回 null。</returns>
+        /// <returns>列表中下标为 <paramref name="index"/> 的元素。如果 <paramref name="index"/> 参数的值不在列表的区间范围内(out of range)，返回 null。</returns>
         public static BinaryValue LIndex(this IRedisClient client, string key, long index)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -126,7 +126,7 @@ namespace System
         /// <param name="position">插入的位置。</param>
         /// <param name="pivot">定位的支点键名。</param>
         /// <param name="value">插入的值。</param>
-        /// <returns>返回插入的结果。</returns>
+        /// <returns>插入的结果。</returns>
         public static long LInsert(this IRedisClient client, string key, RedisInsertPosition position, string pivot, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -142,7 +142,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
-        /// <returns>返回列表 <paramref name="key"/> 的长度。</returns>
+        /// <returns>列表 <paramref name="key"/> 的长度。</returns>
         public static long LLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -155,7 +155,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
-        /// <returns>返回列表的头元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
+        /// <returns>列表的头元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
         public static BinaryValue LPop(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -171,7 +171,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
         /// <param name="values">值元素的数组。当数组长度为 0 时将会抛出异常。</param>
-        /// <returns>返回执行命令列表的总长度。</returns>
+        /// <returns>执行命令列表的总长度。</returns>
         public static long LPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -189,7 +189,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
         /// <param name="values">值元素的数组。当数组长度为 0 时将会抛出异常。</param>
-        /// <returns>返回执行命令列表的总长度。</returns>
+        /// <returns>执行命令列表的总长度。</returns>
         public static long LPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -207,7 +207,7 @@ namespace System
         /// <param name="key">列表的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回包含指定区间内的元素。</returns>
+        /// <returns>包含指定区间内的元素。</returns>
         public static BinaryValue[] LRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -227,7 +227,7 @@ namespace System
         /// <para>3、<paramref name="count"/> = 0 : 移除表中所有与 <paramref name="value"/> 相等的值。</para>
         /// </param>
         /// <param name="value">匹配的元素值。</param>
-        /// <returns>返回被移除元素的数量。</returns>
+        /// <returns>被移除元素的数量。</returns>
         public static long LRem(this IRedisClient client, string key, long count, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -244,7 +244,7 @@ namespace System
         /// <para>当 <paramref name="index"/> 参数超出范围，或对一个空列表( <paramref name="key"/> 不存在)进行 LSET 时，返回一个错误</para>
         /// </param>
         /// <param name="value">设置的元素值。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result LSet(this IRedisClient client, string key, long index, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -260,7 +260,7 @@ namespace System
         /// <param name="key">列表的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result LTrim(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -274,7 +274,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
-        /// <returns>返回列表的尾元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
+        /// <returns>列表的尾元素。当 <paramref name="key"/> 不存在时，返回 null。</returns>
         public static BinaryValue RPop(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -306,7 +306,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
         /// <param name="values">值元素的数组。当数组长度为 0 时将会抛出异常。</param>
-        /// <returns>返回执行命令列表的总长度。</returns>
+        /// <returns>执行命令列表的总长度。</returns>
         public static long RPush(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -324,7 +324,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">列表的键名。</param>
         /// <param name="values">值元素的数组。当数组长度为 0 时将会抛出异常。</param>
-        /// <returns>返回执行命令列表的总长度。</returns>
+        /// <returns>执行命令列表的总长度。</returns>
         public static long RPushX(this IRedisClient client, string key, params BinaryValue[] values)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

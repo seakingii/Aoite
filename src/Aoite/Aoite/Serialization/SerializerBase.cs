@@ -73,7 +73,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="path">序列化的路径。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<TData> Read<TData>(string path)
         {
             if(string.IsNullOrWhiteSpace(path))
@@ -87,7 +87,7 @@ namespace System
         /// 读取对象。
         /// </summary>
         /// <param name="path">序列化的路径。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<object> Read(string path)
         {
             if(string.IsNullOrWhiteSpace(path))
@@ -103,7 +103,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<TData> Read<TData>(Stream stream)
         {
             Result<TData> result = new Result<TData>();
@@ -125,7 +125,7 @@ namespace System
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<object> Read(Stream stream)
         {
             Result<object> result = new Result<object>();
@@ -150,7 +150,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="content">可序列化为对象的内容文本。</param>
         /// <param name="encoding">自定义字符编码。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<TData> ReadString<TData>(string content, Encoding encoding = null)
         {
             if(string.IsNullOrWhiteSpace(content))
@@ -165,7 +165,7 @@ namespace System
         /// </summary>
         /// <param name="content">可序列化为对象的内容文本。</param>
         /// <param name="encoding">自定义字符编码。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<object> ReadString(string content, Encoding encoding = null)
         {
             if(string.IsNullOrWhiteSpace(content))
@@ -181,7 +181,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="bytes">可序列化为对象的二进制数组。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<TData> ReadBytes<TData>(byte[] bytes)
         {
             using(MemoryStream stream = new MemoryStream(bytes))
@@ -193,7 +193,7 @@ namespace System
         /// 读取对象。
         /// </summary>
         /// <param name="bytes">可序列化为对象的二进制数组。</param>
-        /// <returns>返回序列化对象的结果。</returns>
+        /// <returns>序列化对象的结果。</returns>
         public Result<object> ReadBytes(byte[] bytes)
         {
             using(MemoryStream stream = new MemoryStream(bytes))
@@ -207,7 +207,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="bytes">可序列化为对象的二进制数组。</param>
-        /// <returns>返回序列化对象的对象。</returns>
+        /// <returns>序列化对象的对象。</returns>
         public TData FastReadBytes<TData>(byte[] bytes)
         {
             return this.ReadBytes<TData>(bytes).UnsafeValue;
@@ -217,7 +217,7 @@ namespace System
         /// 快速读取对象。
         /// </summary>
         /// <param name="bytes">可序列化为对象的二进制数组。</param>
-        /// <returns>返回序列化对象的对象。</returns>
+        /// <returns>序列化对象的对象。</returns>
         public object FastReadBytes(byte[] bytes)
         {
             return this.ReadBytes(bytes).UnsafeValue;
@@ -229,7 +229,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="path">序列化的路径。</param>
         /// <param name="data">可序列化的对象。</param>
-        /// <returns>返回一个结果，指示序列化是否成功。</returns>
+        /// <returns>一个结果，指示序列化是否成功。</returns>
         public Result Write<TData>(string path, TData data)
         {
             using(var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -244,7 +244,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">可序列化的流。</param>
         /// <param name="data">可序列化的对象。</param>
-        /// <returns>返回一个结果，指示序列化是否成功。</returns>
+        /// <returns>一个结果，指示序列化是否成功。</returns>
         public Result Write<TData>(Stream stream, TData data)
         {
             Result result = new Result();
@@ -269,7 +269,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
         /// <param name="encoding">自定义字符编码。</param>
-        /// <returns>返回一个结果，指示序列化是否成功。</returns>
+        /// <returns>一个结果，指示序列化是否成功。</returns>
         public Result<string> WriteString<TData>(TData data, Encoding encoding = null)
         {
             Result<string> result = new Result<string>();
@@ -296,7 +296,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
-        /// <returns>返回一个结果，指示序列化是否成功。</returns>
+        /// <returns>一个结果，指示序列化是否成功。</returns>
         public Result<byte[]> WriteBytes<TData>(TData data)
         {
             using(MemoryStream stream = new MemoryStream())
@@ -312,7 +312,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
-        /// <returns>返回一个二进制数组。</returns>
+        /// <returns>一个二进制数组。</returns>
         public byte[] FastWriteBytes<TData>(TData data)
         {
             return this.WriteBytes<TData>(data).UnsafeValue;
@@ -344,7 +344,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected virtual TData Reading<TData>(Stream stream)
         {
             return (TData)Reading(stream);
@@ -354,7 +354,7 @@ namespace System
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected abstract object Reading(Stream stream);
 
         /// <summary>

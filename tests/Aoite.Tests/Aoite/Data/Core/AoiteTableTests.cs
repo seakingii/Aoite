@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Data;
+using Xunit;
 
 namespace Aoite.Data
 {
@@ -7,9 +8,9 @@ namespace Aoite.Data
         [Fact()]
         public void Test()
         {
-            AoiteTable t = new AoiteTable();
-            t.TotalRowCount = 10;
-            Assert.Equal(10, t.TotalRowCount);
+            PageTable t = new PageTable();
+            t.Total = 10;
+            Assert.Equal(10, t.Total);
         }
     }
 }

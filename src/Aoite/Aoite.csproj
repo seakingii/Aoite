@@ -175,7 +175,7 @@
     <Compile Include="Aoite\Data\Builder\WhereCommandBuilder.cs">
       <DependentUpon>IWhere.cs</DependentUpon>
     </Compile>
-    <Compile Include="Aoite\Data\Core\AoiteTable.cs">
+    <Compile Include="Aoite\Data\Core\PageTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Aoite\Data\Core\BulkCopyArguments.cs" />
@@ -287,9 +287,14 @@
     <Compile Include="Aoite\Data\Core\TableResult.cs">
       <DependentUpon>IDbResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Aoite\Dbx\Delegates.cs" />
+    <Compile Include="Aoite\Dbx\DynamicEntityValue.cs" />
+    <Compile Include="Aoite\Dbx\EngineProviderBase.cs" />
     <Compile Include="Aoite\Dbx\ExecuteCommand.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameter.cs" />
     <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
+    <Compile Include="Aoite\Dbx\ExecuteType.cs" />
+    <Compile Include="Aoite\Dbx\Executor.cs" />
     <Compile Include="Aoite\Dbx\IEngine.cs" />
     <Compile Include="Aoite\Dbx\IEngineProvider.cs" />
     <Compile Include="Aoite\Dbx\IExecuteParameter.cs" />
@@ -419,6 +424,7 @@
     <Compile Include="Aoite\Serialization\SerializerBase.cs" />
     <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
     <Compile Include="Aoite\Data\Core\IPaginationProcess.cs" />
+    <Compile Include="Aoite\Dbx\IExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Attributes\AliasAttribute.cs">
       <DependentUpon>IAliasAttribute.cs</DependentUpon>
@@ -439,7 +445,7 @@
     </Compile>
     <Compile Include="System\Core\CodeTimer.cs" />
     <Compile Include="System\Core\DataSecurity.cs" />
-    <Compile Include="System\Core\GridData.cs" />
+    <Compile Include="System\Core\PageData.cs" />
     <Compile Include="System\Core\HeadersBase.cs" />
     <Compile Include="System\Core\IAsyncJob.cs" />
     <Compile Include="System\Core\Isolated`1.cs" />

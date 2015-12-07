@@ -39,7 +39,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="provider">缓存提供程序。</param>
         /// <param name="keys">锁的键名列表。</param>
-        /// <returns>返回一个批量锁。</returns>
+        /// <returns>一个批量锁。</returns>
         public static IDisposable MultipleLock(this ILockProvider provider, params string[] keys)
             => MultipleLock(provider, null, keys);
 
@@ -49,7 +49,7 @@ namespace Aoite.CommandModel
         /// <param name="provider">缓存提供程序。</param>
         /// <param name="timeout">锁的超时设定。</param>
         /// <param name="keys">锁的键名列表。</param>
-        /// <returns>返回一个批量锁。</returns>
+        /// <returns>一个批量锁。</returns>
         public static IDisposable MultipleLock(this ILockProvider provider, TimeSpan timeout, params string[] keys)
             => MultipleLock(provider, timeout, keys);
 

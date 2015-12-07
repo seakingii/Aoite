@@ -83,7 +83,7 @@ namespace Aoite.Redis
         /// <summary>
         /// 获取一个对象池的对象。
         /// </summary>
-        /// <returns>返回一个已释放或新的对象。</returns>
+        /// <returns>一个已释放或新的对象。</returns>
         public override IRedisClient Acquire()
         {
             return new RedisClient(this._Address, this._Password);

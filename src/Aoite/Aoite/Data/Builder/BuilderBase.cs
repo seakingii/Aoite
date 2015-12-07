@@ -53,12 +53,12 @@ namespace Aoite.Data
             return this.Execute().ToEntities<TEntity>();
         }
 
-        DbResult<GridData<TEntity>> IDbExecutor.ToEntities<TEntity>(IPagination page)
+        DbResult<PageData<TEntity>> IDbExecutor.ToEntities<TEntity>(IPagination page)
         {
             return this.Execute().ToEntities<TEntity>(page);
         }
 
-        DbResult<GridData<TEntity>> IDbExecutor.ToEntities<TEntity>(int pageNumber, int pageSize)
+        DbResult<PageData<TEntity>> IDbExecutor.ToEntities<TEntity>(int pageNumber, int pageSize)
         {
             return this.Execute().ToEntities<TEntity>(pageNumber, pageSize);
         }
@@ -73,12 +73,12 @@ namespace Aoite.Data
             return this.Execute().ToEntities();
         }
 
-        DbResult<GridData<dynamic>> IDbExecutor.ToEntities(IPagination page)
+        DbResult<PageData<dynamic>> IDbExecutor.ToEntities(IPagination page)
         {
             return this.Execute().ToEntities(page);
         }
 
-        DbResult<GridData<dynamic>> IDbExecutor.ToEntities(int pageNumber, int pageSize)
+        DbResult<PageData<dynamic>> IDbExecutor.ToEntities(int pageNumber, int pageSize)
         {
             return this.Execute().ToEntities(pageNumber, pageSize);
         }

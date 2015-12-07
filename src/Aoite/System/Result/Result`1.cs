@@ -41,25 +41,25 @@
         }
 
         /// <summary>
-        /// 初始化一个 <see cref="Result&lt;TValue&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="Result{TValue}"/> 类的新实例。
         /// </summary>
         public Result() { }
 
         /// <summary>
-        /// 指定结果的返回值，初始化一个 <see cref="Result&lt;TValue&gt;"/> 类的新实例。
+        /// 指定结果的返回值，初始化一个 <see cref="Result{TValue}"/> 类的新实例。
         /// </summary>
         /// <param name="value">结果的返回值。</param>
         public Result(TValue value) { this._Value = value; }
 
         /// <summary>
-        /// 指定引发的异常和状态码，初始化一个 <see cref="Result&lt;TValue&gt;"/> 类的新实例。
+        /// 指定引发的异常和状态码，初始化一个 <see cref="Result{TValue}"/> 类的新实例。
         /// </summary>
         /// <param name="exception">引发异常的 <see cref="Exception"/>。</param>
         /// <param name="status">结果的状态码。</param>
         public Result(Exception exception, int status = ResultStatus.Failed) : base(exception, status) { }
 
         /// <summary>
-        /// 指定描述错误的信息和状态码，初始化一个 <see cref="Result&lt;TValue&gt;"/> 类的新实例。
+        /// 指定描述错误的信息和状态码，初始化一个 <see cref="Result{TValue}"/> 类的新实例。
         /// </summary>
         /// <param name="message">描述错误的信息。</param>
         /// <param name="status">结果的状态码。</param>
@@ -80,7 +80,7 @@
         }
 
         /// <summary>
-        /// <see cref="Result&lt;TValue&gt;"/> 和 <see cref="Exception"/> 的隐式转换。
+        /// <see cref="Result{TValue}"/> 和 <see cref="Exception"/> 的隐式转换。
         /// </summary>
         /// <param name="exception">引发异常的 <see cref="Exception"/>。</param>
         /// <returns>表示一个异常的结果。</returns>
@@ -90,7 +90,7 @@
         }
 
         /// <summary>
-        /// <see cref="Result&lt;TValue&gt;"/> 和 <see cref="String"/> 的隐式转换。
+        /// <see cref="Result{TValue}"/> 和 <see cref="String"/> 的隐式转换。
         /// </summary>
         /// <param name="message">描述错误的信息。</param>
         /// <returns>表示一个异常的结果。</returns>
@@ -100,7 +100,7 @@
         }
 
         /// <summary>
-        /// <see cref="Result&lt;TValue&gt;"/> 和 <typeparamref name="TValue"/> 的隐式转换。
+        /// <see cref="Result{TValue}"/> 和 <typeparamref name="TValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">结果的返回值。</param>
         /// <returns>表示包含返回值的结果。</returns>

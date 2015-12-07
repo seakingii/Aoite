@@ -34,7 +34,7 @@ namespace System
         /// 将指定主机地址转换为 <see cref="IPAddress"/> 类的新实例，并创建一个 <see cref="IPEndPoint"/> 类的新实例。
         /// </summary>
         /// <param name="hp">一个 <see cref="IHostPort"/> 类的实现。</param>
-        /// <returns>返回一个新的 <see cref="IPEndPoint"/> 实例。</returns>
+        /// <returns>一个新的 <see cref="IPEndPoint"/> 实例。</returns>
         public static IPEndPoint ToIPEndPoint(this IHostPort hp)
         {
             if(hp == null) throw new ArgumentNullException(nameof(hp));
@@ -45,7 +45,7 @@ namespace System
         /// 将当前网络地址转换为环回地址。
         /// </summary>
         /// <param name="endPoint">网络地址。</param>
-        /// <returns>返回当前实例。</returns>
+        /// <returns>当前实例。</returns>
         public static IPEndPoint ToLoopback(this IPEndPoint endPoint)
         {
             if(endPoint == null) throw new ArgumentNullException(nameof(endPoint));

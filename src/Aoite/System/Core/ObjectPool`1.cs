@@ -43,12 +43,12 @@ namespace System
         public int Count { get { return this._Queue.Count; } }
 
         /// <summary>
-        /// 初始化一个 <see cref="ObjectPool&lt;T&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="ObjectPool{T}"/> 类的新实例。
         /// </summary>
         public ObjectPool() : this(null) { }
 
         /// <summary>
-        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="ObjectPool&lt;T&gt;"/> 类的新实例。
+        /// 提供在需要时被调用以产生延迟初始化值的委托，初始化一个 <see cref="ObjectPool{T}"/> 类的新实例。
         /// </summary>
         /// <param name="objectFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         public ObjectPool(Func<T> objectFactory)
@@ -60,7 +60,7 @@ namespace System
         /// <summary>
         /// 创建对象时发生。 
         /// </summary>
-        /// <returns>返回一个新的对象。</returns>
+        /// <returns>一个新的对象。</returns>
         protected virtual T OnCreateObject()
         {
             return this._objectFactory == null ? (T)Activator.CreateInstance(typeof(T), true) : this._objectFactory();
@@ -69,7 +69,7 @@ namespace System
         /// <summary>
         /// 获取一个对象池的对象。
         /// </summary>
-        /// <returns>返回一个已释放或新的对象。</returns>
+        /// <returns>一个已释放或新的对象。</returns>
         public virtual T Acquire()
         {
             this.ThrowWhenDisposed();
@@ -116,7 +116,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TResult">返回的数据类型。</typeparam>
         /// <param name="callback">回调方法。</param>
-        /// <returns>返回回调方法的返回值。</returns>
+        /// <returns>回调方法的返回值。</returns>
         public virtual TResult AcquireRelease<TResult>(Func<T, TResult> callback)
         {
             this.ThrowWhenDisposed();

@@ -18,7 +18,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">缓存键。</param>
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
-        /// <returns>返回缓存值，或一个 null 值。</returns>
+        /// <returns>缓存值，或一个 null 值。</returns>
         object Get(string key, Func<object> valueFactory = null);
         /// <summary>
         /// 检测指定的缓存键是否存在。

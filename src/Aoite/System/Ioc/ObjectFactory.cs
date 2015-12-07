@@ -36,7 +36,7 @@ namespace System
         /// 获取指定 <see cref="Type"/> 的完全限定名，获取匹配的  <see cref="Type"/>。
         /// </summary>
         /// <param name="fullName">完全限定名。</param>
-        /// <returns>返回一个匹配的  <see cref="Type"/>，或一个 null 值。</returns>
+        /// <returns>一个匹配的  <see cref="Type"/>，或一个 null 值。</returns>
         public static Type GetType(string fullName)
         {
             List<Type> types;

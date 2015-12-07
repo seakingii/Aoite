@@ -1,4 +1,5 @@
 ﻿using Aoite.Data;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -15,11 +16,11 @@ namespace System.Collections.Generic
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="collection">集合。</param>
         /// <param name="totalCount">数据的总行数。</param>
-        /// <returns>返回一个实体的数据集合。。</returns>
-        public static GridData<TEntity> ToGrid<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
+        /// <returns>一个实体的数据集合。。</returns>
+        public static PageData<TEntity> ToGrid<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
             if(collection == null) throw new ArgumentNullException(nameof(collection));
-            return new GridData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
+            return new PageData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
 
         /// <summary>
@@ -28,12 +29,12 @@ namespace System.Collections.Generic
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="collection">集合。</param>
         /// <param name="totalCount">数据的总行数。</param>
-        /// <returns>返回一张表。</returns>
-        public static AoiteTable ToTable<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
+        /// <returns>一张表。</returns>
+        public static PageTable ToTable<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
             if(collection == null) throw new ArgumentNullException(nameof(collection));
             var mp = TypeMapper.Instance<TEntity>.Mapper;
-            AoiteTable table = new AoiteTable() { TableName = mp.Name };
+            PageTable table = new PageTable() { TableName = mp.Name };
             foreach(var p in mp.Properties) table.Columns.Add(p.Name, p.Property.PropertyType);
             table.BeginLoadData();
             foreach(var item in collection)
@@ -43,7 +44,7 @@ namespace System.Collections.Generic
                 table.Rows.Add(row);
             }
             table.EndLoadData();
-            table.TotalRowCount = totalCount > 0 ? totalCount : table.Rows.Count;
+            table.Total = totalCount > 0 ? totalCount : table.Rows.Count;
             return table;
         }
 
@@ -166,10 +167,10 @@ namespace System.Collections.Generic
             => Join(items, t => Convert.ToString(t), separator, start, end);
 
         /// <summary>
-        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList{T}"/> 中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList{T}"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
         /// <returns>如果在整个 <paramref name="collection"/> 中找到 <paramref name="value"/> 的匹配项，则为第一个匹配项的从零开始的索引；否则为 -1。</returns>
@@ -179,10 +180,10 @@ namespace System.Collections.Generic
             => IndexOf<T>(collection, value, 0, collection.Count, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="Generic.IList&lt;T&gt;"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Generic.IList{T}"/> 中从指定索引到最后一个元素这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList{T}"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="comparer">一个对值进行比较的相等比较器。</param>
@@ -194,10 +195,10 @@ namespace System.Collections.Generic
             => IndexOf<T>(collection, value, startIndex, collection.Count, comparer);
 
         /// <summary>
-        /// 搜索指定的对象，并返回 <see cref="Generic.IList&lt;T&gt;"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回 <see cref="Generic.IList{T}"/> 中从指定索引开始包含指定个元素的这部分元素中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList{T}"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <param name="startIndex">从零开始的搜索的起始索引。</param>
         /// <param name="count">要搜索的部分中的元素数。</param>
@@ -278,10 +279,10 @@ namespace System.Collections.Generic
         }
 
         /// <summary>
-        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList&lt;T&gt;"/> 中第一个匹配项的索引。
+        /// 搜索指定的对象，并返回整个 <see cref="Generic.IList{T}"/> 中第一个匹配项的索引。
         /// </summary>
         /// <typeparam name="T">列表元素的类型。</typeparam>
-        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList&lt;T&gt;"/>。</param>
+        /// <param name="collection">要搜索的从零开始的 <see cref="Generic.IList{T}"/>。</param>
         /// <param name="value">要在 <paramref name="collection"/> 中查找的对象。</param>
         /// <returns>如果在整个 <paramref name="collection"/> 中找到 <paramref name="value"/> 的匹配项，则为第一个匹配项的从零开始的索引；否则为 -1。</returns>
         public static int IndexOf<T>(this T[] collection, T value)

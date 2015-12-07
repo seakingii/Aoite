@@ -43,7 +43,7 @@ namespace Aoite.Data
         /// 获取最后一个匹配的 Order By 结果。
         /// </summary>
         /// <param name="commandText">原查询字符串。</param>
-        /// <returns>返回 Order By 结果。</returns>
+        /// <returns> Order By 结果。</returns>
         protected static Match GetOrderByMatch(string commandText)
         {
             var match = OrderByRegex.Match(commandText);

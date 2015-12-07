@@ -20,7 +20,7 @@ namespace Aoite.Logger
         /// <param name="now">当前时间。</param>
         /// <param name="logFolder">日志的目录。</param>
         /// <param name="logExtension">日志的后缀名。</param>
-        /// <returns>返回一个日志的路径。</returns>
+        /// <returns>一个日志的路径。</returns>
         string CreatePath(DateTime now, string logFolder, string logExtension);
     }
 }

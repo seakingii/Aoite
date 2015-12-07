@@ -30,7 +30,7 @@ namespace Aoite.Serialization
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override object Reading(Stream stream)
         {
             return new ObjectReader(stream, this.Encoding).Deserialize();

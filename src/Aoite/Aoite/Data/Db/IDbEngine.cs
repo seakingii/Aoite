@@ -15,12 +15,12 @@ namespace System
         /// <summary>
         /// 创建一个到数据源的连接。
         /// </summary>
-        /// <returns>返回一个到数据源的连接。</returns>
+        /// <returns>一个到数据源的连接。</returns>
         DbConnection CreateConnection();
         /// <summary>
         /// 创建一个有关当前上下文的数据源事务。
         /// </summary>
-        /// <returns>返回一个有关当前上下文的数据源事务，可以是一个 null 值。</returns>
+        /// <returns>一个有关当前上下文的数据源事务，可以是一个 null 值。</returns>
         DbTransaction CreateTransaction();
     }
 }

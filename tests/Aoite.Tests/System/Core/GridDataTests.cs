@@ -6,7 +6,7 @@ namespace System
         [Fact()]
         public void Test()
         {
-            GridData<int> grid = new GridData<int>()
+            PageData<int> grid = new PageData<int>()
             {
                 Total = 5,
                 Rows = new int[] { 1, 2, 3, 4, 5 }

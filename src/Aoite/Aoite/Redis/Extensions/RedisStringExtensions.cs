@@ -17,7 +17,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="value">键值。</param>
-        /// <returns>返回追加 <paramref name="value"/> 之后，<paramref name="key"/> 中的总字节长度。</returns>
+        /// <returns>追加 <paramref name="value"/> 之后，<paramref name="key"/> 中的总字节长度。</returns>
         public static long Append(this IRedisClient client, string key, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -33,7 +33,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="decrement">递减量。</param>
-        /// <returns>返回递减 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
+        /// <returns>递减 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
         public static long DecrBy(this IRedisClient client, string key, long decrement = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -54,7 +54,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="decrement">浮点数递减量。</param>
-        /// <returns>返回递减浮点数 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
+        /// <returns>递减浮点数 <paramref name="decrement"/> 之后 <paramref name="key"/> 的值。</returns>
         public static double DecrByFloat(this IRedisClient client, string key, double decrement = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -111,7 +111,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="increment">递增量。</param>
-        /// <returns>返回递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
+        /// <returns>递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
         public static long IncrBy(this IRedisClient client, string key, long increment = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -132,7 +132,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="increment">浮点数递增量。</param>
-        /// <returns>返回递增浮点数 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
+        /// <returns>递增浮点数 <paramref name="increment"/> 之后 <paramref name="key"/> 的值。</returns>
         public static double IncrByFloat(this IRedisClient client, string key, double increment = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -145,7 +145,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">键的数组。</param>
-        /// <returns>返回值的数组。如果给定的键里面，有某个键不存在，那么这个键对应的值为 null 值 。</returns>
+        /// <returns>值的数组。如果给定的键里面，有某个键不存在，那么这个键对应的值为 null 值 。</returns>
         public static BinaryValue[] MGet(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -159,7 +159,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keyValues">键值的字典。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result MSet(this IRedisClient client, RedisDictionary keyValues)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -258,7 +258,7 @@ namespace System
         /// <param name="key">键名。</param>
         /// <param name="offset">偏移量。</param>
         /// <param name="value">覆盖的键值。</param>
-        /// <returns>返回修改之后的字节总长度。</returns>
+        /// <returns>修改之后的字节总长度。</returns>
         public static long SetRange(this IRedisClient client, string key, long offset, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -272,7 +272,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
-        /// <returns>返回值的字节总长度。</returns>
+        /// <returns>值的字节总长度。</returns>
         public static long StrLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

@@ -69,7 +69,7 @@ namespace System
         /// 指定实例的数据类型，创建或从缓存读取一个实体的映射器。
         /// </summary>
         /// <param name="type">实例的数据类型。</param>
-        /// <returns>返回一个实体映射器。</returns>
+        /// <returns>一个实体映射器。</returns>
         public static TypeMapper Create(Type type)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -104,7 +104,7 @@ namespace System
             /// <summary>
             /// 获取类型的映射器。
             /// </summary>
-            public readonly static TypeMapper Mapper = TypeMapper.Create(typeof(TEntity));
+            public readonly static TypeMapper Mapper = Create(typeof(TEntity));
         }
     }
 }

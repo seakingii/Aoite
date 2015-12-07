@@ -14,7 +14,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -31,7 +31,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddService<TService, TActual>(this IIocContainer container, bool singletonMode = false, bool promote = false)
         where TActual : TService
     {
@@ -48,7 +48,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="serviceInstance">要添加的服务的实例。 此对象必须实现 <typeparamref name="TService"/> 参数所指示的类型或从其继承。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, TService serviceInstance, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -65,7 +65,7 @@ public static class IocExtensions
     /// <param name="callback">用于创建服务的回调对象。这允许将服务声明为可用，但将对象的创建延迟到请求该服务之后。</param>
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddService<TService>(this IIocContainer container, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -80,7 +80,7 @@ public static class IocExtensions
     /// <typeparam name="TService">要添加的服务类型。</typeparam>
     /// <param name="container">服务容器。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer RemoveService<TService>(this IIocContainer container, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -129,7 +129,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="callback">当服务存在时发生的回调方法。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
-    /// <returns>返回回调方法的值。</returns>
+    /// <returns>回调方法的值。</returns>
     public static TValue TryGetService<TService, TValue>(this IIocContainer container, Func<TService, TValue> callback, params object[] lastMappingValues)
     {
         var service = GetService<TService>(container, lastMappingValues);
@@ -178,7 +178,7 @@ public static class IocExtensions
     /// <param name="name">参数名称。</param>
     /// <param name="value">参数值。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddValue<TService>(this IIocContainer container, string name, object value, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -195,7 +195,7 @@ public static class IocExtensions
     /// <param name="callback">用于创建参数的回调对象。这允许将参数声明为可用，但将值的创建延迟到请求该参数之后。</param>
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AddValue<TService>(this IIocContainer container, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -210,7 +210,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="name">要移除的参数名称。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer RemoveValue<TService>(this IIocContainer container, string name, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -225,7 +225,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="name">参数名称。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。</param>
-    /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
+    /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
     public static object GetValue<TService>(this IIocContainer container, string name, params object[] lastMappingValues)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -257,7 +257,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="mapFilter">依赖注入与控制反转的映射筛选器。</param>
     /// <param name="expectTypeHandler">找到预期类型时发生。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AutoMap(this IIocContainer container, IMapFilter mapFilter, Action<Type> expectTypeHandler = null)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
@@ -289,7 +289,7 @@ public static class IocExtensions
     /// </summary>
     /// <param name="container">服务容器。</param>
     /// <param name="appSettingKey">配置文件“configuration/appSettings”的键。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AutoMapFromConfig(this IIocContainer container, string appSettingKey)
     {
         var namespaceExpression = System.Configuration.ConfigurationManager.AppSettings[appSettingKey];
@@ -304,7 +304,7 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="namespaceExpression">筛选器的命名空间表达式。可以是一个完整的命名空间，也可以是“*”起始，或者以“*”结尾。符号“*”只能出现一次。通过“|”可以同时包含多个命名空间。</param>
     /// <param name="actualTypeFullNameFormat">获取或设置筛选器的实际类型的完全限定名的格式项，例如“{0}.Default{1}”，索引 0 表示 - 预期定义接口 - 的命名空间，索引 1 表示 - 预期定义接口 - 的名称（已去 I）。</param>
-    /// <returns>返回服务容器。</returns>
+    /// <returns>服务容器。</returns>
     public static IIocContainer AutoMap(this IIocContainer container, string namespaceExpression, string actualTypeFullNameFormat = null)
     {
         if(string.IsNullOrWhiteSpace(namespaceExpression)) throw new ArgumentNullException(nameof(namespaceExpression));

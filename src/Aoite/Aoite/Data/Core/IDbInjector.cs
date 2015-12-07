@@ -25,14 +25,14 @@ namespace Aoite.Data
         /// 创建并返回一个到数据源的连接。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个到数据源的连接。</returns>
+        /// <returns>一个到数据源的连接。</returns>
         DbConnection CreateConnection(IDbEngine engine);
         /// <summary>
         /// 描述指定的 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="parameter">一个 <see cref="DbParameter"/> 的实例。</param>
-        /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
+        /// <returns>参数描述的 <see cref="String"/> 值。</returns>
         string DescribeParameter(IDbEngine engine, DbParameter parameter);
         /// <summary>
         /// 创建并返回一个与给定数据源关联的命令对象。
@@ -40,7 +40,7 @@ namespace Aoite.Data
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">查询命令。</param>
         /// <param name="conn">指定数据源。</param>
-        /// <returns>返回一个命令对象。</returns>
+        /// <returns>一个命令对象。</returns>
         DbCommand CreateDbCommand(IDbEngine engine, ExecuteCommand command, DbConnection conn = null);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="mapper">类型映射器。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateLastIdentityCommand(IDbEngine engine, TypeMapper mapper);
         /// <summary>
         /// 指定实体创建一个插入的命令。
@@ -57,7 +57,7 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateInsertCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null);
         /// <summary>
         /// 指定实体创建一个更新的命令。
@@ -66,7 +66,7 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateUpdateCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null);
         /// <summary>
         /// 指定实体创建一个删除的命令。
@@ -75,21 +75,21 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entityOrPKValue">实体的实例对象（引用类型）或一个主键的值（值类型）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateDeleteCommand(IDbEngine engine, TypeMapper mapper, object entityOrPKValue, string tableName = null);
         /// <summary>
         /// 创建一个数据源查询与交互的执行器。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">执行查询的命令。</param>
-        /// <returns>返回一个执行器。</returns>
+        /// <returns>一个执行器。</returns>
         IDbExecutor CreateExecutor(IDbEngine engine, ExecuteCommand command);
 
         /// <summary>
         /// 创建一个分页组件。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个分页组件。</returns>
+        /// <returns>一个分页组件。</returns>
         IPaginationProcess CreatePaginationProcess(IDbEngine engine);
     }
 }

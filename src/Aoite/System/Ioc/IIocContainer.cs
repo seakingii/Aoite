@@ -93,7 +93,7 @@
         /// </summary>
         /// <param name="name">参数名称。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。</param>
-        /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
+        /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         object GetValue(string name, params object[] lastMappingValues);
         /// <summary>
         /// 查找服务容器是否包含指定的参数。
@@ -133,7 +133,7 @@
         /// <param name="serviceType">关联的服务类型。</param>
         /// <param name="name">参数名称。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。</param>
-        /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
+        /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         object GetValue(Type serviceType, string name, params object[] lastMappingValues);
         /// <summary>
         /// 查找服务容器是否包含指定关联的服务类型指定的参数。

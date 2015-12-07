@@ -18,7 +18,7 @@ namespace System
             /// 尝试创建本地不存在的目录。如果目录已经存在，将被不会做任何事情。
             /// </summary>
             /// <param name="path">目录路径。</param>
-            /// <returns>返回创建后的地址。</returns>
+            /// <returns>创建后的地址。</returns>
             public static DirectoryInfo CreateDirectory(string path)
             {
                 lock (string.Intern(path))
@@ -108,7 +108,7 @@ namespace System
             /// </summary>
             /// <param name="filename">文件的路径。</param>
             /// <param name="encoding">编码格式。</param>
-            /// <returns>返回文件的所有行。</returns>
+            /// <returns>文件的所有行。</returns>
             public static string[] ShareReadAllLines(string filename, Encoding encoding = null)
             {
                 List<string> list = new List<string>();
@@ -130,7 +130,7 @@ namespace System
             /// </summary>
             /// <param name="filename">文件的路径。</param>
             /// <param name="encoding">编码格式。</param>
-            /// <returns>返回文件的所有文本内容。</returns>
+            /// <returns>文件的所有文本内容。</returns>
             public static string ShareReadAllText(string filename, Encoding encoding = null)
             {
                 using(FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))

@@ -8,7 +8,7 @@
         /// <summary>
         /// 获取结果的值。如果当前结果没有值，将返回 null 值。
         /// </summary>
-        /// <returns>返回一个结果的值或 null 值。</returns>
+        /// <returns>一个结果的值或 null 值。</returns>
         object GetValue();
         /// <summary>
         /// 设置结果的值，如果结果没有值，则不执行任何操作。如果值的类型不符合将会抛出异常。
@@ -141,7 +141,7 @@
         /// <see cref="String"/> 和 <see cref="Result"/> 的隐式转换。
         /// </summary>
         /// <param name="result">返回结果。</param>
-        /// <returns>返回字符串形式的结果。如果该结果为 null 值，则返回 null 值。</returns>
+        /// <returns>字符串形式的结果。如果该结果为 null 值，则返回 null 值。</returns>
         public static implicit operator string(Result result)
         {
             if(result == null) return null;

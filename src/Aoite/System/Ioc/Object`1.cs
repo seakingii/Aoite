@@ -54,7 +54,7 @@
         /// <typeparam name="V">值的数据类型</typeparam>
         /// <param name="callback">回调方法。</param>    
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
-        /// <returns>返回指定的值。</returns>
+        /// <returns>指定的值。</returns>
         public static V Once<V>(Func<T, V> callback, params object[] lastMappingValues)
         {
             var instance = Create(lastMappingValues);

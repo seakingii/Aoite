@@ -36,7 +36,7 @@
         /// 转义指定的名称。
         /// </summary>
         /// <param name="name">名称。</param>
-        /// <returns>返回转义后的名称。</returns>
+        /// <returns>转义后的名称。</returns>
         public virtual string EscapeName(string name) { return "[" + name + "]"; }
 
         /// <summary>
@@ -85,7 +85,7 @@
         /// 转义指定的名称。
         /// </summary>
         /// <param name="name">名称。</param>
-        /// <returns>返回转义后的名称。</returns>
+        /// <returns>转义后的名称。</returns>
         public override string EscapeName(string name) { return name.ToUpper(); }
     }
 }

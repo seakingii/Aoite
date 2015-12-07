@@ -14,7 +14,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">键的数组。</param>
-        /// <returns>返回被删除键的数量。</returns>
+        /// <returns>被删除键的数量。</returns>
         public static long Del(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -135,7 +135,7 @@ namespace System
         /// <para>4、KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo 。</para>
         /// <para>5、特殊符号用 \ 隔开。</para>
         /// </param>
-        /// <returns>返回符合给定模式的键列表。</returns>
+        /// <returns>符合给定模式的键列表。</returns>
         public static string[] Keys(this IRedisClient client, string pattern)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -193,7 +193,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="newKey">新的键名。</param>
-        /// <returns>返回一个状态的结果。</returns>
+        /// <returns>一个状态的结果。</returns>
         public static Result Rename(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -209,7 +209,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="newKey">新的键名。</param>
-        /// <returns>返回一个状态的结果。</returns>
+        /// <returns>一个状态的结果。</returns>
         public static bool RenameNx(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -224,7 +224,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
-        /// <returns>返回储存的值的类型。</returns>
+        /// <returns>储存的值的类型。</returns>
         public static RedisType Type(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -239,7 +239,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>返回一个支持迭代的枚举。</returns>
+        /// <returns>一个支持迭代的枚举。</returns>
         public static IEnumerable<string> Scan(this IRedisClient client, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<string>(client, "SCAN", null, cursor, pattern, count
@@ -257,7 +257,7 @@ namespace System
         /// <param name="sort">排序方式。</param>
         /// <param name="alpha">表示对字符串进行排序。</param>
         /// <param name="get">根据排序的结果来取出相应的键值列表。</param>
-        /// <returns>返回列表形式的排序结果。</returns>
+        /// <returns>列表形式的排序结果。</returns>
         public static BinaryValue[] Sort(this IRedisClient client
             , string key, string by = null
             , long? offset = null, long? count = null
@@ -292,7 +292,7 @@ namespace System
         /// <param name="sort">排序方式。</param>
         /// <param name="alpha">表示对字符串进行排序。</param>
         /// <param name="get">根据排序的结果来取出相应的键值列表。</param>
-        /// <returns>返回保存列表形式的排序结果的元素数量。</returns>
+        /// <returns>保存列表形式的排序结果的元素数量。</returns>
         public static long SortStore(this IRedisClient client
             , string key, string destination, string by = null
             , long? offset = null, long? count = null

@@ -12,7 +12,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="command">数据源命令。</param>
         /// <param name="executeParameter">查询参数。</param>
-        /// <returns>返回一个数据源参数。</returns>
+        /// <returns>一个数据源参数。</returns>
         DbParameter Render(DbCommand command, ExecuteParameter executeParameter);
     }
 }

@@ -30,7 +30,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
         /// <param name="context">执行的上下文。</param>
         /// <param name="command">执行的命令模型。</param>
-        /// <returns>返回一个值，指示是否继续执行命令。</returns>
+        /// <returns>一个值，指示是否继续执行命令。</returns>
         bool RaiseExecuting<TCommand>(IContext context, TCommand command) where TCommand : ICommand;
         /// <summary>
         /// 命令模型执行后发生的方法。

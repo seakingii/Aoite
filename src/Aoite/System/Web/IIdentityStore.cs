@@ -14,7 +14,7 @@
         /// <summary>
         /// 获取客户端的唯一标识。
         /// </summary>
-        /// <returns>返回客户端唯一标识，或一个 null 值。</returns>
+        /// <returns>客户端唯一标识，或一个 null 值。</returns>
         object Get();
         /// <summary>
         /// 移除客户端的唯一标识。

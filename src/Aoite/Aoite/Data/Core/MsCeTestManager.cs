@@ -51,7 +51,7 @@ namespace Aoite.Data
         /// 由于 Miscsoft SQL Server Compact 不支持 varchar 数据类型，此方法将所有 varchar 转换为 nvarchar。
         /// </summary>
         /// <param name="sql">SQL 脚本。</param>
-        /// <returns>返回一个新的 SQL 脚本。</returns>
+        /// <returns>一个新的 SQL 脚本。</returns>
         public static string ReplaceVarchar(string sql)
         {
             return RegexReplaceVarchar.Replace(sql, "nvarchar");

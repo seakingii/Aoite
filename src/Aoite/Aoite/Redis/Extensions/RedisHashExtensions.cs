@@ -16,7 +16,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">哈希表的键名。</param>
         /// <param name="fields">哈希表域的数组。</param>
-        /// <returns>返回键成功被删除域的数量。</returns>
+        /// <returns>键成功被删除域的数量。</returns>
         public static long HDel(this IRedisClient client, string key, params string[] fields)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -65,7 +65,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">哈希表的键名。</param>
-        /// <returns>返回 <paramref name="key"/> 所有的域和值。</returns>
+        /// <returns> <paramref name="key"/> 所有的域和值。</returns>
         public static RedisFieldItem[] HGetAll(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -80,7 +80,7 @@ namespace System
         /// <typeparam name="T">实体的数据类型。</typeparam>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">哈希表的键名。</param>
-        /// <returns>返回 <paramref name="key"/> 所有的域和值。</returns>
+        /// <returns> <paramref name="key"/> 所有的域和值。</returns>
         public static T HGetAll<T>(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -105,7 +105,7 @@ namespace System
         /// <param name="key">哈希表的键名。</param>
         /// <param name="field">键的域。</param>
         /// <param name="increment">递增量。</param>
-        /// <returns>返回递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
+        /// <returns>递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
         public static long HIncrBy(this IRedisClient client, string key, string field, long increment = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -122,7 +122,7 @@ namespace System
         /// <param name="key">哈希表的键名。</param>
         /// <param name="field">键的域。</param>
         /// <param name="increment">浮点数递增量。</param>
-        /// <returns>返回递增浮点数 <paramref name="increment"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
+        /// <returns>递增浮点数 <paramref name="increment"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
         public static double HIncrByFloat(this IRedisClient client, string key, string field, double increment = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -137,7 +137,7 @@ namespace System
         /// <param name="key">哈希表的键名。</param>
         /// <param name="field">键的域。</param>
         /// <param name="decrement">递减量。</param>
-        /// <returns>返回递减 <paramref name="decrement"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
+        /// <returns>递减 <paramref name="decrement"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
         public static long HDecrBy(this IRedisClient client, string key, string field, long decrement = 1)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -154,7 +154,7 @@ namespace System
         /// <param name="key">哈希表的键名。</param>
         /// <param name="field">键的域。</param>
         /// <param name="decrement">浮点数递减量。</param>
-        /// <returns>返回递减浮点数 <paramref name="decrement"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
+        /// <returns>递减浮点数 <paramref name="decrement"/> 之后 <paramref name="key"/> 的域 <paramref name="field"/> 的值。</returns>
         public static double HDecrByFloat(this IRedisClient client, string key, string field, double decrement = 1.0)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -167,7 +167,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
-        /// <returns>返回 <paramref name="key"/> 所有的域名。当 <paramref name="key"/> 不存在时，返回一个空数组。</returns>
+        /// <returns> <paramref name="key"/> 所有的域名。当 <paramref name="key"/> 不存在时，返回一个空数组。</returns>
         public static string[] HKeys(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -180,7 +180,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
-        /// <returns>返回哈希表中域的数量。当 <paramref name="key"/> 不存在时返回 0。</returns>
+        /// <returns>哈希表中域的数量。当 <paramref name="key"/> 不存在时返回 0。</returns>
         public static long HLen(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -194,7 +194,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
         /// <param name="fields">哈希表域的数组。</param>
-        /// <returns>返回值的数组。如果给定的域里面，有某个域不存在，那么这个域对应的值为 null 值。</returns>
+        /// <returns>值的数组。如果给定的域里面，有某个域不存在，那么这个域对应的值为 null 值。</returns>
         public static BinaryValue[] HMGet(this IRedisClient client, string key, params string[] fields)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -211,7 +211,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
         /// <param name="fieldValues">域值的字典。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result HMSet(this IRedisClient client, string key, RedisDictionary fieldValues)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -228,7 +228,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
         /// <param name="fieldValues">域值的匿名对象。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result HMSet(this IRedisClient client, string key, params RedisFieldItem[] fieldValues)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -242,7 +242,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
         /// <param name="fieldValues">域值的匿名对象。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result HMSet(this IRedisClient client, string key, object fieldValues)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -292,7 +292,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名</param>
-        /// <returns>返回 <paramref name="key"/> 所有的域值。当 <paramref name="key"/> 不存在时，返回一个空数组。</returns>
+        /// <returns> <paramref name="key"/> 所有的域值。当 <paramref name="key"/> 不存在时，返回一个空数组。</returns>
         public static BinaryValue[] HVals(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -308,7 +308,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="System.RedisKeyExtensions.Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>返回一个支持迭代的枚举。</returns>
+        /// <returns>一个支持迭代的枚举。</returns>
         public static IEnumerable<RedisFieldItem> HScan(this IRedisClient client, string key, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<RedisFieldItem>(client, "HSCAN", key, cursor, pattern, count

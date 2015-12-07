@@ -47,7 +47,7 @@ namespace Aoite.Data
         /// 提供一个 <see cref="DbCommand"/> 的实例，创建一个关联的数据适配器。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/> 的实例。</param>
-        /// <returns>返回一个关联的数据适配器。</returns>
+        /// <returns>一个关联的数据适配器。</returns>
         protected virtual DbDataAdapter CreateDataAdapter(DbCommand command)
         {
             var adapter = this._engineInjector.Factory.CreateDataAdapter();
@@ -77,7 +77,7 @@ namespace Aoite.Data
         /// <summary>
         /// 创建一个关联执行器的 <see cref="DbCommand"/> 的实例。
         /// </summary>
-        /// <returns>返回一个关联执行器的 <see cref="DbCommand"/> 的实例。</returns>
+        /// <returns>一个关联执行器的 <see cref="DbCommand"/> 的实例。</returns>
         protected virtual DbCommand CreateDbCommand()
         {
             var dbCommand = this._engineInjector.CreateDbCommand(this._Engine, this._Command, this._connection);
@@ -106,7 +106,7 @@ namespace Aoite.Data
         /// <typeparam name="TDbValue">返回值的数据类型。</typeparam>
         /// <param name="type">执行的类型。</param>
         /// <param name="callback">执行时的回调方法。</param>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         protected virtual TDbResult Execute<TDbResult, TDbValue>(ExecuteType type, Func<DbCommand, TDbValue> callback)
             where TDbResult : DbResult<TDbValue>, new()
         {
@@ -135,7 +135,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TDataSetResult">数据集返回结果的类型。</typeparam>
         /// <typeparam name="TDataSet">数据集的类型。</typeparam>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         protected virtual TDataSetResult ToDataSet<TDataSetResult, TDataSet>()
             where TDataSetResult : DataSetResult<TDataSet>, new()
             where TDataSet : DataSet, new()
@@ -156,10 +156,10 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回数据表结果。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual TableResult ToTable()
         {
-            return this.Execute<TableResult, AoiteTable>(ExecuteType.Table, dbCommand => dbCommand.ExecuteTable(this.CreateDataAdapter(dbCommand)));
+            return this.Execute<TableResult, PageTable>(ExecuteType.Table, dbCommand => dbCommand.ExecuteTable(this.CreateDataAdapter(dbCommand)));
         }
 
         /// <summary>
@@ -167,18 +167,18 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual TableResult ToTable(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;
             if(pageSize < 1) pageSize = 1;
 
-            return this.Execute<TableResult, AoiteTable>(ExecuteType.Table, dbCommand =>
+            return this.Execute<TableResult, PageTable>(ExecuteType.Table, dbCommand =>
             {
                 var pp = this._owner.Injector.CreatePaginationProcess(this._Engine);
                 pp.ProcessCommand(pageNumber, pageSize, dbCommand);
                 var value = dbCommand.ExecuteTable(this.CreateDataAdapter(dbCommand));
-                value.TotalRowCount = this.GetTotalCount(pp);
+                value.Total = this.GetTotalCount(pp);
                 return value;
             });
         }
@@ -187,7 +187,7 @@ namespace Aoite.Data
         /// 执行分页查询命令，并返回数据表结果。
         /// </summary>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public TableResult ToTable(IPagination page)
         {
             return this.ToTable(page.PageNumber, page.PageSize);
@@ -198,7 +198,7 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回自定义的实体结果。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<dynamic> ToEntity()
         {
             return this.Execute<DbResult<dynamic>, dynamic>(ExecuteType.Reader, dbCommand =>
@@ -213,7 +213,7 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回自定义实体的集合结果。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<List<dynamic>> ToEntities()
         {
             return this.Execute<DbResult<List<dynamic>>, List<dynamic>>(ExecuteType.Reader, DbExtensions.ExecuteEntities);
@@ -223,15 +223,15 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>返回一个执行结果。</returns>
-        public virtual DbResult<GridData<dynamic>> ToEntities(int pageNumber, int pageSize = 10)
+        /// <returns>一个执行结果。</returns>
+        public virtual DbResult<PageData<dynamic>> ToEntities(int pageNumber, int pageSize = 10)
         {
-            return this.Execute<DbResult<GridData<dynamic>>, GridData<dynamic>>(ExecuteType.Reader, dbCommand =>
+            return this.Execute<DbResult<PageData<dynamic>>, PageData<dynamic>>(ExecuteType.Reader, dbCommand =>
             {
                 var pp = this._owner.Injector.CreatePaginationProcess(this._Engine);
                 pp.ProcessCommand(pageNumber, pageSize, dbCommand);
                 var entities = dbCommand.ExecuteEntities();
-                var value = new GridData<dynamic>()
+                var value = new PageData<dynamic>()
                 {
                     Rows = entities.ToArray(),
                     Total = this.GetTotalCount(pp)
@@ -243,8 +243,8 @@ namespace Aoite.Data
         /// 执行分页查询命令，并返回自定义实体的集合结果。
         /// </summary>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>返回一个执行结果。</returns>
-        public DbResult<GridData<dynamic>> ToEntities(IPagination page)
+        /// <returns>一个执行结果。</returns>
+        public DbResult<PageData<dynamic>> ToEntities(IPagination page)
         {
             return this.ToEntities(page.PageNumber, page.PageSize);
         }
@@ -255,7 +255,7 @@ namespace Aoite.Data
         /// 执行查询命令，并返回自定义的实体结果。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<TEntity> ToEntity<TEntity>()
         {
             var mapper = TypeMapper.Instance<TEntity>.Mapper;
@@ -274,7 +274,7 @@ namespace Aoite.Data
         /// 执行查询命令，并返回自定义实体的集合结果。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<List<TEntity>> ToEntities<TEntity>()
         {
             return this.Execute<DbResult<List<TEntity>>, List<TEntity>>(ExecuteType.Reader, DbExtensions.ExecuteEntities<TEntity>);
@@ -285,15 +285,15 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>返回一个执行结果。</returns>
-        public virtual DbResult<GridData<TEntity>> ToEntities<TEntity>(int pageNumber, int pageSize = 10)
+        /// <returns>一个执行结果。</returns>
+        public virtual DbResult<PageData<TEntity>> ToEntities<TEntity>(int pageNumber, int pageSize = 10)
         {
-            return this.Execute<DbResult<GridData<TEntity>>, GridData<TEntity>>(ExecuteType.Reader, dbCommand =>
+            return this.Execute<DbResult<PageData<TEntity>>, PageData<TEntity>>(ExecuteType.Reader, dbCommand =>
             {
                 var pp = this._owner.Injector.CreatePaginationProcess(this._Engine);
                 pp.ProcessCommand(pageNumber, pageSize, dbCommand);
                 var entities = dbCommand.ExecuteEntities<TEntity>();
-                var value = new GridData<TEntity>()
+                var value = new PageData<TEntity>()
                 {
                     Rows = entities.ToArray(),
                     Total = this.GetTotalCount(pp)
@@ -306,15 +306,16 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>返回一个执行结果。</returns>
-        public DbResult<GridData<TEntity>> ToEntities<TEntity>(IPagination page)
+        /// <returns>一个执行结果。</returns>
+        public DbResult<PageData<TEntity>> ToEntities<TEntity>(IPagination page)
         {
             return this.ToEntities<TEntity>(page.PageNumber, page.PageSize);
         }
+
         /// <summary>
         /// 执行查询命令，并返回受影响的行数结果。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<int> ToNonQuery()
         {
             if(this._owner.IsReadonly) throw new ReadOnlyException("数据库为只读状态，不允许进行 ToNonQuery 操作。");
@@ -325,7 +326,7 @@ namespace Aoite.Data
         /// 执行查询命令，并构建一个读取器结果。
         /// </summary>
         /// <param name="callback">给定的读取器委托。</param>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult ToReader(ExecuteReaderHandler callback)
         {
             return this.Execute<DbResult, VoidValue>(ExecuteType.Reader, dbCommand =>
@@ -344,7 +345,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TValue">返回值的类型。</typeparam>
         /// <param name="callback">给定的读取器委托。</param>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<TValue> ToReader<TValue>(ExecuteReaderHandler<TValue> callback)
         {
             return this.Execute<DbResult<TValue>, TValue>(ExecuteType.Reader, dbCommand =>
@@ -358,13 +359,13 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回查询结果集中第一行的第一列。忽略额外的列或行。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public DbResult<object> ToScalar() { return this.ToScalar<object>(); }
         /// <summary>
         /// 指定值的数据类型，执行查询命令，并返回查询结果集中第一行的第一列。忽略额外的列或行。
         /// </summary>
         /// <typeparam name="TValue">值的数据类型。</typeparam>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DbResult<TValue> ToScalar<TValue>()
         {
             return this.Execute<DbResult<TValue>, TValue>(ExecuteType.Scalar, DbExtensions.ExecuteScalar<TValue>);
@@ -373,7 +374,7 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回数据集结果。
         /// </summary>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public DataSetResult<DataSet> ToDataSet()
         {
             return this.ToDataSet<DataSet>();
@@ -383,7 +384,7 @@ namespace Aoite.Data
         /// 执行查询命令，并返回自定义的数据集结果。
         /// </summary>
         /// <typeparam name="TDataSet">自定义的数据集类型。</typeparam>
-        /// <returns>返回一个执行结果。</returns>
+        /// <returns>一个执行结果。</returns>
         public virtual DataSetResult<TDataSet> ToDataSet<TDataSet>()
             where TDataSet : DataSet, new()
         {

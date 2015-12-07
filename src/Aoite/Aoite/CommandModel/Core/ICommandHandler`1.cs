@@ -13,7 +13,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="context">执行的上下文。</param>
         /// <param name="command">执行的命令模型。</param>
-        /// <returns>返回一个值，指示是否继续执行命令。</returns>
+        /// <returns>一个值，指示是否继续执行命令。</returns>
         bool RaiseExecuting(IContext context, TCommand command);
         /// <summary>
         /// 命令模型执行后发生的方法。

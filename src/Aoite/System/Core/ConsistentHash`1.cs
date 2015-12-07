@@ -15,17 +15,17 @@ namespace System.Collections.Generic
         private int[] _keys = new int[0];
 
         /// <summary>
-        /// 初始化一个 <see cref="Generic.ConsistentHash&lt;TNode&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="Generic.ConsistentHash{TNode}"/> 类的新实例。
         /// </summary>
         public ConsistentHash() : this(new TNode[0]) { }
         /// <summary>
-        /// 指定默认节点的集合，初始化一个 <see cref="Generic.ConsistentHash&lt;TNode&gt;"/> 类的新实例。
+        /// 指定默认节点的集合，初始化一个 <see cref="Generic.ConsistentHash{TNode}"/> 类的新实例。
         /// </summary>
         /// <param name="nodes">默认节点的集合。</param>
         public ConsistentHash(IEnumerable<TNode> nodes) : this(nodes, 100) { }
 
         /// <summary>
-        /// 指定默认节点的集合和权重值，初始化一个 <see cref="Generic.ConsistentHash&lt;TNode&gt;"/> 类的新实例。
+        /// 指定默认节点的集合和权重值，初始化一个 <see cref="Generic.ConsistentHash{TNode}"/> 类的新实例。
         /// </summary>
         /// <param name="nodes">默认节点的集合。</param>
         /// <param name="weight">节点权重值。</param>
@@ -122,7 +122,7 @@ namespace System.Collections.Generic
         /// 获取指定键的节点。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>返回一个节点。</returns>
+        /// <returns>一个节点。</returns>
         public TNode GetNode(string key)
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
@@ -138,7 +138,7 @@ namespace System.Collections.Generic
         /// 获取指定键的节点。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>返回一个节点。</returns>
+        /// <returns>一个节点。</returns>
         public TNode GetNode(byte[] key)
         {
             if(key == null) throw new ArgumentNullException(nameof(key));

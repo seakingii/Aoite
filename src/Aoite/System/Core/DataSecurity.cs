@@ -14,7 +14,7 @@ namespace System
         /// <param name="alog">加密算法。</param>
         /// <param name="text">需加密的字符串。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>返回加密后的字符串。</returns>
+        /// <returns>加密后的字符串。</returns>
         public static string Crypto(SecurityAlgorithms alog, string text, Encoding encoding = null)
         {
             HashAlgorithm algorithm;
@@ -49,7 +49,7 @@ namespace System
         /// <param name="text">原始文本。</param>
         /// <param name="salt">加盐值。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>返回 44 位加盐散列后的文本。</returns>
+        /// <returns> 44 位加盐散列后的文本。</returns>
         public static string GenerateSaltedHash(string text, out Guid salt, Encoding encoding = null) => GenerateSaltedHash(text, salt = Guid.NewGuid(), encoding);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace System
         /// <param name="text">原始文本。</param>
         /// <param name="salt">加盐值。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>返回 44 位加盐散列后的文本。</returns>
+        /// <returns> 44 位加盐散列后的文本。</returns>
         public static string GenerateSaltedHash(string text, Guid salt, Encoding encoding = null)
         {
             if(encoding == null) encoding = Encoding.UTF8;

@@ -17,7 +17,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
         /// <param name="items">成员权重项的数组。</param>
-        /// <returns>返回被成功添加的新成员的数量，不包括那些被更新的、已经存在的成员。</returns>
+        /// <returns>被成功添加的新成员的数量，不包括那些被更新的、已经存在的成员。</returns>
         public static long ZAdd(this IRedisClient client, string key, params RedisScoreItem[] items)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -34,7 +34,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">有序集的键名。</param>
-        /// <returns>返回集合 <paramref name="key"/> 的基数。</returns>
+        /// <returns>集合 <paramref name="key"/> 的基数。</returns>
         public static long ZCard(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -51,7 +51,7 @@ namespace System
         /// <param name="max">权重最大值。<paramref name="max"/> 可以是 <see cref="Double.MaxValue"/> -或- <see cref="Double.PositiveInfinity"/>，表示有序集的最高值。</param>
         /// <param name="exclusiveMin">指示最小值是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
-        /// <returns>返回权重值包含指定区间的成员数量。</returns>
+        /// <returns>权重值包含指定区间的成员数量。</returns>
         public static long ZCount(this IRedisClient client, string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -69,7 +69,7 @@ namespace System
         /// <param name="key">有序集的键名。</param>
         /// <param name="increment">递增量。可以通过传递一个负数值 <paramref name="increment"/> ，让权重减去相应的值。</param>
         /// <param name="member">有序集的成员。</param>
-        /// <returns>返回递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的 <paramref name="member"/> 的权重值。</returns>
+        /// <returns>递增 <paramref name="increment"/> 之后 <paramref name="key"/> 的 <paramref name="member"/> 的权重值。</returns>
         public static double ZIncrBy(this IRedisClient client, string key, double increment, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -88,7 +88,7 @@ namespace System
         /// <param name="key">有序集的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回指定区间内的有序集成员的列表。</returns>
+        /// <returns>指定区间内的有序集成员的列表。</returns>
         public static BinaryValue[] ZRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -106,7 +106,7 @@ namespace System
         /// <param name="key">有序集的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回指定区间内的有序集成员（含成员的权重值）的列表。</returns>
+        /// <returns>指定区间内的有序集成员（含成员的权重值）的列表。</returns>
         public static RedisScoreItem[] ZRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -128,7 +128,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>返回权重值包含指定区间的成员。</returns>
+        /// <returns>权重值包含指定区间的成员。</returns>
         public static BinaryValue[] ZRangeByScore(this IRedisClient client, string key, double min, double max
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
@@ -156,7 +156,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>返回权重值包含指定区间的成员（含成员的权重值）。</returns>
+        /// <returns>权重值包含指定区间的成员（含成员的权重值）。</returns>
         public static RedisScoreItem[] ZRangeByScoreWithScores(this IRedisClient client, string key, double min, double max
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
@@ -194,7 +194,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">集合的键名。</param>
         /// <param name="members">成员的数组。</param>
-        /// <returns>返回被成功移除的成员的数量，不包括被忽略的成员。</returns>
+        /// <returns>被成功移除的成员的数量，不包括被忽略的成员。</returns>
         public static long ZRem(this IRedisClient client, string key, params BinaryValue[] members)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -251,7 +251,7 @@ namespace System
         /// <param name="key">有序集的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回指定区间内的有序集成员的列表。</returns>
+        /// <returns>指定区间内的有序集成员的列表。</returns>
         public static BinaryValue[] ZRevRange(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -269,7 +269,7 @@ namespace System
         /// <param name="key">有序集的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>返回指定区间内的有序集成员（含成员的权重值）的列表。</returns>
+        /// <returns>指定区间内的有序集成员（含成员的权重值）的列表。</returns>
         public static RedisScoreItem[] ZRevRangeWithScores(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -291,7 +291,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>返回权重值包含指定区间的成员。</returns>
+        /// <returns>权重值包含指定区间的成员。</returns>
         public static BinaryValue[] ZRevRangeByScore(this IRedisClient client, string key, double min, double max
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
@@ -319,7 +319,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>返回权重值包含指定区间的成员（含成员的权重值）。</returns>
+        /// <returns>权重值包含指定区间的成员（含成员的权重值）。</returns>
         public static RedisScoreItem[] ZRevRangeByScoreWithScores(this IRedisClient client, string key, double min, double max
             , bool exclusiveMin = false, bool exclusiveMax = false
             , long? offset = null, long? count = null)
@@ -421,7 +421,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="System.RedisKeyExtensions.Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>返回一个支持迭代的枚举。</returns>
+        /// <returns>一个支持迭代的枚举。</returns>
         public static IEnumerable<RedisScoreItem> ZScan(this IRedisClient client, string key, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<RedisScoreItem>(client, "ZSCAN", key, cursor, pattern, count
@@ -439,7 +439,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>返回一个从低到高的顺序列表，列表里面包含了有序集合在指定范围内的成员。</returns>
+        /// <returns>一个从低到高的顺序列表，列表里面包含了有序集合在指定范围内的成员。</returns>
         public static BinaryValue[] ZRangeByLex(this IRedisClient client, string key
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false
@@ -468,7 +468,7 @@ namespace System
         /// <param name="max">最大成员值。可以为 null 值，表示正无限。</param>
         /// <param name="exclusiveMin">指示最小是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
-        /// <returns>返回一个包含了有序集合在指定范围内的成员数量。</returns>
+        /// <returns>一个包含了有序集合在指定范围内的成员数量。</returns>
         public static long ZLexCount(this IRedisClient client, string key
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false)
@@ -490,7 +490,7 @@ namespace System
         /// <param name="max">最大成员值。可以为 null 值，表示正无限。</param>
         /// <param name="exclusiveMin">指示最小是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
-        /// <returns>返回被移除的成员数量。</returns>
+        /// <returns>被移除的成员数量。</returns>
         public static long ZRemRangeByLex(this IRedisClient client, string key
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false)

@@ -21,7 +21,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
         /// <param name="mockHandler">模拟的执行器。</param>
-        /// <returns>返回当前执行器工厂。</returns>
+        /// <returns>当前执行器工厂。</returns>
         public MockExecutorFactory Mock<TCommand>(CommandExecuteHandler<TCommand> mockHandler) where TCommand : ICommand
         {
             Executors[typeof(TCommand)] = new ExecutorMetadata<TCommand>(new MockExecutor<TCommand>(mockHandler));

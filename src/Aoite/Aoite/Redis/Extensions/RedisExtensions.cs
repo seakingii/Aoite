@@ -20,7 +20,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">锁的键名。</param>
         /// <param name="timeout">锁的超时设定。</param>
-        /// <returns>返回一个锁，释放时解除占用的锁。</returns>
+        /// <returns>一个锁，释放时解除占用的锁。</returns>
         /// <exception cref="System.TimeoutException">获取锁超时。</exception>
         public static IDisposable Lock(this IRedisClient client, string key, TimeSpan? timeout = null)
         {

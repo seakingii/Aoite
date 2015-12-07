@@ -30,13 +30,13 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="parameter">一个 <see cref="DbParameter"/> 的实例。</param>
-        /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
+        /// <returns>参数描述的 <see cref="String"/> 值。</returns>
         public abstract string DescribeParameter(IDbEngine engine, DbParameter parameter);
 
         /// <summary>
         /// 创建一个分页组件。
         /// </summary>
-        /// <returns>返回一个分页组件。</returns>
+        /// <returns>一个分页组件。</returns>
         public abstract IPaginationProcess CreatePaginationProcess(IDbEngine engine);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Aoite.Data
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">查询命令。</param>
         /// <param name="conn">指定数据源。</param>
-        /// <returns>返回一个命令对象。</returns>
+        /// <returns>一个命令对象。</returns>
         public DbCommand CreateDbCommand(IDbEngine engine, ExecuteCommand command, DbConnection conn = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -69,7 +69,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
-        /// <returns>返回一个命令对象。</returns>
+        /// <returns>一个命令对象。</returns>
         protected virtual DbCommand CreateDbCommand(IDbEngine engine, string commandText)
         {
             if(string.IsNullOrWhiteSpace(commandText)) throw new ArgumentNullException(nameof(commandText));
@@ -101,7 +101,7 @@ namespace Aoite.Data
         /// 创建并返回一个到数据源的连接。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个到数据源的连接。</returns>
+        /// <returns>一个到数据源的连接。</returns>
         public virtual DbConnection CreateConnection(IDbEngine engine)
         {
             var conn = this.Factory.CreateConnection();
@@ -114,7 +114,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">执行查询的命令。</param>
-        /// <returns>返回一个执行器。</returns>
+        /// <returns>一个执行器。</returns>
         public virtual IDbExecutor CreateExecutor(IDbEngine engine, ExecuteCommand command)
         {
             return new DefaultDbExecutor(engine, command);
@@ -125,7 +125,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="mapper">类型映射器。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateLastIdentityCommand(IDbEngine engine, TypeMapper mapper)
         {
             return new ExecuteCommand("SELECT @@IDENTITY");
@@ -138,7 +138,7 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateInsertCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -177,7 +177,7 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateUpdateCommand(IDbEngine engine, TypeMapper mapper, object entity, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -226,7 +226,7 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entityOrPKValue">实体的实例对象（引用类型）或一个主键的值（值类型）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询命令。</returns>
+        /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateDeleteCommand(IDbEngine engine, TypeMapper mapper, object entityOrPKValue, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));

@@ -17,7 +17,7 @@ namespace Aoite.Logger
         /// </summary>
         /// <param name="logger">日志管理器。</param>
         /// <param name="item">日志项。</param>
-        /// <returns>返回日志项的字符串形式。</returns>
+        /// <returns>日志项的字符串形式。</returns>
         public virtual string Describe(ILogger logger, LogItem item)
         {
             if(logger == null) throw new ArgumentNullException(nameof(logger));

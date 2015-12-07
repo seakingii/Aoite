@@ -139,6 +139,6 @@ namespace Aoite.Data
     /// 批量操作时的委托。
     /// </summary>
     /// <param name="rowsCopied">当前批量复制操作期间复制的行数。</param>
-    /// <returns>返回一个值，指示是否应中止批量复制操作的值。</returns>
+    /// <returns>一个值，指示是否应中止批量复制操作的值。</returns>
     public delegate bool RowsCopiedDelegate(long rowsCopied);
 }

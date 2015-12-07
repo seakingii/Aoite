@@ -27,14 +27,14 @@ namespace Aoite.Data
         /// 指定参数的名称，获取一个参数的值。
         /// </summary>
         /// <param name="parameterName">参数的名称。</param>
-        /// <returns>返回具有指定名称的参数值。</returns>
+        /// <returns>具有指定名称的参数值。</returns>
         object this[string parameterName] { get; }
 
         /// <summary>
         /// 指定参数的索引，获取一个参数的值。
         /// </summary>
         /// <param name="parameterIndex">参数的从零开始的索引。</param>
-        /// <returns>返回索引处的参数值。</returns>
+        /// <returns>索引处的参数值。</returns>
         object this[int parameterIndex] { get; }
 
         /// <summary>

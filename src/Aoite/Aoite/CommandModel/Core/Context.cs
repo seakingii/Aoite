@@ -49,7 +49,7 @@ namespace Aoite.CommandModel
         /// 获取或设置键的值。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>返回一个值。</returns>
+        /// <returns>一个值。</returns>
         public object this[object key] { get { return Data[key]; } set { Data[key] = value; } }
     }
 }

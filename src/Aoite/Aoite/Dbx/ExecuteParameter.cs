@@ -61,7 +61,7 @@ namespace Aoite.Dbx
         /// 指定 <see cref="DbCommand"/>，生成一个 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/>。</param>
-        /// <returns>返回一个已生成的 <see cref="DbParameter"/>。</returns>
+        /// <returns>一个已生成的 <see cref="DbParameter"/>。</returns>
         public virtual DbParameter CreateParameter(DbCommand command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
@@ -77,8 +77,25 @@ namespace Aoite.Dbx
             if(this.Direction.HasValue) parameter.Direction = this.Direction.Value;
             if(this.Precision.HasValue) parameter.Precision = this.Precision.Value;
             if(this.Scale.HasValue) parameter.Scale = this.Scale.Value;
-           
+
             return dbParameter;
+        }
+
+        /// <summary>
+        /// 创建作为当前实例副本的新对象。
+        /// </summary>
+        /// <returns>作为此实例副本的新对象。</returns>
+        public virtual object Clone()
+        {
+            return new ExecuteParameter(this.Name, this.Value)
+            {
+                Direction = this.Direction,
+                Precision = this.Precision,
+                Scale = this.Scale,
+                Size = this.Size,
+                Type = this.Type,
+                Value = this.Value
+            };
         }
     }
 }

@@ -15,7 +15,7 @@ namespace System
         /// 返回一个类型的默认值。
         /// </summary>
         /// <param name="type">值类型或引用类型。</param>
-        /// <returns>返回类型的默认值。</returns>
+        /// <returns>类型的默认值。</returns>
         public static object GetDefaultValue(this Type type)
         {
             if(type == null) return null;
@@ -57,7 +57,7 @@ namespace System
         /// 尝试获取可空类型的真实类型。
         /// </summary>
         /// <param name="type">需要判断的类型。</param>
-        /// <returns>返回可空类型的真实类型，若当前类型非可空类型则返回原始值。</returns>
+        /// <returns>可空类型的真实类型，若当前类型非可空类型则返回原始值。</returns>
         public static Type GetNullableType(this Type type)
             => type == null ? null : (Nullable.GetUnderlyingType(type) ?? type);
 
@@ -150,7 +150,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="name">字段名称。</param>
-        /// <returns>返回一个字段或一个 null 值。</returns>
+        /// <returns>一个字段或一个 null 值。</returns>
         public static FieldInfo FindField(this Type type, string name)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -163,7 +163,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="name">属性名称。</param>
-        /// <returns>返回一个属性或一个 null 值。</returns>
+        /// <returns>一个属性或一个 null 值。</returns>
         public static PropertyInfo FindProperty(this Type type, string name)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -176,7 +176,7 @@ namespace System
         /// <param name="type">数据类型。</param>
         /// <param name="name">方法名称。</param>
         /// <param name="types">方法的参数类型数组。</param>
-        /// <returns>返回一个方法或一个 null 值。</returns>
+        /// <returns>一个方法或一个 null 值。</returns>
         public static MethodInfo FindMethod(this Type type, string name, params Type[] types)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -189,7 +189,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="types">构造函数的参数类型数组。</param>
-        /// <returns>返回一个构造函数或一个 null 值。</returns>
+        /// <returns>一个构造函数或一个 null 值。</returns>
         public static ConstructorInfo FindConstructor(this Type type, params Type[] types)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -220,7 +220,7 @@ namespace System
         /// </summary>
         /// <typeparam name="T">特性的数据类型。</typeparam>
         /// <param name="member">成员。</param>
-        /// <returns>返回特性的集合枚举器。</returns>
+        /// <returns>特性的集合枚举器。</returns>
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo member) => GetAttributes<T>(member, true);
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace System
         /// <typeparam name="T">特性的数据类型。</typeparam>
         /// <param name="member">成员。</param>
         /// <param name="inherit">指定是否搜索该成员的继承链以查找这些属性。</param>
-        /// <returns>返回特性的集合枚举器。</returns>
+        /// <returns>特性的集合枚举器。</returns>
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo member, bool inherit)
         {
             if(member == null) throw new ArgumentNullException(nameof(member));
@@ -246,7 +246,7 @@ namespace System
         /// </summary>
         /// <param name="type">类型。</param>
         /// <param name="value">实例。</param>
-        /// <returns>返回类型转换的实例。</returns>
+        /// <returns>类型转换的实例。</returns>
         public static object ToEnumValue(this Type type, object value)
         {
             if(value is string)
@@ -262,7 +262,7 @@ namespace System
         /// </summary>
         /// <param name="type">类型。</param>
         /// <param name="value">实例。</param>
-        /// <returns>返回类型转换的实例。</returns>
+        /// <returns>类型转换的实例。</returns>
         public static object ChangeType(this Type type, object value)
         {
             if(value == null || Convert.IsDBNull(value)) return type.GetDefaultValue();

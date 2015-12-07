@@ -24,7 +24,7 @@ namespace Aoite.Serialization
         /// <summary>
         /// 获取序列化器。
         /// </summary>
-        /// <returns>返回一个序列化器。</returns>
+        /// <returns>一个序列化器。</returns>
         protected virtual X2 GetSerializer(Type type)
         {
             return new X2(type);
@@ -35,7 +35,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override TData Reading<TData>(Stream stream)
         {
             return (TData)this.GetSerializer(typeof(TData)).Deserialize(stream);
@@ -45,7 +45,7 @@ namespace Aoite.Serialization
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override object Reading(Stream stream)
         {
             throw new NotImplementedException();

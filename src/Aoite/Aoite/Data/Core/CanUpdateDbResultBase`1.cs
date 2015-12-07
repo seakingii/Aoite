@@ -27,7 +27,7 @@ namespace Aoite.Data
         /// 提交当前返回值，更新数据源对应的记录。
         /// <para>如果在更新过程中发生了异常，将会通知当前查询结果的 <see cref="IResult.Exception"/> 属性。</para>
         /// </summary>  
-        /// <returns>返回更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
+        /// <returns>更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
         public int Update()
         {
             return this.Update(false);
@@ -38,7 +38,7 @@ namespace Aoite.Data
         /// <para>如果在更新过程中发生了异常，将会通知当前查询结果的 <see cref="IResult.Exception"/> 属性。</para>
         /// </summary>  
         /// <param name="continueUpdateOnError">指示在行更新过程中遇到错误时是否生成异常。如果要继续更新而不生成异常，则为 true，否则为 false。</param>
-        /// <returns>返回更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
+        /// <returns>更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
         public int Update(bool continueUpdateOnError)
         {
             this.ToSuccessed();
@@ -75,7 +75,7 @@ namespace Aoite.Data
         /// 更新结果的返回值。
         /// </summary>
         /// <param name="dataAdapter">查询结果对应的数据适配器。</param>
-        /// <returns>返回更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
+        /// <returns>更新的行数。如果返回一个 0 则表示当前返回值并改动，如果返回一个小于 0 的整数，则表示更新发生了异常。</returns>
         protected abstract int UpdateValue(DbDataAdapter dataAdapter);
     }
 }

@@ -14,7 +14,7 @@ namespace System
             /// <summary>
             ///  获取本机已被使用的网络端点。
             /// </summary>
-            /// <returns>返回本机所有网络端点。</returns>
+            /// <returns>本机所有网络端点。</returns>
             public static IEnumerable<IPEndPoint> GetUsedIPEndPoint()
             {
                 //获取一个对象，该对象提供有关本地计算机的网络连接和通信统计数据的信息。
@@ -64,7 +64,7 @@ namespace System
             /// </summary>
             /// <param name="host">主机地址。</param>
             /// <param name="port">主机端口。</param>
-            /// <returns>返回一个新的 <see cref="IPEndPoint"/> 实例。</returns>
+            /// <returns>一个新的 <see cref="IPEndPoint"/> 实例。</returns>
             public static IPEndPoint CreateEndPoint(string host, int port)
             {
                 return new IPEndPoint((string.IsNullOrWhiteSpace(host) || host.iEquals("localhost"))

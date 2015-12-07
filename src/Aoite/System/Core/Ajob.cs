@@ -103,7 +103,7 @@ namespace System
         /// <param name="job">异步任务。</param>
         /// <param name="milliseconds">间隔的毫秒数，为 0 时表示立即执行。</param>
         /// <param name="state">自定义数据。</param>
-        /// <returns>返回异步任务的标识</returns>
+        /// <returns>异步任务的标识</returns>
         public static IAsyncJob Once(AsyncJobHandler job, double milliseconds = 0, object state = null)
             => Once(job, TimeSpan.FromMilliseconds(milliseconds), state);
 
@@ -113,7 +113,7 @@ namespace System
         /// <param name="interval">间隔的时间。</param>
         /// <param name="job">异步任务。</param>
         /// <param name="state">自定义数据。</param>
-        /// <returns>返回异步任务的标识</returns>
+        /// <returns>异步任务的标识</returns>
         public static IAsyncJob Once(AsyncJobHandler job, TimeSpan interval, object state = null)
             => new AsyncJob(job, interval, state).Start(OnceInvoke, TaskCreationOptions.PreferFairness);
 
@@ -123,7 +123,7 @@ namespace System
         /// <param name="milliseconds">间隔的毫秒数，为 0 时表示立即执行。</param>
         /// <param name="job">异步任务。</param>
         /// <param name="state">自定义数据。</param>
-        /// <returns>返回异步任务的标识</returns>
+        /// <returns>异步任务的标识</returns>
         public static IAsyncJob Loop(AsyncJobHandler job, double milliseconds = 0, object state = null)
             => Loop(job, TimeSpan.FromMilliseconds(milliseconds), state);
 
@@ -133,7 +133,7 @@ namespace System
         /// <param name="interval">间隔的时间。</param>
         /// <param name="job">异步任务。</param>
         /// <param name="state">自定义数据。</param>
-        /// <returns>返回异步任务的标识</returns>
+        /// <returns>异步任务的标识</returns>
         public static IAsyncJob Loop(AsyncJobHandler job, TimeSpan interval, object state = null)
             => new AsyncJob(job, interval, state).Start(LoopInvoke, TaskCreationOptions.LongRunning);
 

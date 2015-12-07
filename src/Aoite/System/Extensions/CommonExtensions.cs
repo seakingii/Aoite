@@ -36,7 +36,7 @@ namespace System
         /// </summary>
         /// <typeparam name="T">要转换的数据类型。</typeparam>
         /// <param name="value">请求类型转换的值。</param>
-        /// <returns>返回一个数据类型的值，或一个 null 值。</returns>
+        /// <returns>一个数据类型的值，或一个 null 值。</returns>
         public static T CastTo<T>(this object value)
             => (T)CastTo(value, typeof(T));
 
@@ -45,7 +45,7 @@ namespace System
         /// </summary>
         /// <param name="value">请求类型转换的值。</param>
         /// <param name="type">要转换的数据类型。</param>
-        /// <returns>返回一个数据类型的值，或一个 null 值。</returns>
+        /// <returns>一个数据类型的值，或一个 null 值。</returns>
         public static object CastTo(this object value, Type type)
             => type.ChangeType(value);
 
@@ -57,7 +57,7 @@ namespace System
         /// <param name="source">复制的源对象。</param>
         /// <param name="target">复制的目标对象。</param>
         /// <param name="targetStrategy">复制目标的策略。</param>
-        /// <returns>返回 <paramref name="source"/>。</returns>
+        /// <returns> <paramref name="source"/>。</returns>
         public static TSource CopyFrom<TSource, TTarget>(this TSource source, TTarget target, CopyToStrategy targetStrategy = CopyToStrategy.Default)
             => CopyTo<TSource>(target, source, targetStrategy);
 
@@ -67,7 +67,7 @@ namespace System
         /// <typeparam name="TTarget">新的数据类型。</typeparam>
         /// <param name="source">复制的源对象。</param>
         /// <param name="targetStrategy">复制目标的策略。</param>
-        /// <returns>返回一个 <typeparamref name="TTarget"/> 的心实例。</returns>
+        /// <returns>一个 <typeparamref name="TTarget"/> 的心实例。</returns>
         public static TTarget CopyTo<TTarget>(this object source, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
             if(source == null) return default(TTarget);
@@ -82,7 +82,7 @@ namespace System
         /// <param name="source">复制的源对象。</param>
         /// <param name="target">复制的目标对象。</param>
         /// <param name="targetStrategy">复制目标的策略。</param>
-        /// <returns>返回 <paramref name="target"/>。</returns>
+        /// <returns> <paramref name="target"/>。</returns>
         public static TTarget CopyTo<TTarget>(this object source, TTarget target, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
             if(source == null) throw new ArgumentNullException(nameof(source));
@@ -149,7 +149,7 @@ namespace System
         /// <typeparam name="T2">返回的数据类型。</typeparam>
         /// <param name="collection">当前集合。</param>
         /// <param name="func">执行的委托。</param>
-        /// <returns>返回一个集合。</returns>
+        /// <returns>一个集合。</returns>
         public static T2[] Each<T, T2>(this IEnumerable<T> collection, Func<T, T2> func)
         {
             if(collection == null) return null;
@@ -164,7 +164,7 @@ namespace System
         /// 返回表示当前对象的 <see cref="String"/>，如果 <paramref name="obj"/> 是一个 null 值，将返回 <see cref="String.Empty"/>。
         /// </summary>
         /// <param name="obj">一个对象。</param>
-        /// <returns>返回 <paramref name="obj"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
+        /// <returns> <paramref name="obj"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
         public static string ToStringOrEmpty(this object obj)
             => obj == null ? string.Empty : obj.ToString();
 
@@ -188,7 +188,7 @@ namespace System
         /// 将指定的金额转换为中文表示。
         /// </summary>
         /// <param name="money">数字表示的金额。</param>
-        /// <returns>返回中文表示的金额。</returns>
+        /// <returns>中文表示的金额。</returns>
         public static string ToChinese(this decimal money)
         {
             var s = money.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");

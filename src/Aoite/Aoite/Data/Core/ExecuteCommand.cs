@@ -155,7 +155,7 @@ namespace Aoite.Data
         /// <summary>
         /// 强制中断正在执行的命令。
         /// </summary>
-        /// <returns>返回中断的结果。</returns>
+        /// <returns>中断的结果。</returns>
         public Result AbortExecuting()
         {
             DbCommand dbCommand = this.RuntimeObject as DbCommand;

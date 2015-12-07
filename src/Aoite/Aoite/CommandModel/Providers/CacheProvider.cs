@@ -68,7 +68,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">缓存键。</param>
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
-        /// <returns>返回缓存值，或一个 null 值。</returns>
+        /// <returns>缓存值，或一个 null 值。</returns>
         public virtual object Get(string key, Func<object> valueFactory = null)
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));

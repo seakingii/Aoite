@@ -133,7 +133,7 @@ namespace System
         /// </summary>
         /// <param name="length">随机字符串的长度。</param>
         /// <param name="type">随机字符串的类型。</param>
-        /// <returns>返回一个固定长度的随机字符串。</returns>
+        /// <returns>一个固定长度的随机字符串。</returns>
         public string NextString(int length, CharacterType type = CharacterType.Default)
         {
             if(length < 1) throw new ArgumentOutOfRangeException(nameof(length));

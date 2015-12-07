@@ -250,7 +250,7 @@ namespace Aoite.Data.Samples
                     r.ThrowIfFailded();
 
                     Assert.Equal(pageSize, r.Value.Rows.Count);
-                    Assert.Equal(rowCount, r.Value.TotalRowCount);
+                    Assert.Equal(rowCount, r.Value.Total);
                     for(int i = 0; i < pageSize; i++)
                     {
                         Assert.Equal("user" + (rowCount + pageSize - (pageSize * pageNumber) - i - 1), r.Value.Rows[i][1]);

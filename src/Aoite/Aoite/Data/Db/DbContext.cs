@@ -184,7 +184,7 @@ namespace Aoite.Data
         /// <summary>
         /// 提交数据源事务。
         /// </summary>
-        /// <returns>返回操作的结果。</returns>
+        /// <returns>操作的结果。</returns>
         public Result Commit()
         {
             if(this._Transaction == null) throw new NotSupportedException("并非以事务的方式打开连接。");
@@ -194,7 +194,7 @@ namespace Aoite.Data
         /// <summary>
         /// 从挂起状态回滚事务。
         /// </summary>
-        /// <returns>返回操作的结果。</returns>
+        /// <returns>操作的结果。</returns>
         public Result Rollback()
         {
             if(this._Transaction == null) throw new NotSupportedException("并非以事务的方式打开连接。");

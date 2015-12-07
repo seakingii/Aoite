@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
         /// 获取缓存中的项。
         /// </summary>
         /// <param name="group">缓存键的分组。</param>
-        /// <returns>返回缓存中的项，如果缓存不存在项，则返回 null 值。</returns>
+        /// <returns>缓存中的项，如果缓存不存在项，则返回 null 值。</returns>
         object GetCache(string group);
         /// <summary>
         /// 提供缓存键的分组，设置缓存项。

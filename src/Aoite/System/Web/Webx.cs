@@ -57,7 +57,7 @@ namespace System.Web
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="name">名称。</param>
         /// <param name="value">值。</param>
-        /// <returns>返回设置的值。</returns>
+        /// <returns>设置的值。</returns>
         public static T SetTemp<T>(string name, T value)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -132,7 +132,7 @@ namespace System.Web
         /// 指定名称，获取客户端的 Cookie 值。
         /// </summary>
         /// <param name="name">Cookie 的名称。</param>
-        /// <returns>返回 Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
+        /// <returns> Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
         public static string Cookie(string name)
         {
             var cookie = HttpContext.Current.Request.Cookies[name];
@@ -144,7 +144,7 @@ namespace System.Web
         /// 指定名称，移除客户端的 Cookie 值。
         /// </summary>
         /// <param name="name">Cookie 的名称。</param>
-        /// <returns>返回 Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
+        /// <returns> Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
         public static string CookieRemove(string name)
         {
             var value = Cookie(name);
@@ -195,7 +195,7 @@ namespace System.Web
         /// <summary>
         /// 呈现所有已添加的脚本，并清空脚本。
         /// </summary>
-        /// <returns>返回一个脚本字符串。</returns>
+        /// <returns>一个脚本字符串。</returns>
         public static IHtmlString ReaderScripts()
         {
             var scriptBuilder = GetTemp<Text.StringBuilder>(SCRIPT_STRING_BUILDER);
@@ -302,7 +302,7 @@ namespace System.Web
         /// <summary>
         ///  获取或设置客户端唯一标识，如果上下文缓存不存在，则尝试从当前请求中获取。
         /// </summary>
-        /// <returns>返回客户端唯一标识。</returns>
+        /// <returns>客户端唯一标识。</returns>
         public static dynamic Identity
         {
             get { return GetTemp<object>(IdentityName, Container.GetService<IIdentityStore>().Get); }

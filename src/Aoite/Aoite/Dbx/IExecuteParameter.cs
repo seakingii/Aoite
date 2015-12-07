@@ -1,11 +1,12 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
 
 namespace Aoite.Dbx
 {
     /// <summary>
     /// 定义一个数据源交互的执行命令参数。
     /// </summary>
-    public interface IExecuteParameter
+    public interface IExecuteParameter : ICloneable
     {
         /// <summary>
         /// 获取参数的名称。
@@ -19,7 +20,7 @@ namespace Aoite.Dbx
         /// 指定 <see cref="DbCommand"/>，生成一个 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/>。</param>
-        /// <returns>返回一个已生成的 <see cref="DbParameter"/>。</returns>
+        /// <returns>一个已生成的 <see cref="DbParameter"/>。</returns>
         DbParameter CreateParameter(DbCommand command);
     }
 }

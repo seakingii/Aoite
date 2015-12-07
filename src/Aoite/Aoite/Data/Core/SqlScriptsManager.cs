@@ -76,7 +76,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TKey">键的数据类型。</typeparam>
         /// <param name="key">脚本的键名。</param>
-        /// <returns>返回脚本。</returns>
+        /// <returns>脚本。</returns>
         public string GetScript<TKey>(TKey key)
         {
             return this.TryGetValue(Convert.ToString(key));
@@ -86,7 +86,7 @@ namespace Aoite.Data
         /// 获取指定键名的脚本。
         /// </summary>
         /// <param name="key">脚本的键名。</param>
-        /// <returns>返回脚本。</returns>
+        /// <returns>脚本。</returns>
         public string GetScript(string key)
         {
             return this.TryGetValue(key);

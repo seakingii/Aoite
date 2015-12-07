@@ -54,7 +54,7 @@ namespace Aoite.CommandModel
         /// <param name="command">命令模型。</param>
         /// <param name="executing">命令模型执行前发生的方法。</param>
         /// <param name="executed">命令模型执行后发生的方法。</param>
-        /// <returns>返回命令模型。</returns>
+        /// <returns>命令模型。</returns>
         protected virtual TCommand Execute<TCommand>(TCommand command
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
@@ -67,7 +67,7 @@ namespace Aoite.CommandModel
         /// <param name="command">命令模型。</param>
         /// <param name="executing">命令模型执行前发生的方法。</param>
         /// <param name="executed">命令模型执行后发生的方法。</param>
-        /// <returns>返回一个异步操作。</returns>
+        /// <returns>一个异步操作。</returns>
         protected virtual Task<TCommand> ExecuteAsync<TCommand>(TCommand command
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
@@ -78,7 +78,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="timeout">获取锁的超时设定。</param>
-        /// <returns>返回一个锁。</returns>
+        /// <returns>一个锁。</returns>
         protected IDisposable AcquireLock<T>(TimeSpan? timeout = null)
             => this.AcquireLock(typeof(T).FullName, timeout);
 
@@ -87,7 +87,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">锁的键。</param>
         /// <param name="timeout">获取锁的超时设定。</param>
-        /// <returns>返回一个锁。</returns>
+        /// <returns>一个锁。</returns>
         protected virtual IDisposable AcquireLock(string key, TimeSpan? timeout = null)
             => this._Container.GetService<ILockProvider>().Lock(key, timeout);
 
@@ -96,7 +96,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="increment">递增量。</param>
-        /// <returns>返回递增的序列。</returns>
+        /// <returns>递增的序列。</returns>
         protected long Increment<T>(long increment = 1)
             => this.Increment(typeof(T).FullName, increment);
 
@@ -105,14 +105,14 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">序列的键。</param>
         /// <param name="increment">递增量。</param>
-        /// <returns>返回递增的序列。</returns>
+        /// <returns>递增的序列。</returns>
         protected virtual long Increment(string key, long increment = 1)
             => this._Container.GetService<ICounterProvider>().Increment(key, increment);
 
         /// <summary>
         /// 开始事务模式。
         /// </summary>
-        /// <returns>返回一个事务。</returns>
+        /// <returns>一个事务。</returns>
         protected virtual ITransaction BeginTransaction()
             => new DefaultTransaction();
 
@@ -121,7 +121,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="type">实体的数据类型。</param>
         /// <param name="keyValue">实体的主键。</param>
-        /// <returns>返回一个非 null 值的字符串。</returns>
+        /// <returns>一个非 null 值的字符串。</returns>
         protected virtual string GenerateEntityCacheKey(Type type, object keyValue)
             => type.Name + ":" + keyValue;
 
@@ -147,7 +147,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">缓存键。</param>
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
-        /// <returns>返回缓存值，或一个 null 值。</returns>
+        /// <returns>缓存值，或一个 null 值。</returns>
         protected virtual object Get(string key, Func<object> valueFactory = null)
             => this._Container.GetService<ICacheProvider>().Get(key, valueFactory);
 
@@ -157,7 +157,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="T">缓存的数据类型。</typeparam>
         /// <param name="key">缓存键。</param>
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
-        /// <returns>返回缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
+        /// <returns>缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
         protected T Get<T>(string key, Func<T> valueFactory = null)
         {
             var value = this.Get(key, new Func<object>(() => valueFactory()));
@@ -171,7 +171,7 @@ namespace Aoite.CommandModel
         /// <typeparam name="T">缓存的数据类型。</typeparam>
         /// <param name="keyValue">实体的主键。</param>
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
-        /// <returns>返回缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
+        /// <returns>缓存值，或一个 <typeparamref name="T"/> 的默认值。</returns>
         protected T GetEntity<T>(object keyValue, Func<T> valueFactory = null)
             => Get<T>(this.GenerateEntityCacheKey(typeof(T), keyValue), valueFactory);
 

@@ -20,7 +20,7 @@ namespace Aoite.Redis
         /// 提交当前事务。直到事务释放之前，如果没有显示提交，将会自动放弃事务。
         /// <para>提交事务抛出错误时，所有的回调方法都不会执行。但其他非失败的命令在 Redis 数据库实际已执行成功。</para>
         /// </summary>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         void Commit();
     }
 }

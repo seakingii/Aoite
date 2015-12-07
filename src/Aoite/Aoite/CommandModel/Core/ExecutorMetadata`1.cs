@@ -15,7 +15,7 @@ namespace Aoite.CommandModel
 
         private IExecutorAttribute[] _executorAttributes;
         /// <summary>
-        /// 初始化一个 <see cref="ExecutorMetadata&lt;TCommand&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecutorMetadata{TCommand}"/> 类的新实例。
         /// </summary>
         /// <param name="executor">命令模型的执行器。</param>
         public ExecutorMetadata(IExecutor<TCommand> executor)

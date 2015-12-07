@@ -16,7 +16,7 @@
         /// </summary>
         public static readonly Type IDbEngine = typeof(IDbEngine);
         /// <summary>
-        /// 表示 <see cref="Result&lt;TValue&gt;"/> 的类型。
+        /// 表示 <see cref="Result{TValue}"/> 的类型。
         /// </summary>
         public static readonly Type GResult = typeof(System.Result<>);
         /// <summary>
@@ -74,7 +74,7 @@
         /// </summary>
         public static readonly Type Stream = typeof(System.IO.Stream);
         /// <summary>
-        /// 表示 <see cref="Nullable&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Nullable{T}"/> 的类型。
         /// </summary>
         public static readonly Type Nullable = typeof(Nullable<>);
         /// <summary>
@@ -115,7 +115,7 @@
         /// </summary>
         public static readonly Type IEnumerable = typeof(System.Collections.IEnumerable);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.IEnumerable&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.IEnumerable{T}"/> 的类型。
         /// </summary>
         public static readonly Type IGEnumerable = typeof(System.Collections.Generic.IEnumerable<>);
         /// <summary>
@@ -123,39 +123,39 @@
         /// </summary>
         public static readonly Type Hashtable = typeof(System.Collections.Hashtable);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.HashSet&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.HashSet{T}"/> 的类型。
         /// </summary>
         public static readonly Type GHashSet = typeof(System.Collections.Generic.HashSet<>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.Queue&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.Queue{T}"/> 的类型。
         /// </summary>
         public static readonly Type GQueue = typeof(System.Collections.Generic.Queue<>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.Stack&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.Stack{T}"/> 的类型。
         /// </summary>
         public static readonly Type GStack = typeof(System.Collections.Generic.Stack<>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.Dictionary&lt;TKey, TValue&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.Dictionary{TKey, TValue}"/> 的类型。
         /// </summary>
         public static readonly Type HybridDictionary = typeof(System.Collections.Specialized.HybridDictionary);
         /// <summary>
-        /// 表示 <see cref="Collections.Concurrent.ConcurrentDictionary&lt;TKey, TValue&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Concurrent.ConcurrentDictionary{TKey, TValue}"/> 的类型。
         /// </summary>
         public static readonly Type GConcurrentDictionary = typeof(System.Collections.Concurrent.ConcurrentDictionary<,>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.Dictionary&lt;TKey, TValue&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.Dictionary{TKey, TValue}"/> 的类型。
         /// </summary>
         public static readonly Type GDictionary = typeof(System.Collections.Generic.Dictionary<,>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.IDictionary&lt;TKey, TValue&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.IDictionary{TKey, TValue}"/> 的类型。
         /// </summary>
         public static readonly Type GIDictionary = typeof(System.Collections.Generic.IDictionary<,>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.IList&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.IList{T}"/> 的类型。
         /// </summary>
         public static readonly Type GIList = typeof(System.Collections.Generic.IList<>);
         /// <summary>
-        /// 表示 <see cref="Collections.Generic.List&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.Generic.List{T}"/> 的类型。
         /// </summary>
         public static readonly Type GList = typeof(System.Collections.Generic.List<>);
         /// <summary>
@@ -163,7 +163,7 @@
         /// </summary>
         public static readonly Type ICollection = typeof(System.Collections.ICollection);
         /// <summary>
-        /// 表示 <see cref="Collections.ObjectModel.Collection&lt;T&gt;"/> 的类型。
+        /// 表示 <see cref="Collections.ObjectModel.Collection{T}"/> 的类型。
         /// </summary>
         public static readonly Type GCollection = typeof(System.Collections.ObjectModel.Collection<>);
         /// <summary>

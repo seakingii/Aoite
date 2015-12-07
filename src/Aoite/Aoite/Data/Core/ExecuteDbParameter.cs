@@ -72,7 +72,7 @@ namespace Aoite.Data
         /// 指定 <see cref="DbCommand"/>，生成一个 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/>。</param>
-        /// <returns>返回一个已生成的 <see cref="DbParameter"/>。</returns>
+        /// <returns>一个已生成的 <see cref="DbParameter"/>。</returns>
         public override DbParameter CreateParameter(DbCommand command)
         {
             return this._SourceParameter;

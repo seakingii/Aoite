@@ -113,7 +113,7 @@ namespace Aoite.Data
         /// <summary>
         /// 创建并返回一个到数据源的连接。
         /// </summary>
-        /// <returns>返回一个到数据源的连接。</returns>
+        /// <returns>一个到数据源的连接。</returns>
         public DbConnection CreateConnection() { return this._Injector.CreateConnection(this); }
         DbTransaction IDbEngine.CreateTransaction() { return null; }
 

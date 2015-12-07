@@ -13,6 +13,6 @@ namespace Aoite.Data
     /// </summary>
     /// <typeparam name="TResultValue">返回值的类型。</typeparam>
     /// <param name="reader">数据读取器。</param>
-    /// <returns>返回操作结果的值。</returns>
+    /// <returns>操作结果的值。</returns>
     public delegate TResultValue ExecuteReaderHandler<TResultValue>(DbDataReader reader);
 }

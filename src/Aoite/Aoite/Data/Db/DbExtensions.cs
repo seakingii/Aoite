@@ -42,7 +42,7 @@ namespace System
         /// <typeparam name="T">值的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="index">参数索引。</param>
-        /// <returns>返回强类型的值。</returns>
+        /// <returns>强类型的值。</returns>
         public static T GetValue<T>(this DbCommand dbCommand, int index)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -55,7 +55,7 @@ namespace System
         /// <typeparam name="T">值的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="name">参数名称。</param>
-        /// <returns>返回强类型的值。</returns>
+        /// <returns>强类型的值。</returns>
         public static T GetValue<T>(this DbCommand dbCommand, string name)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -68,7 +68,7 @@ namespace System
         /// 将指定的执行命令转换成完整字符串形式。
         /// </summary>
         /// <param name="command">执行命令。</param>
-        /// <returns>返回一个完整执行命令的字符串形式。</returns>
+        /// <returns>一个完整执行命令的字符串形式。</returns>
         public static string ToFullString(this ExecuteCommand command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
@@ -87,11 +87,28 @@ namespace System
         }
 
         /// <summary>
+        /// 执行查询，转换并返回结果换后的实体。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <returns>一个实体。</returns>
+        public static TEntity ExecuteEntity<TEntity>(this DbCommand dbCommand)
+        {
+            var mapper = TypeMapper.Instance<TEntity>.Mapper;
+            using(var reader = dbCommand.ExecuteReader())
+            {
+                if(!reader.Read()) return default(TEntity);
+                var value = (TEntity)Activator.CreateInstance(typeof(TEntity), true);
+                return mapper.From(reader).To(value);
+            }
+        }
+
+        /// <summary>
         /// 执行查询，转换并返回结果集转换后的实体集合。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>返回一个实体集合</returns>
+        /// <returns>一个实体集合。</returns>
         public static List<TEntity> ExecuteEntities<TEntity>(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -114,7 +131,7 @@ namespace System
         /// 执行查询，转换并返回结果集转换后的实体集合。
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>返回一个实体集合</returns>
+        /// <returns>一个实体集合</returns>
         public static List<dynamic> ExecuteEntities(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -151,15 +168,15 @@ namespace System
         /// </summary>
         /// <param name="dbCommand">数据库命令。</param>
         /// <param name="dataAdpater">数据源适配器。</param>
-        /// <returns>返回一张表。</returns>
-        public static AoiteTable ExecuteTable(this DbCommand dbCommand, DbDataAdapter dataAdpater)
+        /// <returns>一张表。</returns>
+        public static PageTable ExecuteTable(this DbCommand dbCommand, DbDataAdapter dataAdpater)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
             if(dataAdpater == null) throw new ArgumentNullException(nameof(dataAdpater));
 
-            AoiteTable table = new AoiteTable();
+            PageTable table = new PageTable();
             dataAdpater.Fill(table);
-            table.TotalRowCount = table.Rows.Count;
+            table.Total = table.Rows.Count;
             return table;
 
         }
@@ -170,7 +187,7 @@ namespace System
         /// <typeparam name="TDataSet">数据集的数据类型。</typeparam>
         /// <param name="dbCommand">数据库命令。</param>
         /// <param name="dataAdpater">数据源适配器。</param>
-        /// <returns>返回一个数据集。</returns>
+        /// <returns>一个数据集。</returns>
         public static TDataSet ExecuteDataSet<TDataSet>(this DbCommand dbCommand, DbDataAdapter dataAdpater)
             where TDataSet : DataSet, new()
         {
@@ -224,7 +241,7 @@ namespace System
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="command">执行查询的命令。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, ExecuteCommand command)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -238,7 +255,7 @@ namespace System
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, string commandText)
         {
             return engine.Execute(new ExecuteCommand(commandText));
@@ -250,7 +267,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">参数集合。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, string commandText, ExecuteParameterCollection parameters)
         {
             return engine.Execute(new ExecuteCommand(commandText, parameters));
@@ -262,7 +279,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">匹配 Name/Value 的参数集合或 数组。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, string commandText, params object[] parameters)
         {
             return engine.Execute(new ExecuteCommand(commandText, parameters));
@@ -274,7 +291,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">参数集合。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, string commandText, params ExecuteParameter[] parameters)
         {
             return engine.Execute(new ExecuteCommand(commandText, parameters));
@@ -286,7 +303,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="objectInstance">任意类型的实例。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(this IDbEngine engine, string commandText, object objectInstance)
         {
             return engine.Execute(new ExecuteCommand(commandText, new ExecuteParameterCollection(objectInstance)));
@@ -305,7 +322,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> AddAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -320,7 +337,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Add<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
         {
             return AddAnonymous<TEntity>(engine, entity, tableName);
@@ -337,7 +354,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> ModifyAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -352,7 +369,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Modify<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
         {
             return ModifyAnonymous<TEntity>(engine, entity, tableName);
@@ -439,7 +456,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entityOrPKValues">实体的实例对象，在删除命令中 <paramref name="entityOrPKValues"/> 可以是主键的值（表只有一个主键，值允许是一个数组，表示删除多条记录），也可以是匿名对象的部分成员（<paramref name="entityOrPKValues"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -454,7 +471,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Remove<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
             => RemoveAnonymous<TEntity>(engine, entity, tableName);
 
@@ -512,7 +529,7 @@ namespace System
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select(this IDbEngine engine, params string[] fields)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -525,7 +542,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select<TEntity>(this IDbEngine engine, params string[] fields)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -748,7 +765,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, object objectInstance)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, object objectInstance)
             => FindAllPage<TEntity, TEntity>(engine, page, objectInstance);
         
         /// <summary>
@@ -758,7 +775,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
             => FindAllPage<TEntity, TEntity>(engine, page, ps);
         
         /// <summary>
@@ -769,7 +786,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
             => FindAllPage<TEntity, TEntity>(engine, page, where, ps);
 
         /// <summary>
@@ -780,7 +797,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, object objectInstance)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, object objectInstance)
             => FindAllPage<TEntity, TView>(engine, page, new ExecuteParameterCollection(objectInstance));
         
         /// <summary>
@@ -791,7 +808,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null)
             => FindAllPage<TEntity, TView>(engine, page, CreateWhere(engine, ps), ps);
         
         /// <summary>
@@ -803,7 +820,7 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null)
         {
             if(page == null) throw new ArgumentNullException(nameof(page));
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -904,7 +921,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, object objectInstance)
         {
             if(objectInstance == null) throw new ArgumentNullException(nameof(objectInstance));
@@ -917,7 +934,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps)
             => RowCount<TEntity>(engine, CreateWhere(engine, ps));
 
@@ -928,7 +945,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="where">筛选条件，不含 WHERE 关键字。</param>
         /// <param name="ps">参数集合。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(this IDbEngine engine, string where = null, ExecuteParameterCollection ps = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -948,7 +965,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个字段的列表。</returns>
+        /// <returns>一个字段的列表。</returns>
         public static string CreateFields<TEntity, TView>(this IDbEngine engine)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -977,7 +994,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         /// <param name="binary">二元运算符。</param>
-        /// <returns>返回一个条件查询语句。</returns>
+        /// <returns>一个条件查询语句。</returns>
         public static string CreateWhere(this IDbEngine engine, ExecuteParameterCollection ps, string binary = "AND")
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
@@ -1002,7 +1019,7 @@ namespace System
         /// 获取最后递增序列值。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result<long> GetLastIdentity<TEntity>(this IDbEngine engine)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));

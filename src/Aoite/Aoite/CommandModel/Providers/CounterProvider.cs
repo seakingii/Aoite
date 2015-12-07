@@ -23,7 +23,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">序列的键。</param>
         /// <param name="increment">递增量。</param>
-        /// <returns>返回递增的序列。</returns>
+        /// <returns>递增的序列。</returns>
         public virtual long Increment(string key, long increment = 1)
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));

@@ -30,7 +30,7 @@ namespace Aoite.Serialization
         /// <summary>
         /// 获取序列化器。
         /// </summary>
-        /// <returns>返回一个序列化器。</returns>
+        /// <returns>一个序列化器。</returns>
         protected virtual BinaryFormatter GetSerializer()
         {
             if(CreateSerializer == null)
@@ -47,7 +47,7 @@ namespace Aoite.Serialization
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override object Reading(Stream stream)
         {
             return this.GetSerializer().Deserialize(stream);

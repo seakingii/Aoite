@@ -38,7 +38,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TKey">键的数据类型。</typeparam>
         /// <param name="key">脚本的键名。</param>
-        /// <returns>返回当前实例。</returns>
+        /// <returns>当前实例。</returns>
         public TestManagerBase Execute<TKey>(TKey key)
         {
             this.ThrowWhenDisposed();
@@ -54,7 +54,7 @@ namespace Aoite.Data
         /// 批量执行指定键名的脚本。
         /// </summary>
         /// <param name="keys">脚本的键名列表。</param>
-        /// <returns>返回当前实例。</returns>
+        /// <returns>当前实例。</returns>
         public TestManagerBase Execute(params string[] keys)
         {
             this.ThrowWhenDisposed();
@@ -83,7 +83,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TKey">键的数据类型。</typeparam>
         /// <param name="key">脚本的键名。</param>
-        /// <returns>返回脚本。</returns>
+        /// <returns>脚本。</returns>
         public string GetScript<TKey>(TKey key)
         {
             this.ThrowWhenDisposed();

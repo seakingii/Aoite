@@ -66,7 +66,7 @@ namespace System
         /// <summary>
         /// 创建基于当前服务容器的子服务容器。
         /// </summary>
-        /// <returns>返回一个新的服务容器。</returns>
+        /// <returns>一个新的服务容器。</returns>
         public virtual IIocContainer CreateChildLocator()
         {
             return new IocContainer(this);
@@ -262,7 +262,7 @@ namespace System
         /// </summary>
         /// <param name="name">参数名称。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。</param>
-        /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
+        /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         public virtual object GetValue(string name, params object[] lastMappingValues)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -336,7 +336,7 @@ namespace System
         /// <param name="serviceType">关联的服务类型。</param>
         /// <param name="name">参数名称。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。</param>
-        /// <returns>返回参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
+        /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
         public virtual object GetValue(Type serviceType, string name, params object[] lastMappingValues)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));

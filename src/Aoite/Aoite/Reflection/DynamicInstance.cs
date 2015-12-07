@@ -70,7 +70,7 @@ namespace System
         /// 动态获取指定名称的成员的值。
         /// </summary>
         /// <param name="name">成员的名称，可以是一个属性或字段。</param>
-        /// <returns>返回成员的值。</returns>
+        /// <returns>成员的值。</returns>
         public virtual object Get(string name)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -92,7 +92,7 @@ namespace System
         /// <param name="genericTypes">泛型</param>
         /// <param name="name">方法的名称。</param>
         /// <param name="args">方法的参数值。</param>
-        /// <returns>返回方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
+        /// <returns>方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
         public virtual object Call(Type[] genericTypes, string name, params object[] args)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -113,7 +113,7 @@ namespace System
         /// </summary>
         /// <param name="name">方法的名称。</param>
         /// <param name="args">方法的参数值。</param>
-        /// <returns>返回方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
+        /// <returns>方法执行的结果，如果方法是一个 void 签名则返回 null 值。</returns>
         public virtual object Call(string name, params object[] args)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));

@@ -13,7 +13,7 @@ namespace System
         /// </summary>
         /// <param name="text">需加密的字符串。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>返回加密后的字符串。</returns>
+        /// <returns>加密后的字符串。</returns>
         public static string ToMd5(this string text, Encoding encoding = null)
             => DataSecurity.Crypto(SecurityAlgorithms.MD5, text, encoding).ToLower();
 
@@ -21,7 +21,7 @@ namespace System
         /// 将当前字符串转换为智能小写模式。
         /// </summary>
         /// <param name="s">当前字符串。</param>
-        /// <returns>返回一个新的字符串。</returns>
+        /// <returns>一个新的字符串。</returns>
         public static string ToCamelCase(this string s)
         {
             if(string.IsNullOrWhiteSpace(s)) return s;
@@ -38,7 +38,7 @@ namespace System
         /// </summary>
         /// <param name="value">当前字符串。</param>
         /// <param name="encoding">编码。为 null 值表示 UTF8 的编码。</param>
-        /// <returns>返回一个字节组。</returns>
+        /// <returns>一个字节组。</returns>
         public static byte[] ToBytes(this string value, Encoding encoding = null)
             => (encoding ?? GA.UTF8).GetBytes(value);
 
@@ -91,7 +91,7 @@ namespace System
         /// 在当前字符串的前后增加“%”符号。
         /// </summary>
         /// <param name="input">当前字符串。</param>
-        /// <returns>返回一个新的字符串。</returns>
+        /// <returns>一个新的字符串。</returns>
         public static string ToLiking(this string input)
             => string.Concat("%", input, "%");
 
@@ -108,7 +108,7 @@ namespace System
         /// 返回表示当前 <see cref="String"/>，如果 <paramref name="input"/> 是一个 null 值，将返回 <see cref="String.Empty"/>。
         /// </summary>
         /// <param name="input">一个字符串。</param>
-        /// <returns>返回 <paramref name="input"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
+        /// <returns> <paramref name="input"/> 的 <see cref="String"/> 或 <see cref="String.Empty"/>。</returns>
         public static string ToStringOrEmpty(this string input)
             => input ?? string.Empty;
 
@@ -134,7 +134,7 @@ namespace System
         /// <param name="input">一个字符串。</param>
         /// <param name="maxLength">字符串的最大长度（含）。</param>
         /// <param name="ellipsis">指定省略号的字符串，默认为“...”。</param>
-        /// <returns>返回一个新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
+        /// <returns>一个新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
         public static string CutString(this string input, int maxLength, string ellipsis = "...")
         {
             if(input == null || input.Length <= maxLength) return input;
@@ -148,7 +148,7 @@ namespace System
         /// </summary>
         /// <param name="input">一个字符串。</param>
         /// <param name="length">获取的字符串长度。</param>
-        /// <returns>返回一个新的字符串。</returns>
+        /// <returns>一个新的字符串。</returns>
         public static string Starts(this string input, int length)
         {
             if(string.IsNullOrWhiteSpace(input)) return string.Empty;
@@ -160,7 +160,7 @@ namespace System
         /// </summary>
         /// <param name="input">一个字符串。</param>
         /// <param name="length">获取的字符串长度。</param>
-        /// <returns>返回一个新的字符串。</returns>
+        /// <returns>一个新的字符串。</returns>
         public static string Ends(this string input, int length)
         {
             if(string.IsNullOrWhiteSpace(input)) return string.Empty;
@@ -172,7 +172,7 @@ namespace System
         /// </summary>
         /// <param name="val">目标字符串。</param>
         /// <param name="count">要删除的字长度。</param>
-        /// <returns>返回删除后的字符串。</returns>
+        /// <returns>删除后的字符串。</returns>
         public static string RemoveStarts(this string val, int count = 1)
         {
             if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;
@@ -184,7 +184,7 @@ namespace System
         /// </summary>
         /// <param name="val">目标字符串。</param>
         /// <param name="count">要删除的字长度。</param>
-        /// <returns>返回删除后的字符串。</returns>
+        /// <returns>删除后的字符串。</returns>
         public static string RemoveEnds(this string val, int count = 1)
         {
             if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;

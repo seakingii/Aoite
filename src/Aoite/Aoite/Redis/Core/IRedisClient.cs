@@ -18,7 +18,7 @@ namespace Aoite.Redis
         /// </summary>
         /// <typeparam name="T">命令返回值的数据类型。</typeparam>
         /// <param name="command">Redis 命令。</param>
-        /// <returns>返回执行后的返回值。</returns>
+        /// <returns>执行后的返回值。</returns>
         T Execute<T>(RedisCommand<T> command);
         /// <summary>
         /// 开始一个新的事务。

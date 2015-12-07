@@ -28,7 +28,7 @@ namespace Aoite.Serialization
         /// 读取对象。
         /// </summary>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override object Reading(Stream stream)
         {
             using(var stream2 = new StreamReader(stream, this.Encoding))
@@ -43,7 +43,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">序列化的流。</param>
-        /// <returns>返回序列化对象。</returns>
+        /// <returns>序列化对象。</returns>
         protected override TData Reading<TData>(Stream stream)
         {
             using(var stream2 = new StreamReader(stream, this.Encoding))
@@ -70,7 +70,7 @@ namespace Aoite.Serialization
         /// 快速反序列化 JSON 字符串。
         /// </summary>
         /// <param name="json">JSON 字符串。</param>
-        /// <returns>返回一个对象。</returns>
+        /// <returns>一个对象。</returns>
         public object FastRead(string json)
         {
             return _serializer.DeserializeObject(json);
@@ -80,7 +80,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="json">JSON 字符串。</param>
-        /// <returns>返回一个对象。</returns>
+        /// <returns>一个对象。</returns>
         public TData FastRead<TData>(string json)
         {
             return _serializer.Deserialize<TData>(json);
@@ -90,7 +90,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <param name="json">JSON 字符串。</param>
         /// <param name="type">可序列化对象的类型。</param>
-        /// <returns>返回一个对象。</returns>
+        /// <returns>一个对象。</returns>
         public object FastRead(string json, Type type)
         {
             return _serializer.Deserialize(json, type);
@@ -101,7 +101,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化的对象。</param>
-        /// <returns>返回 JSON 字符串。</returns>
+        /// <returns> JSON 字符串。</returns>
         public string FastWrite<TData>(TData data)
         {
             return _serializer.Serialize(data);

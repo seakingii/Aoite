@@ -28,7 +28,7 @@ namespace Aoite.Serialization
         /// <summary>
         /// 反序列化下一个对象。
         /// </summary>
-        /// <returns>返回序列化的对象。</returns>
+        /// <returns>序列化的对象。</returns>
         public object Deserialize()
         {
             var tag = (FormatterTag)this.Stream.ReadByte();

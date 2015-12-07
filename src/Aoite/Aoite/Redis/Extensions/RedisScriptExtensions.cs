@@ -15,7 +15,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="script">Lua 脚本代码。</param>
         /// <param name="keyArgs">键名和参数值的字典。</param>
-        /// <returns>返回执行脚本后的值。</returns>
+        /// <returns>执行脚本后的值。</returns>
         public static object Eval(this IRedisClient client, string script, RedisDictionary keyArgs)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -32,7 +32,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="sha1">sha1 校验码。</param>
         /// <param name="keyArgs">键名和参数值的字典。</param>
-        /// <returns>返回执行脚本后的值。</returns>
+        /// <returns>执行脚本后的值。</returns>
         public static object EvalSHA(this IRedisClient client, string sha1, RedisDictionary keyArgs)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -48,7 +48,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="scripts">sha1 校验码列表。</param>
-        /// <returns>返回一个数组。脚本已经被保存在缓存当中为 true，否则为 false。</returns>
+        /// <returns>一个数组。脚本已经被保存在缓存当中为 true，否则为 false。</returns>
         public static bool[] ScriptExists(this IRedisClient client, params string[] scripts)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -61,7 +61,7 @@ namespace System
         /// 清除所有 Lua 脚本缓存。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result ScriptFlush(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -75,7 +75,7 @@ namespace System
         /// <para>另一方面，假如当前正在运行的脚本已经执行过写操作，那么即使执行 SCRIPT KILL ，也无法将它杀死，因为这是违反 Lua 脚本的原子性执行原则的。在这种情况下，唯一可行的办法是使用 SHUTDOWN NOSAVE 命令，通过停止整个 Redis 进程来停止脚本的运行，并防止不完整(half-written)的信息被写入数据库中。</para>
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result ScriptKill(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -87,7 +87,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="script">Lua 脚本代码。</param>
-        /// <returns>返回给定 <paramref name="script"/> 的 SHA1 校验和。</returns>
+        /// <returns>给定 <paramref name="script"/> 的 SHA1 校验和。</returns>
         public static string ScriptLoad(this IRedisClient client, string script)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

@@ -11,7 +11,7 @@ namespace System
         /// 生成执行数据源查询与交互的执行器。
         /// </summary>
         /// <param name="command">执行查询的命令。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(ExecuteCommand command)
         {
             return Engine.Execute(command);
@@ -21,7 +21,7 @@ namespace System
         /// 生成执行数据源查询与交互的执行器。
         /// </summary>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(string commandText)
         {
             return Engine.Execute(commandText);
@@ -32,7 +32,7 @@ namespace System
         /// </summary>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">参数集合。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(string commandText, ExecuteParameterCollection parameters)
         {
             return Engine.Execute(commandText, parameters);
@@ -43,7 +43,7 @@ namespace System
         /// </summary>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">匹配 Name/Value 的参数集合或 数组。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(string commandText, params object[] parameters)
         {
             return Engine.Execute(commandText, parameters);
@@ -54,7 +54,7 @@ namespace System
         /// </summary>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="parameters">参数集合。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(string commandText, params ExecuteParameter[] parameters)
         {
             return Engine.Execute(commandText, parameters);
@@ -65,7 +65,7 @@ namespace System
         /// </summary>
         /// <param name="commandText">Transact-SQL 语句。第一个字符为“>”时，表示一个存储过程。</param>
         /// <param name="objectInstance">任意类型的实例。</param>
-        /// <returns>返回执行数据源查询与交互的执行器。</returns>
+        /// <returns>执行数据源查询与交互的执行器。</returns>
         public static IDbExecutor Execute(string commandText, object objectInstance)
         {
             return Engine.Execute(commandText, objectInstance);
@@ -83,7 +83,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> AddAnonymous<TEntity>(object entity, string tableName = null)
         {
             return Engine.AddAnonymous<TEntity>(entity, tableName);
@@ -95,7 +95,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Add<TEntity>(TEntity entity, string tableName = null)
         {
             return Engine.Add<TEntity>(entity, tableName);
@@ -111,7 +111,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> ModifyAnonymous<TEntity>(object entity, string tableName = null)
         {
             return Engine.ModifyAnonymous<TEntity>(entity, tableName);
@@ -123,7 +123,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Modify<TEntity>(TEntity entity, string tableName = null)
         {
             return Engine.Modify<TEntity>(entity, tableName);
@@ -176,7 +176,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entityOrPKValues">实体的实例对象，在删除命令中 <paramref name="entityOrPKValues"/> 可以是主键的值（表只有一个主键，值允许是一个数组，表示删除多条记录），也可以是匿名对象的部分成员（<paramref name="entityOrPKValues"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> RemoveAnonymous<TEntity>(object entityOrPKValues, string tableName = null)
         {
             return Engine.RemoveAnonymous<TEntity>(entityOrPKValues, tableName);
@@ -188,7 +188,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<int> Remove<TEntity>(TEntity entity, string tableName = null)
         {
             return Engine.Remove<TEntity>(entity, tableName);
@@ -237,7 +237,7 @@ namespace System
         /// 添加 SELECT 的字段。
         /// </summary>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select(params string[] fields)
         {
             return Engine.Select(fields);
@@ -248,7 +248,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="fields">字段的集合。</param>
-        /// <returns>返回 <see cref="ISelect"/> 的实例。</returns>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
         public static ISelect Select<TEntity>(params string[] fields)
         {
             return Engine.Select<TEntity>(fields);
@@ -441,7 +441,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(IPagination page, object objectInstance)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(IPagination page, object objectInstance)
         {
             return Engine.FindAllPage<TEntity>(page, objectInstance);
         }
@@ -451,7 +451,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(IPagination page, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(IPagination page, ExecuteParameterCollection ps = null)
         {
             return Engine.FindAllPage<TEntity>(page, ps);
         }
@@ -462,7 +462,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TEntity>> FindAllPage<TEntity>(IPagination page, string where, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TEntity>> FindAllPage<TEntity>(IPagination page, string where, ExecuteParameterCollection ps = null)
         {
             return Engine.FindAllPage<TEntity>(page, where, ps);
         }
@@ -474,7 +474,7 @@ namespace System
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(IPagination page, object objectInstance)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(IPagination page, object objectInstance)
         {
             return Engine.FindAllPage<TEntity, TView>(page, objectInstance);
         }
@@ -485,7 +485,7 @@ namespace System
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(IPagination page, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(IPagination page, ExecuteParameterCollection ps = null)
         {
             return Engine.FindAllPage<TEntity, TView>(page, ps);
         }
@@ -497,7 +497,7 @@ namespace System
         /// <param name="page">一个分页的实现。</param>
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
-        public static DbResult<GridData<TView>> FindAllPage<TEntity, TView>(IPagination page, string where, ExecuteParameterCollection ps = null)
+        public static DbResult<PageData<TView>> FindAllPage<TEntity, TView>(IPagination page, string where, ExecuteParameterCollection ps = null)
         {
             return Engine.FindAllPage<TEntity, TView>(page, where, ps);
         }
@@ -571,7 +571,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(object objectInstance)
         {
             return Engine.RowCount<TEntity>(objectInstance);
@@ -581,7 +581,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="ps">参数集合。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(ExecuteParameterCollection ps)
         {
             return Engine.RowCount<TEntity>(ps);
@@ -592,7 +592,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="where">筛选条件，不含 WHERE 关键字。</param>
         /// <param name="ps">参数集合。</param>
-        /// <returns>返回一个查询结果。</returns>
+        /// <returns>一个查询结果。</returns>
         public static DbResult<long> RowCount<TEntity>(string where = null, ExecuteParameterCollection ps = null)
         {
             return Engine.RowCount<TEntity>(where, ps);
@@ -607,7 +607,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <returns>返回一个字段的列表。</returns>
+        /// <returns>一个字段的列表。</returns>
         public static string CreateFields<TEntity, TView>()
         {
             return Engine.CreateFields<TEntity, TView>();
@@ -618,7 +618,7 @@ namespace System
         /// </summary>
         /// <param name="ps">参数集合实例。</param>
         /// <param name="binary">二元运算符。</param>
-        /// <returns>返回一个条件查询语句。</returns>
+        /// <returns>一个条件查询语句。</returns>
         public static string CreateWhere(ExecuteParameterCollection ps, string binary = "AND")
         {
             return Engine.CreateWhere(ps, binary);
@@ -627,7 +627,7 @@ namespace System
         /// <summary>
         /// 获取最后递增序列值。
         /// </summary>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result<long> GetLastIdentity<TEntity>()
         {
             return Engine.GetLastIdentity<TEntity>();

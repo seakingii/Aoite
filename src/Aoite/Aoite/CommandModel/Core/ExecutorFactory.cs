@@ -24,7 +24,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
         /// <param name="command">命令模型。</param>
-        /// <returns>返回命令模型的执行器元数据。</returns>
+        /// <returns>命令模型的执行器元数据。</returns>
         public virtual IExecutorMetadata<TCommand> Create<TCommand>(TCommand command) where TCommand : ICommand
         {
             if(command == null) throw new ArgumentNullException(nameof(command));

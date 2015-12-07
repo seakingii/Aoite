@@ -18,7 +18,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 获取一个 Redis 的客户端，在代码中无需释放此客户端。
         /// </summary>
-        /// <returns>返回一个 Redis 的客户端。</returns>
+        /// <returns>一个 Redis 的客户端。</returns>
         public virtual IRedisClient GetRedisClient()
         {
             return RedisManager.Context;

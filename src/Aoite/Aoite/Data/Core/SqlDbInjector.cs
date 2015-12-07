@@ -30,7 +30,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="parameter">一个 <see cref="DbParameter"/> 的实例。</param>
-        /// <returns>返回参数描述的 <see cref="String"/> 值。</returns>
+        /// <returns>参数描述的 <see cref="String"/> 值。</returns>
         public override string DescribeParameter(IDbEngine engine, DbParameter parameter)
         {
             var p = parameter as SqlParameter;
@@ -67,7 +67,7 @@ namespace Aoite.Data
         /// 创建一个分页组件。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <returns>返回一个分页组件。</returns>
+        /// <returns>一个分页组件。</returns>
         public override IPaginationProcess CreatePaginationProcess(IDbEngine engine) { return MsSqlPaginationProcess.Instance; }
     }
 

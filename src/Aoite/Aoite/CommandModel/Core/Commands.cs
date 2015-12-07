@@ -47,11 +47,11 @@ namespace CMD
         public long ResultValue { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="CMD.Add&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.Add{TEntity}"/> 类的新实例。
         /// </summary>
         public Add() { }
         /// <summary>
-        /// 指示是否包含递增列主键，初始化一个 <see cref="CMD.Add&lt;TEntity&gt;"/> 类的新实例。
+        /// 指示是否包含递增列主键，初始化一个 <see cref="CMD.Add{TEntity}"/> 类的新实例。
         /// </summary>
         /// <param name="identityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
         public Add(bool identityKey) { this.IdentityKey = identityKey; }
@@ -82,7 +82,7 @@ namespace CMD
         /// </summary>
         public int ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.Modify&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.Modify{TEntity}"/> 类的新实例。
         /// </summary>
         public Modify() { }
     }
@@ -115,7 +115,7 @@ namespace CMD
         /// </summary>
         public int ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.ModifyWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.ModifyWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public ModifyWhere() { }
     }
@@ -146,7 +146,7 @@ namespace CMD
         /// </summary>
         public int ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.Remove&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.Remove{TEntity}"/> 类的新实例。
         /// </summary>
         public Remove() { }
     }
@@ -175,7 +175,7 @@ namespace CMD
         /// </summary>
         public int ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.RemoveWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.RemoveWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public RemoveWhere() { }
     }
@@ -210,11 +210,11 @@ namespace CMD
     public class FindOne<TEntity> : FindOne<TEntity, TEntity>
     {
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindOne&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindOne{TEntity}"/> 类的新实例。
         /// </summary>
         public FindOne() { }
         /// <summary>
-        /// 提供实体主键的列值，初始化一个 <see cref="CMD.FindOne&lt;TEntity&gt;"/> 类的新实例。
+        /// 提供实体主键的列值，初始化一个 <see cref="CMD.FindOne{TEntity}"/> 类的新实例。
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public FindOne(object keyValue) : base(keyValue) { }
@@ -242,11 +242,11 @@ namespace CMD
         public TView ResultValue { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindOne&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindOne{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindOne() { }
         /// <summary>
-        /// 提供实体主键的列值，初始化一个 <see cref="CMD.FindOne&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 提供实体主键的列值，初始化一个 <see cref="CMD.FindOne{TEntity, TView}"/> 类的新实例。
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public FindOne(object keyValue) { this.KeyValue = keyValue; }
@@ -274,7 +274,7 @@ namespace CMD
     public class FindOneWhere<TEntity> : FindOneWhere<TEntity, TEntity>
     {
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindOneWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindOneWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public FindOneWhere() { }
     }
@@ -293,7 +293,7 @@ namespace CMD
         public TView ResultValue { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindOneWhere&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindOneWhere{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindOneWhere() { }
     }
@@ -320,7 +320,7 @@ namespace CMD
     public class FindAllWhere<TEntity> : FindAllWhere<TEntity, TEntity>
     {
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindAllWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindAllWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public FindAllWhere() { }
     }
@@ -338,7 +338,7 @@ namespace CMD
         /// </summary>
         public List<TView> ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindAllWhere&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindAllWhere{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindAllWhere() { }
     }
@@ -367,12 +367,12 @@ namespace CMD
     public class FindAllPage<TEntity> : FindAllPage<TEntity, TEntity>
     {
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindAllPage&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindAllPage{TEntity}"/> 类的新实例。
         /// </summary>
         public FindAllPage() { }
 
         /// <summary>
-        /// 提供分页数据，初始化一个 <see cref="CMD.FindAllPage&lt;TEntity&gt;"/> 类的新实例。
+        /// 提供分页数据，初始化一个 <see cref="CMD.FindAllPage{TEntity}"/> 类的新实例。
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。默认为 10。</param>
@@ -388,7 +388,7 @@ namespace CMD
     /// </summary>
     /// <typeparam name="TEntity">实体的数据类型。</typeparam>
     /// <typeparam name="TView">实体的视图类型。</typeparam>
-    public class FindAllPage<TEntity, TView> : WhereCommandBase, ICommand<GridData<TView>>
+    public class FindAllPage<TEntity, TView> : WhereCommandBase, ICommand<PageData<TView>>
     {
         /// <summary>
         /// 设置或获取分页的数据。
@@ -398,15 +398,15 @@ namespace CMD
         /// <summary>
         /// 设置或获取一个实体的分页集合。
         /// </summary>
-        public GridData<TView> ResultValue { get; set; }
+        public PageData<TView> ResultValue { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="CMD.FindAllPage&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.FindAllPage{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindAllPage() { }
 
         /// <summary>
-        /// 提供分页数据，初始化一个 <see cref="CMD.FindAllPage&lt;TEntity, TView&gt;"/> 类的新实例。
+        /// 提供分页数据，初始化一个 <see cref="CMD.FindAllPage{TEntity, TView}"/> 类的新实例。
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。默认为 10。</param>
@@ -429,11 +429,11 @@ namespace CMD
     public class Exists<TEntity> : FindOne<bool>
     {
         /// <summary>
-        /// 初始化一个 <see cref="CMD.Exists&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.Exists{TEntity}"/> 类的新实例。
         /// </summary>
         public Exists() { }
         /// <summary>
-        /// 提供实体主键的列值，初始化一个 <see cref="CMD.Exists&lt;TEntity&gt;"/> 类的新实例。
+        /// 提供实体主键的列值，初始化一个 <see cref="CMD.Exists{TEntity}"/> 类的新实例。
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public Exists(object keyValue) : base(keyValue) { }
@@ -461,7 +461,7 @@ namespace CMD
         /// </summary>
         public bool ResultValue { get; set; }
         /// <summary>
-        /// 初始化一个 <see cref="CMD.ExistsWhere&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.ExistsWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public ExistsWhere() { }
     }
@@ -490,7 +490,7 @@ namespace CMD
         public long ResultValue { get; set; }
 
         /// <summary>
-        /// 初始化一个 <see cref="CMD.RowCount&lt;TEntity&gt;"/> 类的新实例。
+        /// 初始化一个 <see cref="CMD.RowCount{TEntity}"/> 类的新实例。
         /// </summary>
         public RowCount() { }
     }

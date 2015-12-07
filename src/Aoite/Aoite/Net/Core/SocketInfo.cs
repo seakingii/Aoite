@@ -52,7 +52,7 @@ namespace Aoite.Net
         /// <summary>
         /// 创建一个 <see cref="Socket"/>。
         /// </summary>
-        /// <returns>返回一个 <see cref="Socket"/>。</returns>
+        /// <returns>一个 <see cref="Socket"/>。</returns>
         public Socket CreateSocket()
         {
             var socket = new Socket(this._EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -70,7 +70,7 @@ namespace Aoite.Net
         /// 将指定的端口隐式转换为 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="port">主机端口。</param>
-        /// <returns>返回一个 <see cref="SocketInfo"/> 类的新实例。</returns>
+        /// <returns>一个 <see cref="SocketInfo"/> 类的新实例。</returns>
         public static implicit operator SocketInfo(int port)
         {
             return new SocketInfo(null, port);
@@ -80,7 +80,7 @@ namespace Aoite.Net
         /// 将指定的网络端点隐式转换为 <see cref="SocketInfo"/> 类的新实例。
         /// </summary>
         /// <param name="endPoint">网络端点。</param>
-        /// <returns>返回一个 <see cref="SocketInfo"/> 类的新实例。</returns>
+        /// <returns>一个 <see cref="SocketInfo"/> 类的新实例。</returns>
         public static implicit operator SocketInfo(IPEndPoint endPoint)
         {
             return new SocketInfo(endPoint);

@@ -13,7 +13,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">键的数组。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result Watch(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -28,7 +28,7 @@ namespace System
         /// <para>因为 EXEC 命令会执行事务，因此 WATCH 命令的效果已经产生了；而 DISCARD 命令在取消事务的同时也会取消所有对 key 的监视，因此这两个命令执行之后，就没有必要执行 UNWATCH 了。</para>
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>返回一个结果。</returns>
+        /// <returns>一个结果。</returns>
         public static Result Unwatch(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
