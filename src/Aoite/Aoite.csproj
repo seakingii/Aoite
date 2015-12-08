@@ -295,6 +295,7 @@
     <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
     <Compile Include="Aoite\Dbx\ExecuteType.cs" />
     <Compile Include="Aoite\Dbx\Executor.cs" />
+    <Compile Include="Aoite\Dbx\IBuilder.cs" />
     <Compile Include="Aoite\Dbx\IEngine.cs" />
     <Compile Include="Aoite\Dbx\IEngineProvider.cs" />
     <Compile Include="Aoite\Dbx\IExecuteParameter.cs" />
