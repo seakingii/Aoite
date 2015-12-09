@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     /// <summary>
     /// 定义一个数据源交互的执行命令参数。

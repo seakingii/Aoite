@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     /// <summary>
     /// 表示一个数据源交互的执行命令参数集合。
@@ -134,7 +134,7 @@ namespace Aoite.Dbx
         /// <param name="objectInstance">一个任意对象。</param>
         public ExecuteParameterCollection Parse(object objectInstance)
         {
-            if(objectInstance != null) return this;
+            if(objectInstance == null) return this;
             if(objectInstance is IExecuteParameter)
             {
                 this.Add(objectInstance as IExecuteParameter);

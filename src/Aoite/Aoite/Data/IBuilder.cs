@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     /// <summary>
     /// 定义一个 SQL 语句生成的实现。
     /// </summary>
-    public interface IBuilder
+    public interface IBuilder : IDbExecutor
     {
         /// <summary>
         /// 获取查询命令的 Transact-SQL 查询字符串。
@@ -23,6 +24,19 @@ namespace Aoite.Dbx
         /// </summary>
         /// <returns>执行数据源查询与交互的执行器。</returns>
         ExecuteCommand End();
+
+        /// <summary>
+        /// 添加 ORDER BY 的字段。
+        /// </summary>
+        /// <param name="fields">字段的集合。</param>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
+        ISelect OrderBy(params string[] fields);
+        /// <summary>
+        /// 添加 GROUP BY 的字段。
+        /// </summary>
+        /// <param name="fields">字段的集合。</param>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
+        ISelect GroupBy(params string[] fields);
     }
 
     /// <summary>
@@ -227,11 +241,11 @@ namespace Aoite.Dbx
         IWhere OrNotIn<T>(string fieldName, string namePrefix, T[] values);
     }
 
-    internal class Builder : ISelect, IWhere
+    internal class SqlBuilder : ISelect, IWhere, IDbExecutor
     {
         private string _fromTables;
         private List<string> _select, _orderby, _groupby;
-        private IEngine _engine;
+        private IDbEngine _engine;
         private StringBuilder _whereBuilder;
 
         private ExecuteParameterCollection _parameters;
@@ -273,15 +287,19 @@ namespace Aoite.Dbx
             }
         }
 
+        IDbEngine IDbExecutor.Engine { get { return this._engine; } }
+
+        ExecuteCommand IDbExecutor.Command { get { return this.End(); } }
+
+        internal SqlBuilder(IDbEngine engine)
+        {
+            this._engine = engine;
+        }
+
         public ExecuteCommand End()
         {
             if(this._parameters != null) return new ExecuteCommand(this.Text, this._parameters);
             return new ExecuteCommand(this.Text);
-        }
-
-        internal Builder(IEngine engine)
-        {
-            this._engine = engine;
         }
 
         private void AppendFields(StringBuilder builder, string[] fields)
@@ -295,7 +313,7 @@ namespace Aoite.Dbx
             }
         }
 
-        ISelect ISelect.Select(params string[] fields)
+        public ISelect Select(params string[] fields)
         {
             if(fields == null || fields.Length == 0) return this;
             if(this._select == null) this._select = new List<string>(fields.Length);
@@ -303,15 +321,18 @@ namespace Aoite.Dbx
             return this;
         }
 
-        ISelect ISelect.From(string fromTables)
+        public ISelect From(string fromTables)
         {
             this._fromTables = fromTables;
             return this;
         }
 
 
-        public IWhere Where() => this;
-
+        public IWhere Where()
+        {
+            if(_whereBuilder == null) _whereBuilder = new StringBuilder();
+            return this;
+        }
         public IWhere Where(string expression) => this.Where().And(expression);
 
 
@@ -346,7 +367,7 @@ namespace Aoite.Dbx
             return this;
         }
 
-        public Builder Parameter(string name, object value)
+        public SqlBuilder Parameter(string name, object value)
         {
             this.Parameters.Add(name, value);
             return this;
@@ -360,9 +381,9 @@ namespace Aoite.Dbx
         public IWhere Or() => this._whereBuilder.Length > 0 ? this.Sql(" OR ") : this;
 
 
-        private Builder Append(string expression, string name, object value) => (Builder)this.Sql(expression).Parameter(name, value);
+        private SqlBuilder Append(string expression, string name, object value) => (SqlBuilder)this.Sql(expression).Parameter(name, value);
 
-        private Builder Append<T>(string fieldName, string namePrefix, T[] values)
+        private SqlBuilder Append<T>(string fieldName, string namePrefix, T[] values)
         {
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
@@ -379,7 +400,7 @@ namespace Aoite.Dbx
             return this;
         }
 
-        private Builder Append<T>(bool isNotIn, string fieldName, string namePrefix, T[] values)
+        private SqlBuilder Append<T>(bool isNotIn, string fieldName, string namePrefix, T[] values)
         {
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
             this.Sql(fieldName)
@@ -457,5 +478,40 @@ namespace Aoite.Dbx
             this.Or();
             return this.Append(true, fieldName, namePrefix, values);
         }
+
+        private IDbExecutor CreateExecutor() => this._engine.Execute(this.End());
+
+        DataSet IDbExecutor.ToDataSet() => this.CreateExecutor().ToDataSet();
+
+        TDataSet IDbExecutor.ToDataSet<TDataSet>() => this.CreateExecutor().ToDataSet<TDataSet>();
+
+        List<dynamic> IDbExecutor.ToEntities() => this.CreateExecutor().ToEntities();
+
+
+        PageData<dynamic> IDbExecutor.ToEntities(int pageNumber, int pageSize) => this.CreateExecutor().ToEntities(pageNumber, pageSize);
+
+        List<TEntity> IDbExecutor.ToEntities<TEntity>() => this.CreateExecutor().ToEntities<TEntity>();
+
+
+        PageData<TEntity> IDbExecutor.ToEntities<TEntity>(int pageNumber, int pageSize) => this.CreateExecutor().ToEntities<TEntity>(pageNumber, pageSize);
+
+        dynamic IDbExecutor.ToEntity() => this.CreateExecutor().ToEntity();
+
+        TEntity IDbExecutor.ToEntity<TEntity>() => this.CreateExecutor().ToEntity<TEntity>();
+
+        int IDbExecutor.ToNonQuery() => this.CreateExecutor().ToNonQuery();
+
+        void IDbExecutor.ToReader(ExecuteReaderHandler callback) => this.CreateExecutor().ToReader(callback);
+
+        TValue IDbExecutor.ToReader<TValue>(ExecuteReaderHandler<TValue> callback) => this.CreateExecutor().ToReader(callback);
+
+        object IDbExecutor.ToScalar() => this.CreateExecutor().ToScalar();
+
+        TValue IDbExecutor.ToScalar<TValue>() => this.CreateExecutor().ToScalar<TValue>();
+
+        PageTable IDbExecutor.ToTable() => this.CreateExecutor().ToTable();
+
+
+        PageTable IDbExecutor.ToTable(int pageNumber, int pageSize) => this.CreateExecutor().ToTable(pageNumber, pageSize);
     }
 }

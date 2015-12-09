@@ -22,32 +22,7 @@ namespace System.Collections.Generic
             if(collection == null) throw new ArgumentNullException(nameof(collection));
             return new PageData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
-
-        /// <summary>
-        /// 将指定的集合转换为数据表格。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="collection">集合。</param>
-        /// <param name="totalCount">数据的总行数。</param>
-        /// <returns>一张表。</returns>
-        public static PageTable ToTable<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
-        {
-            if(collection == null) throw new ArgumentNullException(nameof(collection));
-            var mp = TypeMapper.Instance<TEntity>.Mapper;
-            PageTable table = new PageTable() { TableName = mp.Name };
-            foreach(var p in mp.Properties) table.Columns.Add(p.Name, p.Property.PropertyType);
-            table.BeginLoadData();
-            foreach(var item in collection)
-            {
-                var row = table.NewRow();
-                mp.From(item).To(row);
-                table.Rows.Add(row);
-            }
-            table.EndLoadData();
-            table.Total = totalCount > 0 ? totalCount : table.Rows.Count;
-            return table;
-        }
-
+        
         /// <summary>
         /// 获取与指定的键相关联的值。
         /// </summary>

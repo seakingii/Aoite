@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.Common;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     /// <summary>
     /// 表示一个数据源交互的简单执行命令参数。

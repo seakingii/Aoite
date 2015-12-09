@@ -8,13 +8,9 @@
         #region 框架类型
 
         /// <summary>
-        /// 表示 <see cref="Aoite.Data.DbEngineManager"/> 的类型。
-        /// </summary>
-        public static readonly Type DbEngineManager = typeof(Aoite.Data.DbEngineManager);
-        /// <summary>
         /// 表示 <see cref="IDbEngine"/> 的类型。
         /// </summary>
-        public static readonly Type IDbEngine = typeof(IDbEngine);
+        public static readonly Type IDbEngine = typeof(Aoite.Data.IDbEngine);
         /// <summary>
         /// 表示 <see cref="Result{TValue}"/> 的类型。
         /// </summary>

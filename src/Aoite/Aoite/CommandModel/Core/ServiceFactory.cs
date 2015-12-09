@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aoite.Data;
+using System;
 
 namespace Aoite.CommandModel
 {
@@ -72,11 +73,7 @@ namespace Aoite.CommandModel
                 mockFactoryCallback(executorFactory);
                 container.AddService<IExecutorFactory>(executorFactory);
             }
-            if(Db.Engine == null)
-            {
-                Lazy<IDbEngine> lazyEngine = new Lazy<IDbEngine>(() => new Aoite.Data.MsSqlEngine(""));
-                container.AddService<IDbEngine>(lmps => Db.Engine == null ? lazyEngine.Value : Db.Context);
-            }
+            if(Db.Engine != null) container.AddService<IDbEngine>(lmps => Db.Context);
             return container;
         }
 

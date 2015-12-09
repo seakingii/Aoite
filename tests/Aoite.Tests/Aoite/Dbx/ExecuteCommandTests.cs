@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     public class ExecuteCommandTests
     {

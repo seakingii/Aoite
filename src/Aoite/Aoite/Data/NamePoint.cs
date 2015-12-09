@@ -1,4 +1,4 @@
-﻿namespace Aoite.Dbx
+﻿namespace Aoite.Data
 {
     /// <summary>
     /// 定义在转义的名称位置。
@@ -16,10 +16,10 @@
         /// <summary>
         /// 表示一个查询命令字符串的参数名称。
         /// </summary>
-        CommandParameter,
+        Parameter,
         /// <summary>
         /// 表示一个查询命令参数集合的参数名称。
         /// </summary>
-        DeclareParameter,
+        Declare,
     }
 }

@@ -4,12 +4,12 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace Aoite.Dbx
+namespace Aoite.Data
 {
     /// <summary>
     /// 定义数据源查询与交互引擎的提供程序。
     /// </summary>
-    public interface IEngineProvider
+    public interface IDbEngineProvider
     {
         /// <summary>
         /// 获取用于创建提供程序对数据源类的实现的实例。

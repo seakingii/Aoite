@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aoite.Data;
+using System;
 using System.Collections.Specialized;
 
 namespace Aoite.CommandModel

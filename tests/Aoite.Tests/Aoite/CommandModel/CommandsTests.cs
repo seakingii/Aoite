@@ -35,7 +35,7 @@ namespace Aoite.CommandModel
             var command = new CMD.Add<Models.Member>(true) { Entity = model };
 
             Assert.Equal(1, this.Execute(command).ResultValue);
-            var r = GA.Compare(model, this.Context.FindOne<Models.Member>(1).UnsafeValue);
+            var r = GA.Compare(model, this.Context.FindOne<Models.Member>(1));
             Assert.Null(r);
         }
 
@@ -49,7 +49,7 @@ namespace Aoite.CommandModel
             var command = new CMD.Modify<Models.Member> { Entity = aEntity };
 
             Assert.Equal(1, this.Execute(command).ResultValue);
-            var member2 = this.Context.FindOne<Models.Member>(testId).UnsafeValue;
+            var member2 = this.Context.FindOne<Models.Member>(testId);
 
             Assert.Equal(aEntity.Username, member2.Username);
             Assert.Equal(aEntity.Password, member2.Password);
@@ -77,7 +77,7 @@ namespace Aoite.CommandModel
             var command = new CMD.Remove<Models.Member> { Entity = testId };
 
             Assert.Equal(1, this.Execute(command).ResultValue);
-            Assert.Equal(models.Length - 1, this.Context.RowCount<Models.Member>().UnsafeValue);
+            Assert.Equal(models.Length - 1, this.Context.RowCount<Models.Member>());
         }
         [Fact(DisplayName = "CMD.Remove - 批量")]
         public void Remove_Mutli()
@@ -87,7 +87,7 @@ namespace Aoite.CommandModel
             var command = new CMD.Remove<Models.Member> { Entity = models.RandomAny(2).Select(m => m.Id) };
 
             Assert.Equal(2, this.Execute(command).ResultValue);
-            Assert.Equal(8, this.Context.RowCount<Models.Member>().UnsafeValue);
+            Assert.Equal(8, this.Context.RowCount<Models.Member>());
         }
 
 

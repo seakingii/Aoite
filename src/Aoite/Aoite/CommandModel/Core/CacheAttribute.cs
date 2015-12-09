@@ -38,6 +38,7 @@ namespace Aoite.CommandModel
 
         void ICommandHandler<ICommand>.RaiseExecuted(IContext context, ICommand command, Exception exception)
         {
+            //- 存在异常则不进行缓存处理
             if(exception != null) return;
             var commandCache = command as ICommandCache;
             commandCache.CreateStrategy(context).SetCache(this._Group, commandCache.GetCacheValue());

@@ -161,146 +161,38 @@
       <DependentUpon>IRedisProvider.cs</DependentUpon>
     </Compile>
     <Compile Include="Aoite\CommandModel\Core\ServiceFactory.cs" />
-    <Compile Include="Aoite\Data\Attributes+EventArgs\ColumnAttribute.cs" />
-    <Compile Include="Aoite\Data\Attributes+EventArgs\TableAttribute.cs" />
-    <Compile Include="Aoite\Data\Builder\BuilderBase.cs">
-      <DependentUpon>IBuilder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Builder\IBuilder.cs" />
-    <Compile Include="Aoite\Data\Builder\ISelect.cs" />
-    <Compile Include="Aoite\Data\Builder\IWhere.cs" />
-    <Compile Include="Aoite\Data\Builder\SelectCommandBuilder.cs">
-      <DependentUpon>ISelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Builder\WhereCommandBuilder.cs">
-      <DependentUpon>IWhere.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\PageTable.cs">
+    <Compile Include="Aoite\Data\ColumnAttribute.cs" />
+    <Compile Include="Aoite\Data\DataReaderToObjectMapper.cs" />
+    <Compile Include="Aoite\Data\DataRowToObjectMapper.cs" />
+    <Compile Include="Aoite\Data\Db.cs" />
+    <Compile Include="Aoite\Data\Delegates.cs" />
+    <Compile Include="Aoite\Data\DynamicEntityValue.cs" />
+    <Compile Include="Aoite\Data\DbEngineProviderBase.cs" />
+    <Compile Include="Aoite\Data\ExecuteCommand.cs" />
+    <Compile Include="Aoite\Data\ExecuteParameter.cs" />
+    <Compile Include="Aoite\Data\ExecuteParameterCollection.cs" />
+    <Compile Include="Aoite\Data\ExecuteType.cs" />
+    <Compile Include="Aoite\Data\DbExecutor.cs" />
+    <Compile Include="Aoite\Data\IBuilder.cs" />
+    <Compile Include="Aoite\Data\IDbEngine.cs" />
+    <Compile Include="Aoite\Data\IDbEngineProvider.cs" />
+    <Compile Include="Aoite\Data\IExecuteParameter.cs" />
+    <Compile Include="Aoite\Data\IMapTo.cs" />
+    <Compile Include="Aoite\Data\IMapTo`1.cs" />
+    <Compile Include="Aoite\Data\IPagination.cs" />
+    <Compile Include="Aoite\Data\MapperBase`1.cs" />
+    <Compile Include="Aoite\Data\MsCeTestManager.cs" />
+    <Compile Include="Aoite\Data\MsSqlTestManager.cs" />
+    <Compile Include="Aoite\Data\NamePoint.cs" />
+    <Compile Include="Aoite\Data\ObjectToRowMapper.cs" />
+    <Compile Include="Aoite\Data\PageTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Aoite\Data\Core\BulkCopyArguments.cs" />
-    <Compile Include="Aoite\Data\Core\DefaultParameterSettings.cs" />
-    <Compile Include="Aoite\Data\Core\DynamicEntityValue.cs" />
-    <Compile Include="Aoite\Data\Core\ExecuteAbortException.cs" />
-    <Compile Include="Aoite\Data\Core\ExecuteCommand.cs" />
-    <Compile Include="Aoite\Data\Core\ExecuteType.cs" />
-    <Compile Include="Aoite\Data\Core\Handlers.cs" />
-    <Compile Include="Aoite\Data\Db\Db.cs" />
-    <Compile Include="Aoite\Data\Db\DbContext.cs" />
-    <Compile Include="Aoite\Data\Db\DbEngine.cs">
-      <DependentUpon>IDbEngine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Db\DbEngineManager.cs" />
-    <Compile Include="Aoite\Data\Db\DbEngineProvider.cs" />
-    <Compile Include="Aoite\Data\Db\Db~Extensions.cs">
-      <DependentUpon>Db.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Db\IDbEngine.cs" />
-    <Compile Include="Aoite\Data\Attributes+EventArgs\ExecutedEventArgs.cs" />
-    <Compile Include="Aoite\Data\Attributes+EventArgs\ExecutingEventArgs.cs" />
-    <Compile Include="Aoite\Data\Core\DefaultDbExecutor.cs">
-      <DependentUpon>IDbExecutor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\IDbExecutor.cs" />
-    <Compile Include="Aoite\Data\Core\DbInjectorBase.cs">
-      <DependentUpon>IDbInjector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\IDbInjector.cs" />
-    <Compile Include="Aoite\Data\Core\SqlCeDbInjector.cs">
-      <DependentUpon>IDbInjector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\SqlDbInjector.cs">
-      <DependentUpon>IDbInjector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\DataReaderToObjectMapper.cs">
-      <DependentUpon>IMapTo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\DataRowToObjectMapper.cs">
-      <DependentUpon>IMapTo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\IMapTo.cs" />
-    <Compile Include="Aoite\Data\Core\IMapTo`1.cs">
-      <DependentUpon>IMapTo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\MapperBase`1.cs">
-      <DependentUpon>IMapTo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\ObjectToRowMapper.cs">
-      <DependentUpon>IMapTo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\IPagination.cs" />
-    <Compile Include="Aoite\Data\Core\LimitPagination.cs">
-      <DependentUpon>IPagination.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\MsSqlCePaginationProcess.cs">
-      <DependentUpon>IPaginationProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\MsSqlPaginationProcess.cs">
-      <DependentUpon>IPaginationProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\OraclePagination.cs">
-      <DependentUpon>IPaginationProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\Pagination.cs">
-      <DependentUpon>IPagination.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\SQLitePagination.cs">
-      <DependentUpon>IPaginationProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\SqlPaginationProcessBase.cs">
-      <DependentUpon>IPaginationProcess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\ExecuteDbParameter.cs">
-      <DependentUpon>ExecuteParameter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\ExecuteParameter.cs" />
-    <Compile Include="Aoite\Data\Core\ExecuteParameterCollection.cs" />
-    <Compile Include="Aoite\Data\Core\IParameterAdorner.cs" />
-    <Compile Include="Aoite\Data\Profilers\DbProfiler.cs" />
-    <Compile Include="Aoite\Data\Profilers\ProfilerItem.cs" />
-    <Compile Include="Aoite\Data\Core\CanUpdateDbResultBase`1.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\DataSetResult`1.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\DbResult`1.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\ICanUpdateDbResult.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\IDbResult.cs" />
-    <Compile Include="Aoite\Data\Core\MsCeTestManager.cs">
-      <DependentUpon>TestManagerBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\MsSqlTestManager.cs">
-      <DependentUpon>TestManagerBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\SqlScriptsManager.cs">
-      <DependentUpon>TestManagerBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\TestManagerBase.cs" />
-    <Compile Include="Aoite\Data\Core\IDbResult`1.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Data\Core\TableResult.cs">
-      <DependentUpon>IDbResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Dbx\Delegates.cs" />
-    <Compile Include="Aoite\Dbx\DynamicEntityValue.cs" />
-    <Compile Include="Aoite\Dbx\EngineProviderBase.cs" />
-    <Compile Include="Aoite\Dbx\ExecuteCommand.cs" />
-    <Compile Include="Aoite\Dbx\ExecuteParameter.cs" />
-    <Compile Include="Aoite\Dbx\ExecuteParameterCollection.cs" />
-    <Compile Include="Aoite\Dbx\ExecuteType.cs" />
-    <Compile Include="Aoite\Dbx\Executor.cs" />
-    <Compile Include="Aoite\Dbx\IBuilder.cs" />
-    <Compile Include="Aoite\Dbx\IEngine.cs" />
-    <Compile Include="Aoite\Dbx\IEngineProvider.cs" />
-    <Compile Include="Aoite\Dbx\IExecuteParameter.cs" />
-    <Compile Include="Aoite\Dbx\NamePoint.cs" />
-    <Compile Include="Aoite\Dbx\SqlEngineProvider.cs" />
+    <Compile Include="Aoite\Data\Pagination.cs" />
+    <Compile Include="Aoite\Data\SqlEngineProvider.cs" />
+    <Compile Include="Aoite\Data\SqlScriptsManager.cs" />
+    <Compile Include="Aoite\Data\TableAttribute.cs" />
+    <Compile Include="Aoite\Data\TestManagerBase.cs" />
     <Compile Include="Aoite\Logger\ILogger.cs" />
     <Compile Include="Aoite\Logger\LoggerBase.cs">
       <DependentUpon>ILogger.cs</DependentUpon>
@@ -424,8 +316,7 @@
     <Compile Include="Aoite\Serialization\QuicklySerializer.cs" />
     <Compile Include="Aoite\Serialization\SerializerBase.cs" />
     <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
-    <Compile Include="Aoite\Data\Core\IPaginationProcess.cs" />
-    <Compile Include="Aoite\Dbx\IExecutor.cs" />
+    <Compile Include="Aoite\Data\IDbExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Attributes\AliasAttribute.cs">
       <DependentUpon>IAliasAttribute.cs</DependentUpon>
@@ -466,7 +357,7 @@
     <Compile Include="System\Core\ExceptionEventArgs.cs" />
     <Compile Include="System\Extensions\CollectionsExtensions.cs" />
     <Compile Include="System\Extensions\CommonExtensions.cs" />
-    <Compile Include="Aoite\Data\Db\DbExtensions.cs" />
+    <Compile Include="System\Extensions\DbExtensions.cs" />
     <Compile Include="System\Extensions\IocExtensions.cs" />
     <Compile Include="System\Extensions\IOExtensions.cs" />
     <Compile Include="System\Extensions\MapperExtensions.cs" />

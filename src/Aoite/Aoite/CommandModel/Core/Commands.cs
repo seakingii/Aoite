@@ -61,7 +61,7 @@ namespace CMD
     {
         public void Execute(IContext context, Add<TEntity> command)
         {
-            context.Engine.AddAnonymous<TEntity>(command.Entity).ThrowIfFailded();
+            context.Engine.AddAnonymous<TEntity>(command.Entity);
             if(command.IdentityKey)
                 command.ResultValue = context.Engine.GetLastIdentity<TEntity>().UnsafeValue;
         }
@@ -91,7 +91,7 @@ namespace CMD
     {
         public void Execute(IContext context, Modify<TEntity> command)
         {
-            command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity).UnsafeValue;
+            command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity);
         }
     }
 
@@ -126,8 +126,7 @@ namespace CMD
         {
             command.ResultValue = context.Engine.ModifyWhere<TEntity>(command.Entity
                 , command.WhereParameters.Where
-                , command.WhereParameters.Parameters)
-                .UnsafeValue;
+                , command.WhereParameters.Parameters);
         }
     }
 
@@ -155,7 +154,7 @@ namespace CMD
     {
         public void Execute(IContext context, Remove<TEntity> command)
         {
-            command.ResultValue = context.Engine.RemoveAnonymous<TEntity>(command.Entity).UnsafeValue;
+            command.ResultValue = context.Engine.RemoveAnonymous<TEntity>(command.Entity);
         }
     }
 
@@ -185,8 +184,7 @@ namespace CMD
         public void Execute(IContext context, RemoveWhere<TEntity> command)
         {
             command.ResultValue = context.Engine.RemoveWhere<TEntity>(command.WhereParameters.Where
-                , command.WhereParameters.Parameters)
-                .UnsafeValue;
+                , command.WhereParameters.Parameters);
         }
     }
 
@@ -199,7 +197,7 @@ namespace CMD
     {
         public void Execute(IContext context, TCommand command)
         {
-            command.ResultValue = context.Engine.FindOne<TEntity, TView>(command.KeyName, command.KeyValue).UnsafeValue;
+            command.ResultValue = context.Engine.FindOne<TEntity, TView>(command.KeyName, command.KeyValue);
         }
     }
 
@@ -263,7 +261,7 @@ namespace CMD
         public void Execute(IContext context, TCommand command)
         {
             command.ResultValue = context.Engine.FindOneWhere<TEntity, TView>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters).UnsafeValue;
+                command.WhereParameters.Parameters);
         }
     }
 
@@ -309,7 +307,7 @@ namespace CMD
         public void Execute(IContext context, TCommand command)
         {
             command.ResultValue = context.Engine.FindAllWhere<TEntity, TView>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters).UnsafeValue;
+                command.WhereParameters.Parameters);
         }
     }
 
@@ -356,7 +354,7 @@ namespace CMD
         {
             command.ResultValue = context.Engine.FindAllPage<TEntity, TView>(command.Page,
                 command.WhereParameters.Where,
-                command.WhereParameters.Parameters).UnsafeValue;
+                command.WhereParameters.Parameters);
         }
     }
 
@@ -442,7 +440,7 @@ namespace CMD
     {
         public void Execute(IContext context, Exists<TEntity> command)
         {
-            command.ResultValue = context.Engine.Exists<TEntity>(command.KeyName, command.KeyValue).UnsafeValue;
+            command.ResultValue = context.Engine.Exists<TEntity>(command.KeyName, command.KeyValue);
         }
     }
 
@@ -470,7 +468,7 @@ namespace CMD
         public void Execute(IContext context, ExistsWhere<TEntity> command)
         {
             command.ResultValue = context.Engine.ExistsWhere<TEntity>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters).UnsafeValue;
+                command.WhereParameters.Parameters);
         }
     }
 
@@ -499,7 +497,7 @@ namespace CMD
         public void Execute(IContext context, RowCount<TEntity> command)
         {
             command.ResultValue = context.Engine.RowCount<TEntity>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters).UnsafeValue;
+                command.WhereParameters.Parameters);
         }
     }
 

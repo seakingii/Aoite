@@ -60,11 +60,7 @@ namespace Aoite.CommandModel.Core
             var container = new IocContainer();
             var command = new SimpleCommand();
             var context = new Context(container, command);
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var s = context.Engine;
-                Assert.True(false, s.ToString());
-            });
+            Assert.Null(context.Engine);
         }
     }
 }

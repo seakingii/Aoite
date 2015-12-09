@@ -29,9 +29,6 @@ namespace Aoite.Serialization
         /// <param name="member">序列化的对象成员。</param>
         public void Serialize(object value, System.Reflection.MemberInfo member = null)
         {
-            if(value is Aoite.Data.IDbResult)
-                throw new NotSupportedException("请不要将数据源执行的结果（如：Aoite.Data.DbResult）直接序列化，因为其包含数据源连接的相关信息。");
-
             #region Null & DbNull & SuccessfullyResult
 
             if(value == null)

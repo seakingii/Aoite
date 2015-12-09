@@ -13,22 +13,7 @@ namespace Aoite.CommandModel
         private TestManagerBase _testManager;
         private ExecutorFactory _factory;
 
-        private DbEngineManager _Manager;
-        /// <summary>
-        /// 获取或设置当前运行环境的数据库操作引擎集合管理器。
-        /// </summary>
-        public DbEngineManager Manager
-        {
-            get { return this._Manager; }
-            set
-            {
-                this._Manager = value;
-                this._Engine = value["Default"];
-                this._Readonly = value["Readonly"];
-            }
-        }
-
-        private DbEngine _Engine;
+         private DbEngine _Engine;
         /// <summary>
         /// 获取当前运行环境的数据库操作引擎的实例。
         /// </summary>
@@ -37,14 +22,8 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 获取当前运行环境的数据库操作引擎的实例。
         /// </summary>
-        public DbContext Context { get { return this._Engine == null ? null : this._Engine.Context; } }
-
-        private DbEngine _Readonly;
-        /// <summary>
-        /// 获取当前运行环境的数据库操作引擎的只读实例。
-        /// </summary>
-        public DbEngine Readonly { get { return this._Readonly; } }
-
+        public IDbContext Context { get { return this._Engine?.Context; } }
+        
         /// <summary>
         /// 获取一个值，指示当前上下文在线程中是否已创建。
         /// </summary>
@@ -103,7 +82,7 @@ namespace Aoite.CommandModel
                 {
                     var model = GA.CreateMockModel<TModel>();
                     if(before != null) before(model);
-                    context.Add(model).ThrowIfFailded();
+                    context.Add(model);
                     if(after != null) after(model);
                     models[i] = model;
                 }
@@ -137,18 +116,19 @@ namespace Aoite.CommandModel
             this._factory = new ExecutorFactory(container);
             var type = this.GetType();
             var db = type.GetAttribute<DbAttribute>();
-            var provider = db == null ? DbEngineProvider.MicrosoftSqlServerCompact : db.Provider;
+            var provider = db == null ? "ce" : db.Provider;
+
             switch(provider)
             {
-                case DbEngineProvider.MicrosoftSqlServer:
+                case "sql":
                     this._testManager = new MsSqlTestManager();
                     break;
                 default:
                     this._testManager = new MsCeTestManager();
                     break;
             }
-            Manager = this._testManager.Manager;
-            container.AddService(this.Manager);
+            this._Engine = this._testManager.Engine;
+
             container.AddService<IDbEngine>(lmps => this.Context);
 
             var classScripts = this.GetType().GetAttribute<ScriptsAttribute>();
@@ -169,17 +149,17 @@ namespace Aoite.CommandModel
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class DbAttribute : Attribute
     {
-        private DbEngineProvider _Provider;
+        private string _Provider;
         /// <summary>
         /// 获取数据源查询与交互引擎的提供程序。
         /// </summary>
-        public DbEngineProvider Provider { get { return _Provider; } }
+        public string Provider { get { return _Provider; } }
 
         /// <summary>
         /// 初始化 <see cref="DbAttribute"/> 类的新实例。
         /// </summary>
         /// <param name="provider">数据源查询与交互引擎的提供程序。</param>
-        public DbAttribute(DbEngineProvider provider)
+        public DbAttribute(string provider)
         {
             this._Provider = provider;
         }
