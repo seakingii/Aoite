@@ -10,6 +10,15 @@ namespace Aoite.Data
     public interface IDbExecutor
     {
         /// <summary>
+        /// 在引擎执行命令时发生。
+        /// </summary>
+        event ExecutingEventHandler Executing;
+        /// <summary>
+        /// 在引擎执行命令后发生。
+        /// </summary>
+        event ExecutedEventHandler Executed;
+
+        /// <summary>
         /// 获取数据源查询与交互引擎的实例。
         /// </summary>
         IDbEngine Engine { get; }
@@ -17,6 +26,20 @@ namespace Aoite.Data
         /// 获取执行的命令。
         /// </summary>
         ExecuteCommand Command { get; }
+
+        /// <summary>
+        /// 订阅命令执行前的事件。
+        /// </summary>
+        /// <param name="callback">事件的回调函数。</param>
+        /// <returns>当前 <see cref="IDbExecutor"/></returns>
+        IDbExecutor SubExecuting(ExecutingEventHandler callback);
+        /// <summary>
+        /// 订阅命令执行后的事件。
+        /// </summary>
+        /// <param name="callback">事件的回调函数。</param>
+        /// <returns>当前 <see cref="IDbExecutor"/></returns>
+        IDbExecutor SubExecuted(ExecutedEventHandler callback);
+
         /// <summary>
         /// 执行查询命令，并返回数据集。
         /// </summary>
@@ -53,7 +76,7 @@ namespace Aoite.Data
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
         /// <returns>一个包含总记录数的实体集合。</returns>
-        PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10); 
+        PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10);
         /// <summary>
         /// 执行查询命令，并返回匿名实体。
         /// </summary>

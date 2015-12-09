@@ -9,7 +9,7 @@ namespace Aoite.Data
     /// <summary>
     /// 定义一个 SQL 语句生成的实现。
     /// </summary>
-    public interface IBuilder : IDbExecutor
+    public interface IBuilder
     {
         /// <summary>
         /// 获取查询命令的 Transact-SQL 查询字符串。
@@ -24,7 +24,11 @@ namespace Aoite.Data
         /// </summary>
         /// <returns>执行数据源查询与交互的执行器。</returns>
         ExecuteCommand End();
-
+        /// <summary>
+        /// 编译并执行当前 SQL 语句生成。
+        /// </summary>
+        /// <returns>数据源查询与交互的执行器。</returns>
+        IDbExecutor Execute();
         /// <summary>
         /// 添加 ORDER BY 的字段。
         /// </summary>
@@ -241,7 +245,7 @@ namespace Aoite.Data
         IWhere OrNotIn<T>(string fieldName, string namePrefix, T[] values);
     }
 
-    internal class SqlBuilder : ISelect, IWhere, IDbExecutor
+    internal class SqlBuilder : ISelect, IWhere
     {
         private string _fromTables;
         private List<string> _select, _orderby, _groupby;
@@ -286,10 +290,6 @@ namespace Aoite.Data
                 return builder.ToString();
             }
         }
-
-        IDbEngine IDbExecutor.Engine { get { return this._engine; } }
-
-        ExecuteCommand IDbExecutor.Command { get { return this.End(); } }
 
         internal SqlBuilder(IDbEngine engine)
         {
@@ -479,39 +479,6 @@ namespace Aoite.Data
             return this.Append(true, fieldName, namePrefix, values);
         }
 
-        private IDbExecutor CreateExecutor() => this._engine.Execute(this.End());
-
-        DataSet IDbExecutor.ToDataSet() => this.CreateExecutor().ToDataSet();
-
-        TDataSet IDbExecutor.ToDataSet<TDataSet>() => this.CreateExecutor().ToDataSet<TDataSet>();
-
-        List<dynamic> IDbExecutor.ToEntities() => this.CreateExecutor().ToEntities();
-
-
-        PageData<dynamic> IDbExecutor.ToEntities(int pageNumber, int pageSize) => this.CreateExecutor().ToEntities(pageNumber, pageSize);
-
-        List<TEntity> IDbExecutor.ToEntities<TEntity>() => this.CreateExecutor().ToEntities<TEntity>();
-
-
-        PageData<TEntity> IDbExecutor.ToEntities<TEntity>(int pageNumber, int pageSize) => this.CreateExecutor().ToEntities<TEntity>(pageNumber, pageSize);
-
-        dynamic IDbExecutor.ToEntity() => this.CreateExecutor().ToEntity();
-
-        TEntity IDbExecutor.ToEntity<TEntity>() => this.CreateExecutor().ToEntity<TEntity>();
-
-        int IDbExecutor.ToNonQuery() => this.CreateExecutor().ToNonQuery();
-
-        void IDbExecutor.ToReader(ExecuteReaderHandler callback) => this.CreateExecutor().ToReader(callback);
-
-        TValue IDbExecutor.ToReader<TValue>(ExecuteReaderHandler<TValue> callback) => this.CreateExecutor().ToReader(callback);
-
-        object IDbExecutor.ToScalar() => this.CreateExecutor().ToScalar();
-
-        TValue IDbExecutor.ToScalar<TValue>() => this.CreateExecutor().ToScalar<TValue>();
-
-        PageTable IDbExecutor.ToTable() => this.CreateExecutor().ToTable();
-
-
-        PageTable IDbExecutor.ToTable(int pageNumber, int pageSize) => this.CreateExecutor().ToTable(pageNumber, pageSize);
+        public IDbExecutor Execute() => this._engine.Execute(this.End());
     }
 }

@@ -55,12 +55,47 @@ namespace Aoite.Data
         protected virtual void Close() => this._connection.TryClose();
 
         /// <summary>
+        /// 在引擎执行命令时发生。
+        /// </summary>
+        public event ExecutingEventHandler Executing;
+        /// <summary>
+        /// 在引擎执行命令后发生。
+        /// </summary>
+        public event ExecutedEventHandler Executed;
+
+        /// <summary>
+        /// 订阅命令执行前的事件。
+        /// </summary>
+        /// <param name="callback">事件的回调函数。</param>
+        /// <returns>当前 <see cref="IDbExecutor"/></returns>
+        public IDbExecutor SubExecuting(ExecutingEventHandler callback)
+        {
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
+
+            Executing += callback;
+            return this;
+        }
+        /// <summary>
+        /// 订阅命令执行后的事件。
+        /// </summary>
+        /// <param name="callback">事件的回调函数。</param>
+        /// <returns>当前 <see cref="IDbExecutor"/></returns>
+        public IDbExecutor SubExecuted(ExecutedEventHandler callback)
+        {
+            if(callback == null) throw new ArgumentNullException(nameof(callback));
+
+            Executed += callback;
+            return this;
+        }
+
+        /// <summary>
         /// 命令执行时发生。
         /// </summary>
         /// <param name="type">执行的命令类型。</param>
         /// <param name="dbCommand">执行的 <see cref="DbCommand"/>。</param>
         protected virtual void OnExecuting(ExecuteType type, DbCommand dbCommand)
         {
+            this.Executing?.Invoke(this.Engine, this.Command.GetEventArgs(type, dbCommand, null));
             this.Engine.Owner.OnExecuting(this.Engine, type, this.Command, dbCommand);
         }
 
@@ -68,11 +103,12 @@ namespace Aoite.Data
         /// 命令执行后发生。
         /// </summary>
         /// <param name="type">执行的命令类型。</param>
-        /// <param name="value">执行的返回结果。</param>
+        /// <param name="result">执行的返回结果。</param>
         /// <param name="dbCommand">执行的 <see cref="DbCommand"/>。</param>
-        protected virtual void OnExecuted(ExecuteType type, DbCommand dbCommand, object value)
+        protected virtual void OnExecuted(ExecuteType type, DbCommand dbCommand, object result)
         {
-            this.Engine.Owner.OnExecuted(this.Engine, type, this.Command, dbCommand, value);
+            this.Executed?.Invoke(this.Engine, this.Command.GetEventArgs(type, dbCommand, result));
+            this.Engine.Owner.OnExecuted(this.Engine, type, this.Command, dbCommand, result);
         }
 
         /// <summary>
@@ -86,7 +122,6 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="command">执行的命令。</param>
         /// <returns>一个关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:检查 SQL 查询是否存在安全漏洞")]
         protected virtual DbCommand CreateDbCommand(ExecuteCommand command)
         {
             var dbCommand = this.Engine.Provider.DbFactory.CreateCommand();
