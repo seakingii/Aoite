@@ -26,8 +26,8 @@ namespace CMD
         /// 设置一个 WHERE 的条件参数。
         /// </summary>
         public WhereParameters WhereParameters { get { return this._WhereParameters; } set { this._WhereParameters = value ?? new WhereParameters(); } }
-
     }
+
 
     #region Add
 
@@ -55,16 +55,17 @@ namespace CMD
         /// </summary>
         /// <param name="identityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
         public Add(bool identityKey) { this.IdentityKey = identityKey; }
-    }
 
-    class AddExecutor<TEntity> : IExecutor<Add<TEntity>>
-    {
-        public void Execute(IContext context, Add<TEntity> command)
+        class Executor : IExecutor<Add<TEntity>>
         {
-            context.Engine.AddAnonymous<TEntity>(command.Entity);
-            if(command.IdentityKey)
-                command.ResultValue = context.Engine.GetLastIdentity<TEntity>().UnsafeValue;
+            public void Execute(IContext context, Add<TEntity> command)
+            {
+                context.Engine.AddAnonymous<TEntity>(command.Entity);
+                if(command.IdentityKey)
+                    command.ResultValue = context.Engine.GetLastIdentity<TEntity>().UnsafeValue;
+            }
         }
+
     }
 
     #endregion
@@ -85,13 +86,12 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.Modify{TEntity}"/> 类的新实例。
         /// </summary>
         public Modify() { }
-    }
-
-    class ModifyExecutor<TEntity> : IExecutor<Modify<TEntity>>
-    {
-        public void Execute(IContext context, Modify<TEntity> command)
+        class Executor : IExecutor<Modify<TEntity>>
         {
-            command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity);
+            public void Execute(IContext context, Modify<TEntity> command)
+            {
+                command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity);
+            }
         }
     }
 
@@ -118,15 +118,14 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.ModifyWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public ModifyWhere() { }
-    }
-
-    class ModifyWhereExecutor<TEntity> : IExecutor<ModifyWhere<TEntity>>
-    {
-        public void Execute(IContext context, ModifyWhere<TEntity> command)
+        class Executor : IExecutor<ModifyWhere<TEntity>>
         {
-            command.ResultValue = context.Engine.ModifyWhere<TEntity>(command.Entity
-                , command.WhereParameters.Where
-                , command.WhereParameters.Parameters);
+            public void Execute(IContext context, ModifyWhere<TEntity> command)
+            {
+                command.ResultValue = context.Engine.ModifyWhere<TEntity>(command.Entity
+                    , command.WhereParameters.Where
+                    , command.WhereParameters.Parameters);
+            }
         }
     }
 
@@ -148,16 +147,15 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.Remove{TEntity}"/> 类的新实例。
         /// </summary>
         public Remove() { }
-    }
 
-    class RemoveExecutor<TEntity> : IExecutor<Remove<TEntity>>
-    {
-        public void Execute(IContext context, Remove<TEntity> command)
+        class Executor : IExecutor<Remove<TEntity>>
         {
-            command.ResultValue = context.Engine.RemoveAnonymous<TEntity>(command.Entity);
+            public void Execute(IContext context, Remove<TEntity> command)
+            {
+                command.ResultValue = context.Engine.RemoveAnonymous<TEntity>(command.Entity);
+            }
         }
     }
-
 
     #endregion
 
@@ -177,14 +175,13 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.RemoveWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public RemoveWhere() { }
-    }
-
-    class RemoveWhereExecutor<TEntity> : IExecutor<RemoveWhere<TEntity>>
-    {
-        public void Execute(IContext context, RemoveWhere<TEntity> command)
+        class Executor : IExecutor<RemoveWhere<TEntity>>
         {
-            command.ResultValue = context.Engine.RemoveWhere<TEntity>(command.WhereParameters.Where
-                , command.WhereParameters.Parameters);
+            public void Execute(IContext context, RemoveWhere<TEntity> command)
+            {
+                command.ResultValue = context.Engine.RemoveWhere<TEntity>(command.WhereParameters.Where
+                    , command.WhereParameters.Parameters);
+            }
         }
     }
 
@@ -216,8 +213,9 @@ namespace CMD
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public FindOne(object keyValue) : base(keyValue) { }
+
+        class Executor : FindOneExecutorBase<TEntity, TEntity, FindOne<TEntity>> { }
     }
-    class FindOneExecutor<TEntity> : FindOneExecutorBase<TEntity, TEntity, FindOne<TEntity>> { }
 
     /// <summary>
     /// 表示一个查找单项的命令模型。
@@ -248,8 +246,10 @@ namespace CMD
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public FindOne(object keyValue) { this.KeyValue = keyValue; }
+
+        class Executor : FindOneExecutorBase<TEntity, TView, FindOne<TEntity, TView>> { }
+
     }
-    class FindOneExecutor<TEntity, TView> : FindOneExecutorBase<TEntity, TView, FindOne<TEntity, TView>> { }
 
     #endregion
 
@@ -275,8 +275,9 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.FindOneWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public FindOneWhere() { }
+
+        class Executor : FindOneWhereExecutorBase<TEntity, TEntity, FindOneWhere<TEntity>> { }
     }
-    class FindOneWhereExecutor<TEntity> : FindOneWhereExecutorBase<TEntity, TEntity, FindOneWhere<TEntity>> { }
 
     /// <summary>
     /// 表示一个查找单项、返回结果为视图类型的命令模型。
@@ -294,8 +295,8 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.FindOneWhere{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindOneWhere() { }
+        class Executor : FindOneWhereExecutorBase<TEntity, TView, FindOneWhere<TEntity, TView>> { }
     }
-    class FindOneWhereExecutor<TEntity, TView> : FindOneWhereExecutorBase<TEntity, TView, FindOneWhere<TEntity, TView>> { }
 
     #endregion
 
@@ -321,8 +322,9 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.FindAllWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public FindAllWhere() { }
+
+        class Executor : FindAllWhereExecutorBase<TEntity, TEntity, FindAllWhere<TEntity>> { }
     }
-    class FindAllWhereExecutor<TEntity> : FindAllWhereExecutorBase<TEntity, TEntity, FindAllWhere<TEntity>> { }
 
     /// <summary>
     /// 表示一个查找多项、返回结果为视图类型的命令模型。
@@ -339,9 +341,9 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.FindAllWhere{TEntity, TView}"/> 类的新实例。
         /// </summary>
         public FindAllWhere() { }
+
+        class Executor : FindAllWhereExecutorBase<TEntity, TView, FindAllWhere<TEntity, TView>> { }
     }
-    class FindAllWhereExecutor<TEntity, TView>
-        : FindAllWhereExecutorBase<TEntity, TView, FindAllWhere<TEntity, TView>> { }
 
     #endregion
 
@@ -378,8 +380,9 @@ namespace CMD
         {
             this.Page = new Pagination(pageNumber, pageSize);
         }
+
+        class Executor : FindAllPageExecutorBase<TEntity, TEntity, FindAllPage<TEntity>> { }
     }
-    class FindAllPageExecutor<TEntity> : FindAllPageExecutorBase<TEntity, TEntity, FindAllPage<TEntity>> { }
 
     /// <summary>
     /// 表示一个以分页方式查找多项、返回结果为视图类型的命令模型。
@@ -412,9 +415,10 @@ namespace CMD
         {
             this.Page = new Pagination(pageNumber, pageSize);
         }
+
+        class Executor : FindAllPageExecutorBase<TEntity, TView, FindAllPage<TEntity, TView>> { }
+
     }
-    class FindAllPageExecutor<TEntity, TView>
-        : FindAllPageExecutorBase<TEntity, TView, FindAllPage<TEntity, TView>> { }
 
     #endregion
 
@@ -435,12 +439,13 @@ namespace CMD
         /// </summary>
         /// <param name="keyValue">主键的列值。</param>
         public Exists(object keyValue) : base(keyValue) { }
-    }
-    class ExistsExecutor<TEntity> : IExecutor<Exists<TEntity>>
-    {
-        public void Execute(IContext context, Exists<TEntity> command)
+
+        class Executor : IExecutor<Exists<TEntity>>
         {
-            command.ResultValue = context.Engine.Exists<TEntity>(command.KeyName, command.KeyValue);
+            public void Execute(IContext context, Exists<TEntity> command)
+            {
+                command.ResultValue = context.Engine.Exists<TEntity>(command.KeyName, command.KeyValue);
+            }
         }
     }
 
@@ -462,13 +467,14 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.ExistsWhere{TEntity}"/> 类的新实例。
         /// </summary>
         public ExistsWhere() { }
-    }
-    class ExistsWhereExecutor<TEntity> : IExecutor<ExistsWhere<TEntity>>
-    {
-        public void Execute(IContext context, ExistsWhere<TEntity> command)
+
+        class Executor : IExecutor<ExistsWhere<TEntity>>
         {
-            command.ResultValue = context.Engine.ExistsWhere<TEntity>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters);
+            public void Execute(IContext context, ExistsWhere<TEntity> command)
+            {
+                command.ResultValue = context.Engine.ExistsWhere<TEntity>(command.WhereParameters.Where,
+                    command.WhereParameters.Parameters);
+            }
         }
     }
 
@@ -491,13 +497,14 @@ namespace CMD
         /// 初始化一个 <see cref="CMD.RowCount{TEntity}"/> 类的新实例。
         /// </summary>
         public RowCount() { }
-    }
-    class RowCountExecutor<TEntity> : IExecutor<RowCount<TEntity>>
-    {
-        public void Execute(IContext context, RowCount<TEntity> command)
+
+        class Executor : IExecutor<RowCount<TEntity>>
         {
-            command.ResultValue = context.Engine.RowCount<TEntity>(command.WhereParameters.Where,
-                command.WhereParameters.Parameters);
+            public void Execute(IContext context, RowCount<TEntity> command)
+            {
+                command.ResultValue = context.Engine.RowCount<TEntity>(command.WhereParameters.Where,
+                    command.WhereParameters.Parameters);
+            }
         }
     }
 

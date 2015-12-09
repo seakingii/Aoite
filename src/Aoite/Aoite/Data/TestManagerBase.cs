@@ -9,7 +9,7 @@ namespace Aoite.Data
     public abstract class TestManagerBase : ObjectDisposableBase
     {
         /// <summary>
-        /// 初始化一个 <see cref="Aoite.Data.TestManagerBase"/> 类的新实例。
+        /// 初始化一个 <see cref="TestManagerBase"/> 类的新实例。
         /// </summary>
         public TestManagerBase()
         {

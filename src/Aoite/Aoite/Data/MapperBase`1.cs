@@ -56,5 +56,4 @@ namespace Aoite.Data
             pMapper.SetValue(ToValue, value);
         }
     }
-
 }

@@ -63,108 +63,62 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aoite\AoiteInfo.cs" />
-    <Compile Include="Aoite\CommandModel\Core\CacheAttribute.cs">
-      <DependentUpon>IExecutorAttribute.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\BindingExecutorAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CacheAttribute.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandBus.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBase.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Context.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ContextFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\EventStore.cs" />
+    <Compile Include="Aoite\CommandModel\Core\Event`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ExecutorFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\ICommand`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IEvent`1.cs" />
     <Compile Include="Aoite\CommandModel\Core\IExecutorAttribute.cs" />
     <Compile Include="Aoite\CommandModel\Core\Commands.cs" />
-    <Compile Include="Aoite\CommandModel\Core\CommandBus.cs">
-      <DependentUpon>ICommandBus.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBase.cs" />
-    <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBase.cs">
-      <DependentUpon>ICommandModelService.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\Context.cs">
-      <DependentUpon>IContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\ContextFactory.cs">
-      <DependentUpon>IContextFactory.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\Delegates.cs" />
-    <Compile Include="Aoite\CommandModel\Core\EventStore.cs">
-      <DependentUpon>IEventStore.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\Event`1.cs">
-      <DependentUpon>IEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\ExecutorFactory.cs">
-      <DependentUpon>IExecutorFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs">
-      <DependentUpon>IExecutorMetadata.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\ICommand.cs" />
     <Compile Include="Aoite\CommandModel\Core\ICommandBus.cs" />
     <Compile Include="Aoite\CommandModel\Core\ICommandModelService.cs" />
     <Compile Include="Aoite\CommandModel\Core\IContext.cs" />
     <Compile Include="Aoite\CommandModel\Core\IContextFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\IEvent.cs" />
-    <Compile Include="Aoite\CommandModel\Core\IEvent`1.cs">
-      <DependentUpon>IEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\IExecutorFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\IExecutorMetadata.cs" />
     <Compile Include="Aoite\CommandModel\Core\ICommandCache.cs" />
     <Compile Include="Aoite\CommandModel\Core\ICommandHandler`1.cs" />
-    <Compile Include="Aoite\CommandModel\Core\ICommand`1.cs">
-      <DependentUpon>ICommand.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\CommandModel\Core\IEventStore.cs" />
     <Compile Include="Aoite\CommandModel\Core\IExecutor.cs" />
-    <Compile Include="Aoite\CommandModel\Core\IExecutorMetadata`1.cs">
-      <DependentUpon>IExecutorMetadata.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\IExecutor`1.cs">
-      <DependentUpon>IExecutor.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\IExecutorMetadata`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutor`1.cs" />
     <Compile Include="Aoite\CommandModel\Core\IUserFactory.cs" />
-    <Compile Include="Aoite\CommandModel\Core\MockContext.cs">
-      <DependentUpon>IContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\MockEvent`1.cs">
-      <DependentUpon>IEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs">
-      <DependentUpon>IExecutor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs">
-      <DependentUpon>IExecutorFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Core\UserFactory.cs">
-      <DependentUpon>IUserFactory.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\CommandModel\Core\MockContext.cs" />
+    <Compile Include="Aoite\CommandModel\Core\MockEvent`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs" />
+    <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
     <Compile Include="Aoite\CommandModel\Extensions\CommandBusExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Extensions\CommandModelExtensions.cs" />
-    <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs">
-      <DependentUpon>ICacheProvider.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Providers\CommandCacheStrategy.cs">
-      <DependentUpon>ICommandCacheStrategy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Providers\CommandMemoryCache.cs">
-      <DependentUpon>ICommandCacheStrategy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Providers\CounterProvider.cs">
-      <DependentUpon>ICounterProvider.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\CommandCacheStrategy.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\CommandMemoryCache.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\CounterProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ICacheProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ICommandCacheStrategy.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ICounterProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\ILockProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\IRedisProvider.cs" />
-    <Compile Include="Aoite\CommandModel\Providers\LockProvider.cs">
-      <DependentUpon>ILockProvider.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\CommandModel\Providers\RedisProvider.cs">
-      <DependentUpon>IRedisProvider.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\CommandModel\Providers\LockProvider.cs" />
     <Compile Include="Aoite\CommandModel\Core\ServiceFactory.cs" />
+    <Compile Include="Aoite\CommandModel\Providers\RedisProvider.cs" />
     <Compile Include="Aoite\Data\ColumnAttribute.cs" />
     <Compile Include="Aoite\Data\DataReaderToObjectMapper.cs" />
     <Compile Include="Aoite\Data\DataRowToObjectMapper.cs" />
     <Compile Include="Aoite\Data\Db.cs" />
+    <Compile Include="Aoite\Data\DbContext.cs" />
+    <Compile Include="Aoite\Data\DbEngine.cs" />
     <Compile Include="Aoite\Data\Delegates.cs" />
     <Compile Include="Aoite\Data\DynamicEntityValue.cs" />
     <Compile Include="Aoite\Data\DbEngineProviderBase.cs" />
@@ -174,12 +128,21 @@
     <Compile Include="Aoite\Data\ExecuteType.cs" />
     <Compile Include="Aoite\Data\DbExecutor.cs" />
     <Compile Include="Aoite\Data\IBuilder.cs" />
+    <Compile Include="Aoite\Data\IDbContext.cs" />
     <Compile Include="Aoite\Data\IDbEngine.cs" />
     <Compile Include="Aoite\Data\IDbEngineProvider.cs" />
     <Compile Include="Aoite\Data\IExecuteParameter.cs" />
     <Compile Include="Aoite\Data\IMapTo.cs" />
     <Compile Include="Aoite\Data\IMapTo`1.cs" />
-    <Compile Include="Aoite\Data\IPagination.cs" />
+    <Compile Include="Aoite\Data\SqlCeEngineProvider.cs" />
+    <Compile Include="Aoite\Logger\DayLogPathFactory.cs" />
+    <Compile Include="Aoite\Logger\HourLogPathFactory.cs" />
+    <Compile Include="Aoite\Logger\LogDescriptor.cs" />
+    <Compile Include="Aoite\Logger\LoggerBase.cs" />
+    <Compile Include="Aoite\Logger\TextLogger.cs" />
+    <Compile Include="System\Core\IPagination.cs" />
+    <Compile Include="Aoite\Data\ISelect.cs" />
+    <Compile Include="Aoite\Data\IWhere.cs" />
     <Compile Include="Aoite\Data\MapperBase`1.cs" />
     <Compile Include="Aoite\Data\MsCeTestManager.cs" />
     <Compile Include="Aoite\Data\MsSqlTestManager.cs" />
@@ -188,47 +151,27 @@
     <Compile Include="Aoite\Data\PageTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Aoite\Data\Pagination.cs" />
+    <Compile Include="System\Core\Pagination.cs" />
+    <Compile Include="Aoite\Data\SqlBuilder.cs" />
     <Compile Include="Aoite\Data\SqlEngineProvider.cs" />
     <Compile Include="Aoite\Data\SqlScriptsManager.cs" />
     <Compile Include="Aoite\Data\TableAttribute.cs" />
     <Compile Include="Aoite\Data\TestManagerBase.cs" />
     <Compile Include="Aoite\Logger\ILogger.cs" />
-    <Compile Include="Aoite\Logger\LoggerBase.cs">
-      <DependentUpon>ILogger.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aoite\Logger\LogItem.cs" />
     <Compile Include="Aoite\Logger\LogType.cs" />
-    <Compile Include="Aoite\Logger\TextLogger.cs">
-      <DependentUpon>ILogger.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Logger\CustomTextWriterFactory.cs">
-      <DependentUpon>ITextWriterFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Logger\DayLogPathFactory.cs">
-      <DependentUpon>ILogPathFactory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Logger\HourLogPathFactory.cs">
-      <DependentUpon>ILogPathFactory.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Logger\CustomTextWriterFactory.cs" />
     <Compile Include="Aoite\Logger\ILogDescriptor.cs" />
     <Compile Include="Aoite\Logger\ILogPathFactory.cs" />
     <Compile Include="Aoite\Logger\ITextWriterFactory.cs" />
-    <Compile Include="Aoite\Logger\LogDescriptor.cs">
-      <DependentUpon>ILogDescriptor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Logger\StreamTextWriterFactory.cs">
-      <DependentUpon>ITextWriterFactory.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Logger\StreamTextWriterFactory.cs" />
     <Compile Include="Aoite\Net\Core\IHostPort.cs" />
     <Compile Include="Aoite\Net\Core\SocketInfo.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisArgs.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisArray.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisBoolean.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisCommand.cs" />
-    <Compile Include="Aoite\Redis\Commands\RedisCommand`1.cs">
-      <DependentUpon>RedisCommand.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Redis\Commands\RedisCommand`1.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisDate.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisFloat.cs" />
     <Compile Include="Aoite\Redis\Commands\RedisInteger.cs" />
@@ -241,12 +184,8 @@
     <Compile Include="Aoite\Redis\Commands\RedisValue.cs" />
     <Compile Include="Aoite\Redis\Core\Exceptions.cs" />
     <Compile Include="Aoite\Redis\Core\IConnector.cs" />
-    <Compile Include="Aoite\Redis\Core\MockConnector.cs">
-      <DependentUpon>IConnector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Redis\Core\RedisConnector.cs">
-      <DependentUpon>IConnector.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Redis\Core\MockConnector.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisConnector.cs" />
     <Compile Include="Aoite\Redis\Core\RedisExecutor.cs" />
     <Compile Include="Aoite\Redis\Core\RedisReplyType.cs" />
     <Compile Include="Aoite\Redis\Core\RedisScan`1.cs" />
@@ -267,27 +206,15 @@
     <Compile Include="Aoite\Redis\Core\IRedisClient.cs" />
     <Compile Include="Aoite\Redis\Core\IRedisTransaction.cs" />
     <Compile Include="Aoite\Redis\Core\IRedisItem.cs" />
-    <Compile Include="Aoite\Redis\Core\RedisDictionary.cs">
-      <DependentUpon>IRedisItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Redis\Core\RedisFieldItem.cs">
-      <DependentUpon>IRedisItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Redis\Core\RedisKeyItem.cs">
-      <DependentUpon>IRedisItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Aoite\Redis\Core\RedisScoreItem.cs">
-      <DependentUpon>IRedisItem.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisDictionary.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisFieldItem.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisKeyItem.cs" />
+    <Compile Include="Aoite\Redis\Core\RedisScoreItem.cs" />
     <Compile Include="Aoite\Redis\Core\RedisWeightDictionary.cs" />
-    <Compile Include="Aoite\Redis\Core\RedisClient.cs">
-      <DependentUpon>IRedisClient.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisClient.cs" />
     <Compile Include="Aoite\Redis\Core\RedisManager.cs" />
     <Compile Include="Aoite\Redis\Core\RedisSessionStateStoreProvider.cs" />
-    <Compile Include="Aoite\Redis\Core\RedisTransaction.cs">
-      <DependentUpon>IRedisTransaction.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Aoite\Redis\Core\RedisTransaction.cs" />
     <Compile Include="Aoite\Reflection\Delegates.cs" />
     <Compile Include="Aoite\Reflection\DynamicFactory.cs" />
     <Compile Include="Aoite\Reflection\DynamicInstance.cs" />
@@ -318,20 +245,15 @@
     <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
     <Compile Include="Aoite\Data\IDbExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\Attributes\AliasAttribute.cs">
-      <DependentUpon>IAliasAttribute.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Attributes\AliasAttribute.cs" />
     <Compile Include="System\Attributes\IAliasAttribute.cs" />
     <Compile Include="System\Attributes\IgnoreAttribute.cs" />
     <Compile Include="System\Attributes\IKeyAttribute.cs" />
     <Compile Include="System\Core\ConsistentHash`1.cs" />
-    <Compile Include="System\Core\Ajob.cs">
-      <DependentUpon>IAsyncJob.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Core\Ajob.cs" />
     <Compile Include="System\Core\AssemblyReflectionProxy.cs" />
     <Compile Include="System\Core\BinaryValue.cs" />
     <Compile Include="System\Core\BinaryValue~Implicit.cs">
-      <DependentUpon>BinaryValue~Implicit.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -351,9 +273,7 @@
     <Compile Include="System\Core\VoidValue.cs" />
     <Compile Include="System\Core\WhereParameters.cs" />
     <Compile Include="System\Core\IObjectDisposable.cs" />
-    <Compile Include="System\Core\ObjectDisposableBase.cs">
-      <DependentUpon>IObjectDisposable.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Core\ObjectDisposableBase.cs" />
     <Compile Include="System\Core\ExceptionEventArgs.cs" />
     <Compile Include="System\Extensions\CollectionsExtensions.cs" />
     <Compile Include="System\Extensions\CommonExtensions.cs" />
@@ -366,36 +286,20 @@
     <Compile Include="System\Extensions\StringExtensions.cs" />
     <Compile Include="System\Extensions\TypeExtensions.cs" />
     <Compile Include="System\Extensions\WebExtensions.cs" />
-    <Compile Include="System\Core\CompareResult.cs">
-      <DependentUpon>GA.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Core\CompareResult.cs" />
     <Compile Include="System\Core\GA.cs" />
-    <Compile Include="System\Core\GA.IO.cs">
-      <DependentUpon>GA.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Core\GA.Net.cs">
-      <DependentUpon>GA.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Core\GA.IO.cs" />
+    <Compile Include="System\Core\GA.Net.cs" />
     <Compile Include="System\Ioc\DefaultMappingAttribute.cs" />
     <Compile Include="System\Ioc\IContainerProvider.cs" />
     <Compile Include="System\Ioc\IIocContainer.cs" />
     <Compile Include="System\Ioc\IMapFilter.cs" />
-    <Compile Include="System\Ioc\IocContainer.cs">
-      <DependentUpon>IIocContainer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Ioc\IocContainer~Fields.cs">
-      <DependentUpon>IIocContainer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Ioc\IocContainer~Nested.cs">
-      <DependentUpon>IIocContainer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Ioc\IocContainer~Private.cs">
-      <DependentUpon>IIocContainer.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Ioc\IocContainer.cs" />
+    <Compile Include="System\Ioc\IocContainer~Fields.cs" />
+    <Compile Include="System\Ioc\IocContainer~Nested.cs" />
+    <Compile Include="System\Ioc\IocContainer~Private.cs" />
     <Compile Include="System\Ioc\LastMappingAttribute.cs" />
-    <Compile Include="System\Ioc\MapFilter.cs">
-      <DependentUpon>IMapFilter.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Ioc\MapFilter.cs" />
     <Compile Include="System\Ioc\MapResolveEventArgs.cs" />
     <Compile Include="System\Ioc\NamesapceRule.cs" />
     <Compile Include="System\Ioc\NamesapceRuleMode.cs" />
@@ -406,26 +310,16 @@
     <Compile Include="System\Mapping\ITypeMapper.cs" />
     <Compile Include="System\Mapping\PropertyMapper.cs" />
     <Compile Include="System\Mapping\TypeMapper.cs" />
-    <Compile Include="System\Core\IObjectRelease.cs">
-      <DependentUpon>ObjectPool`1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Core\IObjectRelease.cs" />
     <Compile Include="System\Core\ObjectPool`1.cs" />
     <Compile Include="System\Core\FastRandom.cs" />
     <Compile Include="System\Result\IResult.cs" />
-    <Compile Include="System\Result\IResult`1.cs">
-      <DependentUpon>IResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Result\Result.cs">
-      <DependentUpon>IResult.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Result\IResult`1.cs" />
+    <Compile Include="System\Result\Result.cs" />
     <Compile Include="System\Result\ResultException.cs" />
     <Compile Include="System\Result\ResultStatus.cs" />
-    <Compile Include="System\Result\Result`1.cs">
-      <DependentUpon>IResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="System\Result\SuccessfullyResult.cs">
-      <DependentUpon>IResult.cs</DependentUpon>
-    </Compile>
+    <Compile Include="System\Result\Result`1.cs" />
+    <Compile Include="System\Result\SuccessfullyResult.cs" />
     <Compile Include="System\Web\IIdentityStore.cs" />
     <Compile Include="System\Web\Webx.cs" />
   </ItemGroup>

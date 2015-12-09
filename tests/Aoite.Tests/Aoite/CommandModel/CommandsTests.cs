@@ -162,7 +162,7 @@ namespace Aoite.CommandModel
             var command = new CMD.FindAllPage<Models.Member>()
             {
                 WhereParameters = WhereParameters.Parse(this.Engine, new { Email = "Email1" }),
-                Page = new Aoite.Data.Pagination(2, 3)
+                Page = new Pagination(2, 3)
             };
             var query = models.Where(m => m.Email == "Email1");
             var grid = this.Execute(command).ResultValue;
@@ -180,7 +180,7 @@ namespace Aoite.CommandModel
             var command = new CMD.FindAllPage<Models.Member, Models.MemberViewModel>()
             {
                 WhereParameters = WhereParameters.Parse(this.Engine, new { Email = "Email1" }),
-                Page = new Aoite.Data.Pagination(2, 3)
+                Page = new Pagination(2, 3)
             };
             var query = models.Where(m => m.Email == "Email1");
             var grid = this.Execute(command).ResultValue;
