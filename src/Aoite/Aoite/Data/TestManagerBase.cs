@@ -29,11 +29,6 @@ namespace Aoite.Data
         public DbEngine Engine { get; protected set; }
 
         /// <summary>
-        /// 获取数据源引擎管理器。
-        /// </summary>
-        public DbEngineManager Manager { get; protected set; }
-
-        /// <summary>
         /// 执行指定键名的脚本。
         /// </summary>
         /// <typeparam name="TKey">键的数据类型。</typeparam>
@@ -45,8 +40,7 @@ namespace Aoite.Data
 
             this.Engine
                 .Execute(Scripts[Convert.ToString(key)])
-                .ToNonQuery()
-                .ThrowIfFailded();
+                .ToNonQuery();
             return this;
         }
 
@@ -98,7 +92,6 @@ namespace Aoite.Data
             this.Scripts.Clear();
             this.Scripts = null;
             this.Engine = null;
-            this.Manager = null;
         }
     }
 }

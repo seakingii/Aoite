@@ -28,21 +28,19 @@ namespace Aoite.Data
             if(string.IsNullOrWhiteSpace(databasePath)) throw new ArgumentNullException(nameof(databasePath));
             this.DatabasePath = databasePath;
             GA.IO.CreateDirectory(Path.GetDirectoryName(databasePath));
-            var engine = new MsSqlCeEngine(this.DatabasePath, null);
-            engine.CreateDatabase();
+            var provider = new SqlCeEngineProvider(this.DatabasePath, null);
+            provider.CreateDatabase();
+            var engine = new DbEngine(provider);
             this.Engine = engine;
             this.Engine.Executing += _Engine_Executing;
 
-            this.Manager = new DbEngineManager();
-            this.Manager.Add(Db.NameWithDefualtEngine, this.Engine);
-            this.Manager.Add(Db.NameWithReadonlyEngine, this.Engine);
         }
 
         void _Engine_Executing(object sender, ExecutingEventArgs e)
         {
             if(e.ExecuteType != ExecuteType.NoQuery) return;
-            var command = e.Command.RuntimeObject as System.Data.Common.DbCommand;
-            command.CommandText = ReplaceVarchar(command.CommandText);
+            var dbCommand = e.DbCommand;
+            dbCommand.CommandText = ReplaceVarchar(dbCommand.CommandText);
         }
 
         internal static readonly Regex RegexReplaceVarchar = new Regex(@"\bvarchar\b", RegexOptions.Multiline | RegexOptions.Compiled);
@@ -63,7 +61,6 @@ namespace Aoite.Data
         protected override void DisposeManaged()
         {
             this.Engine = null;
-            this.Manager = null;
             while(true)
             {
                 try

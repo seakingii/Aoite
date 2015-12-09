@@ -11,7 +11,7 @@ namespace Aoite.Data
     public class SqlScriptsManager : Dictionary<string, string>
     {
         /// <summary>
-        /// 初始化 <see cref="Aoite.Data.SqlScriptsManager"/> 类的新实例。
+        /// 初始化 <see cref="SqlScriptsManager"/> 类的新实例。
         /// </summary>
         public SqlScriptsManager() : base(StringComparer.OrdinalIgnoreCase) { }
 
@@ -35,20 +35,13 @@ namespace Aoite.Data
         /// 从指定的 SQL 文件解析脚本。
         /// </summary>
         /// <param name="path">SQL 文件路径。</param>
-        public void ParsePath(string path)
-        {
-            var lines = File.ReadAllLines(path);
-            this.Parse(lines);
-        }
+        public void ParsePath(string path) => this.Parse(File.ReadAllLines(path));
 
         /// <summary>
         /// 从指定的 SQL 文本解析脚本。
         /// </summary>
         /// <param name="content">SQL 文本。</param>
-        public void ParseContent(string content)
-        {
-            this.Parse(content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-        }
+        public void ParseContent(string content) => this.Parse(content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
 
         private void Parse(string[] lines)
         {
@@ -77,19 +70,13 @@ namespace Aoite.Data
         /// <typeparam name="TKey">键的数据类型。</typeparam>
         /// <param name="key">脚本的键名。</param>
         /// <returns>脚本。</returns>
-        public string GetScript<TKey>(TKey key)
-        {
-            return this.TryGetValue(Convert.ToString(key));
-        }
+        public string GetScript<TKey>(TKey key) => this.TryGetValue(Convert.ToString(key));
 
         /// <summary>
         /// 获取指定键名的脚本。
         /// </summary>
         /// <param name="key">脚本的键名。</param>
         /// <returns>脚本。</returns>
-        public string GetScript(string key)
-        {
-            return this.TryGetValue(key);
-        }
+        public string GetScript(string key) => this.TryGetValue(key);
     }
 }
