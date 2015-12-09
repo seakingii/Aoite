@@ -21,12 +21,9 @@ namespace System
             /// <returns>创建后的地址。</returns>
             public static DirectoryInfo CreateDirectory(string path)
             {
-                lock (string.Intern(path))
-                {
-                    var info = new DirectoryInfo(path);
-                    if(!info.Exists) info.Create();
-                    return info;
-                }
+                var info = new DirectoryInfo(path);
+                if(!info.Exists) info.Create();
+                return info;
             }
 
             /// <summary>
@@ -51,12 +48,9 @@ namespace System
             /// <param name="destDirName">目标路径。</param>
             public static void CopyDirectory(string sourceDirName, string destDirName)
             {
-                if(!Directory.Exists(destDirName))
-                {
-                    Directory.CreateDirectory(destDirName);
-                }
-                DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-                FileSystemInfo[] sfiles = dir.GetFileSystemInfos();
+                if(!Directory.Exists(destDirName)) Directory.CreateDirectory(destDirName);
+                var dir = new DirectoryInfo(sourceDirName);
+                var sfiles = dir.GetFileSystemInfos();
                 if(sfiles != null && sfiles.Length > 0)
                 {
                     for(int i = 0; i < sfiles.Length; i++)
@@ -67,7 +61,7 @@ namespace System
                         }
                         else
                         {
-                            FileInfo file = (FileInfo)sfiles[i];
+                            var file = (FileInfo)sfiles[i];
                             file.CopyTo(Path.Combine(destDirName, file.Name), true);
                         }
                     }

@@ -6,7 +6,7 @@ namespace Aoite.CommandModel
     /// <summary>
     /// 表示一个模拟的命令模型执行器工厂。
     /// </summary>
-    public class MockExecutorFactory : CommandModelContainerProviderBase, IExecutorFactory
+    public sealed class MockExecutorFactory : CommandModelContainerProviderBase, IExecutorFactory
     {
         private Dictionary<Type, IExecutorMetadata> Executors = new Dictionary<Type, IExecutorMetadata>();
 

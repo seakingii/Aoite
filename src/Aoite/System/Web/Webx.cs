@@ -273,11 +273,7 @@ namespace System.Web
             get
             {
                 var container = GetContainer();
-                if(container == null)
-                    lock (string.Intern(ContainerName))
-                    {
-                        return GetContainer() ?? SetContainer(ObjectFactory.Global);
-                    }
+                if(container == null) return GetContainer() ?? SetContainer(ObjectFactory.Global);
                 return container;
             }
             set

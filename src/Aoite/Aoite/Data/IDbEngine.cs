@@ -148,7 +148,6 @@ namespace Aoite.Data
         private const string Provider_Oracle = "oracle";
         private const string Provider_MySql = "mysql";
 
-
         private static IDbEngineProvider CreateProvider(string provider, string connectionString)
         {
             switch(provider)

@@ -9,7 +9,7 @@ namespace System
     /// <summary>
     /// 程序集反射管理器。
     /// </summary>
-    public class AssemblyReflectionManager : IDisposable
+    public class AssemblyReflectionManager : ObjectDisposableBase
     {
         Dictionary<string, AppDomain> _mapDomains = new Dictionary<string, AppDomain>();
         Dictionary<string, AppDomain> _loadedAssemblies = new Dictionary<string, AppDomain>();
@@ -188,25 +188,8 @@ namespace System
         /// <summary>
         /// 执行与释放或重置非托管资源相关的应用程序定义的任务。
         /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// 析构函数。
-        /// </summary>
-        ~AssemblyReflectionManager()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
-        /// 执行与释放或重置非托管资源相关的应用程序定义的任务。
-        /// </summary>
         /// <param name="disposing">为 true 则释放托管资源和非托管资源；为 false 则仅释放非托管资源。</param>
-        protected void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if(disposing)
             {
@@ -217,6 +200,7 @@ namespace System
                 _proxies.Clear();
                 _mapDomains.Clear();
             }
+            base.Dispose(disposing);
         }
 
         private AppDomain CreateChildDomain(AppDomain parentDomain, string domainName)

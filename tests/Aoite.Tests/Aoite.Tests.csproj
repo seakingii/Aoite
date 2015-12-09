@@ -118,6 +118,7 @@
     <Compile Include="System\Core\DataSecurityTests.cs" />
     <Compile Include="System\Core\GridDataTests.cs" />
     <Compile Include="System\Core\IsolatedTests.cs" />
+    <Compile Include="System\Core\LockeableTests.cs" />
     <Compile Include="System\Core\LockSlimTests.cs" />
     <Compile Include="System\Core\LogTests.cs" />
     <Compile Include="System\Core\MeanTests.cs" />

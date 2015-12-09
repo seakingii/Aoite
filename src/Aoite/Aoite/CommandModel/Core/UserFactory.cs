@@ -19,7 +19,11 @@ namespace Aoite.CommandModel
             this._getUserCallback = getUserCallback;
         }
 
-        object IUserFactory.GetUser(IIocContainer container)
+        /// <summary>
+        /// 获取执行命令模型的用户。
+        /// </summary>
+        /// <param name="container">服务容器。</param>
+        public virtual object GetUser(IIocContainer container)
         {
             return this._getUserCallback(container);
         }

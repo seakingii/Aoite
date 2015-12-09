@@ -10,7 +10,7 @@ namespace System
     /// </summary>
     public static class Ajob
     {
-        class AsyncJob : IAsyncJob
+        class AsyncJob : ObjectDisposableBase, IAsyncJob
         {
             private Task _Task;
             private object _State;
@@ -44,25 +44,48 @@ namespace System
 
             public bool Wait(int millisecondsTimeout = Timeout.Infinite)
             {
+                this.ThrowWhenDisposed();
                 if(_Task.IsCompleted) return true;
                 return _Task.Wait(millisecondsTimeout);
             }
 
-            public void Cancel() => this._calcelSource.Cancel();
-
+            public void Cancel()
+            {
+                this.ThrowWhenDisposed();
+                this._calcelSource.Cancel();
+            }
             public bool WaitForNextTask()
             {
+                this.ThrowWhenDisposed();
                 return this._calcelSource.IsCancellationRequested
                     || Thread.CurrentThread.Join(this._Interval)
                     || this._calcelSource.IsCancellationRequested;
             }
 
-            public void RunTask() => _Job(this);
-
-            public void Delay(int millisecondsDelay) => Thread.CurrentThread.Join(millisecondsDelay);
-
-            public void Delay(TimeSpan timeSpanDelay) => Thread.CurrentThread.Join(timeSpanDelay);
-
+            public void RunTask()
+            {
+                this.ThrowWhenDisposed();
+                this._Job(this);
+            }
+            public void Delay(int millisecondsDelay)
+            {
+                this.ThrowWhenDisposed();
+                Thread.CurrentThread.Join(millisecondsDelay);
+            }
+            public void Delay(TimeSpan timeSpanDelay)
+            {
+                this.ThrowWhenDisposed();
+                Thread.CurrentThread.Join(timeSpanDelay);
+            }
+            protected override void Dispose(bool disposing)
+            {
+                if(disposing)
+                {
+                    _calcelSource.Dispose();
+                    _calcelSource = null;
+                }
+                base.Dispose(disposing);
+            }
         }
 
         private static void OnceInvoke(object state)

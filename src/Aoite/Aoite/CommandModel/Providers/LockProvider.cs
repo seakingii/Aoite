@@ -33,11 +33,10 @@ namespace Aoite.CommandModel
             }
 
             key = "$LockProvider::" + key;
+            
             var realTimeout = timeout ?? RedisExtensions.DefaultLockTimeout;
-            if(!Monitor.TryEnter(string.Intern(key), realTimeout))
-                SimpleLockItem.TimeoutError(key, realTimeout);
 
-            return new SimpleLockItem(() => Monitor.Exit(string.Intern(key)));
+            return key.Locking(realTimeout);
         }
     }
 }

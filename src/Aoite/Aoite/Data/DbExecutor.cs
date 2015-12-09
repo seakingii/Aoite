@@ -86,6 +86,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="command">执行的命令。</param>
         /// <returns>一个关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:检查 SQL 查询是否存在安全漏洞")]
         protected virtual DbCommand CreateDbCommand(ExecuteCommand command)
         {
             var dbCommand = this.Engine.Provider.DbFactory.CreateCommand();

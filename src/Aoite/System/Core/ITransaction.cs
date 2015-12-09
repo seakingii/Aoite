@@ -19,7 +19,7 @@ namespace Aoite.CommandModel
     /// <summary>
     /// 表示一个默认的事务。
     /// </summary>
-    public class DefaultTransaction : ITransaction
+    public sealed class DefaultTransaction : ITransaction
     {
         private System.Transactions.TransactionScope _t = new System.Transactions.TransactionScope();
 

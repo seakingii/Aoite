@@ -59,12 +59,12 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 执行与释放或重置非托管资源相关的应用程序定义的任务。
+        /// 执行与释放或重置托管资源相关的应用程序定义的任务。
         /// </summary>
-        public override void Dispose()
+        protected override void DisposeManaged()
         {
+            base.DisposeManaged();
             this._connector.Dispose();
-            base.Dispose();
         }
 
         /// <summary>

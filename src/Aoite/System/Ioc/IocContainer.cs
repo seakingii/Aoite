@@ -190,7 +190,7 @@ namespace System
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             //- 确保类型在当前容器的获取行为是独立的。
-            lock(string.Intern(this.UUID + serviceType.AssemblyQualifiedName))
+            using((this.UUID + serviceType.AssemblyQualifiedName).Locking())
             {
                 //- 通过非智能解析，获取实例盒
                 var box = this.FindInstanceBox(serviceType);

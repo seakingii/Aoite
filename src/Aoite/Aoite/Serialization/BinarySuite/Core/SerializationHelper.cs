@@ -9,41 +9,34 @@ namespace Aoite.Serialization
     internal static class SerializationHelper
     {
         #region Serializable Members - 可序列化成员
+        
+        private readonly static ConcurrentDictionary<Type, SerializableFieldInfo[]> FieldsCache = new ConcurrentDictionary<Type, SerializableFieldInfo[]>();
 
-        private readonly static Dictionary<Type, SerializableFieldInfo[]> FieldsCache = new Dictionary<Type, SerializableFieldInfo[]>();
-
-        public static SerializableFieldInfo[] GetSerializableMembers(Type type)
+        private static SerializableFieldInfo[] CreateSerializableMembers(Type type)
         {
-            SerializableFieldInfo[] sfields;
-            var sourceType = type;
-            if(!FieldsCache.TryGetValue(sourceType, out sfields))
-                lock(sourceType)
+            List<SerializableFieldInfo> list = new List<SerializableFieldInfo>();
+            int depth = 0;
+            while(type != Types.Object)
+            {
+                var fields = type.GetFields(Aoite.Reflection.Flags.InstanceAnyDeclaredOnly);
+                foreach(FieldInfo field in fields)
                 {
-                    if(!FieldsCache.TryGetValue(sourceType, out sfields))
-                    {
-                        List<SerializableFieldInfo> list = new List<SerializableFieldInfo>();
-                        int depth = 0;
-                        while(type != Types.Object)
-                        {
-                            var fields = type.GetFields(Aoite.Reflection.Flags.InstanceAnyDeclaredOnly);
-                            foreach(FieldInfo field in fields)
-                            {
-                                if(field == null
+                    if(field == null
 #if !SILVERLIGHT
  || field.IsNotSerialized
 #endif
  || field.IsDefined(IgnoreAttribute.Type, false)) continue;
 
-                                list.Add(new SerializableFieldInfo(field, depth));
-                            }
-                            type = type.BaseType;
-                            depth++;
-                        }
-                        sfields = list.ToArray();
-                        FieldsCache.Add(sourceType, sfields);
-                    }
+                    list.Add(new SerializableFieldInfo(field, depth));
                 }
-            return sfields;
+                type = type.BaseType;
+                depth++;
+            }
+            return list.ToArray();
+        }
+        public static SerializableFieldInfo[] GetSerializableMembers(Type type)
+        {
+            return FieldsCache.GetOrAdd(type, CreateSerializableMembers);
         }
 
         #endregion

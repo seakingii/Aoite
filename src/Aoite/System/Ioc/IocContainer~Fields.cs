@@ -76,7 +76,7 @@ namespace System
         private void MapRemove(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            lock(type)
+            using(type.Locking())
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return;
                 InstanceBox box;
@@ -87,7 +87,7 @@ namespace System
         private bool MapContains(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            lock(type)
+            using(type.Locking())
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return false;
                 return typeObjectCaches.ContainsKey(name);
@@ -96,7 +96,7 @@ namespace System
         private InstanceBox FindInstanceBox(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            lock(type)
+            using(type.Locking())
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return null;
                 InstanceBox box;

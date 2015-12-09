@@ -67,7 +67,7 @@ namespace Aoite.Redis
             }
             return sb.ToString();
         }
-        private void ReadCRLF() 
+        private void ReadCRLF()
         {
             var stream = this._connector.ReadStream;
             var r = stream.ReadByte();
@@ -189,51 +189,51 @@ namespace Aoite.Redis
             var encoding = GA.UTF8;
             using(var commandStream = new MemoryStream())
             {
-                using(var writer = new StreamWriter(commandStream, encoding))
+                var writer = new StreamWriter(commandStream, encoding);
+
+                // *<参数数量> CR LF
+                writer.Write(MultiBulkChar);
+                writer.Write(argumentCount.ToString());
+                writer.Write(CR);
+                writer.Write(LF);
+
+                foreach(var part in parts)
                 {
-                    // *<参数数量> CR LF
-                    writer.Write(MultiBulkChar);
-                    writer.Write(argumentCount.ToString());
-                    writer.Write(CR);
-                    writer.Write(LF);
-
-                    foreach(var part in parts)
-                    {
-                        this.WriteBytes(writer, encoding.GetBytes(part));
-                    }
-
-                    foreach(var arg in command.Arguments)
-                    {
-                        if(arg == null) throw new RedisIOException("参数不能为空。");
-                        else if(arg is BinaryValue)
-                        {
-                            var value = (arg as BinaryValue);
-                            if(!value.HasValue()) throw new RedisIOException("System.BinaryValue 包含了无效值。");
-                            this.WriteBytes(writer, value.ByteArray);
-                        }
-                        else if(arg is byte[])
-                        {
-                            this.WriteBytes(writer, arg as byte[]);
-                        }
-                        else
-                        {
-                            var type = arg.GetType();
-                            if(type == Types.Boolean)
-                            {
-                                this.WriteBytes(writer, encoding.GetBytes(((bool)arg) ? "1" : "0"));
-                            }
-                            else if(type.IsSimpleType())
-                            {
-                                var str = Convert.ToString(arg, CultureInfo.InvariantCulture);
-                                this.WriteBytes(writer, encoding.GetBytes(str));
-                            }
-                            else throw new RedisIOException("参数不支持数据类型 {0}。".Fmt(arg.GetType().FullName));
-                        }
-                    }
-                    writer.Flush();
-                    commandStream.Seek(0, SeekOrigin.Begin);
-                    commandStream.CopyTo(this._connector.WriteStream);
+                    this.WriteBytes(writer, encoding.GetBytes(part));
                 }
+
+                foreach(var arg in command.Arguments)
+                {
+                    if(arg == null) throw new RedisIOException("参数不能为空。");
+                    else if(arg is BinaryValue)
+                    {
+                        var value = (arg as BinaryValue);
+                        if(!value.HasValue()) throw new RedisIOException("System.BinaryValue 包含了无效值。");
+                        this.WriteBytes(writer, value.ByteArray);
+                    }
+                    else if(arg is byte[])
+                    {
+                        this.WriteBytes(writer, arg as byte[]);
+                    }
+                    else
+                    {
+                        var type = arg.GetType();
+                        if(type == Types.Boolean)
+                        {
+                            this.WriteBytes(writer, encoding.GetBytes(((bool)arg) ? "1" : "0"));
+                        }
+                        else if(type.IsSimpleType())
+                        {
+                            var str = Convert.ToString(arg, CultureInfo.InvariantCulture);
+                            this.WriteBytes(writer, encoding.GetBytes(str));
+                        }
+                        else throw new RedisIOException("参数不支持数据类型 {0}。".Fmt(arg.GetType().FullName));
+                    }
+                }
+                writer.Flush();
+                commandStream.Seek(0, SeekOrigin.Begin);
+                commandStream.CopyTo(this._connector.WriteStream);
+
             }
             return command;
         }

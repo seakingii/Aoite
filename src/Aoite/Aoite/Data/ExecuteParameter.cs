@@ -93,8 +93,7 @@ namespace Aoite.Data
                 Precision = this.Precision,
                 Scale = this.Scale,
                 Size = this.Size,
-                Type = this.Type,
-                Value = this.Value
+                Type = this.Type
             };
         }
     }

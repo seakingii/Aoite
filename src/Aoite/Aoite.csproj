@@ -317,6 +317,7 @@
     <Compile Include="Aoite\Serialization\SerializerBase.cs" />
     <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
     <Compile Include="Aoite\Data\IDbExecutor.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Attributes\AliasAttribute.cs">
       <DependentUpon>IAliasAttribute.cs</DependentUpon>

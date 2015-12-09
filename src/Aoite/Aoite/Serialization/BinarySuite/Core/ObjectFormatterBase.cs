@@ -8,7 +8,7 @@ namespace Aoite.Serialization
     /// <summary>
     /// 表示一个对象序列化的基类。
     /// </summary>
-    public abstract class ObjectFormatterBase : IDisposable
+    public abstract class ObjectFormatterBase : ObjectDisposableBase
     {
         /// <summary>
         /// 获取正在序列化的流。
@@ -35,9 +35,14 @@ namespace Aoite.Serialization
             this.Encoding = encoding ?? Encoding.UTF8;
         }
 
-        void IDisposable.Dispose()
+
+        /// <summary>
+        /// 执行与释放或重置托管资源相关的应用程序定义的任务。
+        /// </summary>
+        protected override void DisposeManaged()
         {
             Stream.Dispose();
+            base.DisposeManaged();
         }
     }
 }

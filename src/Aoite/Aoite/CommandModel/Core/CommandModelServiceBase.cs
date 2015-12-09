@@ -6,7 +6,7 @@ namespace Aoite.CommandModel
     /// <summary>
     /// 表示一个命令模型的基础服务。
     /// </summary>
-    public abstract class CommandModelServiceBase : ObjectDisposableBase, ICommandModelService
+    public abstract class CommandModelServiceBase : /*ObjectDisposableBase,*/ ICommandModelService
     {
         /// <summary>
         /// 初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。

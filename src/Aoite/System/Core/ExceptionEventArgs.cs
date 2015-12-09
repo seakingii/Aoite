@@ -15,7 +15,7 @@
         /// <summary>
         /// 获取一个值，表示抛出的错误。
         /// </summary>
-        public virtual Exception Exception { get; set; }
+        public virtual Exception Exception { get; }
 
         /// <summary>
         /// 初始化一个 <see cref="ExceptionEventArgs "/> 类的新实例。
