@@ -99,8 +99,8 @@
     <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs" />
     <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
-    <Compile Include="Aoite\CommandModel\Extensions\CommandBusExtensions.cs" />
-    <Compile Include="Aoite\CommandModel\Extensions\CommandModelExtensions.cs" />
+    <Compile Include="System\Extensions\CommandBusExtensions.cs" />
+    <Compile Include="System\Extensions\CommandModelExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CommandCacheStrategy.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CommandMemoryCache.cs" />

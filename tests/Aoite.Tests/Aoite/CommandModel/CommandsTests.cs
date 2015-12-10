@@ -151,7 +151,6 @@ namespace Aoite.CommandModel
             Assert.Equal(models.Where(m => m.Email == "Email1").Count(), this.Execute(command).ResultValue.Count);
         }
 
-
         [Fact(DisplayName = "CMD.FindAllPage")]
         public void FindAllPage1()
         {
