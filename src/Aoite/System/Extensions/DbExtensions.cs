@@ -4,13 +4,15 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System
 {
     /// <summary>
     /// 提供数据源操作的实用工具方法。
     /// </summary>
-    public static class DbExtensions
+    public static partial class DbExtensions
     {
         /// <summary>
         /// 数据源表主键的默认字段名。
@@ -94,6 +96,8 @@ namespace System
         /// <returns>一个实体。</returns>
         public static TEntity ExecuteEntity<TEntity>(this DbCommand dbCommand)
         {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
             var mapper = TypeMapper.Instance<TEntity>.Mapper;
             using(var reader = dbCommand.ExecuteReader())
             {
@@ -101,6 +105,64 @@ namespace System
                 var value = (TEntity)Activator.CreateInstance(typeof(TEntity), true);
                 return mapper.From(reader).To(value);
             }
+        }
+
+        /// <summary>
+        /// 异步执行查询，转换并返回结果换后的实体。
+        /// </summary>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <returns>一个实体。</returns>
+        public static Task<TEntity> ExecuteEntityAsync<TEntity>(this DbCommand dbCommand, CancellationToken cancellationToken)
+        {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
+            return dbCommand.ExecuteReaderAsync(cancellationToken).ContinueWith(t =>
+            {
+                var mapper = TypeMapper.Instance<TEntity>.Mapper;
+                using(var reader = t.Result)
+                {
+                    if(!reader.Read()) return default(TEntity);
+                    var value = (TEntity)Activator.CreateInstance(typeof(TEntity), true);
+                    return mapper.From(reader).To(value);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 执行查询，转换并返回结果换后的实体。
+        /// </summary>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <returns>一个实体。</returns>
+        public static dynamic ExecuteEntity(this DbCommand dbCommand)
+        {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
+            using(var reader = dbCommand.ExecuteReader())
+            {
+                if(!reader.Read()) return null;
+                return new DynamicEntityValue(reader);
+            }
+        }
+
+        /// <summary>
+        /// 异步执行查询，转换并返回结果换后的实体。
+        /// </summary>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <returns>一个实体。</returns>
+        public static Task<dynamic> ExecuteEntityAsync(this DbCommand dbCommand, CancellationToken cancellationToken)
+        {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
+            return dbCommand.ExecuteReaderAsync(cancellationToken).ContinueWith(t =>
+            {
+                using(var reader = t.Result)
+                {
+                    if(!reader.Read()) return null;
+                    return (dynamic)new DynamicEntityValue(reader);
+                }
+            });
         }
 
         /// <summary>
@@ -128,6 +190,34 @@ namespace System
         }
 
         /// <summary>
+        /// 异步执行查询，转换并返回结果集转换后的实体集合。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <returns>一个实体集合。</returns>
+        public static Task<List<TEntity>> ExecuteEntitiesAsync<TEntity>(this DbCommand dbCommand, CancellationToken cancellationToken)
+        {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
+            return dbCommand.ExecuteReaderAsync(cancellationToken).ContinueWith(t =>
+            {
+                var mapper = TypeMapper.Instance<TEntity>.Mapper;
+                using(var reader = t.Result)
+                {
+                    List<TEntity> value = new List<TEntity>();
+                    while(reader.Read())
+                    {
+                        var model = (TEntity)Activator.CreateInstance(typeof(TEntity), true);
+                        mapper.From(reader).To(model);
+                        value.Add(model);
+                    }
+                    return value;
+                }
+            });
+        }
+
+        /// <summary>
         /// 执行查询，转换并返回结果集转换后的实体集合。
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
@@ -145,6 +235,30 @@ namespace System
                 }
             }
             return value;
+        }
+
+        /// <summary>
+        /// 异步执行查询，转换并返回结果集转换后的实体集合。
+        /// </summary>
+        /// <param name="dbCommand">数据源命令。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <returns>一个实体集合</returns>
+        public static Task<List<dynamic>> ExecuteEntitiesAsync(this DbCommand dbCommand, CancellationToken cancellationToken)
+        {
+            if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
+
+            return dbCommand.ExecuteReaderAsync(cancellationToken).ContinueWith(t =>
+            {
+                List<dynamic> value = new List<dynamic>();
+                using(var reader = t.Result)
+                {
+                    while(reader.Read())
+                    {
+                        value.Add(new DynamicEntityValue(reader));
+                    }
+                }
+                return value;
+            });
         }
 
         /// <summary>
@@ -246,6 +360,29 @@ namespace System
             if(page == null) throw new ArgumentNullException(nameof(page));
             return executor.ToTable(page.PageNumber, page.PageSize);
         }
+        /// <summary>
+        /// 异步执行分页查询命令，并返回表。
+        /// </summary>
+        /// <param name="executor">执行器。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一张包含总记录数的表。</returns>
+        public static Task<PageTable> ToTableAsync(this IDbExecutor executor, IPagination page)
+        {
+            return executor.ToTableAsync(CancellationToken.None, page);
+        }
+        /// <summary>
+        /// 异步执行分页查询命令，并返回表。
+        /// </summary>
+        /// <param name="executor">执行器。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一张包含总记录数的表。</returns>
+        public static Task<PageTable> ToTableAsync(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
+        {
+            if(executor == null) throw new ArgumentNullException(nameof(executor));
+            if(page == null) throw new ArgumentNullException(nameof(page));
+            return executor.ToTableAsync(cancellationToken, page.PageNumber, page.PageSize);
+        }
 
         /// <summary>
         /// 执行分页查询命令，并返回实体的集合。
@@ -260,7 +397,31 @@ namespace System
             if(page == null) throw new ArgumentNullException(nameof(page));
             return executor.ToEntities<TEntity>(page.PageNumber, page.PageSize);
         }
-
+        /// <summary>
+        /// 异步执行分页查询命令，并返回实体的集合。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的类型。</typeparam>
+        /// <param name="executor">执行器。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一个包含总记录数的实体集合。</returns>
+        public static Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(this IDbExecutor executor, IPagination page)
+        {
+            return executor.ToEntitiesAsync<TEntity>(CancellationToken.None, page);
+        }
+        /// <summary>
+        /// 异步执行分页查询命令，并返回实体的集合。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的类型。</typeparam>
+        /// <param name="executor">执行器。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一个包含总记录数的实体集合。</returns>
+        public static Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
+        {
+            if(executor == null) throw new ArgumentNullException(nameof(executor));
+            if(page == null) throw new ArgumentNullException(nameof(page));
+            return executor.ToEntitiesAsync<TEntity>(cancellationToken, page.PageNumber, page.PageSize);
+        }
         /// <summary>
         /// 执行分页查询命令，并返回匿名实体的集合。
         /// </summary>
@@ -272,6 +433,29 @@ namespace System
             if(executor == null) throw new ArgumentNullException(nameof(executor));
             if(page == null) throw new ArgumentNullException(nameof(page));
             return executor.ToEntities(page.PageNumber, page.PageSize);
+        }
+        /// <summary>
+        /// 执行分页查询命令，并返回匿名实体的集合。
+        /// </summary>
+        /// <param name="executor">执行器。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        public static Task<PageData<dynamic>> ToEntitiesAsync(this IDbExecutor executor, IPagination page)
+        {
+            return executor.ToEntitiesAsync(CancellationToken.None, page);
+        }
+        /// <summary>
+        /// 异步执行分页查询命令，并返回匿名实体的集合。
+        /// </summary>
+        /// <param name="executor">执行器。</param>
+        /// <param name="cancellationToken">针对取消请求监视的标记。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        public static Task<PageData<dynamic>> ToEntitiesAsync(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
+        {
+            if(executor == null) throw new ArgumentNullException(nameof(executor));
+            if(page == null) throw new ArgumentNullException(nameof(page));
+            return executor.ToEntitiesAsync(cancellationToken, page.PageNumber, page.PageSize);
         }
 
 

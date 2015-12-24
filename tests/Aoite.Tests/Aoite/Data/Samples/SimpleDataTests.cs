@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Aoite.Data.Samples
@@ -39,6 +41,37 @@ namespace Aoite.Data.Samples
             using(var manager = this.CreateManager())
             {
                 CreateTable(manager);
+                using(var dbContext = manager.Engine.ContextTransaction)
+                {
+                    for(int i = 0; i < 10; i++)
+                    {
+                        dbContext.Execute("INSERT INTO TestTable(UserName) VALUES (@username)", "@username", "user" + i).ToNonQuery();
+                    }
+                    dbContext.Commit();
+
+                    Assert.Equal(10, dbContext.Execute("SELECT COUNT(*) FROM TestTable").ToScalar<int>());
+                }
+            }
+        }
+
+        [Fact()]
+        public async void ToNonQueryAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                using(var dbContext = manager.Engine.ContextTransaction)
+                {
+                    List<Task> tasks = new List<Task>();
+                    for(int i = 0; i < 10; i++)
+                    {
+                        tasks.Add(dbContext.Execute("INSERT INTO TestTable(UserName) VALUES (@username)", "@username", "user" + i).ToNonQueryAsync());
+                    }
+                    Task.WaitAll(tasks.ToArray());
+                    dbContext.Commit();
+
+                    Assert.Equal(10, await dbContext.Execute("SELECT COUNT(*) FROM TestTable").ToScalarAsync<int>());
+                }
             }
         }
 
@@ -68,7 +101,32 @@ namespace Aoite.Data.Samples
                         );
             }
         }
+        [Fact()]
+        public async void ToScalarAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                Assert.Equal((object)0
+                        , await manager.Engine
+                            .Execute("SELECT COUNT(*) FROM TestTable")
+                            .ToScalarAsync()
+                        );
 
+
+                Assert.Equal(0
+                        , await manager.Engine
+                            .Execute("SELECT COUNT(*) FROM TestTable")
+                            .ToScalarAsync<int>()
+                        );
+
+                Assert.Equal(0L
+                        , await manager.Engine
+                            .Execute("SELECT COUNT(*) FROM TestTable")
+                            .ToScalarAsync<long>()
+                        );
+            }
+        }
         [Fact()]
         public void TransactionTest()
         {
@@ -221,7 +279,20 @@ namespace Aoite.Data.Samples
                 Assert.Equal(r.Rows[0][1], "user0");
             }
         }
-
+        [Fact()]
+        public async void ToTableAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r = await manager.Engine
+                    .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
+                    .ToTableAsync();
+                Assert.Equal(1, r.Rows.Count);
+                Assert.Equal(r.Rows[0][1], "user0");
+            }
+        }
         [Fact()]
         public void ToTablePageTest()
         {
@@ -247,6 +318,30 @@ namespace Aoite.Data.Samples
             }
         }
 
+        [Fact()]
+        public async void ToTablePageAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                int rowCount = 1108;
+                int pageSize = 7;
+                int pageNumber = 8;
+                CreateTable(manager);
+                InsertRows(manager, rowCount);
+
+                using(var r = await manager.Engine.Execute("SELECT ID,UserName FROM TestTable ORDER BY Id DESC")
+                    .ToTableAsync(pageNumber, pageSize))
+                {
+
+                    Assert.Equal(pageSize, r.Rows.Count);
+                    Assert.Equal(rowCount, r.Total);
+                    for(int i = 0; i < pageSize; i++)
+                    {
+                        Assert.Equal("user" + (rowCount + pageSize - (pageSize * pageNumber) - i - 1), r.Rows[i][1]);
+                    }
+                }
+            }
+        }
         class TestTable
         {
             public long ID { get; set; }
@@ -272,43 +367,22 @@ namespace Aoite.Data.Samples
             }
         }
 
-
         [Fact()]
-        public void FineOneTest()
+        public async void ToEntityAsyncTest()
         {
             using(var manager = this.CreateManager())
             {
                 CreateTable(manager);
                 InsertRows(manager);
-                var r = manager.Engine.FindOne<TestTable>(5);
-                Assert.NotNull(r);
-                var r2 = manager.Engine.FindOne<TestTable, NameTable>(5);
-                Assert.NotNull(r2);
+                var r = await manager.Engine
+                    .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
+                    .ToEntityAsync<TestTable>()
+                    ;
+                Assert.Equal(r.UserName, "user0");
             }
         }
 
-        [Fact()]
-        public void FineOneWhereTest()
-        {
-            using(var manager = this.CreateManager())
-            {
-                CreateTable(manager);
-                InsertRows(manager);
-                var r2 = manager.Engine.FindOneWhere<TestTable, NameTable>(new { username = "user4", id = 5 });
-                Assert.NotNull(r2);
-            }
-        }
-        [Fact()]
-        public void FineAllWhereTest()
-        {
-            using(var manager = this.CreateManager())
-            {
-                CreateTable(manager);
-                InsertRows(manager);
-                var r2 = manager.Engine.FindAllWhere<TestTable, NameTable>("id<=@uid", new ExecuteParameterCollection("@uid", 5));
-                Assert.Equal(5, r2.Count);
-            }
-        }
+
         [Fact()]
         public void ToEntitiesTest()
         {
@@ -319,6 +393,22 @@ namespace Aoite.Data.Samples
                 var r = manager.Engine
                     .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
                     .ToEntities<TestTable>()
+                    ;
+                Assert.Equal(1, r.Count);
+                Assert.Equal(r[0].UserName, "user0");
+            }
+        }
+
+        [Fact()]
+        public async void ToEntitiesAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r = await manager.Engine
+                    .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
+                    .ToEntitiesAsync<TestTable>()
                     ;
                 Assert.Equal(1, r.Count);
                 Assert.Equal(r[0].UserName, "user0");
@@ -351,6 +441,30 @@ namespace Aoite.Data.Samples
         }
 
         [Fact()]
+        public async void ToEntitiesPageAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                int rowCount = 1108;
+                int pageSize = 7;
+                int pageNumber = 8;
+                CreateTable(manager);
+                InsertRows(manager, rowCount);
+
+                var r = await manager.Engine.Execute("SELECT ID,UserName FROM TestTable ORDER BY Id DESC")
+                     .ToEntitiesAsync<TestTable>(pageNumber, pageSize);
+
+
+                Assert.Equal(pageSize, r.Rows.Length);
+                Assert.Equal(rowCount, r.Total);
+                for(int i = 0; i < pageSize; i++)
+                {
+                    Assert.Equal("user" + (rowCount + pageSize - (pageSize * pageNumber) - i - 1), r[i].UserName);
+                }
+
+            }
+        }
+        [Fact()]
         public void ToDynamicEntityTest()
         {
             using(var manager = this.CreateManager())
@@ -367,6 +481,21 @@ namespace Aoite.Data.Samples
         }
 
         [Fact()]
+        public async void ToDynamicEntityAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r = await manager.Engine
+                    .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
+                    .ToEntityAsync()
+                    ;
+                Assert.Equal(r.Id, 1L);
+                Assert.Equal(r.username, "user0");
+            }
+        }
+        [Fact()]
         public void ToDynamicEntitiesTest()
         {
             using(var manager = this.CreateManager())
@@ -382,6 +511,21 @@ namespace Aoite.Data.Samples
             }
         }
 
+        [Fact()]
+        public async void ToDynamicEntitiesAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r = await manager.Engine
+                    .Execute("SELECT ID,UserName FROM TestTable WHERE ID=@id", "@id", 1)
+                    .ToEntitiesAsync()
+                    ;
+                Assert.Equal(1, r.Count);
+                Assert.Equal(r[0].UserName, "user0");
+            }
+        }
         [Fact()]
         public void ToDynamicEntitiesPageTest()
         {
@@ -405,6 +549,28 @@ namespace Aoite.Data.Samples
             }
         }
 
+        [Fact()]
+        public async void ToDynamicEntitiesPageAsyncTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                int rowCount = 1108;
+                int pageSize = 7;
+                int pageNumber = 8;
+                CreateTable(manager);
+                InsertRows(manager, rowCount);
+
+                var r = await manager.Engine.Execute("SELECT ID,UserName FROM TestTable ORDER BY Id DESC")
+                    .ToEntitiesAsync(pageNumber, pageSize);
+
+                Assert.Equal(pageSize, r.Rows.Length);
+                Assert.Equal(rowCount, r.Total);
+                for(int i = 0; i < pageSize; i++)
+                {
+                    Assert.Equal("user" + (rowCount + pageSize - (pageSize * pageNumber) - i - 1), r[i].UserName);
+                }
+            }
+        }
         [Fact()]
         public void CalrTest()
         {
@@ -446,6 +612,44 @@ namespace Aoite.Data.Samples
             }
             watch.Stop();
             Console.WriteLine(watch.Elapsed);
+        }
+
+
+        [Fact()]
+        public void FineOneTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r = manager.Engine.FindOne<TestTable>(5);
+                Assert.NotNull(r);
+                var r2 = manager.Engine.FindOne<TestTable, NameTable>(5);
+                Assert.NotNull(r2);
+            }
+        }
+
+        [Fact()]
+        public void FineOneWhereTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r2 = manager.Engine.FindOneWhere<TestTable, NameTable>(new { username = "user4", id = 5 });
+                Assert.NotNull(r2);
+            }
+        }
+        [Fact()]
+        public void FineAllWhereTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r2 = manager.Engine.FindAllWhere<TestTable, NameTable>("id<=@uid", new ExecuteParameterCollection("@uid", 5));
+                Assert.Equal(5, r2.Count);
+            }
         }
     }
 }

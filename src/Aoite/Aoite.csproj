@@ -10,7 +10,7 @@
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>Aoite</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\Aoite.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\Aoite.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -99,6 +101,10 @@
     <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs" />
     <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
+    <Compile Include="Aoite\Data\DbExecutor~Async.cs" />
+    <Compile Include="Aoite\Data\DbValue.cs" />
+    <Compile Include="Aoite\Data\IDbExecutorAsync.cs" />
+    <Compile Include="Aoite\Data\IDbValue.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs" />

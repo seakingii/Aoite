@@ -8,7 +8,7 @@ namespace Aoite.Data
     /// <summary>
     /// 表示一个数据源查询与交互的执行器。
     /// </summary>
-    public class DbExecutor : IDbExecutor
+    public partial class DbExecutor : IDbExecutor
     {
         DbConnection _connection;
         DbTransaction _transaction;
@@ -204,10 +204,11 @@ namespace Aoite.Data
             return value;
         }
 
+
         #region Basic
 
         /// <summary>
-        /// 执行查询命令，并构建一个读取器结果。
+        /// 执行查询命令，并执行给定的读取器的回调函数。
         /// </summary>
         /// <param name="callback">给定的读取器委托。</param>
         public virtual void ToReader(ExecuteReaderHandler callback) => this.Execute<object>(ExecuteType.Reader, dbCommand =>
@@ -220,7 +221,7 @@ namespace Aoite.Data
         });
 
         /// <summary>
-        /// 执行查询命令，并构建一个读取器结果。
+        /// 执行查询命令，并执行给定的读取器的回调函数。
         /// </summary>
         /// <typeparam name="TValue">返回值的数据类型。</typeparam>
         /// <param name="callback">给定的读取器委托。</param>
@@ -278,16 +279,21 @@ namespace Aoite.Data
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
         /// <returns>一张包含总记录数的表。</returns>
-        public virtual PageTable ToTable(int pageNumber, int pageSize = 10) => this.Execute(ExecuteType.Table, dbCommand =>
+        public virtual PageTable ToTable(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;
             if(pageSize < 1) pageSize = 1;
 
+            return this.Execute(ExecuteType.Table, dbCommand => InnerToTable(dbCommand, pageNumber, pageSize));
+        }
+
+        private PageTable InnerToTable(DbCommand dbCommand, int pageNumber, int pageSize)
+        {
             this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var value = dbCommand.ExecuteTable(this.CreateDataAdapter(dbCommand));
             value.Total = this.GetTotalCount();
             return value;
-        });
+        }
 
         #endregion
 
@@ -314,11 +320,16 @@ namespace Aoite.Data
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
         /// <returns>一个包含总记录数的实体集合。</returns>
-        public virtual PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10) => this.Execute(ExecuteType.Reader, dbCommand =>
+        public virtual PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;
             if(pageSize < 1) pageSize = 1;
 
+            return this.Execute(ExecuteType.Reader, dbCommand => this.InnerToEntities<TEntity>(dbCommand, pageNumber, pageSize));
+        }
+
+        private PageData<TEntity> InnerToEntities<TEntity>(DbCommand dbCommand, int pageNumber, int pageSize)
+        {
             this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var entities = dbCommand.ExecuteEntities<TEntity>();
             var value = new PageData<TEntity>()
@@ -327,7 +338,7 @@ namespace Aoite.Data
                 Total = this.GetTotalCount()
             };
             return value;
-        });
+        }
 
         #endregion
 
@@ -337,14 +348,7 @@ namespace Aoite.Data
         /// 执行查询命令，并返回匿名实体。
         /// </summary>
         /// <returns>一个匿名实体。</returns>
-        public virtual dynamic ToEntity() => this.Execute(ExecuteType.Reader, dbCommand =>
-        {
-            using(var reader = dbCommand.ExecuteReader())
-            {
-                if(!reader.Read()) return null;
-                return new DynamicEntityValue(reader);
-            }
-        });
+        public virtual dynamic ToEntity() => this.Execute(ExecuteType.Reader, DbExtensions.ExecuteEntity);
 
         /// <summary>
         /// 执行查询命令，并返回匿名实体的集合。
@@ -358,11 +362,16 @@ namespace Aoite.Data
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
         /// <returns>一个包含总记录数的匿名实体集合。</returns>
-        public virtual PageData<dynamic> ToEntities(int pageNumber, int pageSize = 10) => this.Execute(ExecuteType.Reader, dbCommand =>
+        public virtual PageData<dynamic> ToEntities(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;
             if(pageSize < 1) pageSize = 1;
 
+            return this.Execute(ExecuteType.Reader, dbCommand => this.InnerToEntities(dbCommand, pageNumber, pageSize));
+        }
+
+        private PageData<dynamic> InnerToEntities(DbCommand dbCommand, int pageNumber, int pageSize)
+        {
             this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var entities = dbCommand.ExecuteEntities();
             var value = new PageData<dynamic>()
@@ -371,7 +380,7 @@ namespace Aoite.Data
                 Total = this.GetTotalCount()
             };
             return value;
-        });
+        }
 
         #endregion
     }

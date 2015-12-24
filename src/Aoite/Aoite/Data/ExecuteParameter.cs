@@ -8,42 +8,12 @@ namespace Aoite.Data
     /// 表示一个数据源交互的简单执行命令参数。
     /// </summary>
     [Serializable]
-    public class ExecuteParameter : IExecuteParameter
+    public class ExecuteParameter : DbValue, IExecuteParameter
     {
         /// <summary>
         /// 获取参数的名称。
         /// </summary>
         public virtual string Name { get; }
-
-        /// <summary>
-        /// 获取或设置参数的值。
-        /// </summary>
-        public virtual object Value { get; set; }
-
-        /// <summary>
-        /// 获取或设置参数的 <see cref="DbType"/>。
-        /// </summary>
-        public virtual DbType? Type { get; set; }
-
-        /// <summary>
-        /// 获取或设置参数的长度。
-        /// </summary>
-        public virtual int? Size { get; set; }
-
-        /// <summary>
-        /// 获取或设置一个值，该值指示参数是只可输入、只可输出、双向还是存储过程返回值参数。
-        /// </summary>
-        public virtual ParameterDirection? Direction { get; set; }
-
-        /// <summary>
-        /// 获取或设置一个值数值参数的精度。
-        /// </summary>
-        public virtual byte? Precision { get; set; }
-
-        /// <summary>
-        /// 数值参数的小数位数。
-        /// </summary>
-        public virtual byte? Scale { get; set; }
 
         /// <summary>
         /// 初始化一个 <see cref="ExecuteParameter"/> 类的新实例。
@@ -67,16 +37,11 @@ namespace Aoite.Data
             if(command == null) throw new ArgumentNullException(nameof(command));
 
             var dbParameter = command.CreateParameter();
-
             var parameter = dbParameter as IDbDataParameter;
             parameter.ParameterName = this.Name;
-            parameter.Value = this.Value;
-
-            if(this.Type.HasValue) parameter.DbType = this.Type.Value;
-            if(this.Size.HasValue) parameter.Size = this.Size.Value;
-            if(this.Direction.HasValue) parameter.Direction = this.Direction.Value;
-            if(this.Precision.HasValue) parameter.Precision = this.Precision.Value;
-            if(this.Scale.HasValue) parameter.Scale = this.Scale.Value;
+            this.Fill(parameter);
+            var dbValue = this.Value as IDbValue;
+            if(dbValue != null) dbValue.Fill(parameter);
 
             return dbParameter;
         }

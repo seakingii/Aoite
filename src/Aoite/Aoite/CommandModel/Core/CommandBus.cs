@@ -78,7 +78,7 @@ namespace Aoite.CommandModel
             //- https://github.com/StephenCleary/AspNetBackgroundTasks/blob/master/src/AspNetBackgroundTasks/Internal/RegisteredTasks.cs
             //TODO: 如何解决升级维护时，异步任务丢失？IRegisteredObject？
             if(command == null) throw new ArgumentNullException(nameof(command));
-
+            
             return Task.Factory.StartNew(() =>
             {
                 try
