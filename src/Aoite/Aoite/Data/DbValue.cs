@@ -55,5 +55,18 @@ namespace Aoite.Data
             if(this.Precision.HasValue) parameter.Precision = this.Precision.Value;
             if(this.Scale.HasValue) parameter.Scale = this.Scale.Value;
         }
+
+        /// <summary>
+        /// 初始化一个 <see cref="DbValue"/> 类的新实例。
+        /// </summary>
+        public DbValue() { }
+        /// <summary>
+        /// 初始化一个 <see cref="DbValue"/> 类的新实例。
+        /// </summary>
+        /// <param name="value">参数的值。</param>
+        public DbValue(object value)
+        {
+            this.Value = value;
+        }
     }
 }

@@ -20,11 +20,10 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
-        public ExecuteParameter(string name, object value)
+        public ExecuteParameter(string name, object value) : base(value)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             this.Name = name;
-            this.Value = value;
         }
 
         /// <summary>
