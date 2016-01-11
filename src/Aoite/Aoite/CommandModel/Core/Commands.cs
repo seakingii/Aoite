@@ -62,7 +62,7 @@ namespace CMD
             {
                 context.Engine.AddAnonymous<TEntity>(command.Entity);
                 if(command.IdentityKey)
-                    command.ResultValue = context.Engine.GetLastIdentity<TEntity>().UnsafeValue;
+                    command.ResultValue = context.Engine.GetLastIdentity<TEntity>();
             }
         }
 

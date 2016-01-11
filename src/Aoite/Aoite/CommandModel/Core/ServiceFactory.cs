@@ -64,8 +64,8 @@ namespace Aoite.CommandModel
             if(userFactory == null) userFactory = new UserFactory(c => null);
 
             var container = new IocContainer();
-            container.AddService<IUserFactory>(userFactory);
-            if(redisProvider != null) container.AddService<IRedisProvider>(redisProvider);
+            container.AddService(userFactory);
+            if(redisProvider != null) container.AddService(redisProvider);
 
             if(mockFactoryCallback != null)
             {

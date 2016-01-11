@@ -1196,7 +1196,7 @@ namespace System
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <returns>一个结果。</returns>
-        public static Result<long> GetLastIdentity<TEntity>(this IDbEngine engine)
+        public static long GetLastIdentity<TEntity>(this IDbEngine engine)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             var command = engine.Provider.CreateLastIdentityCommand(TypeMapper.Instance<TEntity>.Mapper);
