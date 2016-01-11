@@ -1,4 +1,6 @@
-﻿namespace Aoite.Data
+﻿using System;
+
+namespace Aoite.Data
 {
     /// <summary>
     /// 定义数据源查询与交互引擎的方法。
@@ -19,5 +21,13 @@
         /// <param name="command">执行的命令。</param>
         /// <returns>数据源查询与交互的执行器。</returns>
         IDbExecutor Execute(ExecuteCommand command);
+#if !NET45
+        /// <summary>
+        /// 执行指定的命令。
+        /// </summary>
+        /// <param name="fs">一个复合格式字符串</param>
+        /// <returns>数据源查询与交互的执行器。</returns>
+        IDbExecutor Execute(FormattableString fs);
+#endif
     }
 }

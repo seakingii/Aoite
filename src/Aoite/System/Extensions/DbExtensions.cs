@@ -641,8 +641,8 @@ namespace System
                 var pName = "_value_" + index;
                 setBuilder.Append(provider.EscapeName(property2.Name, NamePoint.Field))
                           .Append('=')
-                          .Append(provider.EscapeName(pName, NamePoint.Parameter));
-                ps.Add(provider.EscapeName(pName, NamePoint.Declare), property2.GetValue(entity));
+                          .Append(provider.EscapeName(pName, NamePoint.Value));
+                ps.Add(provider.EscapeName(pName, NamePoint.Parameter), property2.GetValue(entity));
                 index++;
             }
             if(where != null) setBuilder.Append(" WHERE ").Append(where);
@@ -803,8 +803,8 @@ namespace System
             var fields = CreateFields<TEntity, TView>(engine);
 
             return engine.Execute("SELECT " + fields + " FROM " + provider.EscapeName(mapper.Name, NamePoint.Table)
-                + " WHERE " + provider.EscapeName(keyName, NamePoint.Field) + "=" + provider.EscapeName("pk", NamePoint.Parameter)
-                , provider.EscapeName("pk", NamePoint.Declare), keyValue).ToEntity<TView>();
+                + " WHERE " + provider.EscapeName(keyName, NamePoint.Field) + "=" + provider.EscapeName("pk", NamePoint.Value)
+                , provider.EscapeName("pk", NamePoint.Parameter), keyValue).ToEntity<TView>();
         }
 
         #endregion
@@ -1186,7 +1186,7 @@ namespace System
                 if(index++ > 0) builder.Append(' ').Append(binary).Append(' ');
                 builder
                     .Append(provider.EscapeName(p.Name, NamePoint.Field))
-                    .Append('=').Append(provider.EscapeName(p.Name, NamePoint.Parameter));
+                    .Append('=').Append(provider.EscapeName(p.Name, NamePoint.Value));
             }
             return builder.ToString();
         }

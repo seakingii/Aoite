@@ -39,7 +39,7 @@ namespace Aoite.Data
             if(command == null) throw new ArgumentNullException(nameof(command));
             return new DbExecutor(this, command, null, null, true);
         }
-
+        
         private readonly System.Threading.ThreadLocal<DbContext> _threadLocalContent = new System.Threading.ThreadLocal<DbContext>();
         /// <summary>
         /// 释放并关闭当前线程上下文的 <see cref="IDbContext"/>。
@@ -162,5 +162,64 @@ namespace Aoite.Data
             if(engineProvider == null) throw new ArgumentException($"非法的数据源提供程序“{provider}”。", nameof(provider));
             return new DbEngine(engineProvider);
         }
+#if !NET45
+
+        /// <summary>
+        /// 执行指定的命令。
+        /// </summary>
+        /// <param name="fs">一个复合格式字符串</param>
+        /// <returns>数据源查询与交互的执行器。</returns>
+        public IDbExecutor Execute(FormattableString fs) => this.Execute(this.Parse(fs));
+
+        /// <summary>
+        /// 将一个复合格式字符串转换为 <see cref="ExecuteCommand"/> 的对象实例。
+        /// </summary>
+        /// <param name="fs">一个复合格式字符串</param>
+        /// <returns><see cref="ExecuteCommand"/> 的对象实例。</returns>
+        public ExecuteCommand Parse(FormattableString fs)
+        {
+            if(fs == null) throw new ArgumentNullException(nameof(fs));
+
+            var parameters = new ExecuteParameterCollection();
+            var sfp = new SqlFormatProvider(parameters, this.Provider);
+            var text = fs.ToString(sfp);
+            return new ExecuteCommand(text, parameters);
+        }
+
+        class SqlFormatProvider : IFormatProvider
+        {
+            private readonly SqlFormatter _formatter;
+
+            public SqlFormatProvider(ExecuteParameterCollection parameters, IDbEngineProvider engineProvider)
+            {
+                _formatter = new SqlFormatter(parameters, engineProvider);
+            }
+
+            public object GetFormat(Type formatType)
+            {
+                if(formatType == typeof(ICustomFormatter)) return _formatter;
+                return null;
+            }
+
+            class SqlFormatter : ICustomFormatter
+            {
+                ExecuteParameterCollection _parameters;
+                IDbEngineProvider _engineProvider;
+                public SqlFormatter(ExecuteParameterCollection parameters, IDbEngineProvider engineProvider)
+                {
+                    _parameters = parameters;
+                    _engineProvider = engineProvider;
+                }
+                private int index = 0;
+                public string Format(string format, object arg, IFormatProvider formatProvider)
+                {
+                    if(format == ":") return Convert.ToString(arg);
+                    var name = "p" + index++;
+                    _parameters.Add(_engineProvider.EscapeName(name, NamePoint.Parameter), arg);
+                    return _engineProvider.EscapeName(name, NamePoint.Value);
+                }
+            }
+        }
+#endif
     }
 }

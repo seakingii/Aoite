@@ -107,5 +107,18 @@ namespace Aoite.Data.Builder
             Assert.Equal("SELECT * FROM [TestTable] WHERE (ID=@id0 OR ID=@id1 OR ID=@id2)", command.Text);
             Assert.Equal(3, command.Count);
         }
+
+        [Fact()]
+        public void Parse_FormattableString_To_ExecuteCommand_Test()
+        {
+            var engine = new DbEngine(new SqlEngineProvider("connection string"));
+            var username = "daniel";
+            var fields = "username,password,memo";
+            var command = engine.Parse($"SELECT {fields::} FROM Users WHERE Username = {username}");
+            Assert.Equal("SELECT username,password,memo FROM Users WHERE Username = @p0", command.Text);
+            Assert.Equal(1, command.Count);
+            Assert.Equal("@p0", command[0].Name);
+            Assert.Equal(username, command[0].Value);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24627.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite", "src\Aoite\Aoite.csproj", "{5B0D8879-660C-4701-8117-C1499C9B65E7}"
 EndProject
@@ -15,6 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comm", "comm", "{31F2CA9F-2
 	ProjectSection(SolutionItems) = preProject
 		comm\aoite.snk = comm\aoite.snk
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8B314701-DEE7-472F-BFBA-F9DD85ED1F55}"
+	ProjectSection(SolutionItems) = preProject
+		docs\GettingStarted.md = docs\GettingStarted.md
 	EndProjectSection
 EndProject
 Global

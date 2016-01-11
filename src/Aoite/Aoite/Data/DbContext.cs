@@ -70,6 +70,21 @@ namespace Aoite.Data
             return new DbExecutor(this, command, this._connection, this._transaction, false);
         }
 
+#if !NET45
+
+        /// <summary>
+        /// 执行指定的命令。
+        /// </summary>
+        /// <param name="fs">一个复合格式字符串</param>
+        /// <returns>数据源查询与交互的执行器。</returns>
+        public IDbExecutor Execute(FormattableString fs)
+        {
+            this.ThrowWhenDisposed();
+            return this.Execute(this.Owner.Parse(fs));
+        }
+
+#endif
+
         private void TransactionHandler(Action action)
         {
             this.ThrowWhenDisposed();

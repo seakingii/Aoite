@@ -50,8 +50,8 @@ namespace Aoite.Data
                 case NamePoint.Field:
                 case NamePoint.Table:
                     return string.Concat("[", name, "]");
+                case NamePoint.Value:
                 case NamePoint.Parameter:
-                case NamePoint.Declare:
                     return string.Concat("@", name);
             }
             return name;
@@ -205,17 +205,17 @@ namespace Aoite.Data
 
                     whereBuilder.Append(this.EscapeName(fName, NamePoint.Field))
                                 .Append('=')
-                                .Append(this.EscapeName(pName, NamePoint.Parameter));
+                                .Append(this.EscapeName(pName, NamePoint.Value));
                     if(isArrayValue)
                     {
-                        ps.Add(this.EscapeName(pName, NamePoint.Declare), arrayValue.GetValue(index++));
+                        ps.Add(this.EscapeName(pName, NamePoint.Parameter), arrayValue.GetValue(index++));
                         if(index < arrayValue.Length)
                         {
                             whereBuilder.Append(" OR ");
                             goto ARRAY_LABEL;
                         }
                     }
-                    else ps.Add(this.EscapeName(pName, NamePoint.Declare), value);
+                    else ps.Add(this.EscapeName(pName, NamePoint.Parameter), value);
                     break;
                 }
             }
@@ -288,8 +288,8 @@ namespace Aoite.Data
         private void DefaultAppendValue(PropertyMapper property, StringBuilder builder, object value, ExecuteParameterCollection ps)
         {
             var upperName = property.Name.ToUpper();
-            builder.Append(this.EscapeName(upperName, NamePoint.Parameter));
-            ps.Add(this.EscapeName(upperName, NamePoint.Declare), value);
+            builder.Append(this.EscapeName(upperName, NamePoint.Value));
+            ps.Add(this.EscapeName(upperName, NamePoint.Parameter), value);
         }
 
         /// <summary>
