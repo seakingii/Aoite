@@ -22,7 +22,7 @@ namespace System.Collections.Generic
             if(collection == null) throw new ArgumentNullException(nameof(collection));
             return new PageData<TEntity>() { Rows = collection.ToArray(), Total = totalCount };
         }
-        
+
         /// <summary>
         /// 获取与指定的键相关联的值。
         /// </summary>
@@ -114,12 +114,15 @@ namespace System.Collections.Generic
         /// <param name="separator">分隔符。</param>
         /// <param name="start">起始文本。如果集合为空，不包含此数据。</param>
         /// <param name="end">结尾文本。如果集合为空，不包含此数据。</param>
+        /// <param name="ignoreEmptyItem">指示是否忽略集合中为 null 或 <see cref="string.Empty"/> 值的项。</param>
         /// <returns>拼接后的字符串。</returns>
-        public static string Join<T>(this IEnumerable<T> items, Func<T, string> callback, string separator = ",", string start = null, string end = null)
+        public static string Join<T>(this IEnumerable<T> items, Func<T, string> callback, string separator = ",", string start = null, string end = null, bool ignoreEmptyItem = true)
         {
-            Text.StringBuilder builder = new Text.StringBuilder();
+            var builder = new Text.StringBuilder();
+            var isStringType = typeof(T) == Types.String;
             foreach(var item in items)
             {
+                if(ignoreEmptyItem && (item == null || (isStringType && item.ToString().Length == 0))) continue;
                 if(builder.Length > 0) builder.Append(separator);
                 builder.Append(callback(item));
             }
@@ -137,9 +140,10 @@ namespace System.Collections.Generic
         /// <param name="separator">分隔符。</param>
         /// <param name="start">起始文本。如果集合为空，不包含此数据。</param>
         /// <param name="end">结尾文本。如果集合为空，不包含此数据。</param>
+        /// <param name="ignoreEmptyItem">指示是否忽略集合中为 null 或 <see cref="string.Empty"/> 值的项。</param>
         /// <returns>拼接后的字符串。</returns>
-        public static string Join<T>(this IEnumerable<T> items, string separator = ",", string start = null, string end = null)
-            => Join(items, t => Convert.ToString(t), separator, start, end);
+        public static string Join<T>(this IEnumerable<T> items, string separator = ",", string start = null, string end = null, bool ignoreEmptyItem = true)
+            => Join(items, t => Convert.ToString(t), separator, start, end, ignoreEmptyItem);
 
         /// <summary>
         /// 搜索指定的对象，并返回整个 <see cref="Generic.IList{T}"/> 中第一个匹配项的索引。

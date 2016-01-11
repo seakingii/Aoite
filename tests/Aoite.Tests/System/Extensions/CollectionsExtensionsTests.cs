@@ -64,6 +64,11 @@ namespace System
         {
             int[] a = { 1, 2, 3, 4, 5 };
             Assert.Equal("y1x2x3x4x5z", a.Join("x", start: "y", end: "z"));
+
+            string[] b = { "1", null, "", string.Empty, "c" };
+
+            Assert.Equal("1,c", b.Join());
+            Assert.Equal("1,,,,c", b.Join(ignoreEmptyItem: false));
         }
 
         [Fact()]
