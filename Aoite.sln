@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Tests", "tests\Aoite.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comm", "comm", "{31F2CA9F-25EF-439C-8E77-917A67F42519}"
 	ProjectSection(SolutionItems) = preProject
+		src\Aoite\Aoite.nuspec = src\Aoite\Aoite.nuspec
 		comm\aoite.snk = comm\aoite.snk
 		README.md = README.md
 	EndProjectSection

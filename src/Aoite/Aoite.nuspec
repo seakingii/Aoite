@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Aoite</id>
+    <version>3.16.1.1</version>
+    <title>Aoite</title>
+    <authors>Treenew</authors>
+    <owners>SOFIRE</owners>
+    <projectUrl>https://github.com/treenew/Aoite</projectUrl>
+    <iconUrl>http://images.cnblogs.com/cnblogs_com/sofire/218678/o_aoite-v2-square.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Aoite is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.</description>
+    <summary>Aoite is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.</summary>
+    <tags>aoite data ioc commandmodel leveldb logger log redis reflection serialization</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Aoite.dll" target="lib\net46\Aoite.dll" />
+    <file src="bin\Release\Aoite.pdb" target="lib\net46\Aoite.pdb" />
+    <file src="bin\Release\Aoite.xml" target="lib\net46\Aoite.xml" />
+    
+    <file src="bin\Release.Net40\Aoite.dll" target="lib\net40\Aoite.dll" />
+    <file src="bin\Release.Net40\Aoite.pdb" target="lib\net40\Aoite.pdb" />
+    <file src="bin\Release.Net40\Aoite.xml" target="lib\net40\Aoite.xml" />
+    
+    <file src="bin\Release.Net45\Aoite.dll" target="lib\net45\Aoite.dll" />
+    <file src="bin\Release.Net45\Aoite.pdb" target="lib\net45\Aoite.pdb" />
+    <file src="bin\Release.Net45\Aoite.xml" target="lib\net45\Aoite.xml" />
+  </files>
+</package>

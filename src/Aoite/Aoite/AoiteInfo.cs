@@ -13,10 +13,17 @@
         //<发布阶段>
         //- RTM：可用于生产环境的版本，又称为正式版。
         //- Stable：修复问题，扩展功能，优化性能。
-
         internal const string Stage = "Pre-alpha";
         internal const string Name = "Aoite";
-        internal const string DescriptionSuffix = "For .NET Framework 4.6 runtime. See http://www.aoite.com.";
+        internal const string DescriptionSuffix = "For .NET Framework " +
+#if NET40
+            "4.0"
+#elif NET45
+            "4.5"
+#elif NET46
+            "4.6"
+#endif
+            + " runtime. See http://www.aoite.com.";
         /// <summary>
         /// 获取包含密钥对的文件的路径。
         /// </summary>
@@ -25,7 +32,7 @@
         /// <summary> 
         /// 获取简写化的版本号。
         /// </summary>
-        public const string Version = "3.0";
+        public const string Version = "3.16";
         /// <summary>
         /// 公司。
         /// </summary>
@@ -34,7 +41,7 @@
         /// 版权。
         /// </summary>
         public const string Copyright = "Copyright ©" + Name + " 2016 All Right Reserved";
-   
+
         /// <summary> 
         /// Aoite 核心套件。
         /// </summary>
@@ -47,7 +54,7 @@
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".16.1";
+            public const string AssemblyVersion = Version + ".1.1";
             /// <summary> 
             /// 程序集的简单描述。
             /// </summary>
