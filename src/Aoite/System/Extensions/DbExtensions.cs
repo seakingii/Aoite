@@ -719,7 +719,7 @@ namespace System
             if(engine == null) throw new ArgumentNullException(nameof(engine));
 
             var mapper = TypeMapper.Instance<TEntity>.Mapper;
-            var setBuilder = new StringBuilder("DELETE ")
+            var setBuilder = new StringBuilder("DELETE FROM ")
                                 .Append(engine.Provider.EscapeName(mapper.Name, NamePoint.Table));
             if(where != null)
             {

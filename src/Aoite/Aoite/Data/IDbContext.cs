@@ -10,6 +10,10 @@ namespace Aoite.Data
     public interface IDbContext : IObjectDisposable, IDbEngine
     {
         /// <summary>
+        /// 获取当前上下文的唯一标识符。
+        /// </summary>
+        Guid Id { get; }
+        /// <summary>
         /// 获取当前上下文的数据库连接对象。
         /// </summary>
         DbConnection Connection { get; }

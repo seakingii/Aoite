@@ -30,13 +30,13 @@ namespace System
             this.Parameters = ps;
         }
 
-        /// <summary>
-        /// 解析匿名对象参数集合，并用 AND 符拼接 WHERE 语句。
-        /// </summary>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="binary">二元运算符。</param>
-        public static WhereParameters Parse(object objectInstance, string binary = "AND")
-            => Parse(new ExecuteParameterCollection(objectInstance), binary);
+        ///// <summary>
+        ///// 解析匿名对象参数集合，并用 AND 符拼接 WHERE 语句。
+        ///// </summary>
+        ///// <param name="objectInstance">匿名参数集合实例。</param>
+        ///// <param name="binary">二元运算符。</param>
+        //public static WhereParameters Parse(object objectInstance, string binary = "AND")
+        //    => Parse(new ExecuteParameterCollection(objectInstance), binary);
 
         /// <summary>
         /// 解析匿名对象参数集合，并用 AND 符拼接 WHERE 语句。
@@ -47,13 +47,13 @@ namespace System
         public static WhereParameters Parse(IDbEngine engine, object objectInstance, string binary = "AND")
             => Parse(engine, new ExecuteParameterCollection(objectInstance), binary);
 
-        /// <summary>
-        /// 解析参数集合，并用 AND 符拼接 WHERE 语句。
-        /// </summary>
-        /// <param name="ps">参数集合。</param>
-        /// <param name="binary">二元运算符。</param>
-        public static WhereParameters Parse(ExecuteParameterCollection ps = null, string binary = "AND")
-            => Parse(Db.Engine, ps, binary);
+        ///// <summary>
+        ///// 解析参数集合，并用 AND 符拼接 WHERE 语句。
+        ///// </summary>
+        ///// <param name="ps">参数集合。</param>
+        ///// <param name="binary">二元运算符。</param>
+        //public static WhereParameters Parse(ExecuteParameterCollection ps = null, string binary = "AND")
+        //    => Parse(Db.Engine, ps, binary);
 
         /// <summary>
         /// 解析参数集合，并用 AND 符拼接 WHERE 语句。

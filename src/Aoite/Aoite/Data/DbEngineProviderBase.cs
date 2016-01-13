@@ -251,7 +251,7 @@ namespace Aoite.Data
 
             whereBuilder.Insert(0, " WHERE ");
             whereBuilder.Insert(0, this.EscapeName(tableName ?? mapper.Name, NamePoint.Table));
-            whereBuilder.Insert(0, "DELETE ");
+            whereBuilder.Insert(0, "DELETE FROM ");
 
             return new ExecuteCommand(whereBuilder.ToString(), ps);
         }

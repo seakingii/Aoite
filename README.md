@@ -38,14 +38,33 @@ Launch the Solution Configuration Manager, select build configuration:
     Assert.Equal(username, command[0].Value);
 ```
 
-### What's included
+### Quick start with CommandModel
 
-+ *Aoite*
-    - **CommandModel** : A Simplified with Command CQRS(Query Responsibility Segregation) pattern.
-    - **Data** : Easier operation to the database.
-    - **Logger**
-    - **Net**
-    - **Redis**
-    - **Reflection**
-    - **Serialization**
-+ *System*
+Please see [Aoite.Samples](https://github.com/treenew/Aoite/tree/master/tests/Aoite.Samples) project.
+
+## What's included
+
++ `Aoite`
+    - `CommandModel` : A Simplified with Command CQRS(Query Responsibility Segregation) pattern.
+    - `Data` : Easier operation to the database.
+    - `Logger`: A Simplified log provider.
+    - `Net`
+    - `Redis`: A Simplified redis client.
+    - `Reflection`: Easier to use .net reflection.
+    - `Serialization`: Easier to use .net serialization.
++ `System`
+    - `Core`
+        - `Ajob`: Async job.
+        - `BinaryValue`:Convert any object to byte array.
+        - `ConsistentHash`1`
+        - `DataSecurity`: Data security.
+        - `FastRandom`: Fast random.
+        - `GA`:
+        - `ObjectPool`1`: Object pool base.
+        - `Types`
+        - `WhereParameters`
+    - `Extensions`
+    - `Ioc`
+    - `Mapping`
+    - `Result`
+    - `Web`

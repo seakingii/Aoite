@@ -16,6 +16,12 @@ namespace Aoite.Data
         /// 获取当前上下文所属的交互引擎。
         /// </summary>
         public DbEngine Owner { get; }
+
+        /// <summary>
+        /// 获取当前上下文的唯一标识符。
+        /// </summary>
+        public Guid Id { get; }
+
         DbConnection IDbContext.Connection { get { return this._connection; } }
 
         /// <summary>
@@ -27,6 +33,7 @@ namespace Aoite.Data
 
         internal DbContext(DbEngine owner)
         {
+            this.Id = Guid.NewGuid();
             this.Owner = owner;
             this._connection = owner.Provider.CreateConnection();
         }

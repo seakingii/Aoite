@@ -141,12 +141,14 @@ namespace Aoite.Data
                 return this;
             }
 
+            var isCommandObject = objectInstance is CommandModel.ICommand;
+
             var objType = objectInstance.GetType();
             var mapper = TypeMapper.Create(objType);
             object value;
             foreach(var prop in mapper.Properties)
             {
-                if(prop.IsIgnore) continue;
+                if(prop.IsIgnore || (isCommandObject && prop.Name == "ResultValue")) continue;
 
                 value = prop.GetValue(objectInstance);
                 if(ExecuteParameterType.IsAssignableFrom(prop.Property.PropertyType)) this.Add(value as IExecuteParameter);

@@ -33,13 +33,13 @@ namespace Aoite.CommandModel
             var executorFactory = this.Container.GetService<IExecutorFactory>();
             var eventStore = this.Container.GetService<IEventStore>();
 
-            var context = contextFactory.Create<TCommand>(command);
-            var executorMetadata = executorFactory.Create<TCommand>(command);
+            var context = contextFactory.Create(command);
+            var executorMetadata = executorFactory.Create(command);
             var executor = executorMetadata.Executor;
 
             // 执行器元数据 && 事务仓储
             if(executorMetadata.RaiseExecuting(context, command)
-                && eventStore.RaiseExecuting<TCommand>(context, command)
+                && eventStore.RaiseExecuting(context, command)
                 && (executing == null || executing(context, command)))
             {
                 try
@@ -58,7 +58,7 @@ namespace Aoite.CommandModel
             }
 
             if(executed != null) executed(context, command, null);
-            eventStore.RaiseExecuted<TCommand>(context, command, null);
+            eventStore.RaiseExecuted(context, command, null);
             executorMetadata.RaiseExecuted(context, command, null);
             return command;
         }

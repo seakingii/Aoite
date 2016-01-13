@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aoite.CommandModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +7,70 @@ using System.Threading.Tasks;
 
 namespace Aoite.Samples
 {
-    class SampleUserService : CommandModel.CommandModelServiceBase
+    class SampleUserService : CommandModelServiceBase
     {
-
-        public long Add(string username, string password)
+        public bool Add(string username, string password)
         {
             if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
+            if(this.User != "admin") return false;
 
-            return this.Execute(new CMD.Add<SampleUser>(true)
+            if(Bus.Exists<SampleUser>("Username", username)) return false;
+
+            return Bus.AddAnonymous<SampleUser>(new { username, password }) > 0;
+        }
+
+        public bool Check(string username, string password)
+        {
+            if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
+            if(string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
+            return Bus.ExistsWhere<SampleUser>(new { username, password });
+        }
+
+        public bool Remove(string username)
+        {
+            if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
+            if(this.User != "admin") return false;
+
+            return Bus.RemoveWhere<SampleUser>(new { username }) > 0;
+        }
+
+        public long Count()
+        {
+            return this.Execute(new SampleUserCountCommand()).ResultValue;
+        }
+    }
+
+
+    [Cache("SAMPLEUSER")]
+    class SampleUserCountCommand : CommandBase<long>, ICommandCache
+    {
+        public ICommandCacheStrategy CreateStrategy(IContext context)
+        {
+            return new CommandCacheStrategy("COUNT", TimeSpan.FromSeconds(10), this, context);
+        }
+
+        public object GetCacheValue()
+        {
+            return this.ResultValue;
+        }
+
+        public bool SetCacheValue(object value)
+        {
+            if(value is long)
             {
-                Entity = new SampleUser() { Username = User, Password = password }
-            }).ResultValue;
+                this.ResultValue = (long)value;
+                return true;
+            }
+            return false;
+        }
+
+        class Executor : IExecutor<SampleUserCountCommand>
+        {
+            public void Execute(IContext context, SampleUserCountCommand command)
+            {
+                command.ResultValue = context.Engine.RowCount<SampleUser>();
+            }
         }
     }
 }

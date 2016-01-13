@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data.Common;
+using System.Collections.Concurrent;
 
 namespace Aoite.Data
 {
@@ -82,6 +83,7 @@ namespace Aoite.Data
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         public virtual IDbContext ContextTransaction { get { return this.Context.OpenTransaction(); } }
 
+
         /// <summary>
         /// 在引擎执行命令时发生。
         /// </summary>
@@ -126,7 +128,7 @@ namespace Aoite.Data
 
         private static readonly Type DbProvidersAttributeType = typeof(DbProvidersAttribute);
 
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Type> RegisterProviders = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
+        private static readonly ConcurrentDictionary<string, Type> RegisterProviders = new ConcurrentDictionary<string, Type>(StringComparer.CurrentCultureIgnoreCase);
 
         private static Type GetProviderType(string provider)
         {
@@ -165,10 +167,11 @@ namespace Aoite.Data
             if(string.IsNullOrWhiteSpace(provider)) throw new ArgumentNullException(nameof(provider));
             if(string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentNullException(nameof(connectionString));
 
-            var engineProvider = CreateProvider(provider.ToLower(), connectionString);
+            var engineProvider = CreateProvider(provider, connectionString);
             if(engineProvider == null) throw new ArgumentException($"非法的数据源提供程序“{provider}”。", nameof(provider));
             return new DbEngine(engineProvider);
         }
+
 #if !NET45 && !NET40
 
         /// <summary>
