@@ -1,6 +1,6 @@
 ﻿# Aoite [![NuGet](https://img.shields.io/nuget/v/Aoite.svg)](https://www.nuget.org/packages/Aoite) [![NuGet](https://img.shields.io/nuget/dt/Aoite.svg)](https://www.nuget.org/packages/Aoite/)
 
-**Aoite is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.**
+**Aoite is a library that makes it quicker and easier to any .Net Framework projects.**
 
 
 ## Download
@@ -19,10 +19,9 @@ You'll need .NET Framework 4.0 or later to use the precompiled binaries. To buil
 
 Launch the Solution Configuration Manager, select build configuration:
 
-- [Debug | Release]: Build .NET Framework **4.6** runtime.
-- [Debug | Release].Net45: Build .NET Framework **4.5** runtime.
-- [Debug | Release].Net40: Build .NET Framework **4.0** runtime.
-
+- [Debug | Release]: Build with .Net Framework **4.6** runtime.
+- [Debug | Release].Net45: Build with .Net Framework **4.5** runtime.
+- [Debug | Release].Net40: Build with .Net Framework **4.0** runtime.
 
 ## Getting Started
 
