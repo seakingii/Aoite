@@ -1,9 +1,7 @@
-﻿# Aoite
+﻿# Aoite [![NuGet](https://img.shields.io/nuget/v/Aoite.svg)](https://www.nuget.org/packages/Aoite)[![NuGet](https://img.shields.io/nuget/dt/Aoite.svg)](https://www.nuget.org/packages/Aoite/)
 
-**Aoite (currently v3.16.1) is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.**
+**Aoite is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.**
 
-[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)](https://www.nuget.org/packages/Aoite)
-[![NuGet](https://img.shields.io/nuget/dt/Microsoft.AspNet.Mvc.svg)](https://www.nuget.org/packages/Aoite/)
 
 ## Download
 
@@ -26,7 +24,7 @@ Launch the Solution Configuration Manager, select build configuration:
 - [Debug | Release].Net40: Build .NET Framework **4.0** runtime.
 
 
-## Features
+## Getting Started
 
 ### Quick start with Aoite.Data
 
