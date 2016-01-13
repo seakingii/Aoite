@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Data.Common;
 
 namespace Aoite.Data
@@ -39,7 +40,7 @@ namespace Aoite.Data
             if(command == null) throw new ArgumentNullException(nameof(command));
             return new DbExecutor(this, command, null, null, true);
         }
-        
+
         private readonly System.Threading.ThreadLocal<DbContext> _threadLocalContent = new System.Threading.ThreadLocal<DbContext>();
         /// <summary>
         /// 释放并关闭当前线程上下文的 <see cref="IDbContext"/>。
@@ -123,29 +124,35 @@ namespace Aoite.Data
         private const string Provider_Oracle = "oracle";
         private const string Provider_MySql = "mysql";
 
+        private static readonly Type DbProvidersAttributeType = typeof(DbProvidersAttribute);
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Type> RegisterProviders = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
+
+        private static Type GetProviderType(string provider)
+        {
+            var types = from g in ObjectFactory.AllTypes
+                        from type in g.Value
+                        where type.IsDefined(DbProvidersAttributeType, false)
+                        select type;
+            return (from type in types
+                    where type.GetAttribute<DbProvidersAttribute>().Names.Contains(provider, StringComparer.CurrentCultureIgnoreCase)
+                    select type).FirstOrDefault();
+
+        }
+
         private static IDbEngineProvider CreateProvider(string provider, string connectionString)
         {
-            switch(provider)
+            var type = RegisterProviders.GetOrAdd(provider, GetProviderType);
+            if(type == null)
             {
-                case Provider_Microsoft_SQL_Server_Simple:
-                case Provider_Microsoft_SQL_Server:
-                    return new SqlEngineProvider(connectionString);
-                case Provider_Microsoft_SQL_Server_Compact_Simple1:
-                case Provider_Microsoft_SQL_Server_Compact_Simple2:
-                case Provider_Microsoft_SQL_Server_Compact:
-                    return new SqlCeEngineProvider(connectionString);
-                    //case Provider_Microsoft_OleDb2003:
-                    //    return new OleDbEngine(DbEngineProvider.MicrosoftOleDb2003, connectionString);
-                    //case Provider_Microsoft_OleDb2007:
-                    //    return new OleDbEngine(DbEngineProvider.MicrosoftOleDb2007, connectionString);
-                    //case Provider_SQLite:
-                    //    return new SQLiteEngine(connectionString);
-                    //case Provider_Oracle:
-                    //    return new OracleEngine(connectionString);
-                    //case Provider_MySql:
-                    //    return new MySqlEngine(connectionString);
+                RegisterProviders.TryRemove(provider, out type);
+                throw new NotSupportedException($"当前运行环境找不到名称为“{provider}”的数据库提供程序。");
             }
-            return null;
+
+            var ctor = type.GetConstructor(new Type[] { Types.String });
+            if(ctor == null) throw new NotSupportedException($"当前运行环境名称为“{provider}”的数据库提供程序找不到“{type.FullName}(connectionString)” 的构造函数。");
+            return (IDbEngineProvider)DynamicFactory.CreateConstructorHandler(ctor)(connectionString);
+            //- 支持.NET 4.0 4.5 4.6
         }
 
         /// <summary>

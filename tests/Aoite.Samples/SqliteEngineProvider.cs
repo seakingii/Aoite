@@ -9,7 +9,8 @@ using System.IO;
 
 namespace Aoite.Data
 {
-    class SqliteEngineProvider : SqlEngineProvider
+    [DbProviders("sqlite")]
+    public class SqliteEngineProvider : SqlEngineProvider
     {
         public override DbProviderFactory DbFactory { get { return SQLiteFactory.Instance; } }
 

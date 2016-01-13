@@ -103,6 +103,7 @@
     <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
     <Compile Include="Aoite\Data\DbExecutor~Async.cs" />
     <Compile Include="Aoite\Data\DbValue.cs" />
+    <Compile Include="Aoite\Data\DbProvidersAttribute.cs" />
     <Compile Include="Aoite\Data\IDbExecutorAsync.cs" />
     <Compile Include="Aoite\Data\IDbValue.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />

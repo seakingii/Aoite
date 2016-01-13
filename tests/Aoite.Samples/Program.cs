@@ -20,8 +20,9 @@ namespace Aoite.Samples
                       .ToNonQuery();
             }
 
-            var rowCount = engine.RowCount<SampleUser>();
+            engine = DbEngine.Create("sqlite", "Data Source=" + dbFile + ";Version=3;");
 
+            var rowCount = engine.RowCount<SampleUser>();
             Console.WriteLine("Table<SampleUser> RowCount => {0};", rowCount);
 
             if(rowCount == 0)

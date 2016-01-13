@@ -7,6 +7,7 @@ namespace Aoite.Data
     /// <summary>
     /// 表示一个基于 Microsoft SQL Server 数据源查询与交互引擎的提供程序。
     /// </summary>
+    [DbProviders("sql", "mssql")]
     public class SqlEngineProvider : DbEngineProviderBase
     {
         const string IntegratedSecurityFormat = "Data Source={0};Initial Catalog={1};Integrated Security=True;Connect Timeout={2};";

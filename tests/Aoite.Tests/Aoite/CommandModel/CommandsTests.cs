@@ -22,7 +22,7 @@ namespace Aoite.CommandModel
                 }
                 , m =>
                 {
-                    m.Id = this.Context.GetLastIdentity<Models.Member>().UnsafeValue;
+                    m.Id = this.Context.GetLastIdentity<Models.Member>();
                     if(after != null) after(m);
                 });
         }

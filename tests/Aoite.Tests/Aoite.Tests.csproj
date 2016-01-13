@@ -79,6 +79,7 @@
     <Compile Include="Aoite\CommandModel\SapmlelTests.cs" />
     <Compile Include="Aoite\CommandModel\TestBase.cs" />
     <Compile Include="Aoite\Data\Core\AoiteTableTests.cs" />
+    <Compile Include="Aoite\Data\DbEngineTests.cs" />
     <Compile Include="Aoite\Data\Samples\BuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SelectCommandBuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SimpleDataTests.cs" />

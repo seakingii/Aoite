@@ -6,12 +6,18 @@ namespace Aoite.Data
     /// <summary>
     /// 表示一个基于 Microsoft SQL Server Compact 数据源查询与交互引擎的提供程序。
     /// </summary>
+    [DbProviders("ce", "sqlce", "mssqlce")]
     public class SqlCeEngineProvider : SqlEngineProvider
     {
         /// <summary>
         /// 获取用于创建提供程序对数据源类的实现的实例。
         /// </summary>
         public override DbProviderFactory DbFactory { get { return SqlCeProviderFactory.Instance; } }
+
+        /// <summary>
+        /// 获取一个值，表示当前数据提供程序的名称。
+        /// </summary>
+        public override string Name { get { return "SqlCe"; } }
 
         /// <summary>
         /// 指定数据库的连接字符串，初始化 <see cref="SqlCeEngineProvider"/> 类的新实例。
