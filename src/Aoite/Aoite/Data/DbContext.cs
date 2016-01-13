@@ -70,7 +70,7 @@ namespace Aoite.Data
             return new DbExecutor(this, command, this._connection, this._transaction, false);
         }
 
-#if !NET45
+#if !NET45 && !NET40
 
         /// <summary>
         /// 执行指定的命令。

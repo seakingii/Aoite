@@ -21,7 +21,7 @@ namespace Aoite.Data
         /// <param name="command">执行的命令。</param>
         /// <returns>数据源查询与交互的执行器。</returns>
         IDbExecutor Execute(ExecuteCommand command);
-#if !NET45
+#if !NET45 && !NET40
         /// <summary>
         /// 执行指定的命令。
         /// </summary>

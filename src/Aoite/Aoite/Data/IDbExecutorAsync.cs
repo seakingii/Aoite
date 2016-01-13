@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NET40
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -221,3 +222,4 @@ namespace Aoite.Data
         Task<PageData<dynamic>> ToEntitiesAsync(CancellationToken cancellationToken, int pageNumber, int pageSize = 10);
     }
 }
+#endif

@@ -108,6 +108,7 @@ namespace Aoite.Data.Builder
             Assert.Equal(3, command.Count);
         }
 
+#if !NET45 && !NET46
         [Fact()]
         public void Parse_FormattableString_To_ExecuteCommand_Test()
         {
@@ -120,5 +121,6 @@ namespace Aoite.Data.Builder
             Assert.Equal("@p0", command[0].Name);
             Assert.Equal(username, command[0].Value);
         }
+#endif
     }
 }

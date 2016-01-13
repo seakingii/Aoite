@@ -7,7 +7,10 @@ namespace Aoite.Data
     /// <summary>
     /// 定义一个数据源查询与交互的执行器。
     /// </summary>
-    public partial interface IDbExecutor : IDbExecutorAsync
+    public partial interface IDbExecutor
+#if !NET40
+        : IDbExecutorAsync
+#endif
     {
         /// <summary>
         /// 在引擎执行命令时发生。

@@ -169,7 +169,7 @@ namespace Aoite.Data
             if(engineProvider == null) throw new ArgumentException($"非法的数据源提供程序“{provider}”。", nameof(provider));
             return new DbEngine(engineProvider);
         }
-#if !NET45
+#if !NET45 && !NET40
 
         /// <summary>
         /// 执行指定的命令。
