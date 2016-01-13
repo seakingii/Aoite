@@ -1,4 +1,4 @@
-﻿# Aoite [![NuGet](https://img.shields.io/nuget/v/Aoite.svg)](https://www.nuget.org/packages/Aoite)[![NuGet](https://img.shields.io/nuget/dt/Aoite.svg)](https://www.nuget.org/packages/Aoite/)
+﻿# Aoite [![NuGet](https://img.shields.io/nuget/v/Aoite.svg)](https://www.nuget.org/packages/Aoite) [![NuGet](https://img.shields.io/nuget/dt/Aoite.svg)](https://www.nuget.org/packages/Aoite/)
 
 **Aoite is a library that makes it quicker and easier to any .Net Framework(4.0,4.5,4.6) projects.**
 
