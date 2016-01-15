@@ -225,8 +225,8 @@ namespace Aoite.Data
                 {
                     if(format == ":") return Convert.ToString(arg);
                     var name = "p" + index++;
-                    _parameters.Add(_engineProvider.EscapeName(name, NamePoint.Parameter), arg);
-                    return _engineProvider.EscapeName(name, NamePoint.Value);
+                    _parameters.Add(_engineProvider.SqlFactory.EscapeName(name, NamePoint.Parameter), arg);
+                    return _engineProvider.SqlFactory.EscapeName(name, NamePoint.Value);
                 }
             }
         }

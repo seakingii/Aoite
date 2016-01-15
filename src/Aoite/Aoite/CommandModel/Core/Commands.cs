@@ -14,6 +14,10 @@ namespace CMD
         /// 获取或设置实体的实例。
         /// </summary>
         public object Entity { get; set; }
+        /// <summary>
+        /// 获取或设置实体的实际表名称，可以为 null 值。
+        /// </summary>
+        public string TableName { get; set; }
     }
 
     /// <summary>
@@ -21,6 +25,11 @@ namespace CMD
     /// </summary>
     public abstract class WhereCommandBase
     {
+        /// <summary>
+        /// 获取或设置实体的实际表名称，可以为 null 值。
+        /// </summary>
+        public string TableName { get; set; }
+
         private WhereParameters _WhereParameters = new WhereParameters();
         /// <summary>
         /// 设置一个 WHERE 的条件参数。
@@ -60,7 +69,7 @@ namespace CMD
         {
             public void Execute(IContext context, Add<TEntity> command)
             {
-                context.Engine.AddAnonymous<TEntity>(command.Entity);
+                context.Engine.AddAnonymous<TEntity>(command.Entity, command.TableName);
                 if(command.IdentityKey)
                     command.ResultValue = context.Engine.GetLastIdentity<TEntity>();
             }
@@ -90,7 +99,7 @@ namespace CMD
         {
             public void Execute(IContext context, Modify<TEntity> command)
             {
-                command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity);
+                command.ResultValue = context.Engine.ModifyAnonymous<TEntity>(command.Entity, command.TableName);
             }
         }
     }

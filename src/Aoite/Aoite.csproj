@@ -145,8 +145,11 @@
     <Compile Include="Aoite\Data\DbExecutor~Async.cs" />
     <Compile Include="Aoite\Data\DbValue.cs" />
     <Compile Include="Aoite\Data\DbProvidersAttribute.cs" />
+    <Compile Include="Aoite\Data\Factories\SqlCeFactory.cs" />
     <Compile Include="Aoite\Data\IDbExecutorAsync.cs" />
     <Compile Include="Aoite\Data\IDbValue.cs" />
+    <Compile Include="Aoite\Data\Factories\SqlFactory.cs" />
+    <Compile Include="Aoite\Data\ISqlFactory.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs" />

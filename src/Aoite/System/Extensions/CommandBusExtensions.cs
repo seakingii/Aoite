@@ -18,9 +18,10 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
         /// <param name="identityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <returns>当 <typeparamref name="TEntity"/> 包含递增列主键时，返回的递增列值。</returns>
-        public static long Add<TEntity>(this ICommandBus bus, TEntity entity, bool identityKey = false)
-            => AddAnonymous<TEntity>(bus, entity, identityKey);
+        public static long Add<TEntity>(this ICommandBus bus, TEntity entity, bool identityKey = false, string tableName = null)
+            => AddAnonymous<TEntity>(bus, entity, identityKey, tableName);
 
         /// <summary>
         /// 执行一个添加的命令模型。
@@ -29,9 +30,10 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
         /// <param name="identityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <returns>当 <typeparamref name="TEntity"/> 包含递增列主键时，返回的递增列值。</returns>
-        public static long AddAnonymous<TEntity>(this ICommandBus bus, object entity, bool identityKey = false)
-            => bus.Execute(new CMD.Add<TEntity>(identityKey) { Entity = entity }).ResultValue;
+        public static long AddAnonymous<TEntity>(this ICommandBus bus, object entity, bool identityKey = false, string tableName = null)
+            => bus.Execute(new CMD.Add<TEntity>(identityKey) { Entity = entity, TableName = tableName }).ResultValue;
 
         #endregion
 
@@ -44,7 +46,7 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
         /// <returns>受影响的行。</returns>
-        public static int Modify<TEntity>(this ICommandBus bus, TEntity entity)
+        public static int Modify<TEntity>(this ICommandBus bus, TEntity entity, string tableName = null)
             => ModifyAnonymous<TEntity>(bus, entity);
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
         /// <returns>受影响的行。</returns>
-        public static int ModifyAnonymous<TEntity>(this ICommandBus bus, object entity)
+        public static int ModifyAnonymous<TEntity>(this ICommandBus bus, object entity, string tableName = null)
             => bus.Execute(new CMD.Modify<TEntity>() { Entity = entity }).ResultValue;
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
         /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, string where, object objectInstance)
+        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, string where, object objectInstance, string tableName = null)
             => ModifyWhere<TEntity>(bus, entity, where, new ExecuteParameterCollection(objectInstance));
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace System
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
         /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, string where, ExecuteParameterCollection ps = null)
+        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, string where, ExecuteParameterCollection ps = null, string tableName = null)
             => ModifyWhere<TEntity>(bus, entity, new WhereParameters(where, ps));
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace System
         /// <param name="binary">二元运算符。</param>
         /// <returns>受影响的行。</returns>
         public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, object objectInstance, string binary = "AND")
-            => ModifyWhere<TEntity>(bus, entity, WhereParameters.Parse(bus.GetDbEngine(), objectInstance, binary));
+            => ModifyWhere<TEntity>(bus, entity, new ExecuteParameterCollection(objectInstance), binary);
 
         /// <summary>
         /// 执行一个条件的修改的命令模型。
@@ -113,8 +115,8 @@ namespace System
         /// <param name="entity">实体的实例。</param>
         /// <param name="whereParameters">一个 WHERE 的条件参数。</param>
         /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, WhereParameters whereParameters)
-            => bus.Execute(new CMD.ModifyWhere<TEntity>() { Entity = entity, WhereParameters = whereParameters }).ResultValue;
+        public static int ModifyWhere<TEntity>(this ICommandBus bus, object entity, WhereParameters whereParameters, string tableName = null)
+            => bus.Execute(new CMD.ModifyWhere<TEntity>() { Entity = entity, WhereParameters = whereParameters, TableName = tableName }).ResultValue;
 
         #endregion
 
@@ -213,7 +215,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="bus">命令总线。</param>
-        /// <param name="keyName">主键的列名。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <returns>一个实体。</returns>
         public static TEntity FindOne<TEntity>(this ICommandBus bus, string keyName, object keyValue)
@@ -236,7 +238,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="bus">命令总线。</param>
-        /// <param name="keyName">主键的列名。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <returns>一个实体。</returns>
         public static TView FindOne<TEntity, TView>(this ICommandBus bus, string keyName, object keyValue)

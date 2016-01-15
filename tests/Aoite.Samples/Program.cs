@@ -14,7 +14,7 @@ namespace Aoite.Samples
         static void Main(string[] args)
         {
             var dbFile = GA.FullPath("Samples.db");
-            var engine = new DbEngine(new SqliteEngineProvider(dbFile, null));
+            var engine = new DbEngine(new SQLiteEngineProvider(dbFile, null));
 
             //- Test table is existed.
             if(!engine.Execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='SampleUser'").ToScalar<bool>())

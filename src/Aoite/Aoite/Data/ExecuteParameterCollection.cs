@@ -40,7 +40,7 @@ namespace Aoite.Data
         /// <summary>
         /// 指定对象参数集合，初始化一个 <see cref="ExecuteParameterCollection"/> 类的新实例。
         /// </summary>
-        /// <param name="objectInstance">对象参数集合实例。</param>
+        /// <param name="objectInstance">匿名参数集合实例。</param>
         public ExecuteParameterCollection(object objectInstance) : this()
         {
             this.Parse(objectInstance);
@@ -131,7 +131,7 @@ namespace Aoite.Data
         /// <summary>
         /// 指定解析一个任意对象，添加到集合中。
         /// </summary>
-        /// <param name="objectInstance">一个任意对象。</param>
+        /// <param name="objectInstance">匿名参数集合实例。</param>
         public ExecuteParameterCollection Parse(object objectInstance)
         {
             if(objectInstance == null) return this;

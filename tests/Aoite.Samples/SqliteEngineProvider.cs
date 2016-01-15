@@ -10,22 +10,33 @@ using System.IO;
 namespace Aoite.Data
 {
     [DbProviders("sqlite")]
-    public class SqliteEngineProvider : SqlEngineProvider
+    public class SQLiteEngineProvider : SqlEngineProvider
     {
         public override DbProviderFactory DbFactory { get { return SQLiteFactory.Instance; } }
+        public override ISqlFactory SqlFactory { get { return SQLiteSqlFactory.Instance; } }
+        public override string Name { get { return "sqlite"; } }
 
-        public SqliteEngineProvider(string connectionString) : base(connectionString) { }
+        public SQLiteEngineProvider(string connectionString) : base(connectionString) { }
 
-        public SqliteEngineProvider(string fileName, string password)
+        public SQLiteEngineProvider(string fileName, string password)
             : this("Data Source=" + fileName + ";Version=3;" + (password == null ? string.Empty : "Password" + password))
         { }
+    }
+
+    
+    public class SQLiteSqlFactory : Factories.SqlFactory
+    {
+        public readonly static new SQLiteSqlFactory Instance = new SQLiteSqlFactory();
+
+        protected SQLiteSqlFactory() { }
+
         public override void PageProcessCommand(int pageNumber, int pageSize, DbCommand command)
         {
             var limit = (pageNumber - 1) * pageSize;
             command.CommandText += "LIMIT " + limit + "," + pageSize;
         }
 
-        public override ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper)
+        public override ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, string tableName = null)
         {
             return new ExecuteCommand("SELECT last_insert_rowid()");
         }

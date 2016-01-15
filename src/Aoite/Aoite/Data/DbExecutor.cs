@@ -198,7 +198,7 @@ namespace Aoite.Data
         private long GetTotalCount()
         {
             var newCommand = this.Command.Clone() as ExecuteCommand;
-            newCommand.Text = this.Engine.Provider.CreatePageTotalCountCommand(newCommand.Text);
+            newCommand.Text = this.Engine.Provider.SqlFactory.CreatePageTotalCountCommand(newCommand.Text);
             var dbCommand = this.CreateDbCommand(newCommand);
             var value = dbCommand.ExecuteScalar<long>();
             return value;
@@ -289,7 +289,7 @@ namespace Aoite.Data
 
         private PageTable InnerToTable(DbCommand dbCommand, int pageNumber, int pageSize)
         {
-            this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
+            this.Engine.Provider.SqlFactory.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var value = dbCommand.ExecuteTable(this.CreateDataAdapter(dbCommand));
             value.Total = this.GetTotalCount();
             return value;
@@ -330,7 +330,7 @@ namespace Aoite.Data
 
         private PageData<TEntity> InnerToEntities<TEntity>(DbCommand dbCommand, int pageNumber, int pageSize)
         {
-            this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
+            this.Engine.Provider.SqlFactory.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var entities = dbCommand.ExecuteEntities<TEntity>();
             var value = new PageData<TEntity>()
             {
@@ -372,7 +372,7 @@ namespace Aoite.Data
 
         private PageData<dynamic> InnerToEntities(DbCommand dbCommand, int pageNumber, int pageSize)
         {
-            this.Engine.Provider.PageProcessCommand(pageNumber, pageSize, dbCommand);
+            this.Engine.Provider.SqlFactory.PageProcessCommand(pageNumber, pageSize, dbCommand);
             var entities = dbCommand.ExecuteEntities();
             var value = new PageData<dynamic>()
             {
