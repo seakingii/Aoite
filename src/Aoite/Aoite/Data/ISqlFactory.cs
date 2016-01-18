@@ -17,14 +17,6 @@ namespace Aoite.Data
         /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, string tableName = null);
         /// <summary>
-        /// 指定类型映射器和实体创建一个删除的命令。
-        /// </summary>
-        /// <param name="mapper">类型映射器。</param>
-        /// <param name="entityOrPKValue">实体的实例对象（引用类型）或一个主键的值（值类型）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateDeleteCommand(TypeMapper mapper, object entityOrPKValue, string tableName = null);
-        /// <summary>
         /// 指定类型映射器和条件参数创建一个行是否存在的命令。
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
@@ -77,14 +69,7 @@ namespace Aoite.Data
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
         ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, string tableName = null);
-        /// <summary>
-        /// 指定类型映射器和实体创建一个更新的命令。
-        /// </summary>
-        /// <param name="mapper">类型映射器。</param>
-        /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, string tableName = null);
+
         /// <summary>
         /// 指定类型映射器和实体创建一个更新的命令。
         /// </summary>
@@ -101,6 +86,12 @@ namespace Aoite.Data
         /// <param name="point">名称的位置。</param>
         /// <returns>转义后的名称。</returns>
         string EscapeName(string name, NamePoint point);
+        /// <summary>
+        /// 反转义名称。
+        /// </summary>
+        /// <param name="name">名称。</param>
+        /// <returns>反转义后的名称。</returns>
+        string UnescapeName(string name);
         /// <summary>
         /// 对指定的 <see cref="DbCommand"/> 进行分页处理。
         /// </summary>

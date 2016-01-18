@@ -31,14 +31,33 @@ namespace Aoite.Data.Factories
         /// <returns>转义后的名称。</returns>
         public virtual string EscapeName(string name, NamePoint point)
         {
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
             switch(point)
             {
                 case NamePoint.Field:
                 case NamePoint.Table:
+                    if(name[0] == '[') return name;
                     return string.Concat("[", name, "]");
                 case NamePoint.Value:
                 case NamePoint.Parameter:
+                    if(name[0] == '@') return name;
                     return string.Concat("@", name);
+            }
+            return name;
+        }
+
+        /// <summary>
+        /// 反转义名称。
+        /// </summary>
+        /// <param name="name">名称。</param>
+        /// <returns>反转义后的名称。</returns>
+        public virtual string UnescapeName(string name)
+        {
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                if(name.Length > 1 && name[0] == '[') return name.Substring(1, name.Length - 2);
+                if(name[0] == '@') return name.Substring(1);
             }
             return name;
         }
@@ -100,6 +119,8 @@ namespace Aoite.Data.Factories
         /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, string tableName = null)
         {
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+
             return new ExecuteCommand("SELECT @@IDENTITY");
         }
 
@@ -114,6 +135,7 @@ namespace Aoite.Data.Factories
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(entity == null) throw new ArgumentNullException(nameof(entity));
+
             if(mapper.Count == 0) throw new NotSupportedException("{0} 的插入操作没有找到任何属性。".Fmt(entity.GetType().FullName));
 
             var fieldsBuilder = new StringBuilder("INSERT INTO ")
@@ -139,57 +161,6 @@ namespace Aoite.Data.Factories
             return new ExecuteCommand(fieldsBuilder.Append(valueBuilder.Append(')').ToString()).ToString(), ps);
         }
 
-        private StringBuilder CreateSetBuilder(string tableName)
-        {
-            return new StringBuilder("UPDATE ")
-                                .Append(this.EscapeName(tableName, NamePoint.Table))
-                                .Append(" SET ");
-        }
-
-        /// <summary>
-        /// 指定类型映射器和实体创建一个更新的命令。
-        /// </summary>
-        /// <param name="mapper">类型映射器。</param>
-        /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, string tableName = null)
-        {
-            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
-            if(entity == null) throw new ArgumentNullException(nameof(entity));
-
-            var setBuilder = this.CreateSetBuilder(tableName ?? mapper.Name);
-            var whereBuilder = new StringBuilder();
-            var ps = new ExecuteParameterCollection(mapper.Count);
-
-            int index = 0;
-            foreach(var property in FindProperties(mapper, ref entity))
-            {
-                if(property.IsIgnore) continue;
-
-                StringBuilder builder;
-                if(property.IsKey)
-                {
-                    builder = whereBuilder;
-                    if(builder.Length > 0) builder.Append(" AND ");
-                }
-                else
-                {
-                    builder = setBuilder;
-                    if(index++ > 0) builder.Append(',');
-                }
-
-                builder.Append(this.EscapeName(property.Name, NamePoint.Field))
-                       .Append('=');
-                var value = property.GetValue(entity);
-                this.AppendParameterValue(property, builder, value, ps);
-            }
-
-            if(whereBuilder.Length == 0) throw new NotSupportedException("{0} 的更新操作没有找到主键。".Fmt(entity.GetType().FullName));
-            setBuilder.Append(" WHERE ").Append(whereBuilder.ToString());
-            return new ExecuteCommand(setBuilder.ToString(), ps);
-        }
-
         /// <summary>
         /// 指定类型映射器和实体创建一个更新的命令。
         /// </summary>
@@ -204,7 +175,9 @@ namespace Aoite.Data.Factories
             if(entity == null) throw new ArgumentNullException(nameof(entity));
             if(where == null) throw new ArgumentNullException(nameof(where));
 
-            var setBuilder = this.CreateSetBuilder(tableName ?? mapper.Name);
+            var setBuilder = new StringBuilder("UPDATE ")
+                                .Append(this.EscapeName((tableName ?? mapper.Name), NamePoint.Table))
+                                .Append(" SET ");
             var ps = where.Parameters ?? new ExecuteParameterCollection(mapper.Count);
 
             int index = 0;
@@ -219,36 +192,11 @@ namespace Aoite.Data.Factories
                 var value = property.GetValue(entity);
                 this.AppendParameterValue(property, setBuilder, value, ps);
             }
-            var whereText = where.Where;
-            if(string.IsNullOrWhiteSpace(whereText)) throw new NotSupportedException("{0} 的更新操作没有找到主键。".Fmt(entity.GetType().FullName));
-            setBuilder.Append(" WHERE ").Append(whereText);
-            return new ExecuteCommand(setBuilder.ToString(), ps);
-        }
+            //var whereText = where.Where;
+            //if(string.IsNullOrWhiteSpace(whereText)) throw new NotSupportedException("{0} 的更新操作没有找到主键。".Fmt(entity.GetType().FullName));
+            
 
-        /// <summary>
-        /// 指定类型映射器和实体创建一个删除的命令。
-        /// </summary>
-        /// <param name="mapper">类型映射器。</param>
-        /// <param name="entityOrPKValue">实体的实例对象（引用类型）或一个主键的值（值类型）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateDeleteCommand(TypeMapper mapper, object entityOrPKValue, string tableName = null)
-        {
-            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
-            if(entityOrPKValue == null) throw new ArgumentNullException(nameof(entityOrPKValue));
-
-            var type = entityOrPKValue.GetType();
-            if(type.IsSimpleType()) return CreateDeleteCommandWithPK(mapper, entityOrPKValue, tableName);
-
-            if(entityOrPKValue is Array) return CreateDeleteCommandWithPK(mapper, entityOrPKValue, tableName);
-
-            if(entityOrPKValue is System.Collections.IEnumerable)
-            {
-                List<object> items = new List<object>();
-                foreach(var item in (System.Collections.IEnumerable)entityOrPKValue) items.Add(item);
-                return CreateDeleteCommand(mapper, items.ToArray(), tableName);
-            }
-            return CreateDeleteCommandWithEntity(mapper, entityOrPKValue, tableName);
+            return new ExecuteCommand(where.AppendTo(setBuilder.ToString()), ps);
         }
 
         /// <summary>
@@ -263,77 +211,8 @@ namespace Aoite.Data.Factories
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(where == null) throw new ArgumentNullException(nameof(where));
 
-            return CreateDeleteCommand(mapper, new StringBuilder(where.Where), where.Parameters, tableName);
-        }
-
-        private ExecuteCommand CreateDeleteCommandWithPK(TypeMapper mapper, object value, string tableName)
-        {
-            var whereBuilder = new StringBuilder();
-            var ps = new ExecuteParameterCollection(mapper.Count);
-
-            foreach(var property in mapper.Properties)
-            {
-                if(property.IsKey)
-                {
-                    var arrayValue = value as Array;
-                    var isArrayValue = arrayValue != null;
-                    int index = 0;
-                    var fName = property.Name.ToUpper();
-                    ARRAY_LABEL:
-                    var pName = fName;
-                    if(isArrayValue) pName += index;
-
-                    whereBuilder.Append(this.EscapeName(fName, NamePoint.Field))
-                                .Append('=')
-                                .Append(this.EscapeName(pName, NamePoint.Value));
-                    if(isArrayValue)
-                    {
-                        ps.Add(this.EscapeName(pName, NamePoint.Parameter), arrayValue.GetValue(index++));
-                        if(index < arrayValue.Length)
-                        {
-                            whereBuilder.Append(" OR ");
-                            goto ARRAY_LABEL;
-                        }
-                    }
-                    else ps.Add(this.EscapeName(pName, NamePoint.Parameter), value);
-                    break;
-                }
-            }
-            return this.CreateDeleteCommand(mapper, whereBuilder, ps, tableName);
-        }
-
-        private ExecuteCommand CreateDeleteCommandWithEntity(TypeMapper mapper, object entity, string tableName)
-        {
-            var whereBuilder = new StringBuilder();
-            var ps = new ExecuteParameterCollection(mapper.Count);
-
-            int index = 0;
-            foreach(var property in FindProperties(mapper, ref entity))
-            {
-                if(property.IsKey)
-                {
-                    if(whereBuilder.Length > 0) whereBuilder.Append(" AND ");
-
-                    if(index++ > 0) whereBuilder.Append(',');
-
-                    whereBuilder.Append(this.EscapeName(property.Name, NamePoint.Field))
-                                .Append('=');
-                    var value = property.GetValue(entity);
-                    this.AppendParameterValue(property, whereBuilder, value, ps);
-                }
-            }
-            return this.CreateDeleteCommand(mapper, whereBuilder, ps, tableName);
-        }
-
-        private ExecuteCommand CreateDeleteCommand(TypeMapper mapper, StringBuilder whereBuilder, ExecuteParameterCollection ps, string tableName)
-        {
-            if(whereBuilder.Length == 0) throw new NotSupportedException("{0} 的删除操作没有找到主键。".Fmt(mapper.Type.FullName));
-
-            whereBuilder.Insert(0, " WHERE ");
-            whereBuilder.Insert(0, this.EscapeName(tableName ?? mapper.Name, NamePoint.Table));
-            whereBuilder.Insert(0, "DELETE FROM ");
-
-            return new ExecuteCommand(whereBuilder.ToString(), ps);
+            var commandText = "DELETE FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
+            return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
         }
 
         /// <summary>
@@ -379,7 +258,6 @@ namespace Aoite.Data.Factories
             if(top > 0) fields = string.Concat("TOP ", top.ToString(), " ", fields);
 
             var commandText = string.Concat("SELECT ", fields, " FROM ", this.EscapeName(tableName ?? entityMapper.Name, NamePoint.Table));
-
             return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
         }
 
@@ -392,10 +270,10 @@ namespace Aoite.Data.Factories
         /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, string tableName = null)
         {
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(where == null) throw new ArgumentNullException(nameof(where));
 
             var commandText = "SELECT 1 FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
-
             return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
         }
 
@@ -408,6 +286,9 @@ namespace Aoite.Data.Factories
         /// <returns>一个查询命令。</returns>
         public virtual ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, string tableName = null)
         {
+            if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(where == null) throw new ArgumentNullException(nameof(where));
+
             var commandText = "SELECT COUNT(*) FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
             return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
         }

@@ -28,17 +28,17 @@ namespace Aoite.Data.Builder
         {
             var command = engine.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM [TestTable] WHERE ID IN (@id0, @id1, @id2)", command.Text);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE [ID] IN (@id0, @id1, @id2)", command.Text);
         }
 
         [Fact()]
         public void WhereInTest2()
         {
             var command = engine.Select<TestTable>()
-                .Where("UserName=@username", "@username", "abc")
+                .Where("UserName", "abc")
                 .AndIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM [TestTable] WHERE UserName=@username AND ID IN (@id0, @id1, @id2)", command.Text);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE [UserName]=@UserName AND [ID] IN (@id0, @id1, @id2)", command.Text);
         }
 
 
@@ -46,10 +46,10 @@ namespace Aoite.Data.Builder
         public void WhereInTest3()
         {
             var command = engine.Select<TestTable>()
-                .Where("UserName=@username", "@username", "abc")
+                .Where("@UserName", "abc")
                 .AndNotIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM [TestTable] WHERE UserName=@username AND ID NOT IN (@id0, @id1, @id2)", command.Text);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE [UserName]=@UserName AND [ID] NOT IN (@id0, @id1, @id2)", command.Text);
         }
 
         [Fact()]
@@ -104,7 +104,7 @@ namespace Aoite.Data.Builder
                             .Where("ID", "@id", new int[] { 1, 2, 3 })
                             .End();
             Assert.NotNull(command);
-            Assert.Equal("SELECT * FROM [TestTable] WHERE (ID=@id0 OR ID=@id1 OR ID=@id2)", command.Text);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE ([ID]=@id0 OR [ID]=@id1 OR [ID]=@id2)", command.Text);
             Assert.Equal(3, command.Count);
         }
 

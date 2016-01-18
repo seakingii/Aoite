@@ -50,7 +50,12 @@ namespace System
         internal TypeMapper(int capacity)
         {
             this._Properties = new Dictionary<string, PropertyMapper>(capacity, StringComparer.CurrentCultureIgnoreCase);
-            this._LazyKeyProperties = new Lazy<PropertyMapper[]>(() => (from p in this._Properties.Values where p.IsKey select p).ToArray());
+            this._LazyKeyProperties = new Lazy<PropertyMapper[]>(() =>
+            {
+                var array = (from p in this._Properties.Values where p.IsKey select p).ToArray();
+                if(array.Length == 0) array = (from p in this._Properties.Values where string.Equals(p.Name, DbExtensions.DefaultKeyName, StringComparison.CurrentCultureIgnoreCase) select p).ToArray();
+                return array;
+            });
         }
 
         /// <summary>
@@ -61,6 +66,12 @@ namespace System
         public bool Contains(string propertyName)
         {
             return this._Properties.ContainsKey(propertyName);
+        }
+
+        internal TypeMapper ThrowWithNotFoundKeys()
+        {
+            if(this.KeyProperties.Length == 0) throw new NotSupportedException($"类型“{this.Type.FullName}”没有声明主键或隐式主键（Id）。");
+            return this;
         }
 
         private static readonly ConcurrentDictionary<Type, TypeMapper> Cacher = new ConcurrentDictionary<Type, TypeMapper>();

@@ -75,11 +75,11 @@ namespace Aoite.Data.Builder
         {
             var builder = this.GetSelect();
             builder.Where("a", "@a", new int[] { 1, 2, 3, });
-            Assert.Equal("SELECT * FROM  WHERE (a=@a0 OR a=@a1 OR a=@a2)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE ([a]=@a0 OR [a]=@a1 OR [a]=@a2)", builder.Text);
             Assert.Equal(3, builder.Parameters.Count);
 
             builder.Where("b", "@b", new int[] { 1 });
-            Assert.Equal("SELECT * FROM  WHERE (a=@a0 OR a=@a1 OR a=@a2) AND (b=@b0)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE ([a]=@a0 OR [a]=@a1 OR [a]=@a2) AND ([b]=@b0)", builder.Text);
             Assert.Equal(4, builder.Parameters.Count);
         }
 
@@ -100,10 +100,10 @@ namespace Aoite.Data.Builder
         {
             var builder = this.GetSelect();
             builder.WhereIn("a", "@a", new int[] { 1, 2, 3, });
-            Assert.Equal("SELECT * FROM  WHERE a IN (@a0, @a1, @a2)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE [a] IN (@a0, @a1, @a2)", builder.Text);
             Assert.Equal(3, builder.Parameters.Count);
             builder.WhereIn("b", "@b", new int[] { 1 });
-            Assert.Equal("SELECT * FROM  WHERE a IN (@a0, @a1, @a2) AND b IN (@b0)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE [a] IN (@a0, @a1, @a2) AND [b] IN (@b0)", builder.Text);
             Assert.Equal(4, builder.Parameters.Count);
         }
 
@@ -112,10 +112,10 @@ namespace Aoite.Data.Builder
         {
             var builder = this.GetSelect();
             builder.WhereNotIn("a", "@a", new int[] { 1, 2, 3, });
-            Assert.Equal("SELECT * FROM  WHERE a NOT IN (@a0, @a1, @a2)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE [a] NOT IN (@a0, @a1, @a2)", builder.Text);
             Assert.Equal(3, builder.Parameters.Count);
             builder.WhereNotIn("b", "@b", new int[] { 1 });
-            Assert.Equal("SELECT * FROM  WHERE a NOT IN (@a0, @a1, @a2) AND b NOT IN (@b0)", builder.Text);
+            Assert.Equal("SELECT * FROM  WHERE [a] NOT IN (@a0, @a1, @a2) AND [b] NOT IN (@b0)", builder.Text);
             Assert.Equal(4, builder.Parameters.Count);
         }
     }

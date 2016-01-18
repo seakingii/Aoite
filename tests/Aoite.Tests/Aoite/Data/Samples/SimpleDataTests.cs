@@ -443,7 +443,7 @@ namespace Aoite.Data.Samples
             {
                 CreateTable(manager);
                 InsertRows(manager);
-                var r2 = manager.Engine.FindOneWhere<TestTable, NameTable>(new { username = "user4", id = 5 });
+                var r2 = manager.Engine.Filter(new { username = "user4", id = 5 }).FindOne<TestTable, NameTable>();
                 Assert.NotNull(r2);
             }
         }
@@ -454,7 +454,7 @@ namespace Aoite.Data.Samples
             {
                 CreateTable(manager);
                 InsertRows(manager);
-                var r2 = manager.Engine.FindAllWhere<TestTable, NameTable>("id<=@uid", new ExecuteParameterCollection("@uid", 5));
+                var r2 = manager.Engine.Filter("id<=@uid", new ExecuteParameterCollection("@uid", 5)).FindAll<TestTable, NameTable>();
                 Assert.Equal(5, r2.Count);
             }
         }

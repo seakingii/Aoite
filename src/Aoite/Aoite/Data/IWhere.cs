@@ -29,7 +29,7 @@
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere Or();
         /// <summary>
-        /// 添加一个开始括号。
+        /// 添加一个开始括号，下一个 AND 或 OR 将会被忽略。
         /// </summary>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere BeginGroup();
@@ -61,6 +61,13 @@
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere And(string expression, string name, object value);
         /// <summary>
+        /// 生成 AND 表达式（如：“name=@name”）。
+        /// </summary>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere And(string name, object value);
+        /// <summary>
         /// 添加 OR 表达式。
         /// </summary>
         /// <param name="expression">逻辑表达式（如：“t1.x IS NULL”）。</param>
@@ -74,6 +81,13 @@
         /// <param name="value">参数的值。</param>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere Or(string expression, string name, object value);
+        /// <summary>
+        /// 添加 OR 表达式（如：“name=@name”）。
+        /// </summary>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere Or(string name, object value);
         /// <summary>
         /// 添加 AND 表达式“AND (fieldName=@namePrefix0 OR fieldName=@namePrefix1)”。
         /// </summary>

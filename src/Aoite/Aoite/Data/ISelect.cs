@@ -38,6 +38,13 @@
         /// <summary>
         /// 进入 WHERE SQL 实现。
         /// </summary>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere Where(string name, object value);
+        /// <summary>
+        /// 进入 WHERE SQL 实现。
+        /// </summary>
         /// <param name="expression">逻辑表达式（如：“t1.x=@x”）。</param>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>

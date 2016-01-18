@@ -20,6 +20,8 @@ namespace Aoite.Data
             }
         }
 
+        public string WhereText => _whereBuilder?.ToString();
+
         public string Text
         {
             get
@@ -98,6 +100,7 @@ namespace Aoite.Data
         public IWhere Where<T>(string fieldName, string namePrefix, T[] values) => this.Where().And(fieldName, namePrefix, values);
 
 
+        public IWhere Where(string name, object value) => this.Where().And(name, value);
         public IWhere Where(string expression, string name, object value) => this.Where().And(expression, name, value);
 
         public IWhere WhereIn<T>(string fieldName, string namePrefix, T[] values) => this.Where().AndIn(fieldName, namePrefix, values);
@@ -128,16 +131,29 @@ namespace Aoite.Data
 
         public SqlBuilder Parameter(string name, object value)
         {
-            this.Parameters.Add(name, value);
+            this.Parameters.Add(this._engine.Provider.SqlFactory.EscapeName(name, NamePoint.Parameter), value);
             return this;
         }
 
         ISelect ISelect.Parameter(string name, object value) => this.Parameter(name, value);
         IWhere IWhere.Parameter(string name, object value) => this.Parameter(name, value);
 
-        public IWhere And() => this._whereBuilder.Length > 0 ? this.Sql(" AND ") : this;
+        private bool _ignoreFirstBinary = false;
+        private bool CanAppendBinary
+        {
+            get
+            {
+                if(this._ignoreFirstBinary)
+                {
+                    this._ignoreFirstBinary = false;
+                    return false;
+                }
+                return this._whereBuilder.Length > 0;
+            }
+        }
+        public IWhere And() => CanAppendBinary ? this.Sql(" AND ") : this;
 
-        public IWhere Or() => this._whereBuilder.Length > 0 ? this.Sql(" OR ") : this;
+        public IWhere Or() => CanAppendBinary ? this.Sql(" OR ") : this;
 
 
         private SqlBuilder Append(string expression, string name, object value) => (SqlBuilder)this.Sql(expression).Parameter(name, value);
@@ -147,13 +163,13 @@ namespace Aoite.Data
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
 
             this.BeginGroup();
-            int index = 0;
-            fieldName = fieldName + "=";
-            this.Append(fieldName + namePrefix + index, namePrefix + index, values[index]);
-            for(index++; index < values.Length; index++)
+            var factory = this._engine.Provider.SqlFactory;
+            fieldName = factory.EscapeName(fieldName, NamePoint.Field) + "=";
+            //this.Append(fieldName + factory.EscapeName(namePrefix + index, NamePoint.Value), namePrefix + index, values[index]);
+            for(var index = 0; index < values.Length; index++)
             {
-                this.Sql(" OR ");
-                this.Append(fieldName + namePrefix + index, namePrefix + index, values[index]);
+                this.Or();
+                this.Append(fieldName + factory.EscapeName(namePrefix + index, NamePoint.Value), namePrefix + index, values[index]);
             }
             this.EndGroup();
             return this;
@@ -162,26 +178,34 @@ namespace Aoite.Data
         private SqlBuilder Append<T>(bool isNotIn, string fieldName, string namePrefix, T[] values)
         {
             if(values == null || values.Length == 0) throw new ArgumentNullException(nameof(values));
-            this.Sql(fieldName)
+
+            var factory = this._engine.Provider.SqlFactory;
+            this.Sql(factory.EscapeName(fieldName, NamePoint.Field))
                 .Sql(isNotIn ? " NOT IN " : " IN ")
-                .BeginGroup();
+                .BeginGroup().And();
             int index = 0;
-            this.Append(namePrefix + index, namePrefix + index, values[index]);
+
+            this.Append(factory.EscapeName(namePrefix + index, NamePoint.Value), namePrefix + index, values[index]);
             for(index++; index < values.Length; index++)
             {
                 this.Sql(", ");
-                this.Append(namePrefix + index, namePrefix + index, values[index]);
+                this.Append(factory.EscapeName(namePrefix + index, NamePoint.Value), namePrefix + index, values[index]);
             }
             this.EndGroup();
             return this;
         }
 
-
-        public IWhere BeginGroup() => this.Sql("(");
+        public IWhere BeginGroup()
+        {
+            this.Sql("(");
+            this._ignoreFirstBinary = true;
+            return this;
+        }
 
         public IWhere BeginGroup(string expression, string name, object value)
         {
             this.BeginGroup();
+            this._ignoreFirstBinary = false;
             return this.Append(expression, name, value);
         }
 
@@ -195,13 +219,28 @@ namespace Aoite.Data
             this.And();
             return this.Append(expression, name, value);
         }
-
+        public IWhere And(string name, object value)
+        {
+            var factory = this._engine.Provider.SqlFactory;
+            name = factory.UnescapeName(name);
+            var expression = factory.EscapeName(name, NamePoint.Field) + "="
+                           + factory.EscapeName(name, NamePoint.Value);
+            return this.And(expression, name, value);
+        }
         public IWhere Or(string expression) => this.Or().Sql(expression);
 
         public IWhere Or(string expression, string name, object value)
         {
             this.Or();
             return this.Append(expression, name, value);
+        }
+        public IWhere Or(string name, object value)
+        {
+            var factory = this._engine.Provider.SqlFactory;
+            name = factory.UnescapeName(name);
+            var expression = factory.EscapeName(name, NamePoint.Field) + "="
+                           + factory.EscapeName(name, NamePoint.Value);
+            return this.Or(expression, name, value);
         }
 
         public IWhere And<T>(string fieldName, string namePrefix, T[] values)

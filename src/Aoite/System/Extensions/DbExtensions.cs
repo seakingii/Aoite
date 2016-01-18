@@ -549,6 +549,7 @@ namespace System
         public static int AddAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
 
             var command = engine.Provider.SqlFactory.CreateInsertCommand(TypeMapper.Instance<TEntity>.Mapper, entity, tableName);
             return engine.Execute(command).ToNonQuery();
@@ -578,70 +579,7 @@ namespace System
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
         public static int ModifyAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateUpdateCommand(TypeMapper.Instance<TEntity>.Mapper, entity, tableName);
-            return engine.Execute(command).ToNonQuery();
-        }
-
-        #endregion
-
-        #region ModifyWhere
-
-        /// <summary>
-        /// 提供匹配条件，执行一个更新的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this IDbEngine engine, object entity, object objectInstance, string tableName = null)
-            => ModifyWhere<TEntity>(engine, entity, new ExecuteParameterCollection(objectInstance), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，执行一个更新的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>  
-        /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this IDbEngine engine, object entity, ExecuteParameterCollection ps, string tableName = null)
-            => ModifyWhere<TEntity>(engine, entity, CreateWhere(engine, ps), ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，执行一个更新的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this IDbEngine engine, object entity, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => ModifyWhere<TEntity>(engine, entity, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，执行一个更新的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int ModifyWhere<TEntity>(this IDbEngine engine, object entity, WhereParameters where, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateUpdateCommand(TypeMapper.Instance<TEntity>.Mapper, entity, where, tableName);
-            return engine.Execute(command).ToNonQuery();
-        }
+            => Filter(engine, GetModifyKeyValues<TEntity>(entity)).Modify<TEntity>(entity, tableName);
 
         #endregion
 
@@ -668,68 +606,112 @@ namespace System
         /// <returns>受影响的行。</returns>
         public static int RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, string tableName = null)
         {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateDeleteCommand(TypeMapper.Instance<TEntity>.Mapper, entityOrPKValues, tableName);
-            return engine.Execute(command).ToNonQuery();
+            return Filter(engine, GetRemoveWhere<TEntity>(engine, entityOrPKValues)).Remove<TEntity>(tableName);
         }
 
         #endregion
 
-        #region RemoveWhere
+        #region FineOne
 
         /// <summary>
-        /// 提供匹配条件，执行一个删除的命令。
+        /// 获取指定 <paramref name="keyValue"/> 值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
+        /// <param name="keyValue">主键的列值。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int RemoveWhere<TEntity>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => RemoveWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance), tableName);
+        /// <returns>一个实体。</returns>
+        public static TEntity FindOne<TEntity>(this IDbEngine engine, object keyValue, string tableName = null)
+            => FindOne<TEntity, TEntity>(engine, keyValue, tableName);
 
         /// <summary>
-        /// 提供匹配条件，执行一个删除的命令。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>  
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int RemoveWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps, string tableName = null)
-            => RemoveWhere<TEntity>(engine, CreateWhere(engine, ps), ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，执行一个删除的命令。
+        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
+        /// <param name="keyValue">主键的列值。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int RemoveWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-           => RemoveWhere<TEntity>(engine, new WhereParameters(where, ps), tableName);
+        /// <returns>一个实体。</returns>
+        public static TEntity FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
+            => FindOne<TEntity, TEntity>(engine, keyName, keyValue, tableName);
 
         /// <summary>
-        /// 提供匹配条件，执行一个删除的命令。
+        /// 获取指定 <paramref name="keyValue"/> 值的数据源对象。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <returns>一个实体。</returns>
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, object keyValue, string tableName = null)
+            => FindOne<TEntity, TView>(engine, null, keyValue, tableName);
+
+        /// <summary>
+        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <returns>一个实体。</returns>
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
+            => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tableName);
+
+        #endregion
+
+        #region Exists & RowCount & Select
+
+        /// <summary>
+        /// 判断指定的主键的列名的值是否已存在。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件参数。</param>
+        /// <param name="keyValue">主键的列值。</param>
         /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static int RemoveWhere<TEntity>(this IDbEngine engine, WhereParameters where, string tableName = null)
+        /// <returns>一个值，表示数据是否存在。</returns>
+        public static bool Exists<TEntity>(this IDbEngine engine, object keyValue, string tableName = null)
+            => Exists<TEntity>(engine, null, keyValue, tableName);
+
+        /// <summary>
+        /// 判断指定的主键的列名的值是否已存在。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keyName">主键的列名。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <returns>一个值，表示数据是否存在。</returns>
+        public static bool Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
+             => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).Exists<TEntity>(tableName);
+
+        /// <summary>
+        /// 获取数据表的总行数。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <returns>数据的行数。</returns>
+        public static long RowCount<TEntity>(this IDbEngine engine, string tableName = null)
+        {
+            return Filter(engine).RowCount<TEntity>(tableName);
+        }
+
+        /// <summary>
+        /// 获取最后递增序列值。
+        /// </summary>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <returns>递增序列值。</returns>
+        public static long GetLastIdentity<TEntity>(this IDbEngine engine, string tableName = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateDeleteCommand(TypeMapper.Instance<TEntity>.Mapper, where, tableName);
-            return engine.Execute(command).ToNonQuery();
+            var command = engine.Provider.SqlFactory.CreateLastIdentityCommand(TypeMapper.Instance<TEntity>.Mapper, tableName);
+            return engine.Execute(command).ToScalar<long>();
         }
-        #endregion
-
-        #region Select
 
         /// <summary>
         /// 添加 SELECT 的字段。
@@ -758,499 +740,231 @@ namespace System
 
         #endregion
 
-        #region FineOne
+        #region Filter
 
         /// <summary>
-        /// 获取指定 <paramref name="id"/> 值的数据源对象。
+        /// 创建一个筛选执行器。
         /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="id">字段“Id”的值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
-        public static TEntity FindOne<TEntity>(this IDbEngine engine, object id, string tableName = null)
-            => FindOne<TEntity, TEntity>(engine, id, tableName);
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine)
+            => Filter(engine, WhereParameters.Empty);
 
         /// <summary>
-        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
+        /// 创建一个筛选执行器。
         /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="keyName">主键的列名。可以为 null 值。</param>
-        /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
-        public static TEntity FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-            => FindOne<TEntity, TEntity>(engine, keyName, keyValue, tableName);
-
-        /// <summary>
-        /// 获取指定 <paramref name="id"/> 值的数据源对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="id">字段“Id”的值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
-        public static TView FindOne<TEntity, TView>(this IDbEngine engine, object id, string tableName = null)
-            => FindOne<TEntity, TView>(engine, null, id, tableName);
-
-        /// <summary>
-        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="keyName">主键的列名。可以为 null 值。</param>
-        /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
-        public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-        {
-            keyName = TryFindKeyName<TEntity>(keyName);
-            return FindOneWhere<TEntity, TView>(engine, new ExecuteParameterCollection(keyName, keyValue), tableName);
-        }
-
-        #endregion
-
-        private static string TryFindKeyName<TEntity>(string keyName)
-        {
-            if(string.IsNullOrWhiteSpace(keyName))
-            {
-                var prop = TypeMapper.Instance<TEntity>.Mapper.Properties.FirstOrDefault(p => p.IsKey);
-                if(prop == null) keyName = DefaultKeyName;
-                else keyName = prop.Name;
-            }
-            return keyName;
-        }
-
-        #region FindOneWhere
-
-        /// <summary>
-        /// 提供匹配条件，获取一个对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TEntity FindOneWhere<TEntity>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => FindOneWhere<TEntity, TEntity>(engine, objectInstance, tableName);
+        /// <param name="binary">二元运算符。</param>
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, object objectInstance, string binary = "AND")
+            => Filter(engine, new ExecuteParameterCollection(objectInstance), binary);
 
         /// <summary>
-        /// 提供匹配条件，获取一个对象。
+        /// 创建一个筛选执行器。
         /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keysAndValues">应当是 <see cref="string"/> / <see cref="object"/> 的字典集合。</param>
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, params object[] keysAndValues)
+            => Filter(engine, new ExecuteParameterCollection(keysAndValues));
+
+        /// <summary>
+        /// 创建一个筛选执行器。
+        /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TEntity FindOneWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps, string tableName = null)
-            => FindOneWhere<TEntity, TEntity>(engine, ps, tableName);
+        /// <param name="binary">二元运算符。</param>
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, ExecuteParameterCollection ps, string binary = "AND")
+            => Filter(engine, CreateWhere(engine, ps, binary), ps);
 
         /// <summary>
-        /// 提供匹配条件，获取一个对象。
+        /// 创建一个筛选执行器。
         /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="whereCallback">一个创建查询条件的回调方法。</param>
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, Action<IWhere> whereCallback)
+        {
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            var builder = new SqlBuilder(engine);
+            whereCallback(builder.Where());
+            return Filter(engine, builder.WhereText, builder.Parameters);
+        }
+
+        /// <summary>
+        /// 创建一个筛选执行器。
+        /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="where">条件表达式。</param>
         /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TEntity FindOneWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindOneWhere<TEntity, TEntity>(engine, where, ps, tableName);
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, string where, ExecuteParameterCollection ps)
+            => Filter(engine, new WhereParameters(where, ps));
 
         /// <summary>
-        /// 提供匹配条件，获取一个对象。
+        /// 创建一个筛选执行器。
         /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TView FindOneWhere<TEntity, TView>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => FindOneWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取一个对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TView FindOneWhere<TEntity, TView>(this IDbEngine engine, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindOneWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取一个对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>受影响的行。</returns>
-        public static TView FindOneWhere<TEntity, TView>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindOneWhere<TEntity, TView>(engine, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取一个对象。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
-        public static TView FindOneWhere<TEntity, TView>(this IDbEngine engine, WhereParameters where, string tableName = null)
+        /// <returns>筛选执行器。</returns>
+        public static IFilterExecutor Filter(this IDbEngine engine, WhereParameters where)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, where, tableName, 1);
-            return engine.Execute(command).ToEntity<TView>();
+            if(where == null) throw new ArgumentNullException(nameof(where));
+            return new FilterExecutor(engine, where);
         }
 
         #endregion
-
-        #region FindAllWhere
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TEntity> FindAllWhere<TEntity>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => FindAllWhere<TEntity, TEntity>(engine, objectInstance, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TEntity> FindAllWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllWhere<TEntity, TEntity>(engine, ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TEntity> FindAllWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllWhere<TEntity, TEntity>(engine, where, ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TView> FindAllWhere<TEntity, TView>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => FindAllWhere<TEntity, TView>(engine, new ExecuteParameterCollection(objectInstance), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TView> FindAllWhere<TEntity, TView>(this IDbEngine engine, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllWhere<TEntity, TView>(engine, CreateWhere(engine, ps), ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TView> FindAllWhere<TEntity, TView>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllWhere<TEntity, TView>(engine, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static List<TView> FindAllWhere<TEntity, TView>(this IDbEngine engine, WhereParameters where, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, where, tableName);
-            return engine.Execute(command).ToEntities<TView>();
-        }
-
-        #endregion
-
-        #region FindAllPage
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TEntity> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, object objectInstance, string tableName = null)
-            => FindAllPage<TEntity, TEntity>(engine, page, objectInstance, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TEntity> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps, string tableName = null)
-            => FindAllPage<TEntity, TEntity>(engine, page, ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TEntity> FindAllPage<TEntity>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllPage<TEntity, TEntity>(engine, page, where, ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TView> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, object objectInstance, string tableName = null)
-            => FindAllPage<TEntity, TView>(engine, page, new ExecuteParameterCollection(objectInstance), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TView> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllPage<TEntity, TView>(engine, page, CreateWhere(engine, ps), ps, tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TView> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => FindAllPage<TEntity, TView>(engine, page, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 提供匹配条件，获取对象的列表。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="page">一个分页的实现。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
-        public static PageData<TView> FindAllPage<TEntity, TView>(this IDbEngine engine, IPagination page, WhereParameters where, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, where, tableName);
-            return engine.Execute(command).ToEntities<TView>(page);
-        }
-
-        #endregion
-
-        #region Exists
-
-        /// <summary>
-        /// 判断指定的主键的列名的值是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool Exists<TEntity>(this IDbEngine engine, object keyValue, string tableName = null)
-            => Exists<TEntity>(engine, null, keyValue, tableName);
-
-        /// <summary>
-        /// 判断指定的主键的列名的值是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="keyName">主键的列名。</param>
-        /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-        {
-            keyName = TryFindKeyName<TEntity>(keyName);
-            return ExistsWhere<TEntity>(engine, new ExecuteParameterCollection(keyName, keyValue), tableName);
-        }
-
-        #endregion
-
-        #region ExistsWhere
-
-        /// <summary>
-        /// 判断指定的条件的数据是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool ExistsWhere<TEntity>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => ExistsWhere<TEntity>(engine, new ExecuteParameterCollection(objectInstance), tableName);
-
-
-        /// <summary>
-        /// 判断指定的条件的数据是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool ExistsWhere<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps, string tableName = null)
-            => ExistsWhere<TEntity>(engine, CreateWhere(engine, ps), ps, tableName);
-
-
-        /// <summary>
-        /// 判断指定的条件的数据是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool ExistsWhere<TEntity>(this IDbEngine engine, string where, ExecuteParameterCollection ps = null, string tableName = null)
-            => ExistsWhere<TEntity>(engine, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 判断指定的条件的数据是否已存在。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool ExistsWhere<TEntity>(this IDbEngine engine, WhereParameters where, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateExistsCommand(TypeMapper.Instance<TEntity>.Mapper, where, tableName);
-            var r = engine.Execute(command).ToScalar();
-
-            return r != null;
-        }
-
-        #endregion
-
-        #region RowCount
-
-        /// <summary>
-        /// 获取数据表的总行数。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>数据的行数。</returns>
-        public static long RowCount<TEntity>(this IDbEngine engine, object objectInstance, string tableName = null)
-            => RowCount<TEntity>(engine, new ExecuteParameterCollection(objectInstance), tableName);
-
-        /// <summary>
-        /// 获取数据表的总行数。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>数据的行数。</returns>
-        public static long RowCount<TEntity>(this IDbEngine engine, ExecuteParameterCollection ps, string tableName = null)
-            => RowCount<TEntity>(engine, CreateWhere(engine, ps), tableName);
-
-        /// <summary>
-        /// 获取数据表的总行数。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">筛选条件，不含 WHERE 关键字。</param>
-        /// <param name="ps">参数集合。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>数据的行数。</returns>
-        public static long RowCount<TEntity>(this IDbEngine engine, string where = null, ExecuteParameterCollection ps = null, string tableName = null)
-            => RowCount<TEntity>(engine, new WhereParameters(where, ps), tableName);
-
-        /// <summary>
-        /// 获取数据表的总行数。
-        /// </summary>
-        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>数据的行数。</returns>
-        public static long RowCount<TEntity>(this IDbEngine engine, WhereParameters where, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-
-            var command = engine.Provider.SqlFactory.CreateRowCountCommand(TypeMapper.Instance<TEntity>.Mapper, where, tableName);
-            return engine.Execute(command).ToScalar<long>();
-        }
 
         #endregion
 
         #region Other
 
+        private static NotSupportedException CreateKeyNotFoundException<TEntity>(string keyName)
+            => new NotSupportedException($"类型“{typeof(TEntity).FullName}”执行命令时，找不到主键“{keyName}”的属性或属性值为空。");
+
+        internal static object[] GetModifyKeyValues<TEntity>(object entity)
+        {
+            if(entity == null) throw new ArgumentNullException(nameof(entity));
+
+            var mapper1 = TypeMapper.Instance<TEntity>.Mapper.ThrowWithNotFoundKeys();
+            var mapper2 = TypeMapper.Create(entity.GetType());
+            var keyValues = new List<object>(mapper1.KeyProperties.Length * 2);
+
+            foreach(var keyProp1 in mapper1.KeyProperties)
+            {
+                keyValues.Add(keyProp1.Name);
+                var keyValue = mapper2[keyProp1.Name]?.GetValue(entity);
+                if(keyValue == null) throw CreateKeyNotFoundException<TEntity>(keyProp1.Name);
+
+                keyValues.Add(keyValue);
+            }
+            return keyValues.ToArray();
+        }
+
+        internal static WhereParameters GetRemoveWhere<TEntity>(this IDbEngine engine, object entityOrPKValues)
+        {
+            if(engine == null) throw new ArgumentNullException(nameof(engine));
+            if(entityOrPKValues == null) throw new ArgumentNullException(nameof(entityOrPKValues));
+
+            /*
+           1、Remove(val)
+           2、Remove({key=val})
+           3、Remove({key=val1},val2)
+           4、Remove([{key1=val2,key2=val2},{key1=val3,key2=val4}])
+           */
+
+            var mapper = TypeMapper.Instance<TEntity>.Mapper.ThrowWithNotFoundKeys();
+
+            if(!(entityOrPKValues is string) && entityOrPKValues is Collections.IEnumerable)
+            {
+                entityOrPKValues = ((Collections.IEnumerable)entityOrPKValues).Cast<object>().ToArray();
+            }
+
+            var type = entityOrPKValues.GetType();
+
+            if(mapper.KeyProperties.Length == 1)
+            {//- 单个主键，1,2,3
+                var keyName = mapper.KeyProperties[0].Name;
+
+                if(type.IsArray)
+                {//-3
+                    var array = (Array)entityOrPKValues;
+                    List<object> newValues = new List<object>(array.Length);
+                    foreach(var item in array)
+                    {
+                        var itemType = item.GetType();
+                        if(itemType.IsSimpleType()) newValues.Add(item);
+                        else
+                        {
+                            var keyValue = TypeMapper.Create(itemType)[keyName]?.GetValue(item);
+                            if(keyValue == null) throw CreateKeyNotFoundException<TEntity>(keyName);
+                            newValues.Add(keyValue);
+                        }
+                    }
+                    var builder = new SqlBuilder(engine);
+                    builder.Where(keyName, keyName, newValues.ToArray());
+                    return new WhereParameters(builder.WhereText, builder.Parameters);
+                }
+                if(!type.IsSimpleType())
+                {//-2
+                    entityOrPKValues = TypeMapper.Create(type)[keyName]?.GetValue(entityOrPKValues);
+                    if(entityOrPKValues == null) throw CreateKeyNotFoundException<TEntity>(keyName);
+                }
+                //- 1,2
+                var ps = new ExecuteParameterCollection(keyName, entityOrPKValues);
+                return new WhereParameters(CreateWhere(engine, ps), ps);
+            }
+            else
+            {//- 多个主键，4
+
+                if(!type.IsArray) throw new NotSupportedException($"类型“{typeof(TEntity).FullName}”执行删除命令时，{nameof(entityOrPKValues)} 参数必须是一个数组。");
+
+                var array = (Array)entityOrPKValues;
+                var builder = new SqlBuilder(engine);
+                var factory = engine.Provider.SqlFactory;
+                builder.Where();
+                foreach(var item in array)
+                {
+                    var itemType = item.GetType();
+                    if(itemType.IsSimpleType()) throw new NotSupportedException($"类型“{typeof(TEntity).FullName}”包含多个主键，{nameof(entityOrPKValues)} 参数所有值都必须是一个复杂对象。");
+                    else
+                    {
+                        var itemMapper = TypeMapper.Create(itemType);
+                        builder.Or().BeginGroup();
+
+                        foreach(var keyProp in mapper.KeyProperties)
+                        {
+                            var tmpKV = itemMapper[keyProp.Name]?.GetValue(item);
+                            if(tmpKV == null) throw CreateKeyNotFoundException<TEntity>(keyProp.Name);
+                            builder.And(keyProp.Name, tmpKV);
+                        }
+                        builder.EndGroup();
+                    }
+                }
+                return new WhereParameters(builder.WhereText, builder.Parameters);
+            }
+        }
+
+        internal static object[] GetKeyValues<TEntity>(string keyName, object keyValue)
+        {
+            if(keyValue == null) throw new ArgumentNullException(nameof(keyValue));
+
+            var keyValues = new List<object>(2);
+
+            if(string.IsNullOrWhiteSpace(keyName))
+            {
+                var mapper = TypeMapper.Instance<TEntity>.Mapper.ThrowWithNotFoundKeys();
+                if(mapper.KeyProperties.Length == 1)
+                {
+                    keyName = mapper.KeyProperties[0].Name;
+                }
+                else
+                {
+                    var keyValueType = keyValue.GetType();
+                    if(keyValueType.IsSimpleType()) throw new NotSupportedException($"类型“{typeof(TEntity).FullName}”包含多个主键，{nameof(keyValue)} 参数所有值都必须是一个复杂对象。");
+
+                    var mapper2 = TypeMapper.Create(keyValueType);
+                    foreach(var keyProp in mapper.KeyProperties)
+                    {
+                        keyValues.Add(keyProp.Name);
+                        var tmpKV = mapper2[keyProp.Name]?.GetValue(keyValue);
+                        if(tmpKV == null) throw CreateKeyNotFoundException<TEntity>(keyProp.Name);
+                        keyValues.Add(tmpKV);
+                    }
+                }
+            }
+
+            if(keyValues.Count == 0)
+            {
+                keyValues.Add(keyName);
+                keyValues.Add(keyValue);
+            }
+            return keyValues.ToArray();
+        }
+        
         /// <summary>
         /// 创建一个条件查询语句。
         /// </summary>
@@ -1270,77 +984,15 @@ namespace System
             foreach(var p in ps)
             {
                 if(index++ > 0) builder.Append(' ').Append(binary).Append(' ');
+                var name = factory.UnescapeName(p.Name);
                 builder
-                    .Append(factory.EscapeName(p.Name, NamePoint.Field))
-                    .Append('=').Append(factory.EscapeName(p.Name, NamePoint.Value));
+                    .Append(factory.EscapeName(name, NamePoint.Field))
+                    .Append('=').Append(factory.EscapeName(name, NamePoint.Value));
             }
             return builder.ToString();
         }
 
-        /// <summary>
-        /// 创建一个条件参数。
-        /// </summary>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="objectInstance">匿名参数集合实例。</param>
-        /// <param name="binary">二元运算符。</param>
-        /// <returns>一个条件参数。</returns>
-        public static WhereParameters Where(this IDbEngine engine, object objectInstance, string binary = "AND")
-            => Where(engine, new ExecuteParameterCollection(objectInstance), binary);
-
-        /// <summary>
-        /// 创建一个条件参数。
-        /// </summary>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <param name="binary">二元运算符。</param>
-        /// <returns>一个条件参数。</returns>
-        public static WhereParameters Where(this IDbEngine engine, ExecuteParameterCollection ps, string binary = "AND")
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-            if(ps == null || ps.Count == 0) return null;
-            if(string.IsNullOrWhiteSpace(binary)) throw new ArgumentNullException(nameof(binary));
-
-            var factory = engine.Provider.SqlFactory;
-            var builder = new StringBuilder();
-            int index = 0;
-            foreach(var p in ps)
-            {
-                if(index++ > 0) builder.Append(' ').Append(binary).Append(' ');
-                builder
-                    .Append(factory.EscapeName(p.Name, NamePoint.Field))
-                    .Append('=').Append(factory.EscapeName(p.Name, NamePoint.Value));
-            }
-            return Where(engine, builder.ToString(), ps);
-        }
-
-        /// <summary>
-        /// 创建一个条件参数。
-        /// </summary>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="where">条件表达式。</param>
-        /// <param name="ps">参数集合实例。</param>
-        /// <returns>一个条件参数。</returns>
-        public static WhereParameters Where(this IDbEngine engine, string where, ExecuteParameterCollection ps)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-            return new WhereParameters(where, ps);
-        }
-
-        /// <summary>
-        /// 获取最后递增序列值。
-        /// </summary>
-        /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
-        /// <returns>递增序列值。</returns>
-        public static long GetLastIdentity<TEntity>(this IDbEngine engine, string tableName = null)
-        {
-            if(engine == null) throw new ArgumentNullException(nameof(engine));
-            var command = engine.Provider.SqlFactory.CreateLastIdentityCommand(TypeMapper.Instance<TEntity>.Mapper, tableName);
-            return engine.Execute(command).ToScalar<long>();
-        }
-
-        #endregion
-
         #endregion
     }
 }
+

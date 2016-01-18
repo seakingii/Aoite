@@ -24,7 +24,7 @@ namespace Aoite.Samples
         {
             if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
             if(string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
-            return Bus.ExistsWhere<SampleUser>(new { username, password });
+            return Bus.Filter(new { username, password }).Exists<SampleUser>();
         }
 
         public bool Remove(string username)
@@ -32,7 +32,7 @@ namespace Aoite.Samples
             if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
             if(this.User != "admin") return false;
 
-            return Bus.RemoveWhere<SampleUser>(new { username }) > 0;
+            return Bus.Filter(new { username }).Remove<SampleUser>() > 0;
         }
 
         public long Count()

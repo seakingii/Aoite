@@ -149,6 +149,7 @@
     <Compile Include="Aoite\Data\IDbExecutorAsync.cs" />
     <Compile Include="Aoite\Data\IDbValue.cs" />
     <Compile Include="Aoite\Data\Factories\SqlFactory.cs" />
+    <Compile Include="Aoite\Data\IFilterExecutor.cs" />
     <Compile Include="Aoite\Data\ISqlFactory.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />
