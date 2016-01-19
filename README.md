@@ -1,8 +1,8 @@
 ﻿# Aoite [![NuGet](https://img.shields.io/nuget/v/Aoite.svg)](https://www.nuget.org/packages/Aoite) [![NuGet](https://img.shields.io/nuget/dt/Aoite.svg)](https://www.nuget.org/packages/Aoite/)
 
+**Aoite 是一个 .Net Framework 的扩展库，利用 Aoite 可以更快、更便捷、更轻松的开发任何 .Net Framework 项目。**
 
-
-Aoite 是一个 .Net Framework 的扩展库，利用 Aoite 可以更快、更便捷、更轻松的开发任何 .Net Framework 项目。
+[文档](https://treenew.gitbooks.io/aoite/content/)
 
 ## Aoite 定位
 
@@ -48,6 +48,7 @@ Aoite 源码中包含一个简单的示例，可以访问  [Aoite.Samples](https
 
 **Aoite is a library that makes it quicker and easier to any .Net Framework projects.**
 
+[Documentation](https://treenew.gitbooks.io/aoite/content/)
 
 ## Download
 
