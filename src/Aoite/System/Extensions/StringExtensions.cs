@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using System.Linq;
 
 namespace System
 {
@@ -189,6 +190,17 @@ namespace System
         {
             if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;
             return val.Remove(val.Length - count);
+        }
+
+        /// <summary>
+        /// 获取字符串的字节数。
+        /// </summary>
+        /// <param name="val">目标字符串。</param>
+        /// <returns>字符串的字节数。</returns>
+        public static int GetDataLength(this string val)
+        {
+            if(val == null) return 0;
+            return Encoding.Default.GetByteCount(val);
         }
     }
 }
