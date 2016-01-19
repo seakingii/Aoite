@@ -13,7 +13,7 @@
         //<发布阶段>
         //- RTM：可用于生产环境的版本，又称为正式版。
         //- Stable：修复问题，扩展功能，优化性能。
-        internal const string Stage = "Pre-alpha";
+        internal const string Stage = "Beta";
         internal const string Name = "Aoite";
         internal const string DescriptionSuffix = "For .NET Framework " +
 #if NET40
