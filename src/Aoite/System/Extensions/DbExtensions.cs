@@ -533,10 +533,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int Add<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
-            => AddAnonymous<TEntity>(engine, entity, tableName);
+        public static int Add<TEntity>(this IDbEngine engine, TEntity entity, ICommandTunnel tunnel = null)
+            => AddAnonymous<TEntity>(engine, entity, tunnel);
 
         /// <summary>
         /// 执行一个插入的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
@@ -544,14 +544,14 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int AddAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
+        public static int AddAnonymous<TEntity>(this IDbEngine engine, object entity, ICommandTunnel tunnel = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             if(entity == null) throw new ArgumentNullException(nameof(entity));
 
-            var command = engine.Provider.SqlFactory.CreateInsertCommand(TypeMapper.Instance<TEntity>.Mapper, entity, tableName);
+            var command = engine.Provider.SqlFactory.CreateInsertCommand(TypeMapper.Instance<TEntity>.Mapper, entity, tunnel);
             return engine.Execute(command).ToNonQuery();
         }
 
@@ -565,10 +565,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int Modify<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
-            => ModifyAnonymous<TEntity>(engine, entity, tableName);
+        public static int Modify<TEntity>(this IDbEngine engine, TEntity entity, ICommandTunnel tunnel = null)
+            => ModifyAnonymous<TEntity>(engine, entity, tunnel);
 
         /// <summary>
         /// 执行一个更新的命令，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
@@ -576,10 +576,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int ModifyAnonymous<TEntity>(this IDbEngine engine, object entity, string tableName = null)
-            => Filter(engine, GetModifyKeyValues<TEntity>(entity)).Modify<TEntity>(entity, tableName);
+        public static int ModifyAnonymous<TEntity>(this IDbEngine engine, object entity, ICommandTunnel tunnel = null)
+            => Filter(engine, GetModifyKeyValues<TEntity>(entity)).Modify<TEntity>(entity, tunnel);
 
         #endregion
 
@@ -591,10 +591,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int Remove<TEntity>(this IDbEngine engine, TEntity entity, string tableName = null)
-            => RemoveAnonymous<TEntity>(engine, entity, tableName);
+        public static int Remove<TEntity>(this IDbEngine engine, TEntity entity, ICommandTunnel tunnel = null)
+            => RemoveAnonymous<TEntity>(engine, entity, tunnel);
 
         /// <summary>
         /// 执行一个删除的命令，在删除命令中 <paramref name="entityOrPKValues"/> 可以是主键的值（表只有一个主键），也可以是匿名对象的部分成员（<paramref name="entityOrPKValues"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。
@@ -602,11 +602,11 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="entityOrPKValues">实体的实例对象，在删除命令中 <paramref name="entityOrPKValues"/> 可以是主键的值（表只有一个主键，值允许是一个数组，表示删除多条记录），也可以是匿名对象的部分成员（<paramref name="entityOrPKValues"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        public static int RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, string tableName = null)
+        public static int RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, ICommandTunnel tunnel = null)
         {
-            return Filter(engine, GetRemoveWhere<TEntity>(engine, entityOrPKValues)).Remove<TEntity>(tableName);
+            return Filter(engine, GetRemoveWhere<TEntity>(engine, entityOrPKValues)).Remove<TEntity>(tunnel);
         }
 
         #endregion
@@ -619,10 +619,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        public static TEntity FindOne<TEntity>(this IDbEngine engine, object keyValue, string tableName = null)
-            => FindOne<TEntity, TEntity>(engine, keyValue, tableName);
+        public static TEntity FindOne<TEntity>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
+            => FindOne<TEntity, TEntity>(engine, keyValue, tunnel);
 
         /// <summary>
         /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
@@ -631,10 +631,10 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        public static TEntity FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-            => FindOne<TEntity, TEntity>(engine, keyName, keyValue, tableName);
+        public static TEntity FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
+            => FindOne<TEntity, TEntity>(engine, keyName, keyValue, tunnel);
 
         /// <summary>
         /// 获取指定 <paramref name="keyValue"/> 值的数据源对象。
@@ -643,10 +643,10 @@ namespace System
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        public static TView FindOne<TEntity, TView>(this IDbEngine engine, object keyValue, string tableName = null)
-            => FindOne<TEntity, TView>(engine, null, keyValue, tableName);
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
+            => FindOne<TEntity, TView>(engine, null, keyValue, tunnel);
 
         /// <summary>
         /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
@@ -656,10 +656,10 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-            => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tableName);
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
+            => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tunnel);
 
         #endregion
 
@@ -671,10 +671,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool Exists<TEntity>(this IDbEngine engine, object keyValue, string tableName = null)
-            => Exists<TEntity>(engine, null, keyValue, tableName);
+        public static bool Exists<TEntity>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
+            => Exists<TEntity>(engine, null, keyValue, tunnel);
 
         /// <summary>
         /// 判断指定的主键的列名的值是否已存在。
@@ -683,33 +683,33 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyName">主键的列名。</param>
         /// <param name="keyValue">主键的列值。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个值，表示数据是否存在。</returns>
-        public static bool Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue, string tableName = null)
-             => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).Exists<TEntity>(tableName);
+        public static bool Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
+             => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).Exists<TEntity>(tunnel);
 
         /// <summary>
         /// 获取数据表的总行数。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>数据的行数。</returns>
-        public static long RowCount<TEntity>(this IDbEngine engine, string tableName = null)
+        public static long RowCount<TEntity>(this IDbEngine engine, ICommandTunnel tunnel = null)
         {
-            return Filter(engine).RowCount<TEntity>(tableName);
+            return Filter(engine).RowCount<TEntity>(tunnel);
         }
 
         /// <summary>
         /// 获取最后递增序列值。
         /// </summary>
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>递增序列值。</returns>
-        public static long GetLastIdentity<TEntity>(this IDbEngine engine, string tableName = null)
+        public static long GetLastIdentity<TEntity>(this IDbEngine engine, ICommandTunnel tunnel = null)
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
-            var command = engine.Provider.SqlFactory.CreateLastIdentityCommand(TypeMapper.Instance<TEntity>.Mapper, tableName);
+            var command = engine.Provider.SqlFactory.CreateLastIdentityCommand(TypeMapper.Instance<TEntity>.Mapper, tunnel);
             return engine.Execute(command).ToScalar<long>();
         }
 

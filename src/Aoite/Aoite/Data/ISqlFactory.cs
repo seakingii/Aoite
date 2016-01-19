@@ -13,17 +13,17 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, string tableName = null);
+        ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null);
         /// <summary>
         /// 指定类型映射器和条件参数创建一个行是否存在的命令。
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, string tableName = null);
+        ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null);
         /// <summary>
         /// 创建指定视图类型的字段列表。
         /// </summary>
@@ -36,16 +36,16 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateInsertCommand(TypeMapper mapper, object entity, string tableName = null);
+        ExecuteCommand CreateInsertCommand(TypeMapper mapper, object entity, ICommandTunnel tunnel = null);
         /// <summary>
         /// 指定类型映射器创建一个获取最后递增序列值的命令。
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, string tableName = null);
+        ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, ICommandTunnel tunnel = null);
         /// <summary>
         /// 创建指定查询字符串的统计总行数查询字符串。
         /// </summary>
@@ -57,18 +57,18 @@ namespace Aoite.Data
         /// <param name="entityMapper">实体的类型映射器。</param>
         /// <param name="viewMapper">视图的类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <param name="top">指定 TOP 数量，小于 1 则忽略作用。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, string tableName = null, int top = 0);
+        ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, int top = 0, ICommandTunnel tunnel = null);
         /// <summary>
         /// 指定类型映射器和条件参数创建一个表总行数的命令。
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, string tableName = null);
+        ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null);
 
         /// <summary>
         /// 指定类型映射器和实体创建一个更新的命令。
@@ -76,9 +76,9 @@ namespace Aoite.Data
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, WhereParameters where, string tableName = null);
+        ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, WhereParameters where, ICommandTunnel tunnel = null);
         /// <summary>
         /// 转义指定位置的名称。
         /// </summary>

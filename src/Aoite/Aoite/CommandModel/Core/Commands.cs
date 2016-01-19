@@ -11,9 +11,9 @@ namespace CMD
     public abstract class CMDBase
     {
         /// <summary>
-        /// 获取或设置实体的实际表名称，可以为 null 值。
+        /// 设置或获取用于个性化表名和命令的暗道，可以为 null 值。
         /// </summary>
-        public string TableName { get; set; }
+        public ICommandTunnel Tunnel { get; set; }
     }
 
     /// <summary>
@@ -23,7 +23,7 @@ namespace CMD
     {
         private WhereParameters _Where = new WhereParameters();
         /// <summary>
-        /// 设置一个 WHERE 的条件参数。
+        /// 设置或获取一个 WHERE 的条件参数。
         /// </summary>
         public WhereParameters Where { get { return this._Where; } set { this._Where = value ?? new WhereParameters(); } }
     }
@@ -58,8 +58,8 @@ namespace CMD
         {
             public void Execute(IContext context, Add<TEntity> command)
             {
-                command.ResultValue = context.Engine.AddAnonymous<TEntity>(command.Entity, command.TableName);
-                if(command.IsIdentityKey) command.ResultValue = context.Engine.GetLastIdentity<TEntity>(command.TableName);
+                command.ResultValue = context.Engine.AddAnonymous<TEntity>(command.Entity, command.Tunnel);
+                if(command.IsIdentityKey) command.ResultValue = context.Engine.GetLastIdentity<TEntity>(command.Tunnel);
             }
         }
 
@@ -90,7 +90,7 @@ namespace CMD
         {
             public void Execute(IContext context, Modify<TEntity> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).Modify<TEntity>(command.Entity, command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).Modify<TEntity>(command.Entity, command.Tunnel);
             }
         }
     }
@@ -115,7 +115,7 @@ namespace CMD
         {
             public void Execute(IContext context, Remove<TEntity> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).Remove<TEntity>(command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).Remove<TEntity>(command.Tunnel);
             }
         }
     }
@@ -141,7 +141,7 @@ namespace CMD
         {
             public void Execute(IContext context, FindOne<TEntity, TView> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).FindOne<TEntity, TView>(command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).FindOne<TEntity, TView>(command.Tunnel);
             }
         }
     }
@@ -167,7 +167,7 @@ namespace CMD
         {
             public void Execute(IContext context, FindAll<TEntity, TView> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.Tunnel);
             }
         }
     }
@@ -198,7 +198,7 @@ namespace CMD
         {
             public void Execute(IContext context, FindAllPage<TEntity, TView> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.Page, command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.Page, command.Tunnel);
             }
         }
 
@@ -224,7 +224,7 @@ namespace CMD
         {
             public void Execute(IContext context, Exists<TEntity> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).Exists<TEntity>(command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).Exists<TEntity>(command.Tunnel);
             }
         }
     }
@@ -249,7 +249,7 @@ namespace CMD
         {
             public void Execute(IContext context, RowCount<TEntity> command)
             {
-                command.ResultValue = context.Engine.Filter(command.Where).RowCount<TEntity>(command.TableName);
+                command.ResultValue = context.Engine.Filter(command.Where).RowCount<TEntity>(command.Tunnel);
             }
         }
     }

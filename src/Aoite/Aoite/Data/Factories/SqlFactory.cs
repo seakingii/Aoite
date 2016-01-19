@@ -17,6 +17,10 @@ namespace Aoite.Data.Factories
         /// 获取数据库命令生成工厂的唯一实例。
         /// </summary>
         public readonly static SqlFactory Instance = new SqlFactory();
+        /// <summary>
+        /// 获取一个值，表示空的个性化暗道。
+        /// </summary>
+        public readonly static ICommandTunnel Empty = new EmptyCommandTunnel();
 
         /// <summary>
         /// 初始化一个 <see cref="SqlFactory"/> 类的新实例。
@@ -115,13 +119,14 @@ namespace Aoite.Data.Factories
         /// 指定类型映射器创建一个获取最后递增序列值的命令。
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, string tableName = null)
+        public virtual ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
+            if(tunnel == null) tunnel = Empty;
 
-            return new ExecuteCommand("SELECT @@IDENTITY");
+            return tunnel.GetCommand(mapper, new ExecuteCommand("SELECT @@IDENTITY"));
         }
 
         /// <summary>
@@ -129,17 +134,18 @@ namespace Aoite.Data.Factories
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateInsertCommand(TypeMapper mapper, object entity, string tableName = null)
+        public virtual ExecuteCommand CreateInsertCommand(TypeMapper mapper, object entity, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(entity == null) throw new ArgumentNullException(nameof(entity));
+            if(tunnel == null) tunnel = Empty;
 
-            if(mapper.Count == 0) throw new NotSupportedException("{0} 的插入操作没有找到任何属性。".Fmt(entity.GetType().FullName));
+            if(mapper.Count == 0) throw new NotSupportedException($"{entity.GetType().FullName} 的插入操作没有找到任何属性。");
 
             var fieldsBuilder = new StringBuilder("INSERT INTO ")
-                                .Append(this.EscapeName(tableName ?? mapper.Name, NamePoint.Table))
+                                .Append(this.EscapeName(tunnel.GetTableName(mapper), NamePoint.Table))
                                 .Append('(');
             var valueBuilder = new StringBuilder(")VALUES(");
             var ps = new ExecuteParameterCollection(mapper.Count);
@@ -158,7 +164,7 @@ namespace Aoite.Data.Factories
                 fieldsBuilder.Append(this.EscapeName(property.Name, NamePoint.Field));
                 this.AppendParameterValue(property, valueBuilder, value, ps);
             }
-            return new ExecuteCommand(fieldsBuilder.Append(valueBuilder.Append(')').ToString()).ToString(), ps);
+            return tunnel.GetCommand(mapper, new ExecuteCommand(fieldsBuilder.Append(valueBuilder.Append(')').ToString()).ToString(), ps));
         }
 
         /// <summary>
@@ -167,16 +173,17 @@ namespace Aoite.Data.Factories
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, WhereParameters where, string tableName = null)
+        public virtual ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(entity == null) throw new ArgumentNullException(nameof(entity));
             if(where == null) throw new ArgumentNullException(nameof(where));
+            if(tunnel == null) tunnel = Empty;
 
             var setBuilder = new StringBuilder("UPDATE ")
-                                .Append(this.EscapeName((tableName ?? mapper.Name), NamePoint.Table))
+                                .Append(this.EscapeName(tunnel.GetTableName(mapper), NamePoint.Table))
                                 .Append(" SET ");
             var ps = where.Parameters ?? new ExecuteParameterCollection(mapper.Count);
 
@@ -192,11 +199,9 @@ namespace Aoite.Data.Factories
                 var value = property.GetValue(entity);
                 this.AppendParameterValue(property, setBuilder, value, ps);
             }
-            //var whereText = where.Where;
-            //if(string.IsNullOrWhiteSpace(whereText)) throw new NotSupportedException("{0} 的更新操作没有找到主键。".Fmt(entity.GetType().FullName));
-            
+            if(index==0) throw new NotSupportedException($"{entity.GetType().FullName} 的更新操作没有找到任何属性。");
 
-            return new ExecuteCommand(where.AppendTo(setBuilder.ToString()), ps);
+            return tunnel.GetCommand(mapper, new ExecuteCommand(where.AppendTo(setBuilder.ToString()), ps));
         }
 
         /// <summary>
@@ -204,15 +209,16 @@ namespace Aoite.Data.Factories
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, string tableName = null)
+        public virtual ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(where == null) throw new ArgumentNullException(nameof(where));
+            if(tunnel == null) tunnel = Empty;
 
-            var commandText = "DELETE FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
-            return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
+            var commandText = "DELETE FROM " + this.EscapeName(tunnel.GetTableName(mapper), NamePoint.Table);
+            return tunnel.GetCommand(mapper, new ExecuteCommand(where.AppendTo(commandText), where.Parameters));
         }
 
         /// <summary>
@@ -247,18 +253,19 @@ namespace Aoite.Data.Factories
         /// <param name="entityMapper">实体的类型映射器。</param>
         /// <param name="viewMapper">视图的类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
         /// <param name="top">指定 TOP 数量，小于 1 则忽略作用。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, string tableName = null, int top = 0)
+        public virtual ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, int top = 0, ICommandTunnel tunnel = null)
         {
             if(where == null) throw new ArgumentNullException(nameof(where));
+            if(tunnel == null) tunnel = Empty;
 
             var fields = this.CreateFields(entityMapper, viewMapper);
             if(top > 0) fields = string.Concat("TOP ", top.ToString(), " ", fields);
 
-            var commandText = string.Concat("SELECT ", fields, " FROM ", this.EscapeName(tableName ?? entityMapper.Name, NamePoint.Table));
-            return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
+            var commandText = string.Concat("SELECT ", fields, " FROM ", this.EscapeName(tunnel.GetTableName(entityMapper), NamePoint.Table));
+            return tunnel.GetCommand(entityMapper, new ExecuteCommand(where.AppendTo(commandText), where.Parameters));
         }
 
         /// <summary>
@@ -266,15 +273,16 @@ namespace Aoite.Data.Factories
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, string tableName = null)
+        public virtual ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(where == null) throw new ArgumentNullException(nameof(where));
+            if(tunnel == null) tunnel = Empty;
 
-            var commandText = "SELECT 1 FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
-            return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
+            var commandText = "SELECT 1 FROM " + this.EscapeName(tunnel.GetTableName(mapper), NamePoint.Table);
+            return tunnel.GetCommand(mapper, new ExecuteCommand(where.AppendTo(commandText), where.Parameters));
         }
 
         /// <summary>
@@ -282,15 +290,16 @@ namespace Aoite.Data.Factories
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个查询命令。</returns>
-        public virtual ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, string tableName = null)
+        public virtual ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
             if(where == null) throw new ArgumentNullException(nameof(where));
+            if(tunnel == null) tunnel = Empty;
 
-            var commandText = "SELECT COUNT(*) FROM " + this.EscapeName(tableName ?? mapper.Name, NamePoint.Table);
-            return new ExecuteCommand(where.AppendTo(commandText), where.Parameters);
+            var commandText = "SELECT COUNT(*) FROM " + this.EscapeName(tunnel.GetTableName(mapper), NamePoint.Table);
+            return tunnel.GetCommand(mapper, new ExecuteCommand(where.AppendTo(commandText), where.Parameters));
         }
 
         #region PageProvider

@@ -31,13 +31,25 @@ namespace Aoite.Samples
         {
             if(string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
             if(this.User != "admin") return false;
-
             return Bus.Filter(new { username }).Remove<SampleUser>() > 0;
         }
 
         public long Count()
         {
             return this.Execute(new SampleUserCountCommand()).ResultValue;
+        }
+
+        public bool ModifyPassowrd(string newPassword)
+        {
+            if(this.User == null) return false;
+            if(newPassword == null) throw new ArgumentNullException(nameof(newPassword));
+
+            return Bus.Filter(new { username = this.User }).Modify<SampleUser>(new { password = newPassword }) > 0;
+        }
+
+        public List<SampleUser> GetList()
+        {
+            return Bus.Filter().FindAll<SampleUser>();
         }
     }
 

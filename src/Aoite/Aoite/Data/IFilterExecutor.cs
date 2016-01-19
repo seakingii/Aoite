@@ -16,80 +16,80 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="entity">实体的实例对象，可以是匿名对象的部分成员（<paramref name="entity"/> 属性成员和 <typeparamref name="TEntity"/> 属性成员必须一致）。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        int Modify<TEntity>(object entity, string tableName = null);
+        int Modify<TEntity>(object entity, ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，执行一个删除的命令。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
-        int Remove<TEntity>(string tableName = null);
+        int Remove<TEntity>(ICommandTunnel tunnel = null);
 
         /// <summary>
         /// 根据当前提供匹配条件，判断指定的条件的数据是否已存在。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个值，表示数据是否存在。</returns>
-        bool Exists<TEntity>(string tableName = null);
+        bool Exists<TEntity>(ICommandTunnel tunnel = null);
 
         /// <summary>
         /// 根据当前提供匹配条件，获取数据表的总行数。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>数据的行数。</returns>
-        long RowCount<TEntity>(string tableName = null);
+        long RowCount<TEntity>(ICommandTunnel tunnel = null);
 
         /// <summary>
         /// 根据当前提供匹配条件，获取一个对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        TEntity FindOne<TEntity>(string tableName = null);
+        TEntity FindOne<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取一个对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        TView FindOne<TEntity, TView>(string tableName = null);
+        TView FindOne<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体的集合。</returns>
-        List<TEntity> FindAll<TEntity>(string tableName = null);
+        List<TEntity> FindAll<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体的集合。</returns>
-        List<TView> FindAll<TEntity, TView>(string tableName = null);
+        List<TView> FindAll<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体的分页集合。</returns>
-        PageData<TEntity> FindAll<TEntity>(IPagination page, string tableName = null);
+        PageData<TEntity> FindAll<TEntity>(IPagination page, ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
-        /// <param name="tableName">实体的实际表名称，可以为 null 值。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体的分页集合。</returns>
-        PageData<TView> FindAll<TEntity, TView>(IPagination page, string tableName = null);
+        PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null);
     }
 
     class FilterExecutor : IFilterExecutor
@@ -103,58 +103,58 @@ namespace Aoite.Data
             this._where = where;
         }
 
-        public int Modify<TEntity>(object entity, string tableName = null)
+        public int Modify<TEntity>(object entity, ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateUpdateCommand(TypeMapper.Instance<TEntity>.Mapper, entity, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateUpdateCommand(TypeMapper.Instance<TEntity>.Mapper, entity, this._where, tunnel);
             return this._engine.Execute(command).ToNonQuery();
         }
 
-        public int Remove<TEntity>(string tableName = null)
+        public int Remove<TEntity>(ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateDeleteCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateDeleteCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tunnel);
             return this._engine.Execute(command).ToNonQuery();
         }
 
-        public bool Exists<TEntity>(string tableName = null)
+        public bool Exists<TEntity>(ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateExistsCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateExistsCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tunnel);
             var r = this._engine.Execute(command).ToScalar();
 
             return r != null;
         }
 
-        public long RowCount<TEntity>(string tableName = null)
+        public long RowCount<TEntity>(ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateRowCountCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateRowCountCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tunnel);
             return this._engine.Execute(command).ToScalar<long>();
         }
 
-        public TEntity FindOne<TEntity>(string tableName = null)
-            => this.FindOne<TEntity, TEntity>(tableName);
+        public TEntity FindOne<TEntity>(ICommandTunnel tunnel = null)
+            => this.FindOne<TEntity, TEntity>(tunnel);
 
-        public TView FindOne<TEntity, TView>(string tableName = null)
+        public TView FindOne<TEntity, TView>(ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, tableName, 1);
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, 1, tunnel);
             return this._engine.Execute(command).ToEntity<TView>();
         }
 
-        public List<TEntity> FindAll<TEntity>(string tableName = null)
-            => this.FindAll<TEntity, TEntity>(tableName);
+        public List<TEntity> FindAll<TEntity>(ICommandTunnel tunnel = null)
+            => this.FindAll<TEntity, TEntity>(tunnel);
 
-        public List<TView> FindAll<TEntity, TView>(string tableName = null)
+        public List<TView> FindAll<TEntity, TView>(ICommandTunnel tunnel = null)
         {
-            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, 0, tunnel);
             return this._engine.Execute(command).ToEntities<TView>();
         }
 
-        public PageData<TEntity> FindAll<TEntity>(IPagination page, string tableName = null)
-         => this.FindAll<TEntity, TEntity>(page, tableName);
+        public PageData<TEntity> FindAll<TEntity>(IPagination page, ICommandTunnel tunnel = null)
+         => this.FindAll<TEntity, TEntity>(page, tunnel);
 
-        public PageData<TView> FindAll<TEntity, TView>(IPagination page, string tableName = null)
+        public PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null)
         {
             if(page == null) throw new ArgumentNullException(nameof(page));
 
-            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, tableName);
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, TypeMapper.Instance<TView>.Mapper, this._where, 0, tunnel);
             return this._engine.Execute(command).ToEntities<TView>(page);
         }
     }

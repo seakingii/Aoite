@@ -23,7 +23,7 @@ namespace Aoite.Data
         { }
     }
 
-    
+
     public class SQLiteSqlFactory : Factories.SqlFactory
     {
         public readonly static new SQLiteSqlFactory Instance = new SQLiteSqlFactory();
@@ -36,9 +36,10 @@ namespace Aoite.Data
             command.CommandText += "LIMIT " + limit + "," + pageSize;
         }
 
-        public override ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, string tableName = null)
+        public override ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, ICommandTunnel tunnel = null)
         {
-            return new ExecuteCommand("SELECT last_insert_rowid()");
+            if(tunnel == null) tunnel = Empty;
+            return tunnel.GetCommand(mapper, new ExecuteCommand("SELECT last_insert_rowid()"));
         }
     }
 }

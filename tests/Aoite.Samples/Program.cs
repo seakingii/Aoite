@@ -33,7 +33,7 @@ namespace Aoite.Samples
                 Console.WriteLine("Create admin(123456) user;");
                 using(var context = engine.Context)
                 {
-                    context.Add(new SampleUser() { Username = "admin", Password = "123456" });
+                    context.Add(new SampleUser() { Username = "admin", Password = "admin" });
                     Console.WriteLine("The user admin Id is {0}.", context.GetLastIdentity<SampleUser>());
                 }
             }
@@ -49,7 +49,7 @@ namespace Aoite.Samples
             userService.Container = container;//- Set service's container.
             do
             {
-                if(loginUserName != null) Console.Write($"Current user is {loginUserName}.");
+                if(loginUserName != null) Console.WriteLine($"Current user is {loginUserName}.");
                 Console.Write("Please input a command:");
 
                 var cmd = Console.ReadLine();
@@ -73,6 +73,14 @@ namespace Aoite.Samples
                     case "logout":
                         Console.WriteLine($"{loginUserName} logouted.");
                         loginUserName = null;
+                        break;
+                    case "modifypassword":
+                        {
+                            Console.Write("Please input a new password:");
+                            var newPassword = Console.ReadLine();
+                            if(userService.ModifyPassowrd(newPassword)) Console.WriteLine("Modify password succeed.");
+                            else Console.WriteLine("Please login.");
+                        }
                         break;
                     case "add":
                         {
@@ -107,11 +115,24 @@ namespace Aoite.Samples
                             Console.WriteLine($"{DateTime.Now.ToString("mm:ss")} : currently {userService.Count()} users.");
                         }
                         break;
+                    case "list":
+                        {
+                            var column = string.Format("|{0,5}|{1,10}|{2,10}|", "Id", "Username", "Password");
+                            Console.WriteLine();
+                            Console.WriteLine(column);
+                            Console.WriteLine(new string('-', column.Length));
+                            var list = userService.GetList();
+                            foreach(var item in list)
+                            {
+                                Console.WriteLine("|{0,5}|{1,10}|{2,10}|", item.Id, item.Username, item.Password);
+                            }
+                        }
+                        break;
                     default:
                         Console.WriteLine($"Invalid command {cmd}");
                         break;
                 }
-                GA.ResetContexts();//close db context or redis context or log context
+                engine.ResetContext();//close db context
                 Console.WriteLine();
             } while(true);
 
