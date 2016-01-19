@@ -15,14 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comm", "comm", "{31F2CA9F-2
 	ProjectSection(SolutionItems) = preProject
 		src\Aoite\Aoite.nuspec = src\Aoite\Aoite.nuspec
 		comm\aoite.snk = comm\aoite.snk
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8B314701-DEE7-472F-BFBA-F9DD85ED1F55}"
-	ProjectSection(SolutionItems) = preProject
-		docs\GettingStarted.md = docs\GettingStarted.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Samples", "tests\Aoite.Samples\Aoite.Samples.csproj", "{AA2DCAAE-B40A-4A40-84BF-97915D330F18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0C9A1BD9-DB8E-472E-A781-449155FB5661}"
+	ProjectSection(SolutionItems) = preProject
+		docs\GettingStarted.md = docs\GettingStarted.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,5 +79,6 @@ Global
 		{5B0D8879-660C-4701-8117-C1499C9B65E7} = {014AB56F-363C-43A1-8A5F-BF43DDAF2384}
 		{58B2D2E2-E7FC-4CF4-BA1C-3684F7A63F19} = {027AC183-BDE6-4F1F-A76E-F0F240C69C26}
 		{AA2DCAAE-B40A-4A40-84BF-97915D330F18} = {027AC183-BDE6-4F1F-A76E-F0F240C69C26}
+		{0C9A1BD9-DB8E-472E-A781-449155FB5661} = {31F2CA9F-25EF-439C-8E77-917A67F42519}
 	EndGlobalSection
 EndGlobal
