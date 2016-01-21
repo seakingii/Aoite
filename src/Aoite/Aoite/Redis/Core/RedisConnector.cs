@@ -44,7 +44,7 @@ namespace Aoite.Redis
 
         public bool Connect()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
 
             this.Reusable();
             this._socket = this.SocketInfo.CreateSocket();

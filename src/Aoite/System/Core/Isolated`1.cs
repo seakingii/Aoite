@@ -39,7 +39,7 @@ namespace System
         {
             get
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 return this._Instance.Value;
             }
         }

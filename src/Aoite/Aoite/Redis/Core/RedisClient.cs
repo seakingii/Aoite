@@ -52,7 +52,7 @@ namespace Aoite.Redis
         public virtual T Execute<T>(RedisCommand<T> command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(this._tranCommands != null) throw new RedisException("Redis 事务期间，禁止通过非事务方式调用。");
 
             return this._executor.Execute(command);
@@ -74,7 +74,7 @@ namespace Aoite.Redis
         /// <returns>如果事务已存在，将会抛出一个错误，否则返回一个新的事务。</returns>
         public virtual IRedisTransaction BeginTransaction()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(this._tranCommands != null) throw new RedisException("Redis 不支持嵌套事务。");
             this.Execute(new RedisStatus("MULTI")).ThrowIfFailded();
             return new RedisTransaction(this);

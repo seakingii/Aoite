@@ -43,7 +43,7 @@ namespace Aoite.Data
         /// </summary>
         public IDbContext Open()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(this._connection.State == ConnectionState.Closed) this._connection.Open();
             return this;
         }
@@ -72,7 +72,7 @@ namespace Aoite.Data
         /// <returns>数据源查询与交互的执行器。</returns>
         public IDbExecutor Execute(ExecuteCommand command)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(command == null) throw new ArgumentNullException(nameof(command));
             return new DbExecutor(this, command, this._connection, this._transaction, false);
         }
@@ -86,7 +86,7 @@ namespace Aoite.Data
         /// <returns>数据源查询与交互的执行器。</returns>
         public IDbExecutor Execute(FormattableString fs)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             return this.Execute(this.Owner.Parse(fs));
         }
 
@@ -94,7 +94,7 @@ namespace Aoite.Data
 
         private void TransactionHandler(Action action)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
 
             try
             {

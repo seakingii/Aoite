@@ -17,9 +17,9 @@ namespace Aoite.Redis
             this._client._tranCommands = new LinkedList<RedisCommand>();
         }
 
-        protected override void ThrowWhenDisposed()
+        protected override void ThrowIfDisposed()
         {
-            base.ThrowWhenDisposed();
+            base.ThrowIfDisposed();
             if(this._client._tranCommands == null) throw new RedisException("Redis 的事务已结束。");
         }
 
@@ -27,7 +27,7 @@ namespace Aoite.Redis
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
 
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             this._client._tranCommands.AddLast(command);
             this._client._executor.Execute(new RedisTran.Queue(command)).ThrowIfFailded();
             return default(T);
@@ -40,7 +40,7 @@ namespace Aoite.Redis
 
         void IRedisTransaction.On<T>(T executor, Action<T> callback)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             //executor();
             this._client._tranCommands.Last.Value.SetCallback(callback);
         }
@@ -48,7 +48,7 @@ namespace Aoite.Redis
         private bool _IsCommited;
         void IRedisTransaction.Commit()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(this._IsCommited) return;
 
             this._client._executor.Execute(new RedisTran.Exec(this._client._tranCommands)).ThrowIfFailded();

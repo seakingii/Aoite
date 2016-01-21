@@ -105,7 +105,7 @@ namespace System
 
         internal void Write(string type, string message, params object[] args)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
 
             this._Items.Add(new LogItem() { Type = type, Time = DateTime.Now, Message = string.Format(message, args) });
         }

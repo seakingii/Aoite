@@ -35,7 +35,7 @@ namespace System
         /// </summary>
         public IDisposable Read()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             return new LockExtend(this._Slim, LockMode.Read);
         }
 
@@ -44,7 +44,7 @@ namespace System
         /// </summary>
         public IDisposable Write()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             return new LockExtend(this._Slim, LockMode.Write);
         }
 
@@ -53,7 +53,7 @@ namespace System
         /// </summary>
         public IDisposable UpgradeableRead()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             return new LockExtend(this._Slim, LockMode.UpgradeableRead);
         }
 

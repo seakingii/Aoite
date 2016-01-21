@@ -44,19 +44,19 @@ namespace System
 
             public bool Wait(int millisecondsTimeout = Timeout.Infinite)
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 if(_Task.IsCompleted) return true;
                 return _Task.Wait(millisecondsTimeout);
             }
 
             public void Cancel()
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 this._calcelSource.Cancel();
             }
             public bool WaitForNextTask()
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 return this._calcelSource.IsCancellationRequested
                     || Thread.CurrentThread.Join(this._Interval)
                     || this._calcelSource.IsCancellationRequested;
@@ -64,17 +64,17 @@ namespace System
 
             public void RunTask()
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 this._Job(this);
             }
             public void Delay(int millisecondsDelay)
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 Thread.CurrentThread.Join(millisecondsDelay);
             }
             public void Delay(TimeSpan timeSpanDelay)
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 Thread.CurrentThread.Join(timeSpanDelay);
             }
             protected override void Dispose(bool disposing)

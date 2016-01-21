@@ -36,7 +36,7 @@ namespace Aoite.Data
         /// <returns>当前实例。</returns>
         public TestManagerBase Execute<TKey>(TKey key)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
 
             this.Engine
                 .Execute(Scripts[Convert.ToString(key)])
@@ -51,7 +51,7 @@ namespace Aoite.Data
         /// <returns>当前实例。</returns>
         public TestManagerBase Execute(params string[] keys)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
 
             foreach(var key in keys)
             {
@@ -67,7 +67,7 @@ namespace Aoite.Data
         {
             get
             {
-                this.ThrowWhenDisposed();
+                this.ThrowIfDisposed();
                 return Scripts.Keys;
             }
         }
@@ -80,7 +80,7 @@ namespace Aoite.Data
         /// <returns>脚本。</returns>
         public string GetScript<TKey>(TKey key)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             return Scripts.GetScript(key);
         }
 

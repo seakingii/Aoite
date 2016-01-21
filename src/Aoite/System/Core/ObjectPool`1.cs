@@ -72,7 +72,7 @@ namespace System
         /// <returns>一个已释放或新的对象。</returns>
         public virtual T Acquire()
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             if(this._semaphore != null)
                 lock(this) if(this._semaphore != null) this._semaphore.WaitOne();
             T item;
@@ -85,7 +85,7 @@ namespace System
         /// <param name="obj">对象池。</param>
         public virtual void Release(T obj)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             var ro = obj as IObjectRelease;
             if(ro != null) ro.Release();
             this._Queue.Enqueue(obj);
@@ -99,7 +99,7 @@ namespace System
         /// <param name="callback">回调方法。</param>
         public virtual void AcquireRelease(Action<T> callback)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             var t = this.Acquire();
             try
             {
@@ -119,7 +119,7 @@ namespace System
         /// <returns>回调方法的返回值。</returns>
         public virtual TResult AcquireRelease<TResult>(Func<T, TResult> callback)
         {
-            this.ThrowWhenDisposed();
+            this.ThrowIfDisposed();
             var t = this.Acquire();
             try
             {
