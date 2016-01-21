@@ -45,10 +45,10 @@ namespace Aoite.CommandModel
             int index = 0;
             var service = this.New(Nickname1, f => f.Mock<GetListsCommand>((context, command) =>
             {
-                command.ResultValue = new List<DeptModel>();
+                command.Result = new List<DeptModel>();
                 for(int i = 0; i < 10; i++)
                 {
-                    command.ResultValue.Add(new DeptModel()
+                    command.Result.Add(new DeptModel()
                     {
                         Id = ++index,
                         Name = "name" + index
@@ -80,7 +80,7 @@ namespace Aoite.CommandModel
 
         public Result<List<DeptModel>> GetDepts(long parentId)
         {
-            return this.Execute(new GetListsCommand { ParentDeptId = parentId }).ResultValue;
+            return this.Execute(new GetListsCommand { ParentDeptId = parentId }).Result;
         }
 
     }
@@ -104,7 +104,7 @@ namespace Aoite.CommandModel
     {
         public long ParentDeptId { get; set; }
 
-        public List<DeptModel> ResultValue { get; set; }
+        public List<DeptModel> Result { get; set; }
 
         ICommandCacheStrategy ICommandCache.CreateStrategy(IContext context)
         {
@@ -113,12 +113,12 @@ namespace Aoite.CommandModel
 
         bool ICommandCache.SetCacheValue(object value)
         {
-            return (this.ResultValue = value as List<DeptModel>) != null;
+            return (this.Result = value as List<DeptModel>) != null;
         }
 
         object ICommandCache.GetCacheValue()
         {
-            return this.ResultValue;
+            return this.Result;
         }
     }
 }

@@ -605,9 +605,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
         public static int RemoveAnonymous<TEntity>(this IDbEngine engine, object entityOrPKValues, ICommandTunnel tunnel = null)
-        {
-            return Filter(engine, GetRemoveWhere<TEntity>(engine, entityOrPKValues)).Remove<TEntity>(tunnel);
-        }
+            => Filter(engine, GetRemoveWhere<TEntity>(engine, entityOrPKValues)).Remove<TEntity>(tunnel);
 
         #endregion
 
@@ -696,9 +694,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>数据的行数。</returns>
         public static long RowCount<TEntity>(this IDbEngine engine, ICommandTunnel tunnel = null)
-        {
-            return Filter(engine).RowCount<TEntity>(tunnel);
-        }
+            => Filter(engine).RowCount<TEntity>(tunnel);
 
         /// <summary>
         /// 获取最后递增序列值。
@@ -737,6 +733,8 @@ namespace System
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             return new SqlBuilder(engine).Select(fields).From(engine.Provider.SqlFactory.EscapeName(TypeMapper.Instance<TEntity>.Mapper.Name, NamePoint.Table));
         }
+
+        #endregion
 
         #endregion
 
@@ -815,8 +813,6 @@ namespace System
             if(where == null) throw new ArgumentNullException(nameof(where));
             return new FilterExecutor(engine, where);
         }
-
-        #endregion
 
         #endregion
 

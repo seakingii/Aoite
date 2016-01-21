@@ -52,10 +52,10 @@ namespace Aoite.CommandModel
                     if(executed != null) executed(context, command, ex);
                     eventStore.RaiseExecuted(context, command, ex);
                     executorMetadata.RaiseExecuted(context, command, ex);
-
+                    //- 报错不执行 RaiseExecuted
                     throw;
                 }
-            }
+            }/*有一些特殊情况是不需要执行命令的，比如缓存命中。*/
 
             if(executed != null) executed(context, command, null);
             eventStore.RaiseExecuted(context, command, null);
@@ -75,24 +75,73 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            //- https://github.com/StephenCleary/AspNetBackgroundTasks/blob/master/src/AspNetBackgroundTasks/Internal/RegisteredTasks.cs
-            //TODO: 如何解决升级维护时，异步任务丢失？IRegisteredObject？
             if(command == null) throw new ArgumentNullException(nameof(command));
-            
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    return this.Execute(command, executing, executed);
-                }
-                finally
-                {
-                    GA.ResetContexts();//- 这里开了一个线程，线程结束后就会释放所有上下文。
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                }
-            });
 
+            var contextFactory = this.Container.Get<IContextFactory>();
+            var executorFactory = this.Container.Get<IExecutorFactory>();
+            var eventStore = this.Container.Get<IEventStore>();
+
+            var context = contextFactory.Create(command);
+            var executorMetadata = executorFactory.Create(command);
+            var executor = executorMetadata.Executor;
+
+            Task<TCommand> task;
+            // 执行器元数据 && 事务仓储
+            if(executorMetadata.RaiseExecuting(context, command)
+                && eventStore.RaiseExecuting(context, command)
+                && (executing == null || executing(context, command)))
+            {
+#if !NET40
+                var executorAsync = executor as IExecutorAsync<TCommand>;
+                if(executorAsync != null)
+                {//- 异步命令
+                    task = executorAsync.ExecuteAsync(context, command);
+                }
+                else
+#endif
+                {//- 非异步命令
+                    task = Task.Factory.StartNew(() =>
+                    {
+                        executor.Execute(context, command);
+                        return command;
+                    });
+                }
+
+                task.ContinueWith(t =>
+                {
+                    var ex = t.Exception;
+                    GA.TraceError("执行命令 {0} 时发生了异常：\r\n{1}", command, ex);
+                    if(executed != null) executed(context, command, ex);
+                    eventStore.RaiseExecuted(context, command, ex);
+                    executorMetadata.RaiseExecuted(context, command, ex);
+
+                }, TaskContinuationOptions.OnlyOnFaulted);
+
+            }
+            else
+            {/*有一些特殊情况是不需要执行命令的，比如缓存命中。*/
+#if !NET40
+                task = Task.FromResult(command);
+#else
+                task = GA.FromResult(command);
+#endif
+            }
+
+            task.ContinueWith(t =>
+            {
+                if(executed != null) executed(context, command, null);
+                eventStore.RaiseExecuted(context, command, null);
+                executorMetadata.RaiseExecuted(context, command, null);
+            }, TaskContinuationOptions.NotOnFaulted);
+
+            task.ContinueWith(t =>
+            {
+                GA.ResetContexts();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }, TaskContinuationOptions.ExecuteSynchronously);
+
+            return task;
         }
     }
 }

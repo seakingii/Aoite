@@ -54,7 +54,7 @@
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".1.5";
+            public const string AssemblyVersion = Version + ".1.6";
             /// <summary> 
             /// 程序集的简单描述。
             /// </summary>

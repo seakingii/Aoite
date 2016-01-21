@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Aoite.CommandModel;
 using Aoite.Data;
 
@@ -7,7 +8,7 @@ namespace System
     /// <summary>
     /// 表示 <see cref="ICommandBus"/> 的扩展方法。
     /// </summary>
-    public static class CommandBusExtensions
+    public static partial class CommandBusExtensions
     {
         #region Add
 
@@ -17,11 +18,10 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
-        /// <param name="isIdentityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>当 <typeparamref name="TEntity"/> 包含递增列主键时，返回的递增列值。</returns>
-        public static long Add<TEntity>(this ICommandBus bus, TEntity entity, bool isIdentityKey = false, ICommandTunnel tunnel = null)
-            => AddAnonymous<TEntity>(bus, entity, isIdentityKey, tunnel);
+        /// <returns>受影响的行。</returns>
+        public static long Add<TEntity>(this ICommandBus bus, TEntity entity, ICommandTunnel tunnel = null)
+            => AddAnonymous<TEntity>(bus, entity, tunnel);
 
         /// <summary>
         /// 执行一个添加的命令模型。
@@ -29,11 +29,20 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="bus">命令总线。</param>
         /// <param name="entity">实体的实例。</param>
-        /// <param name="isIdentityKey">指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>当 <typeparamref name="TEntity"/> 包含递增列主键时，返回的递增列值。</returns>
-        public static long AddAnonymous<TEntity>(this ICommandBus bus, object entity, bool isIdentityKey = false, ICommandTunnel tunnel = null)
-            => bus.Execute(new CMD.Add<TEntity>() { IsIdentityKey = isIdentityKey, Entity = entity, Tunnel = tunnel }).ResultValue;
+        /// <returns>受影响的行。</returns>
+        public static long AddAnonymous<TEntity>(this ICommandBus bus, object entity, ICommandTunnel tunnel = null)
+            => bus.Execute(new CMD.Add<TEntity>() { Entity = entity, Tunnel = tunnel }).Result;
+
+        /// <summary>
+        /// 执行一个获取递增列值的命令模型。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <param name="bus">命令总线。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>递增列值。</returns>
+        public static long GetIdentity<TEntity>(this ICommandBus bus, ICommandTunnel tunnel = null)
+            => bus.Execute(new CMD.GetIdentity<TEntity>() { Tunnel = tunnel }).Result;
 
         #endregion
 
@@ -90,7 +99,7 @@ namespace System
 
             return Filter(bus, DbExtensions.GetRemoveWhere<TEntity>(bus.GetDbEngine(), entityOrPKValues)).Remove<TEntity>(tunnel);
         }
-        
+
 
         #endregion
 
@@ -104,7 +113,7 @@ namespace System
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>一个实体。</returns>
-        public static TEntity FindOne<TEntity>(this ICommandBus bus, object keyValue, ICommandTunnel tunnel = null) 
+        public static TEntity FindOne<TEntity>(this ICommandBus bus, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TEntity>(bus, keyValue, tunnel);
 
         /// <summary>
@@ -261,49 +270,5 @@ namespace System
         }
 
         #endregion
-
-    }
-
-    class CommandFilterExecutor : IFilterExecutor
-    {
-        ICommandBus _bus;
-        WhereParameters _where;
-
-        public CommandFilterExecutor(ICommandBus bus, WhereParameters where)
-        {
-            this._bus = bus;
-            this._where = where;
-        }
-
-        public bool Exists<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Exists<TEntity> { Where = this._where, Tunnel = tunnel }).ResultValue;
-
-        public List<TEntity> FindAll<TEntity>(ICommandTunnel tunnel = null)
-            => this.FindAll<TEntity, TEntity>(tunnel);
-
-        public List<TView> FindAll<TEntity, TView>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAll<TEntity, TView> { Where = this._where, Tunnel = tunnel }).ResultValue;
-
-
-        public PageData<TEntity> FindAll<TEntity>(IPagination page, ICommandTunnel tunnel = null)
-            => this.FindAll<TEntity, TEntity>(page, tunnel);
-
-        public PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Page = page, Tunnel = tunnel }).ResultValue;
-
-        public TEntity FindOne<TEntity>(ICommandTunnel tunnel = null)
-            => this.FindOne<TEntity, TEntity>(tunnel);
-
-        public TView FindOne<TEntity, TView>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindOne<TEntity, TView> { Where = this._where, Tunnel = tunnel }).ResultValue;
-
-        public int Modify<TEntity>(object entity, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Modify<TEntity> { Where = this._where, Entity = entity, Tunnel = tunnel }).ResultValue;
-
-        public int Remove<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Remove<TEntity> { Where = this._where, Tunnel = tunnel }).ResultValue;
-
-        public long RowCount<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.RowCount<TEntity> { Where = this._where, Tunnel = tunnel }).ResultValue;
     }
 }

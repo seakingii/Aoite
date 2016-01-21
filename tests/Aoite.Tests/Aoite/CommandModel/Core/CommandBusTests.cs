@@ -9,7 +9,7 @@ namespace Aoite.CommandModel.Core
         {
             public int Value { get; set; }
 
-            public int ResultValue { get; set; }
+            public int Result { get; set; }
         }
 
 
@@ -17,10 +17,10 @@ namespace Aoite.CommandModel.Core
         public void ExecuteTest()
         {
             var bus = new CommandBus(ServiceFactory.CreateContainer(null
-                , f => f.Mock<SimpleCommand>((context, command) => command.ResultValue = command.Value * 2)));
+                , f => f.Mock<SimpleCommand>((context, command) => command.Result = command.Value * 2)));
 
-            Assert.Equal(10, bus.Execute(new SimpleCommand() { Value = 5 }).ResultValue);
-            Assert.Equal(0, bus.Execute(new SimpleCommand() { Value = 5 }, (context, command) => false).ResultValue);
+            Assert.Equal(10, bus.Execute(new SimpleCommand() { Value = 5 }).Result);
+            Assert.Equal(0, bus.Execute(new SimpleCommand() { Value = 5 }, (context, command) => false).Result);
         }
         [Fact()]
         public void ExecuteExceptionTest()
@@ -41,25 +41,23 @@ namespace Aoite.CommandModel.Core
         public void ExecuteAsyncTest()
         {
             var bus = new CommandBus(ServiceFactory.CreateContainer(null
-                , f => f.Mock<SimpleCommand>((context, command) => command.ResultValue = command.Value * 2)));
-            Assert.Equal(10, bus.ExecuteAsync(new SimpleCommand() { Value = 5 }).Result.ResultValue);
-            Assert.Equal(0, bus.ExecuteAsync(new SimpleCommand() { Value = 5 }, (context, command) => false).Result.ResultValue);
+                , f => f.Mock<SimpleCommand>((context, command) => command.Result = command.Value * 2)));
+            Assert.Equal(10, bus.ExecuteAsync(new SimpleCommand() { Value = 5 }).Result.Result);
+            Assert.Equal(0, bus.ExecuteAsync(new SimpleCommand() { Value = 5 }, (context, command) => false).Result.Result);
         }
 
         [Fact()]
-        public void ExecuteAsyncExceptionTest()
+        public async void ExecuteAsyncExceptionTest()
         {
             var bus = new CommandBus(ServiceFactory.CreateContainer(null
                 , f => f.Mock<SimpleCommand>((context, command) =>
                 {
                     throw new NotSupportedException();
                 })));
-            Exception catchException = null;
-            Assert.Throws<AggregateException>(() => bus.ExecuteAsync(new SimpleCommand() { Value = 5 }, null, (context, command, exception) =>
+            await Assert.ThrowsAsync<NotSupportedException>(() => bus.ExecuteAsync(new SimpleCommand() { Value = 5 }, null, (context, command, exception) =>
             {
-                catchException = exception;
-            }).Result);
-            Assert.IsType<NotSupportedException>(catchException);
+                Assert.IsType<NotSupportedException>((exception as AggregateException).InnerException);
+            }));
         }
 
     }

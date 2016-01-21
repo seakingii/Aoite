@@ -14,12 +14,12 @@ namespace Aoite.CommandModel.Core
 
             public int ExecuteTest(int value)
             {
-                return this.Execute(new SimpleCommand() { Value = value }).ResultValue;
+                return this.Execute(new SimpleCommand() { Value = value }).Result;
             }
             public Task<int> ExecuteTestAsync(int value)
             {
                 return this.ExecuteAsync(new SimpleCommand() { Value = value })
-                           .ContinueWith(t => t.Result.ResultValue);
+                           .ContinueWith(t => t.Result.Result);
             }
 
             private int _lockValue = 1;
@@ -49,7 +49,7 @@ namespace Aoite.CommandModel.Core
         {
             public int Value { get; set; }
 
-            public int ResultValue { get; set; }
+            public int Result { get; set; }
         }
 
         [Fact()]
@@ -81,7 +81,7 @@ namespace Aoite.CommandModel.Core
         [Fact()]
         public void ExecuteTest()
         {
-            var container = ServiceFactory.CreateContainer(null, f => f.Mock<SimpleCommand>((context, command) => command.ResultValue = command.Value * 2));
+            var container = ServiceFactory.CreateContainer(null, f => f.Mock<SimpleCommand>((context, command) => command.Result = command.Value * 2));
             var s = new SimpleCommandModelService(container);
             Assert.Equal(10, s.ExecuteTest(5));
         }
@@ -89,7 +89,7 @@ namespace Aoite.CommandModel.Core
         [Fact()]
         public void ExecuteAsyncTest()
         {
-            var container = ServiceFactory.CreateContainer(null, f => f.Mock<SimpleCommand>((context, command) => command.ResultValue = command.Value * 2));
+            var container = ServiceFactory.CreateContainer(null, f => f.Mock<SimpleCommand>((context, command) => command.Result = command.Value * 2));
             var s = new SimpleCommandModelService(container);
             Assert.Equal(10, s.ExecuteTestAsync(5).Result);
         }

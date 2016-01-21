@@ -110,6 +110,8 @@
     <Compile Include="Aoite\CommandModel\Core\BindingExecutorAttribute.cs" />
     <Compile Include="Aoite\CommandModel\Core\CacheAttribute.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandBus.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandFilterExecutor.Async.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandFilterExecutor.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBase.cs" />
     <Compile Include="Aoite\CommandModel\Core\Context.cs" />
     <Compile Include="Aoite\CommandModel\Core\ContextFactory.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Aoite\CommandModel\Core\ExecutorMetadata`1.cs" />
     <Compile Include="Aoite\CommandModel\Core\ICommand`1.cs" />
     <Compile Include="Aoite\CommandModel\Core\IEvent`1.cs" />
+    <Compile Include="Aoite\CommandModel\Core\IExecutorAsync.cs" />
     <Compile Include="Aoite\CommandModel\Core\IExecutorAttribute.cs" />
     <Compile Include="Aoite\CommandModel\Core\Commands.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBase.cs" />
@@ -143,13 +146,14 @@
     <Compile Include="Aoite\CommandModel\Core\MockExecutor.cs" />
     <Compile Include="Aoite\CommandModel\Core\MockExecutorFactory.cs" />
     <Compile Include="Aoite\CommandModel\Core\UserFactory.cs" />
-    <Compile Include="Aoite\Data\DbExecutor~Async.cs" />
+    <Compile Include="Aoite\Data\DbExecutor.Async.cs" />
     <Compile Include="Aoite\Data\DbValue.cs" />
     <Compile Include="Aoite\Data\DbProvidersAttribute.cs" />
     <Compile Include="Aoite\Data\Factories\SqlCeFactory.cs" />
     <Compile Include="Aoite\Data\IDbExecutorAsync.cs" />
     <Compile Include="Aoite\Data\IDbValue.cs" />
     <Compile Include="Aoite\Data\Factories\SqlFactory.cs" />
+    <Compile Include="Aoite\Data\IFilterExecutorAsync.cs" />
     <Compile Include="Aoite\Data\IFilterExecutor.cs" />
     <Compile Include="Aoite\Data\ISqlFactory.cs" />
     <Compile Include="Aoite\Data\ICommandTunnel.cs" />
@@ -161,6 +165,7 @@
     <Compile Include="Aoite\Serialization\Json\JTypeResolver.cs" />
     <Compile Include="Aoite\Serialization\Json\JObjectConverter.cs" />
     <Compile Include="Aoite\Serialization\Json\Utf16StringValidator.cs" />
+    <Compile Include="System\Extensions\CommandBusExtensions.Async.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />
     <Compile Include="Aoite\CommandModel\Providers\CacheProvider.cs" />
@@ -394,6 +399,7 @@
       <Link>aoite.snk</Link>
     </None>
     <None Include="Aoite\Redis\ReadMe.md" />
+    <Compile Include="System\Extensions\DbExtensions.Async.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="System\Core\BinaryValue~Implicit.tt">

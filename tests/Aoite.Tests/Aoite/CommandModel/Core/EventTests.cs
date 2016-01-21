@@ -8,7 +8,7 @@ namespace Aoite.CommandModel.Core
         {
             public int Value { get; set; }
 
-            public int ResultValue { get; set; }
+            public int Result { get; set; }
         }
         [Fact()]
         public void ExecutingTest()

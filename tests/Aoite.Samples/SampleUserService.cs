@@ -36,7 +36,7 @@ namespace Aoite.Samples
 
         public long Count()
         {
-            return this.Execute(new SampleUserCountCommand()).ResultValue;
+            return this.Execute(new SampleUserCountCommand()).Result;
         }
 
         public bool ModifyPassowrd(string newPassword)
@@ -64,14 +64,14 @@ namespace Aoite.Samples
 
         public object GetCacheValue()
         {
-            return this.ResultValue;
+            return this.Result;
         }
 
         public bool SetCacheValue(object value)
         {
             if(value is long)
             {
-                this.ResultValue = (long)value;
+                this.Result = (long)value;
                 return true;
             }
             return false;
@@ -81,7 +81,7 @@ namespace Aoite.Samples
         {
             public void Execute(IContext context, SampleUserCountCommand command)
             {
-                command.ResultValue = context.Engine.RowCount<SampleUser>();
+                command.Result = context.Engine.RowCount<SampleUser>();
             }
         }
     }

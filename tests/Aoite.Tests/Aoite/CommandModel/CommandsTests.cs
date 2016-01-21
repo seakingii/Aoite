@@ -32,9 +32,10 @@ namespace Aoite.CommandModel
         {
             var model = GA.CreateMockModel<Models.Member>();
             model.Id = 0;
-            var command = new CMD.Add<Models.Member> { IsIdentityKey = true, Entity = model };
+            var command = new CMD.Add<Models.Member> { Entity = model };
 
-            Assert.Equal(1, this.Execute(command).ResultValue);
+            Assert.Equal(1, this.Execute(command).Result);
+            Assert.Equal(1, this.Execute(new CMD.GetIdentity<Models.Member>()).Result);
             var r = GA.Compare(model, this.Context.FindOne<Models.Member>(1));
             Assert.Null(r);
         }
@@ -48,7 +49,7 @@ namespace Aoite.CommandModel
             var aEntity = new { Username = "admin", Password = "TTT" };
             var command = new CMD.Modify<Models.Member> { Entity = aEntity, Where = new WhereParameters("Id=@id", new Data.ExecuteParameterCollection("@id", testId)) };
 
-            Assert.Equal(1, this.Execute(command).ResultValue);
+            Assert.Equal(1, this.Execute(command).Result);
             var member2 = this.Context.FindOne<Models.Member>(testId);
 
             Assert.Equal(aEntity.Username, member2.Username);
@@ -66,7 +67,7 @@ namespace Aoite.CommandModel
                 Entity = new { Password = "1", Money = 999 },
                 Where = WhereParameters.Parse(this.Engine, new { username = "username0" })
             };
-            Assert.Equal(models.Where(m => m.Username == "username0").Count(), this.Execute(command).ResultValue);
+            Assert.Equal(models.Where(m => m.Username == "username0").Count(), this.Execute(command).Result);
         }
 
         [Fact(DisplayName = "CMD.Remove")]
@@ -76,7 +77,7 @@ namespace Aoite.CommandModel
             var testId = models.RandomOne().Id;
             var command = new CMD.Remove<Models.Member> { Where = this.Engine.GetRemoveWhere<Models.Member>(testId) };
 
-            Assert.Equal(1, this.Execute(command).ResultValue);
+            Assert.Equal(1, this.Execute(command).Result);
             Assert.Equal(models.Length - 1, this.Context.RowCount<Models.Member>());
         }
         [Fact(DisplayName = "CMD.Remove - 批量")]
@@ -86,7 +87,7 @@ namespace Aoite.CommandModel
 
             var command = new CMD.Remove<Models.Member> { Where = this.Engine.GetRemoveWhere<Models.Member>(models.RandomAny(2).Select(m => m.Id)) };
 
-            Assert.Equal(2, this.Execute(command).ResultValue);
+            Assert.Equal(2, this.Execute(command).Result);
             Assert.Equal(8, this.Context.RowCount<Models.Member>());
         }
 
@@ -98,7 +99,7 @@ namespace Aoite.CommandModel
             var testId = models.RandomOne().Id;
             var command = new CMD.Remove<Models.Member> { Where = new WhereParameters("Id<4") };
 
-            Assert.Equal(3, this.Execute(command).ResultValue);
+            Assert.Equal(3, this.Execute(command).Result);
         }
 
         [Fact(DisplayName = "CMD.FindOne")]
@@ -108,7 +109,7 @@ namespace Aoite.CommandModel
             var model = models.RandomOne();
 
             var command = new CMD.FindOne<Models.Member, Models.Member> { Where = this.Engine.GetRemoveWhere<Models.Member>(model.Id) };
-            Assert.Null(GA.Compare(model, this.Execute(command).ResultValue));
+            Assert.Null(GA.Compare(model, this.Execute(command).Result));
         }
         [Fact(DisplayName = "CMD.FindOneWhere")]
         public void FindOneWhere()
@@ -120,7 +121,7 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new { model.IdCard, model.Email })
             };
-            Assert.Null(GA.Compare(model, this.Execute(command).ResultValue));
+            Assert.Null(GA.Compare(model, this.Execute(command).Result));
         }
 
 
@@ -135,7 +136,7 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new { Email = "Email1" })
             };
-            Assert.Equal(models.Where(m => m.Email == "Email1").Count(), this.Execute(command).ResultValue.Count);
+            Assert.Equal(models.Where(m => m.Email == "Email1").Count(), this.Execute(command).Result.Count);
         }
         [Fact(DisplayName = "CMD.FindAllWhere - View")]
         public void FindAllWhere2()
@@ -148,7 +149,7 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new { Email = "Email1" })
             };
-            Assert.Equal(models.Where(m => m.Email == "Email1").Count(), this.Execute(command).ResultValue.Count);
+            Assert.Equal(models.Where(m => m.Email == "Email1").Count(), this.Execute(command).Result.Count);
         }
 
         [Fact(DisplayName = "CMD.FindAllPage")]
@@ -164,7 +165,7 @@ namespace Aoite.CommandModel
                 Page = new Pagination(2, 3)
             };
             var query = models.Where(m => m.Email == "Email1");
-            var grid = this.Execute(command).ResultValue;
+            var grid = this.Execute(command).Result;
 
             Assert.Equal(query.Count(), grid.Total);
             Assert.Equal(query.Skip(3).Take(3).Count(), grid.Rows.Length);
@@ -182,7 +183,7 @@ namespace Aoite.CommandModel
                 Page = new Pagination(2, 3)
             };
             var query = models.Where(m => m.Email == "Email1");
-            var grid = this.Execute(command).ResultValue;
+            var grid = this.Execute(command).Result;
 
             Assert.Equal(query.Count(), grid.Total);
             Assert.Equal(query.Skip(3).Take(3).Count(), grid.Rows.Length);
@@ -198,13 +199,13 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new Data.ExecuteParameterCollection(DbExtensions.GetKeyValues<Models.Member>(null, model.Id)))
             };
-            Assert.True(this.Execute(command).ResultValue);
+            Assert.True(this.Execute(command).Result);
 
             command.Where = WhereParameters.Parse(this.Engine, new Data.ExecuteParameterCollection(DbExtensions.GetKeyValues<Models.Member>("Username", model.Username)));
-            Assert.True(this.Execute(command).ResultValue);
+            Assert.True(this.Execute(command).Result);
 
             command.Where = WhereParameters.Parse(this.Engine, new Data.ExecuteParameterCollection(DbExtensions.GetKeyValues<Models.Member>("Username", "A$$$$$$$$$$")));
-            Assert.False(this.Execute(command).ResultValue);
+            Assert.False(this.Execute(command).Result);
         }
 
         [Fact(DisplayName = "CMD.ExistsWhere")]
@@ -217,10 +218,10 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new { model.Username }),
             };
-            Assert.True(this.Execute(command).ResultValue);
+            Assert.True(this.Execute(command).Result);
 
             command.Where = WhereParameters.Parse(this.Engine, new { Username = "A$$$$$$$$$$" });
-            Assert.False(this.Execute(command).ResultValue);
+            Assert.False(this.Execute(command).Result);
         }
 
 
@@ -235,11 +236,11 @@ namespace Aoite.CommandModel
             {
                 Where = WhereParameters.Parse(this.Engine, new { model.Username }),
             };
-            Assert.Equal(1, this.Execute(command).ResultValue);
+            Assert.Equal(1, this.Execute(command).Result);
 
             var query = models.Where(m => m.Email == "Email1");
             command.Where = WhereParameters.Parse(this.Engine, new { Email = "Email1" });
-            Assert.Equal(query.Count(), this.Execute(command).ResultValue);
+            Assert.Equal(query.Count(), this.Execute(command).Result);
         }
     }
 }

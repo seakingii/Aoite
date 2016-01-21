@@ -227,5 +227,18 @@ namespace System
             timer.Change(delay, -1);
             return tcs.Task;
         }
+
+        /// <summary>
+        /// 创建指定结果的、成功完成的 <see cref="Task{T}"/>。
+        /// </summary>
+        /// <typeparam name="T">任务返回的结果的类型。</typeparam>
+        /// <param name="value">存储入已完成任务的结果。</param>
+        /// <returns>已成功完成的任务。</returns>
+        public static Task<T> FromResult<T>(T value)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            tcs.SetResult(value);
+            return tcs.Task;
+        }
     }
 }
