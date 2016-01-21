@@ -30,7 +30,7 @@ namespace Aoite.CommandModel
 
             if(!GA.IsUnitTestRuntime)
             {
-                var redisProvider = this.Container.GetFixedService<IRedisProvider>();
+                var redisProvider = this.Container.GetFixed<IRedisProvider>();
                 if(redisProvider != null)
                 {
                     var client = redisProvider.GetRedisClient();

@@ -129,7 +129,7 @@ namespace Aoite.CommandModel
             }
             this._Engine = this._testManager.Engine;
 
-            container.AddService<IDbEngine>(lmps => this.Context);
+            container.Add<IDbEngine>(lmps => this.Context);
 
             var classScripts = this.GetType().GetAttribute<ScriptsAttribute>();
             if(classScripts != null) this._testManager.Execute(classScripts.Keys);

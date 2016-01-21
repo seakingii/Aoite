@@ -23,7 +23,7 @@ namespace Aoite.CommandModel
 
         private void MemorySet(string key, object value)
         {
-            var mc = this.Container.GetService<CommandMemoryCache>();
+            var mc = this.Container.Get<CommandMemoryCache>();
             if(value == null) mc.Remove(this.GetMoneryCache(key));
             else mc[this.GetMoneryCache(key)] = value;
         }
@@ -39,7 +39,7 @@ namespace Aoite.CommandModel
 
             if(!GA.IsUnitTestRuntime)
             {
-                var redisProvider = this.Container.GetFixedService<IRedisProvider>();
+                var redisProvider = this.Container.GetFixed<IRedisProvider>();
                 if(redisProvider != null)
                 {
                     var client = redisProvider.GetRedisClient();
@@ -52,7 +52,7 @@ namespace Aoite.CommandModel
         }
         private object MemoryGet(string key, Func<object> valueFactory)
         {
-            var mc = this.Container.GetService<CommandMemoryCache>();
+            var mc = this.Container.Get<CommandMemoryCache>();
             key = this.GetMoneryCache(key);
             var value = mc[key];
             if(value == null && valueFactory != null)
@@ -75,7 +75,7 @@ namespace Aoite.CommandModel
 
             if(!GA.IsUnitTestRuntime)
             {
-                var redisProvider = this.Container.GetFixedService<IRedisProvider>();
+                var redisProvider = this.Container.GetFixed<IRedisProvider>();
                 if(redisProvider != null)
                 {
                     var client = redisProvider.GetRedisClient();
@@ -83,7 +83,7 @@ namespace Aoite.CommandModel
                     var value = binaryValue == null ? null : binaryValue.ToModel();
                     if(value == null && valueFactory != null)
                     {
-                        using(this.Container.GetService<ILockProvider>().Lock(RedisHashKey + ":" + key))
+                        using(this.Container.Get<ILockProvider>().Lock(RedisHashKey + ":" + key))
                         {
                             value = valueFactory();
                             if(value == null) return null;
@@ -99,7 +99,7 @@ namespace Aoite.CommandModel
 
         private bool MemoryExists(string key)
         {
-            return this.Container.GetService<CommandMemoryCache>().Contains(this.GetMoneryCache(key));
+            return this.Container.Get<CommandMemoryCache>().Contains(this.GetMoneryCache(key));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Aoite.CommandModel
 
             if(!GA.IsUnitTestRuntime)
             {
-                var redisProvider = this.Container.GetFixedService<IRedisProvider>();
+                var redisProvider = this.Container.GetFixed<IRedisProvider>();
                 if(redisProvider != null) return redisProvider.GetRedisClient().HExists(RedisHashKey, key);
             }
             return this.MemoryExists(key);

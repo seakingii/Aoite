@@ -27,7 +27,7 @@
             if(handler != null && (lastMappingValues == null || lastMappingValues.Length == 0))
                 lastMappingValues = handler(Type) ?? new object[0];
 
-            return ObjectFactory.Global.GetService<T>(lastMappingValues);
+            return ObjectFactory.Global.Get<T>(lastMappingValues);
         }
 
         /// <summary>

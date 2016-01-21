@@ -15,11 +15,11 @@ public static class IocExtensions
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddService<TService>(this IIocContainer container, bool singletonMode = false, bool promote = false)
+    public static IIocContainer Add<TService>(this IIocContainer container, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddService(typeof(TService), singletonMode, promote);
+        container.Add(typeof(TService), singletonMode, promote);
         return container;
     }
 
@@ -32,12 +32,12 @@ public static class IocExtensions
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddService<TService, TActual>(this IIocContainer container, bool singletonMode = false, bool promote = false)
+    public static IIocContainer Add<TService, TActual>(this IIocContainer container, bool singletonMode = false, bool promote = false)
         where TActual : TService
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddService(typeof(TService), typeof(TActual), singletonMode, promote);
+        container.Add(typeof(TService), typeof(TActual), singletonMode, promote);
         return container;
     }
 
@@ -49,11 +49,11 @@ public static class IocExtensions
     /// <param name="serviceInstance">要添加的服务的实例。 此对象必须实现 <typeparamref name="TService"/> 参数所指示的类型或从其继承。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddService<TService>(this IIocContainer container, TService serviceInstance, bool promote = false)
+    public static IIocContainer Add<TService>(this IIocContainer container, TService serviceInstance, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddService(typeof(TService), serviceInstance, promote);
+        container.Add(typeof(TService), serviceInstance, promote);
         return container;
     }
 
@@ -66,11 +66,11 @@ public static class IocExtensions
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddService<TService>(this IIocContainer container, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+    public static IIocContainer Add<TService>(this IIocContainer container, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddService(typeof(TService), callback, singletonMode, promote);
+        container.Add(typeof(TService), callback, singletonMode, promote);
         return container;
     }
 
@@ -81,11 +81,11 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer RemoveService<TService>(this IIocContainer container, bool promote = false)
+    public static IIocContainer Remove<TService>(this IIocContainer container, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.RemoveService(typeof(TService), promote);
+        container.Remove(typeof(TService), promote);
         return container;
     }
 
@@ -96,11 +96,11 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
     /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
-    public static TService GetService<TService>(this IIocContainer container, params object[] lastMappingValues)
+    public static TService Get<TService>(this IIocContainer container, params object[] lastMappingValues)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        var service = container.GetService(typeof(TService), lastMappingValues);
+        var service = container.Get(typeof(TService), lastMappingValues);
         if(service == null) return default(TService);
         return (TService)service;
     }
@@ -112,11 +112,11 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
     /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
-    public static TService GetFixedService<TService>(this IIocContainer container, params object[] lastMappingValues)
+    public static TService GetFixed<TService>(this IIocContainer container, params object[] lastMappingValues)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        var service = container.GetFixedService(typeof(TService), lastMappingValues);
+        var service = container.GetFixed(typeof(TService), lastMappingValues);
         if(service == null) return default(TService);
         return (TService)service;
     }
@@ -130,9 +130,9 @@ public static class IocExtensions
     /// <param name="callback">当服务存在时发生的回调方法。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
     /// <returns>回调方法的值。</returns>
-    public static TValue TryGetService<TService, TValue>(this IIocContainer container, Func<TService, TValue> callback, params object[] lastMappingValues)
+    public static TValue TryGet<TService, TValue>(this IIocContainer container, Func<TService, TValue> callback, params object[] lastMappingValues)
     {
-        var service = GetService<TService>(container, lastMappingValues);
+        var service = Get<TService>(container, lastMappingValues);
         if(service != null) return callback(service);
         return default(TValue);
     }
@@ -145,9 +145,9 @@ public static class IocExtensions
     /// <param name="callback">当服务存在时发生的回调方法。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
     /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
-    public static TService TryGetService<TService>(this IIocContainer container, Action<TService> callback, params object[] lastMappingValues)
+    public static TService TryGet<TService>(this IIocContainer container, Action<TService> callback, params object[] lastMappingValues)
     {
-        var service = GetService<TService>(container, lastMappingValues);
+        var service = Get<TService>(container, lastMappingValues);
         if(service != null) callback(service);
         return service;
     }
@@ -159,11 +159,11 @@ public static class IocExtensions
     /// <param name="container">服务容器。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>如果存在返回 true，否则返回 false。</returns>
-    public static bool ContainsService<TService>(this IIocContainer container, bool promote = false)
+    public static bool Contains<TService>(this IIocContainer container, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        return container.ContainsService(typeof(TService), promote);
+        return container.Contains(typeof(TService), promote);
     }
 
     #endregion
@@ -275,7 +275,7 @@ public static class IocExtensions
                     var actualType = mapFilter.FindActualType(allTypes, expectType);
                     if(actualType == null)
                         throw new Exception("无法找到预期定义类型“" + expectType.AssemblyQualifiedName + "”的实际映射类型。");
-                    container.AddService(expectType, actualType, mapFilter.IsSingletonMode(expectType, actualType));
+                    container.Add(expectType, actualType, mapFilter.IsSingletonMode(expectType, actualType));
                     if(hasHandler) expectTypeHandler(expectType);
                     break;
                 }

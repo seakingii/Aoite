@@ -25,10 +25,10 @@ namespace Aoite.CommandModel
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
 
-            var redisProvider = this.Container.GetFixedService<IRedisProvider>();
+            var redisProvider = this.Container.GetFixed<IRedisProvider>();
             if(redisProvider != null)
             {
-                var client = this.Container.GetService<IRedisProvider>().GetRedisClient();
+                var client = this.Container.Get<IRedisProvider>().GetRedisClient();
                 return client.Lock(key, timeout);
             }
 

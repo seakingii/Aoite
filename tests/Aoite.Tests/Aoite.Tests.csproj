@@ -119,6 +119,7 @@
     <Compile Include="Aoite\Data\Core\AoiteTableTests.cs" />
     <Compile Include="Aoite\Data\DbEngineTests.cs" />
     <Compile Include="Aoite\Data\Samples\BuilderTests.cs" />
+    <Compile Include="Aoite\Data\Samples\JsonPopulateAttributeTests.cs" />
     <Compile Include="Aoite\Data\Samples\SelectCommandBuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SimpleDataTests.cs" />
     <Compile Include="Aoite\Data\Samples\WhereCommandBuilderTests.cs" />

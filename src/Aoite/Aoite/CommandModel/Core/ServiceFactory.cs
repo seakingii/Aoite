@@ -64,16 +64,16 @@ namespace Aoite.CommandModel
             if(userFactory == null) userFactory = new UserFactory(c => null);
 
             var container = new IocContainer();
-            container.AddService(userFactory);
-            if(redisProvider != null) container.AddService(redisProvider);
+            container.Add(userFactory);
+            if(redisProvider != null) container.Add(redisProvider);
 
             if(mockFactoryCallback != null)
             {
                 var executorFactory = new MockExecutorFactory(container);
                 mockFactoryCallback(executorFactory);
-                container.AddService<IExecutorFactory>(executorFactory);
+                container.Add<IExecutorFactory>(executorFactory);
             }
-            if(Db.Engine != null) container.AddService<IDbEngine>(lmps => Db.Context);
+            if(Db.Engine != null) container.Add<IDbEngine>(lmps => Db.Context);
             return container;
         }
 
@@ -81,7 +81,7 @@ namespace Aoite.CommandModel
         internal static dynamic GetUser(this IIocContainer container)
         {
             if(container == null) throw new ArgumentNullException(nameof(container));
-            var userFactory = container.GetFixedService<IUserFactory>();
+            var userFactory = container.GetFixed<IUserFactory>();
             return userFactory == null ? null : userFactory.GetUser(container);
         }
     }

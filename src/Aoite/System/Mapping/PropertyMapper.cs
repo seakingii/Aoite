@@ -51,7 +51,7 @@ namespace System
                 : property.Name;
 
             var keyAttr = property.GetAttribute<IKeyAttribute>();
-            this.IsKey = keyAttr != null && keyAttr.IsKey;
+            this.IsKey = (keyAttr != null && keyAttr.IsKey) || string.Equals(property.Name, DbExtensions.DefaultKeyName, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }

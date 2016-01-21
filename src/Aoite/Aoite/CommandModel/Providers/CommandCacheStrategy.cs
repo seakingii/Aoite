@@ -89,7 +89,7 @@ namespace Aoite.CommandModel
         {
             var container = this.Context.Container;
             var key = group + this.Key;
-            var redisProvider = container.GetFixedService<IRedisProvider>();
+            var redisProvider = container.GetFixed<IRedisProvider>();
             if(redisProvider != null)
             {
                 key = RedisHashKey + key;
@@ -103,7 +103,7 @@ namespace Aoite.CommandModel
             }
             else
             {
-                var cacheProvider = container.GetService<CommandMemoryCache>();
+                var cacheProvider = container.Get<CommandMemoryCache>();
                 return cacheProvider.Get(key);
             }
         }
@@ -119,7 +119,7 @@ namespace Aoite.CommandModel
             var container = this.Context.Container;
             var key = group + this.Key;
 
-            var redisProvider = container.GetFixedService<IRedisProvider>();
+            var redisProvider = container.GetFixed<IRedisProvider>();
             if(redisProvider != null)
             {
                 key = RedisHashKey + key;
@@ -130,7 +130,7 @@ namespace Aoite.CommandModel
             }
             else
             {
-                var cacheProvider = container.GetService<CommandMemoryCache>();
+                var cacheProvider = container.Get<CommandMemoryCache>();
                 cacheProvider.Set(key, value, new CacheItemPolicy() { SlidingExpiration = this.SlidingExpiration, AbsoluteExpiration = this.AbsoluteExpiration });
             }
         }

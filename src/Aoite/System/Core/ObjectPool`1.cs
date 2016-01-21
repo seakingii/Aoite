@@ -15,7 +15,7 @@ namespace System
 
         private int _MaxObjectCount;
         /// <summary>
-        /// 设置或获取一个值，指示最大的对象数。默认为 0，表示不做限制。
+        /// 获取或设置一个值，指示最大的对象数。默认为 0，表示不做限制。
         /// </summary>
         public int MaxObjectCount
         {

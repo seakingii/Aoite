@@ -11,7 +11,56 @@ namespace Aoite.Samples
 {
     class Program
     {
-        static void Main(string[] args)
+        class JsonProvider1 : IJsonProvider
+        {
+            private readonly Aoite.Serialization.Json.JSerializer ser = new Aoite.Serialization.Json.JSerializer();
+            public object Deserialize(string input, Type targetType)
+            {
+                return ser.Deserialize(input, targetType);
+                //return Serializer.Json.Native.Deserialize(input, targetType);
+            }
+
+            public string Serialize(object obj)
+            {
+                return ser.Serialize(obj);
+                //return Serializer.Json.Native.Serialize(obj);
+            }
+        }
+        class JsonProvider2 : IJsonProvider
+        {
+            public object Deserialize(string input, Type targetType)
+            {
+                return Serializer.Json.Native.Deserialize(input, targetType);
+            }
+
+            public string Serialize(object obj)
+            {
+                return Serializer.Json.Native.Serialize(obj);
+            }
+        }
+
+        class User { public int Id { get; set; } public string Username { get; set; } public DateTime CreateTime { get; set; } }
+
+        static void Test(IJsonProvider provider, object obj)
+        {
+            string json = "";
+            object newObj = null;
+            CodeTimer.TimeLine(provider.GetType().Name + " - Serialize", 10 * 10000, i => json = provider.Serialize(obj));
+            CodeTimer.TimeLine(provider.GetType().Name + " - Deserialize", 10 * 10000, i => newObj = provider.Deserialize(json, obj.GetType()));
+        }
+        static void Main()
+        {
+            var u = new User() { Id = 599, Username = "asdf2", CreateTime = DateTime.Now };
+            for(int i = 0; i < 3; i++)
+            {
+                Test(new JsonProvider1(), u);
+                Test(new JsonProvider2(), u);
+                Console.WriteLine("-----");
+            }
+            Console.ReadLine();
+
+        }
+        static void Main2(string[] args)
         {
             var dbFile = GA.FullPath("Samples.db");
             var engine = new DbEngine(new SQLiteEngineProvider(dbFile, null));
@@ -42,8 +91,8 @@ namespace Aoite.Samples
 
             //- Create a ioc container.
             var container = new IocContainer()
-                .AddService<IUserFactory>(new UserFactory(c => loginUserName))//- Get current login user callback.
-                .AddService<IDbEngine>(lmps => engine.Context);//- Get or create a new current thread db context.
+                .Add<IUserFactory>(new UserFactory(c => loginUserName))//- Get current login user callback.
+                .Add<IDbEngine>(lmps => engine.Context);//- Get or create a new current thread db context.
 
             var userService = new SampleUserService();
             userService.Container = container;//- Set service's container.

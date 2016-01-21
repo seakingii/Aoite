@@ -15,7 +15,7 @@
         /// <param name="serviceType">要添加的服务类型。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        void AddService(Type serviceType, bool singletonMode = false, bool promote = false);
+        void Add(Type serviceType, bool singletonMode = false, bool promote = false);
         /// <summary>
         /// 将指定服务添加到服务容器中。
         /// </summary>
@@ -23,14 +23,14 @@
         /// <param name="actualType">实际的服务类型。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        void AddService(Type serviceType, Type actualType, bool singletonMode = false, bool promote = false);
+        void Add(Type serviceType, Type actualType, bool singletonMode = false, bool promote = false);
         /// <summary>
         /// 将指定服务添加到服务容器中。
         /// </summary>
         /// <param name="serviceType">要添加的服务类型。</param>
         /// <param name="serviceInstance">要添加的服务的实例。 此对象必须实现 <paramref name="serviceType"/> 参数所指示的类型或从其继承。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        void AddService(Type serviceType, object serviceInstance, bool promote = false);
+        void Add(Type serviceType, object serviceInstance, bool promote = false);
         /// <summary>
         /// 将指定服务添加到服务容器中。
         /// </summary>
@@ -38,34 +38,34 @@
         /// <param name="callback">用于创建服务的回调对象。这允许将服务声明为可用，但将对象的创建延迟到请求该服务之后。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        void AddService(Type serviceType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false);
+        void Add(Type serviceType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false);
         /// <summary>
         /// 从服务容器中移除指定的服务类型。
         /// </summary>
         /// <param name="serviceType">要移除的服务类型。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        void RemoveService(Type serviceType, bool promote = false);
+        void Remove(Type serviceType, bool promote = false);
         /// <summary>
         /// 获取指定类型的服务对象。
         /// </summary>
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
-        object GetService(Type serviceType, params object[] lastMappingValues);
+        object Get(Type serviceType, params object[] lastMappingValues);
         /// <summary>
         /// 从手工注册服务列表中，获取指定类型的服务对象。
         /// </summary>
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
-        object GetFixedService(Type serviceType, params object[] lastMappingValues);
+        object GetFixed(Type serviceType, params object[] lastMappingValues);
         /// <summary>
         /// 查找服务容器是否包含指定的服务类型。
         /// </summary>
         /// <param name="serviceType">要查找的服务类型。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         /// <returns>如果存在返回 true，否则返回 false。</returns>
-        bool ContainsService(Type serviceType, bool promote = false);
+        bool Contains(Type serviceType, bool promote = false);
 
         /// <summary>
         /// 将指定的参数名和参数值添加到服务容器中。

@@ -29,7 +29,7 @@ namespace Aoite.CommandModel.Core
             var context = new Context(container, command);
             Assert.Null(context.User);
             var username = "user";
-            container.AddService<IUserFactory>(new UserFactory(ioc => username));
+            container.Add<IUserFactory>(new UserFactory(ioc => username));
             Assert.Equal(username, context.User);
         }
 

@@ -46,8 +46,8 @@ namespace System
         /// </summary>
         public IocContainer()
         {
-            this.AddService<IIocContainer>(this);
-            this.AddService<IocContainer>(this);
+            this.Add<IIocContainer>(this);
+            this.Add<IocContainer>(this);
         }
 
         /// <summary>
@@ -78,11 +78,11 @@ namespace System
         /// <param name="serviceType">要添加的服务类型。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        public virtual void AddService(Type serviceType, bool singletonMode = false, bool promote = false)
+        public virtual void Add(Type serviceType, bool singletonMode = false, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
-            if(this._hasParent && promote) this._parentLocator.AddService(serviceType, singletonMode, promote);
+            if(this._hasParent && promote) this._parentLocator.Add(serviceType, singletonMode, promote);
 
             this.Map(serviceType, this.AutoResolveExpectType(serviceType, singletonMode));
         }
@@ -94,12 +94,12 @@ namespace System
         /// <param name="actualType">实际的服务类型。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        public virtual void AddService(Type serviceType, Type actualType, bool singletonMode = false, bool promote = false)
+        public virtual void Add(Type serviceType, Type actualType, bool singletonMode = false, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if(actualType == null) throw new ArgumentNullException(nameof(actualType));
 
-            if(this._hasParent && promote) this._parentLocator.AddService(serviceType, actualType, singletonMode, promote);
+            if(this._hasParent && promote) this._parentLocator.Add(serviceType, actualType, singletonMode, promote);
 
             this.InnerMapType(actualType, serviceType, singletonMode);
         }
@@ -110,9 +110,9 @@ namespace System
         /// <param name="serviceType">要添加的服务类型。</param>
         /// <param name="serviceInstance">要添加的服务的实例。 此对象必须实现 <paramref name="serviceType"/> 参数所指示的类型或从其继承。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        public void AddService(Type serviceType, object serviceInstance, bool promote = false)
+        public void Add(Type serviceType, object serviceInstance, bool promote = false)
         {
-            this.AddService(serviceType, lmp => serviceInstance, true, promote);
+            this.Add(serviceType, lmp => serviceInstance, true, promote);
         }
         /// <summary>
         /// 将指定服务添加到服务容器中。
@@ -121,12 +121,12 @@ namespace System
         /// <param name="callback">用于创建服务的回调对象。这允许将服务声明为可用，但将对象的创建延迟到请求该服务之后。</param>
         /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        public virtual void AddService(Type serviceType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+        public virtual void Add(Type serviceType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             if(callback == null) throw new ArgumentNullException(nameof(callback));
 
-            if(this._hasParent && promote) this._parentLocator.AddService(serviceType, callback, singletonMode, promote);
+            if(this._hasParent && promote) this._parentLocator.Add(serviceType, callback, singletonMode, promote);
 
             this.Map(serviceType, singletonMode
                 ? new SingletonInstanceBox(serviceType.FullName, callback)
@@ -137,11 +137,11 @@ namespace System
         /// </summary>
         /// <param name="serviceType">要移除的服务类型。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
-        public virtual void RemoveService(Type serviceType, bool promote = false)
+        public virtual void Remove(Type serviceType, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
-            if(this._hasParent && promote) this._parentLocator.RemoveService(serviceType, promote);
+            if(this._hasParent && promote) this._parentLocator.Remove(serviceType, promote);
 
             this.MapRemove(serviceType);
         }
@@ -152,7 +152,7 @@ namespace System
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
         public object GetService(Type serviceType)
         {
-            return this.GetService(serviceType, null);
+            return this.Get(serviceType, null);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace System
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
-        public object GetService(Type serviceType, params object[] lastMappingValues)
+        public object Get(Type serviceType, params object[] lastMappingValues)
         {
             return GetService(serviceType, true, lastMappingValues);
         }
@@ -172,7 +172,7 @@ namespace System
         /// <param name="serviceType">一个对象，它指定要获取的服务对象的类型。。</param>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
         /// <returns><paramref name="serviceType"/> 类型的服务对象。- 或 -如果没有 <paramref name="serviceType"/> 类型的服务对象，则为 null。</returns>
-        public object GetFixedService(Type serviceType, params object[] lastMappingValues)
+        public object GetFixed(Type serviceType, params object[] lastMappingValues)
         {
             return GetService(serviceType, false, lastMappingValues);
         }
@@ -196,9 +196,9 @@ namespace System
                 var box = this.FindInstanceBox(serviceType);
                 if(box == null)
                 {
-                    if(this._hasParent && this._parentLocator.ContainsService(serviceType, true))  //- 尝试从父级获取服务对象
+                    if(this._hasParent && this._parentLocator.Contains(serviceType, true))  //- 尝试从父级获取服务对象
                     {
-                        var service = this._parentLocator.GetService(serviceType, lastMappingValues);
+                        var service = this._parentLocator.Get(serviceType, lastMappingValues);
                         if(service != null) return service;
                     }
                     if(autoResolving) box = this.AutoResolveExpectType(serviceType); //- 尝试智能解析出实例盒
@@ -213,11 +213,11 @@ namespace System
         /// <param name="serviceType">要查找的服务类型。</param>
         /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
         /// <returns>如果存在返回 true，否则返回 false。</returns>
-        public virtual bool ContainsService(Type serviceType, bool promote = false)
+        public virtual bool Contains(Type serviceType, bool promote = false)
         {
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
             return this.MapContains(serviceType)
-                || (promote && this._hasParent && this._parentLocator.ContainsService(serviceType, promote));
+                || (promote && this._hasParent && this._parentLocator.Contains(serviceType, promote));
         }
 
         /// <summary>

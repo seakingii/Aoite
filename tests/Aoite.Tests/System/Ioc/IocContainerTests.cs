@@ -14,7 +14,7 @@ namespace System.Ioc
 
             var container = new IocContainer();
 
-            container.AddService(type);
+            container.Add(type);
 
             Assert.NotNull(container.GetService(type));
             Assert.NotNull(container.GetService(itype));
@@ -31,7 +31,7 @@ namespace System.Ioc
 
             var container = new IocContainer();
 
-            container.AddService(type, true);
+            container.Add(type, true);
             Assert.NotNull(container.GetService(type));
             Assert.NotNull(container.GetService(itype));
             Assert.Equal(container.GetService(type), container.GetService(type));
@@ -43,7 +43,7 @@ namespace System.Ioc
         public void AddService_TypeObjectBoolean_Test1()
         {
             var container = new IocContainer();
-            container.AddService(typeof(IService2), new XService2());
+            container.Add(typeof(IService2), new XService2());
 
             var childContainer = new IocContainer(container);
             Assert.IsAssignableFrom<XService2>(childContainer.GetService(typeof(IService2)));
@@ -55,9 +55,9 @@ namespace System.Ioc
             var itype = typeof(IService1);
             var container = new IocContainer();
 
-            Assert.False(container.ContainsService(itype));
+            Assert.False(container.Contains(itype));
             Assert.NotNull(container.GetService(itype));
-            Assert.False(container.ContainsService(typeof(IService_NotFound)));
+            Assert.False(container.Contains(typeof(IService_NotFound)));
             Assert.Null(container.GetService(typeof(IService_NotFound)));
         }
 
@@ -66,7 +66,7 @@ namespace System.Ioc
         {
             var type = typeof(DefaultService1);
             var container = new IocContainer();
-            container.AddService(type, true);
+            container.Add(type, true);
             var childContainer = new IocContainer(container);
             Assert.Equal(childContainer.GetService(type), container.GetService(type));
         }
@@ -77,8 +77,8 @@ namespace System.Ioc
             var type = typeof(DefaultService1);
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
-            container.AddService(type, true);
-            childContainer.AddService(type, true);
+            container.Add(type, true);
+            childContainer.Add(type, true);
             Assert.NotEqual(childContainer.GetService(type), container.GetService(type));
         }
 
@@ -88,11 +88,11 @@ namespace System.Ioc
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
             var itype = typeof(IService2);
-            childContainer.AddService(itype, lmp => new XService2(), promote: true);
-            Assert.True(childContainer.ContainsService(itype));
-            childContainer.RemoveService(itype);
-            Assert.False(childContainer.ContainsService(itype));
-            Assert.True(childContainer.ContainsService(itype, true));
+            childContainer.Add(itype, lmp => new XService2(), promote: true);
+            Assert.True(childContainer.Contains(itype));
+            childContainer.Remove(itype);
+            Assert.False(childContainer.Contains(itype));
+            Assert.True(childContainer.Contains(itype, true));
         }
 
         [Fact(DisplayName = "移除服务")]
@@ -101,16 +101,16 @@ namespace System.Ioc
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
             var itype = typeof(IService2);
-            childContainer.AddService(itype, lmp => new XService2(), promote: true);
-            Assert.True(container.ContainsService(itype));
-            Assert.True(childContainer.ContainsService(itype));
-            container.AddService(itype, lmp => new DefaultService2());
+            childContainer.Add(itype, lmp => new XService2(), promote: true);
+            Assert.True(container.Contains(itype));
+            Assert.True(childContainer.Contains(itype));
+            container.Add(itype, lmp => new DefaultService2());
             Assert.IsAssignableFrom<XService2>(childContainer.GetService(itype));
             Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
-            childContainer.RemoveService(itype);
+            childContainer.Remove(itype);
             Assert.IsAssignableFrom<DefaultService2>(childContainer.GetService(itype));
             Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
-            Assert.False(childContainer.ContainsService(itype));
+            Assert.False(childContainer.Contains(itype));
         }
 
         [Fact(DisplayName = "移除服务 -　含父级")]
@@ -119,15 +119,15 @@ namespace System.Ioc
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
             var itype = typeof(IService2);
-            childContainer.AddService(itype, lmp => new XService2(), promote: true);
-            Assert.True(container.ContainsService(itype));
-            Assert.True(childContainer.ContainsService(itype));
-            container.AddService(itype, lmp => new DefaultService2());
+            childContainer.Add(itype, lmp => new XService2(), promote: true);
+            Assert.True(container.Contains(itype));
+            Assert.True(childContainer.Contains(itype));
+            container.Add(itype, lmp => new DefaultService2());
             Assert.IsAssignableFrom<XService2>(childContainer.GetService(itype));
             Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
-            childContainer.RemoveService(itype, true);
-            Assert.False(container.ContainsService(itype));
-            Assert.False(childContainer.ContainsService(itype));
+            childContainer.Remove(itype, true);
+            Assert.False(container.Contains(itype));
+            Assert.False(childContainer.Contains(itype));
         }
 
         #endregion
@@ -199,8 +199,8 @@ namespace System.Ioc
             childContainer.AddValue("value1", 9999);
             childContainer.AddValue("value2", "9999");
 
-            childContainer.AddService(typeof(IValueService), typeof(ValueService1));
-            parentContainer.AddService(typeof(IValueService), typeof(ValueService2));
+            childContainer.Add(typeof(IValueService), typeof(ValueService1));
+            parentContainer.Add(typeof(IValueService), typeof(ValueService2));
 
             var childService = childContainer.GetService(typeof(IValueService)) as IValueService;
             var parentService = parentContainer.GetService(typeof(IValueService)) as IValueService;
@@ -286,8 +286,8 @@ namespace System.Ioc
             childContainer.AddValue("value1", 9999);
             childContainer.AddValue("value2", "9999");
 
-            childContainer.AddService(typeof(IValueService), typeof(ValueService1));
-            parentContainer.AddService(typeof(IValueService), typeof(ValueService2));
+            childContainer.Add(typeof(IValueService), typeof(ValueService1));
+            parentContainer.Add(typeof(IValueService), typeof(ValueService2));
 
             var childService = childContainer.GetService(typeof(IValueService)) as IValueService;
             var parentService = parentContainer.GetService(typeof(IValueService)) as IValueService;
@@ -307,8 +307,8 @@ namespace System.Ioc
             Assert.Equal("9999", childService2.Value2); //- 因为已映射，所以这里的值还是历史值
             Assert.Equal(false, childService2.Value3);
 
-            childContainer.RemoveService(typeof(IValueService));
-            childContainer.AddService(typeof(IValueService), typeof(ValueService1));
+            childContainer.Remove(typeof(IValueService));
+            childContainer.Add(typeof(IValueService), typeof(ValueService1));
 
             var childService3 = childContainer.GetService(typeof(IValueService)) as IValueService;
             Assert.Equal("8888", childService3.Value2);
@@ -325,8 +325,8 @@ namespace System.Ioc
             var container = new IocContainer();
             container.AddValue("baseValue1", 10);
             container.AddValue("baseValue2", 20);
-            container.AddService(typeof(LastMapperTestModel));
-            var model = container.GetService(typeof(LastMapperTestModel), 50, 80) as LastMapperTestModel;
+            container.Add(typeof(LastMapperTestModel));
+            var model = container.Get(typeof(LastMapperTestModel), 50, 80) as LastMapperTestModel;
 
             Assert.Equal(10, model.BaseValue1);
             Assert.Equal(20, model.BaseValue2);
@@ -340,8 +340,8 @@ namespace System.Ioc
             var container = new IocContainer();
             container.AddValue("baseValue1", 10);
             container.AddValue("baseValue2", 20);
-            container.AddService(typeof(LastMapperTestModel));
-            var ex = Assert.Throws<ArgumentException>(() => container.GetService(typeof(LastMapperTestModel), 50));
+            container.Add(typeof(LastMapperTestModel));
+            var ex = Assert.Throws<ArgumentException>(() => container.Get(typeof(LastMapperTestModel), 50));
             Assert.Equal("value1", ex.ParamName);
         }
         #endregion
@@ -352,29 +352,29 @@ namespace System.Ioc
         public void DefaultMappingTest()
         {
             var container = new IocContainer();
-            var service = container.GetService<IDefaultMappingService>();
+            var service = container.Get<IDefaultMappingService>();
             Assert.IsType<DefaultMappingService2>(service);
             container.DestroyAll();
 
-            container.AddService(typeof(IDefaultMappingService));
-            service = container.GetService<IDefaultMappingService>();
+            container.Add(typeof(IDefaultMappingService));
+            service = container.Get<IDefaultMappingService>();
             Assert.IsType<DefaultMappingService2>(service);
             container.DestroyAll();
 
-            container.AddService(typeof(IDefaultMappingService), typeof(DefaultMappingService));
-            service = container.GetService<IDefaultMappingService>();
+            container.Add(typeof(IDefaultMappingService), typeof(DefaultMappingService));
+            service = container.Get<IDefaultMappingService>();
             Assert.IsType<DefaultMappingService>(service);
         }
         [Fact()]
         public void DefaultMappingTest2()
         {
             var container = new IocContainer();
-            var service = container.GetService<DefaultMappingCtorService>();
+            var service = container.Get<DefaultMappingCtorService>();
             Assert.IsType<DefaultMappingService2>(service.InnerService);
             container.DestroyAll();
 
-            container.AddService(typeof(IDefaultMappingService), typeof(DefaultMappingService));
-            service = container.GetService<DefaultMappingCtorService>();
+            container.Add(typeof(IDefaultMappingService), typeof(DefaultMappingService));
+            service = container.Get<DefaultMappingCtorService>();
             Assert.IsType<DefaultMappingService>(service.InnerService);
         }
         #endregion

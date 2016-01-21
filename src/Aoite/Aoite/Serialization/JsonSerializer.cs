@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Web.Script.Serialization;
+using Aoite.Serialization.Json;
 
 namespace Aoite.Serialization
 {
@@ -9,19 +10,33 @@ namespace Aoite.Serialization
     /// </summary>
     public class JsonSerializer : Serializer
     {
-        private JavaScriptSerializer _serializer = new JavaScriptSerializer();
+        private JSerializer _serializer;
+        /// <summary>
+        /// 获取原生的序列化器。
+        /// </summary>
+        public JSerializer Native => _serializer;
+
+
+        static JSerializer CreateDefault()
+        {
+            var s = new JSerializer() { EnabledCamelCaseName = true };
+            return s;
+        }
 
         /// <summary>
         /// 初始化一个 <see cref="JsonSerializer"/> 类的新实例。
         /// </summary>
-        public JsonSerializer() : this(new JavaScriptSerializer()) { }
+        public JsonSerializer() : this(CreateDefault()) { }
+
         /// <summary>
-        /// 提供一个 <see cref="JavaScriptSerializer"/>，初始化一个 <see cref="JsonSerializer"/> 类的新实例。
+        /// 提供一个 <see cref="JSerializer"/>，初始化一个 <see cref="JsonSerializer"/> 类的新实例。
         /// </summary>
-        /// <param name="javaScriptSerializer"></param>
-        public JsonSerializer(JavaScriptSerializer javaScriptSerializer)
+        /// <param name="JSerializer"></param>
+        public JsonSerializer(JSerializer JSerializer)
         {
-            _serializer = javaScriptSerializer;
+            if(JSerializer == null) throw new ArgumentNullException(nameof(JSerializer));
+
+            this._serializer = JSerializer;
         }
 
         /// <summary>

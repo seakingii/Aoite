@@ -10,7 +10,7 @@ namespace Aoite.CommandModel
     {
         private string _Group;
         /// <summary>
-        /// 设置或获取缓存的分组。
+        /// 获取或设置缓存的分组。
         /// </summary>
         public string Group { get { return _Group; } }
 

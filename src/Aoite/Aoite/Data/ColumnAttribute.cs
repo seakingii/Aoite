@@ -41,4 +41,49 @@ namespace Aoite.Data
         /// </summary>
         public bool IsKey { get; set; }
     }
+
+    /// <summary>
+    /// 表示一个具有列的特性，并且这个列对应的属性应可序列化/反序列化为一个 JSON。
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class JsonColumnAttribute: AliasAttribute, IPropertyPopulateAttribute
+    {
+        /// <summary>
+        /// 初始化一个 <see cref="JsonColumnAttribute"/> 类的新实例。
+        /// </summary>
+        public JsonColumnAttribute() { }
+
+        /// <summary>
+        /// 指定名称，初始化一个 <see cref="JsonColumnAttribute"/> 类的新实例。
+        /// </summary>
+        /// <param name="name">名称。</param>
+        public JsonColumnAttribute(string name) : base(name) { }
+
+        /// <summary>
+        /// 指定一个实例，获取指定属性的值。
+        /// </summary>
+        /// <param name="property">动态属性。</param>
+        /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <returns>属性的值。</returns>
+        public object GetValue(DynamicProperty property, object instance)
+        {
+            var s = property.GetValueHandler(instance);
+            return ObjectFactory.Global.Get<IJsonProvider>().Serialize(s);
+        }
+
+        /// <summary>
+        /// 指定一个实例，设置指定属性的值。
+        /// </summary>
+        /// <param name="property">动态属性。</param>
+        /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <param name="value">属性的值。</param>
+        public void SetValue(DynamicProperty property, object instance, object value)
+        {
+            if(value is string)
+            {
+                value = ObjectFactory.Global.Get<IJsonProvider>().Deserialize(value.ToString(), property.Property.PropertyType);
+            }
+            property.SetValueHandler(instance, value);
+        }
+    }
 }

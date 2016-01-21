@@ -6,11 +6,11 @@
     public interface IHostPort
     {
         /// <summary>
-        /// 设置或获取主机地址。
+        /// 获取或设置主机地址。
         /// </summary>
         string Host { get; set; }
         /// <summary>
-        /// 设置或获取主机端口。
+        /// 获取或设置主机端口。
         /// </summary>
         int Port { get; set; }
     }

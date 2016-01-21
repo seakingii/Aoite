@@ -11,7 +11,7 @@ namespace CMD
     public abstract class CMDBase
     {
         /// <summary>
-        /// 设置或获取用于个性化表名和命令的暗道，可以为 null 值。
+        /// 获取或设置用于个性化表名和命令的暗道，可以为 null 值。
         /// </summary>
         public ICommandTunnel Tunnel { get; set; }
     }
@@ -23,7 +23,7 @@ namespace CMD
     {
         private WhereParameters _Where = new WhereParameters();
         /// <summary>
-        /// 设置或获取一个 WHERE 的条件参数。
+        /// 获取或设置一个 WHERE 的条件参数。
         /// </summary>
         public WhereParameters Where { get { return this._Where; } set { this._Where = value ?? new WhereParameters(); } }
     }
@@ -40,12 +40,12 @@ namespace CMD
         public object Entity { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。
+        /// 获取或设置一个值，指示是否 <typeparamref name="TEntity"/> 是否包含递增列主键。
         /// </summary>
         public bool IsIdentityKey { get; set; }
 
         /// <summary>
-        /// 设置或获取一个值，若 <see cref="IsIdentityKey"/> 为 true 时返回的递增列值，否则返回受影响的行。
+        /// 获取或设置一个值，若 <see cref="IsIdentityKey"/> 为 true 时返回的递增列值，否则返回受影响的行。
         /// </summary>
         public long ResultValue { get; set; }
 
@@ -77,7 +77,7 @@ namespace CMD
         public object Entity { get; set; }
 
         /// <summary>
-        /// 设置或获取受影响的行。
+        /// 获取或设置受影响的行。
         /// </summary>
         public int ResultValue { get; set; }
 
@@ -102,7 +102,7 @@ namespace CMD
     public class Remove<TEntity> : CMDWhereBase, ICommand<int>
     {
         /// <summary>
-        /// 设置或获取受影响的行。
+        /// 获取或设置受影响的行。
         /// </summary>
         public int ResultValue { get; set; }
 
@@ -128,7 +128,7 @@ namespace CMD
     public class FindOne<TEntity, TView> : CMDWhereBase, ICommand<TView>
     {
         /// <summary>
-        /// 设置或获取一个实体。
+        /// 获取或设置一个实体。
         /// </summary>
         public TView ResultValue { get; set; }
 
@@ -154,7 +154,7 @@ namespace CMD
     public class FindAll<TEntity, TView> : CMDWhereBase, ICommand<List<TView>>
     {
         /// <summary>
-        /// 设置或获取一个实体的集合。
+        /// 获取或设置一个实体的集合。
         /// </summary>
         public List<TView> ResultValue { get; set; }
 
@@ -180,12 +180,12 @@ namespace CMD
     public class FindAllPage<TEntity, TView> : CMDWhereBase, ICommand<PageData<TView>>
     {
         /// <summary>
-        /// 设置或获取分页的数据。
+        /// 获取或设置分页的数据。
         /// </summary>
         public IPagination Page { get; set; }
 
         /// <summary>
-        /// 设置或获取一个实体的分页集合。
+        /// 获取或设置一个实体的分页集合。
         /// </summary>
         public PageData<TView> ResultValue { get; set; }
 
@@ -211,7 +211,7 @@ namespace CMD
     public class Exists<TEntity> : CMDWhereBase, ICommand<bool>
     {
         /// <summary>
-        /// 设置或获取一个值，指示数据是否存在。
+        /// 获取或设置一个值，指示数据是否存在。
         /// </summary>
         public bool ResultValue { get; set; }
 

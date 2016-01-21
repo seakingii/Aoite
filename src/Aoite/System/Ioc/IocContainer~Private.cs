@@ -62,8 +62,8 @@ namespace System
                     else if(this._hasParent && hasExpectedType && this._parentLocator.ContainsValue(expectedType, pName, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.GetValue(expectedType, pName));
 
                     else if(this._hasParent && this._parentLocator.ContainsValue(pName, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.GetValue(pName));
-                    else if(this._hasParent && this._parentLocator.ContainsService(actualType, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.GetService(actualType));
-                    else if(this._hasParent && hasExpectedType && this._parentLocator.ContainsService(expectedType, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.GetService(expectedType));
+                    else if(this._hasParent && this._parentLocator.Contains(actualType, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.Get(actualType));
+                    else if(this._hasParent && hasExpectedType && this._parentLocator.Contains(expectedType, true)) p_instance = new InstanceBox(pName, lmp => this._parentLocator.Get(expectedType));
 
                     #endregion
 

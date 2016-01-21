@@ -74,7 +74,7 @@ namespace Aoite.CommandModel.Core
             var username = "user";
             var s = new SimpleCommandModelService(container);
             Assert.Null(s.User);
-            container.AddService<IUserFactory>(new UserFactory(ioc => username));
+            container.Add<IUserFactory>(new UserFactory(ioc => username));
             Assert.Equal(username, s.User);
         }
 

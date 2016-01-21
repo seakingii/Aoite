@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
 
         private IIocContainer _Container;
         /// <summary>
-        /// 设置或获取命令模型服务容器。
+        /// 获取或设置命令模型服务容器。
         /// </summary>
         public IIocContainer Container
         {
@@ -33,7 +33,7 @@ namespace Aoite.CommandModel
             set
             {
                 this._Container = value;
-                if(this._Container != null) this._Container.AddService<ICommandModelService>(this);
+                if(this._Container != null) this._Container.Add<ICommandModelService>(this);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 获取命令总线。
         /// </summary>
-        protected ICommandBus Bus { get { return this._Container.GetService<ICommandBus>(); } }
+        protected ICommandBus Bus { get { return this._Container.Get<ICommandBus>(); } }
 
         /// <summary>
         /// 执行一个命令模型。
@@ -89,7 +89,7 @@ namespace Aoite.CommandModel
         /// <param name="timeout">获取锁的超时设定。</param>
         /// <returns>一个锁。</returns>
         protected virtual IDisposable AcquireLock(string key, TimeSpan? timeout = null)
-            => this._Container.GetService<ILockProvider>().Lock(key, timeout);
+            => this._Container.Get<ILockProvider>().Lock(key, timeout);
 
         /// <summary>
         /// 获取指定数据类型键的原子递增序列。
@@ -107,7 +107,7 @@ namespace Aoite.CommandModel
         /// <param name="increment">递增量。</param>
         /// <returns>递增的序列。</returns>
         protected virtual long Increment(string key, long increment = 1)
-            => this._Container.GetService<ICounterProvider>().Increment(key, increment);
+            => this._Container.Get<ICounterProvider>().Increment(key, increment);
 
         /// <summary>
         /// 开始事务模式。
@@ -131,7 +131,7 @@ namespace Aoite.CommandModel
         /// <param name="key">缓存键。</param>
         /// <param name="value">缓存值。</param>
         protected virtual void Set(string key, object value)
-            => this._Container.GetService<ICacheProvider>().Set(key, value);
+            => this._Container.Get<ICacheProvider>().Set(key, value);
 
         /// <summary>
         /// 设置基于实体的缓存。
@@ -149,7 +149,7 @@ namespace Aoite.CommandModel
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
         /// <returns>缓存值，或一个 null 值。</returns>
         protected virtual object Get(string key, Func<object> valueFactory = null)
-            => this._Container.GetService<ICacheProvider>().Get(key, valueFactory);
+            => this._Container.Get<ICacheProvider>().Get(key, valueFactory);
 
         /// <summary>
         /// 获取缓存。
@@ -181,7 +181,7 @@ namespace Aoite.CommandModel
         /// <param name="key">缓存键。</param>
         /// <returns>存在返回 true，否则返回 false。</returns>
         protected virtual bool Exstis(string key)
-            => this._Container.GetService<ICacheProvider>().Exists(key);
+            => this._Container.Get<ICacheProvider>().Exists(key);
 
         /// <summary>
         /// 检测基于实体指定的缓存键是否存在。

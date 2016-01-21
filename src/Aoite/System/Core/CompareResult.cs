@@ -6,15 +6,15 @@
     public class CompareResult
     {
         /// <summary>
-        /// 设置或获取对象的名称。
+        /// 获取或设置对象的名称。
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// 设置或获取第一个对象的值。
+        /// 获取或设置第一个对象的值。
         /// </summary>
         public object Value1 { get; set; }
         /// <summary>
-        /// 设置或获取第二个对象的值。
+        /// 获取或设置第二个对象的值。
         /// </summary>
         public object Value2 { get; set; }
 

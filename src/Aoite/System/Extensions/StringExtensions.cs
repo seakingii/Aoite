@@ -25,13 +25,26 @@ namespace System
         /// <returns>一个新的字符串。</returns>
         public static string ToCamelCase(this string s)
         {
-            if(string.IsNullOrWhiteSpace(s)) return s;
+            if(s == null || s.Length == 0) return s;
 
             if(!char.IsUpper(s[0])) return s;
 
-            var c = char.ToLower(s[0], CultureInfo.InvariantCulture).ToString();
-            if(s.Length > 1) return c + s.Substring(1);
-            return c;
+            //var c = char.ToLower(s[0], CultureInfo.InvariantCulture).ToString();
+            //if(s.Length > 1) return c + s.Substring(1);
+            //return c;
+
+            var chars = s.ToCharArray();
+
+            for(int i = 0; i < chars.Length; i++)
+            {
+                var hasNext = (i + 1 < chars.Length);
+                if(i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
+                    break;
+
+                chars[i] = char.ToLower(chars[i], CultureInfo.InvariantCulture);
+            }
+
+            return new string(chars);
         }
 
         /// <summary>
@@ -167,7 +180,7 @@ namespace System
             if(string.IsNullOrWhiteSpace(input)) return string.Empty;
             return length >= input.Length ? input : input.Substring(input.Length - length);
         }
-        
+
         /// <summary>
         /// 删除当前字符串的开头的字符串。
         /// </summary>
@@ -179,7 +192,7 @@ namespace System
             if(string.IsNullOrWhiteSpace(val) || val.Length < count) return val;
             return val.Remove(0, count);
         }
-        
+
         /// <summary>
         /// 删除当前字符串的结尾的字符串。
         /// </summary>

@@ -254,9 +254,9 @@ namespace System.Web
             }
             Aoite.Redis.RedisManager.DefaultPassword = config.Get("redis.password");
 
-            if(config.Get<bool>("redis.enabled")) value.AddService<IRedisProvider>(new RedisProvider(value));
+            if(config.Get<bool>("redis.enabled")) value.Add<IRedisProvider>(new RedisProvider(value));
 
-            if(!value.ContainsService<IUserFactory>(true)) value.AddService<IUserFactory>(value.GetService<IIdentityStore>());
+            if(!value.Contains<IUserFactory>(true)) value.Add<IUserFactory>(value.Get<IIdentityStore>());
 
             HttpContext.Current.Application[ContainerName] = value;
             return value;
@@ -301,10 +301,10 @@ namespace System.Web
         /// <returns>客户端唯一标识。</returns>
         public static dynamic Identity
         {
-            get { return GetTemp<object>(IdentityName, Container.GetService<IIdentityStore>().Get); }
+            get { return GetTemp<object>(IdentityName, Container.Get<IIdentityStore>().Get); }
             set
             {
-                var store = Container.GetService<IIdentityStore>();
+                var store = Container.Get<IIdentityStore>();
                 object v = value;
                 if(v == null)
                 {
