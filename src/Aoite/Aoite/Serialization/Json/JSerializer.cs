@@ -254,7 +254,7 @@ namespace Aoite.Serialization.Json
                 if(this.EnabledCamelCaseName) name = name.ToCamelCase();
                 SerializeString(name, sb);
                 sb.Append(':');
-                this.SerializeValue(propertyMapper.GetValueHandler(o), sb, depth, objectsInUse, propertyMapper);
+                this.SerializeValue(propertyMapper.GetValue(o, false), sb, depth, objectsInUse, propertyMapper);
                 first = false;
             }
 
@@ -437,8 +437,8 @@ namespace Aoite.Serialization.Json
                     // DevDiv #286382 - Try to provide a better error message by saying exactly what property failed.
                     var errorMessage = AtlasWeb.JSON_InvalidEnumType;
                     if(propertyMapper != null)
-                        errorMessage = string.Format(CultureInfo.CurrentCulture, AtlasWeb.JSON_CannotSerializeMemberGeneric, propertyMapper.Name, propertyMapper.Property.ReflectedType.FullName) 
-                            + " "  + errorMessage;
+                        errorMessage = string.Format(CultureInfo.CurrentCulture, AtlasWeb.JSON_CannotSerializeMemberGeneric, propertyMapper.Name, propertyMapper.Property.ReflectedType.FullName)
+                            + " " + errorMessage;
                     throw new InvalidOperationException(errorMessage);
                 }
                 // DevDiv Bugs 154763: call ToString("D") rather than cast to int

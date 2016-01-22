@@ -64,6 +64,22 @@ namespace Aoite.CommandModel
             Assert.Equal(11, list3[0].Id);
         }
 
+        [Fact]
+        public void Cache_With_Key_Test()
+        {
+            var service = this.New(Nickname1, f => f.Mock<UsernameCacheCommand>((context, command) =>
+            {
+                command.Result = DateTime.Now + "Username" + command.Id;
+            }));
+
+            var result = service.GetUsername(1);
+            Assert.NotEqual(result, service.GetUsername(2));
+            Assert.NotEqual(result, service.GetUsername(3));
+            Assert.Equal(result, service.GetUsername(1));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(4));
+            Assert.NotEqual(result, service.GetUsername(1));
+        }
+
     }
 
     public class DefaultBalanceService : CommandModelServiceBase
@@ -82,7 +98,10 @@ namespace Aoite.CommandModel
         {
             return this.Execute(new GetListsCommand { ParentDeptId = parentId }).Result;
         }
-
+        public string GetUsername(long id)
+        {
+            return this.Execute(new UsernameCacheCommand { Id = id }).Result;
+        }
     }
     public abstract class BalanceCommandBase : ICommand
     {
@@ -114,6 +133,27 @@ namespace Aoite.CommandModel
         bool ICommandCache.SetCacheValue(object value)
         {
             return (this.Result = value as List<DeptModel>) != null;
+        }
+
+        object ICommandCache.GetCacheValue()
+        {
+            return this.Result;
+        }
+    }
+
+    [Cache("Username#")]
+    public class UsernameCacheCommand : ICommand<string>, ICommandCache
+    {
+        public long Id { get; set; }
+        public string Result { get; set; }
+        ICommandCacheStrategy ICommandCache.CreateStrategy(IContext context)
+        {
+            return new CommandCacheStrategy(Id.ToString(), TimeSpan.FromSeconds(3), this, context);
+        }
+
+        bool ICommandCache.SetCacheValue(object value)
+        {
+            return (this.Result = value as string) != null;
         }
 
         object ICommandCache.GetCacheValue()

@@ -47,22 +47,32 @@ namespace System
         /// </summary>
         /// <param name="instance">一个实例，null 值表示静态属性。</param>
         /// <param name="value">属性的值。</param>
-        public virtual void SetValue(object instance, object value)
+        /// <param name="allowPopulate">指示是否启用动态属性移植的特性。</param>
+        public virtual void SetValue(object instance, object value, bool allowPopulate = false)
         {
-            var populate = Populate;
-            if(populate != null) Populate.SetValue(this, instance, value);
-            else this.SetValueHandler(instance, value);
+            if(allowPopulate)
+            {
+                var populate = Populate;
+                if(populate != null)
+                {
+                    Populate.SetValue(this, instance, value);
+                    return;
+                }
+            }
+
+            this.SetValueHandler(instance, value);
         }
 
         /// <summary>
         /// 指定一个实例，获取当前属性的值。
         /// </summary>
         /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <param name="allowPopulate">指示是否启用动态属性移植的特性。</param>
         /// <returns>属性的值。</returns>
-        public virtual object GetValue(object instance)
+        public virtual object GetValue(object instance, bool allowPopulate = false)
         {
             var populate = Populate;
-            if(populate != null) return Populate.GetValue(this, instance);
+            if(allowPopulate && populate != null) return Populate.GetValue(this, instance);
 
             return this.GetValueHandler(instance);
         }

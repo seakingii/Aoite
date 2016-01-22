@@ -22,7 +22,7 @@ namespace Aoite.Data
                     this.WarningNotFound(FromValue.GetType().FullName, name);
                     continue;
                 }
-                entityValue = pMapper.GetValue(FromValue) ?? DBNull.Value;
+                entityValue = pMapper.GetValue(FromValue, true) ?? DBNull.Value;
                 if(object.Equals(entityValue, rowValue)) continue;
                 ToValue[column] = entityValue;
             }

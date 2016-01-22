@@ -41,22 +41,19 @@ namespace Aoite.Data
             var propertyType = property.PropertyType;
 
             if(Convert.IsDBNull(value)) value = pMapper.TypeDefaultValue;
-            else if(valueType != propertyType)
+            else if(valueType != propertyType && pMapper.Populate == null)
             {
-                if(pMapper.Populate == null || valueType != Types.String)
+                try
                 {
-                    try
-                    {
-                        value = propertyType.ChangeType(value);
-                    }
-                    catch(Exception ex)
-                    {
-                        throw new InvalidCastException("列 {0} 无法将值类型 {1} 转换为类型 {2}。".Fmt(name, valueType.FullName, propertyType.FullName), ex);
-                    }
+                    value = propertyType.ChangeType(value);
+                }
+                catch(Exception ex)
+                {
+                    throw new InvalidCastException("列 {0} 无法将值类型 {1} 转换为类型 {2}。".Fmt(name, valueType.FullName, propertyType.FullName), ex);
                 }
             }
 
-            pMapper.SetValue(ToValue, value);
+            pMapper.SetValue(ToValue, value, true);
         }
     }
 }

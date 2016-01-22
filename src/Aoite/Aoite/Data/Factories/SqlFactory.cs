@@ -89,13 +89,13 @@ namespace Aoite.Data.Factories
             foreach(var item in query)
             {
                 pms2.Add(item.op);
-                var value = item.np.GetValue(entity);
+                var value = item.np.GetValue(entity, false);
                 if(!item.op.Property.PropertyType.IsAssignableFrom(item.np.Property.PropertyType))
                 {
                     value = Convert.ChangeType(value, item.op.Property.PropertyType);
                 }
 
-                item.op.SetValue(entity2, value);
+                item.op.SetValue(entity2, value, false);
             }
             entity = entity2;
             return pms2;
@@ -153,7 +153,7 @@ namespace Aoite.Data.Factories
             foreach(var property in FindProperties(mapper, ref entity))
             {
                 if(property.IsIgnore) continue;
-                var value = property.GetValue(entity);
+                var value = property.GetValue(entity, true);
                 if(property.IsKey && object.Equals(value, property.TypeDefaultValue)) continue;
 
                 if(index++ > 0)
@@ -196,10 +196,10 @@ namespace Aoite.Data.Factories
 
                 setBuilder.Append(this.EscapeName(property.Name, NamePoint.Field))
                           .Append('=');
-                var value = property.GetValue(entity);
+                var value = property.GetValue(entity, true);
                 this.AppendParameterValue(property, setBuilder, value, ps);
             }
-            if(index==0) throw new NotSupportedException($"{entity.GetType().FullName} 的更新操作没有找到任何属性。");
+            if(index == 0) throw new NotSupportedException($"{entity.GetType().FullName} 的更新操作没有找到任何属性。");
 
             return tunnel.GetCommand(mapper, new ExecuteCommand(where.AppendTo(setBuilder.ToString()), ps));
         }

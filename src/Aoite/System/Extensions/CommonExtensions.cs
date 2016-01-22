@@ -100,7 +100,7 @@ namespace System
                     || (targetStrategy == CopyToStrategy.ExcludePrimaryKey && tProperty.IsKey)
                     || !tProperty.Property.CanWrite) continue;
 
-                object sValue = sProperty.GetValue(source);
+                object sValue = sProperty.GetValue(source, false);
 
                 if(targetStrategy == CopyToStrategy.OnlyChangeValues) if(object.Equals(sValue, sProperty.TypeDefaultValue)) continue;
 
@@ -114,9 +114,9 @@ namespace System
                         //throw new ArgumentNullException("{0}.{1}".Fmt(sMapper.Type.Name, sProperty.Property.Name), "目标属性 {0}.{1} 不能为 null 值。".Fmt(tMapper.Type.Name, tProperty.Property.Name));
                         continue;
                     }
-                    tProperty.SetValue(target, tpType.ChangeType(sValue));
+                    tProperty.SetValue(target, tpType.ChangeType(sValue), false);
                 }
-                else tProperty.SetValue(target, sValue);
+                else tProperty.SetValue(target, sValue, false);
             }
             return target;
         }
@@ -245,7 +245,7 @@ namespace System
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
         /// <param name="timeout">锁的超时时间。</param>
         /// <returns>一个可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
-        public static IDisposable TryLocking<TSeed>(this TSeed seed,  TimeSpan timeout)
+        public static IDisposable TryLocking<TSeed>(this TSeed seed, TimeSpan timeout)
         {
             if(seed == null) throw new ArgumentNullException(nameof(seed));
 

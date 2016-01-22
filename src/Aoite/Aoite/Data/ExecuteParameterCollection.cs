@@ -150,8 +150,8 @@ namespace Aoite.Data
             {
                 if(prop.IsIgnore || (isCommandObject && prop.Name == "ResultValue")) continue;
 
-                value = prop.GetValue(objectInstance);
-                if(ExecuteParameterType.IsAssignableFrom(prop.Property.PropertyType)) this.Add(value as IExecuteParameter);
+                value = prop.GetValue(objectInstance, true);
+                if(value is IExecuteParameter) this.Add(value as IExecuteParameter);
                 else this.Add(prop.Name, value);
             }
 

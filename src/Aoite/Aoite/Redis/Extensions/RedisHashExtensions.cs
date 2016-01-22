@@ -93,7 +93,7 @@ namespace System
             foreach(var item in items)
             {
                 var propertyMapper = typeMapper[item.Field];
-                if(propertyMapper != null) propertyMapper.SetValue(t, item.Value.Parse(propertyMapper.Property.PropertyType));
+                if(propertyMapper != null) propertyMapper.SetValue(t, item.Value.Parse(propertyMapper.Property.PropertyType), false);
             }
             return t;
         }
@@ -258,7 +258,7 @@ namespace System
                 redisDict = new RedisDictionary(typeMapper.Count);
                 foreach(var propertyMapper in typeMapper.Properties)
                 {
-                    redisDict.Add(propertyMapper.Name, BinaryValue.Create(propertyMapper.GetValue(fieldValues), propertyMapper.Property));
+                    redisDict.Add(propertyMapper.Name, BinaryValue.Create(propertyMapper.GetValue(fieldValues, false), propertyMapper.Property));
                 }
             }
             return HMSet(client, key, redisDict);

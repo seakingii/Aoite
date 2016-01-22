@@ -46,7 +46,7 @@ namespace Aoite.Data
     /// 表示一个具有列的特性，并且这个列对应的属性应可序列化/反序列化为一个 JSON。
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class JsonColumnAttribute: AliasAttribute, IPropertyPopulateAttribute
+    public class JsonColumnAttribute : AliasAttribute, IPropertyPopulateAttribute
     {
         /// <summary>
         /// 初始化一个 <see cref="JsonColumnAttribute"/> 类的新实例。
@@ -67,7 +67,7 @@ namespace Aoite.Data
         /// <returns>属性的值。</returns>
         public object GetValue(DynamicProperty property, object instance)
         {
-            var s = property.GetValueHandler(instance);
+            var s = property.GetValue(instance, false);
             return ObjectFactory.Global.Get<IJsonProvider>().Serialize(s);
         }
 
@@ -83,7 +83,7 @@ namespace Aoite.Data
             {
                 value = ObjectFactory.Global.Get<IJsonProvider>().Deserialize(value.ToString(), property.Property.PropertyType);
             }
-            property.SetValueHandler(instance, value);
+            property.SetValue(instance, value, false);
         }
     }
 }

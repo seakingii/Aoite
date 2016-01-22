@@ -51,7 +51,7 @@ namespace Aoite.Serialization.Json
                 return true;
             }
 
-            typeMapper[memberName]?.SetValueHandler(o, propertyValue);
+            typeMapper[memberName]?.SetValue(o, propertyValue, false);
 
             // not a property , so it is ignored
             return true;

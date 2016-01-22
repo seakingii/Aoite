@@ -832,7 +832,7 @@ namespace System
             foreach(var keyProp1 in mapper1.KeyProperties)
             {
                 keyValues.Add(keyProp1.Name);
-                var keyValue = mapper2[keyProp1.Name]?.GetValue(entity);
+                var keyValue = mapper2[keyProp1.Name]?.GetValue(entity, true);
                 if(keyValue == null) throw CreateKeyNotFoundException<TEntity>(keyProp1.Name);
 
                 keyValues.Add(keyValue);
@@ -875,7 +875,7 @@ namespace System
                         if(itemType.IsSimpleType()) newValues.Add(item);
                         else
                         {
-                            var keyValue = TypeMapper.Create(itemType)[keyName]?.GetValue(item);
+                            var keyValue = TypeMapper.Create(itemType)[keyName]?.GetValue(item, true);
                             if(keyValue == null) throw CreateKeyNotFoundException<TEntity>(keyName);
                             newValues.Add(keyValue);
                         }
@@ -886,7 +886,7 @@ namespace System
                 }
                 if(!type.IsSimpleType())
                 {//-2
-                    entityOrPKValues = TypeMapper.Create(type)[keyName]?.GetValue(entityOrPKValues);
+                    entityOrPKValues = TypeMapper.Create(type)[keyName]?.GetValue(entityOrPKValues, true);
                     if(entityOrPKValues == null) throw CreateKeyNotFoundException<TEntity>(keyName);
                 }
                 //- 1,2
@@ -913,7 +913,7 @@ namespace System
 
                         foreach(var keyProp in mapper.KeyProperties)
                         {
-                            var tmpKV = itemMapper[keyProp.Name]?.GetValue(item);
+                            var tmpKV = itemMapper[keyProp.Name]?.GetValue(item, true);
                             if(tmpKV == null) throw CreateKeyNotFoundException<TEntity>(keyProp.Name);
                             builder.And(keyProp.Name, tmpKV);
                         }
@@ -946,7 +946,7 @@ namespace System
                     foreach(var keyProp in mapper.KeyProperties)
                     {
                         keyValues.Add(keyProp.Name);
-                        var tmpKV = mapper2[keyProp.Name]?.GetValue(keyValue);
+                        var tmpKV = mapper2[keyProp.Name]?.GetValue(keyValue, true);
                         if(tmpKV == null) throw CreateKeyNotFoundException<TEntity>(keyProp.Name);
                         keyValues.Add(tmpKV);
                     }
@@ -960,7 +960,7 @@ namespace System
             }
             return keyValues.ToArray();
         }
-        
+
         /// <summary>
         /// 创建一个条件查询语句。
         /// </summary>

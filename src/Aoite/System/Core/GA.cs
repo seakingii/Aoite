@@ -382,8 +382,8 @@ namespace System
                     {
                         try
                         {
-                            var v1 = p.GetValue(t1);
-                            var v2 = p.GetValue(t2);
+                            var v1 = p.GetValue(t1, false);
+                            var v2 = p.GetValue(t2, false);
                             var r = Compare(p.Property.Name, p.Property.PropertyType, v1, v2);
                             if(r != null) return null;
                         }
@@ -533,7 +533,7 @@ namespace System
             foreach(var p in mapper.Properties)
             {
                 var value = CreateMockValue(p.Property.PropertyType);
-                if(value != null) p.SetValue(m, value);
+                if(value != null) p.SetValue(m, value, false);
             }
             return m;
         }
