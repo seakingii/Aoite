@@ -13,7 +13,7 @@ namespace System
         /// <summary>
         /// 获取父级服务容器。
         /// </summary>
-        public IIocContainer Parent { get { return this._parentLocator; } }
+        public IIocContainer Parent => this._parentLocator;
 
         /// <summary>
         /// 获取或设置一个值，表示是都禁用自动智能解析的功能。
@@ -22,11 +22,11 @@ namespace System
         /// <summary>
         /// 获取所有服务类型。
         /// </summary>
-        public Type[] ServiceTypes { get { return CacheType.Keys.ToArray(); } }
+        public Type[] ServiceTypes => CacheType.Keys.ToArray();
         /// <summary>
         /// 获取所有值的名称。
         /// </summary>
-        public string[] ValueNames { get { return CacheName.Keys.ToArray(); } }
+        public string[] ValueNames => CacheName.Keys.ToArray();
         /// <summary>
         /// 获取所有绑定到类型的值的名称。
         /// </summary>

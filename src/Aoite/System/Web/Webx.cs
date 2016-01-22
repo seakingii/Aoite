@@ -262,8 +262,7 @@ namespace System.Web
             return value;
         }
 
-        private static IIocContainer GetContainer()
-            => HttpContext.Current.Application[ContainerName] as IIocContainer;
+        private static IIocContainer GetContainer() => HttpContext.Current.Application[ContainerName] as IIocContainer;
 
         /// <summary>
         /// 获取或设置用于 Webx 的服务容器。

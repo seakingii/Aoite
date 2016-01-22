@@ -68,7 +68,8 @@ namespace Aoite.Data
         public object GetValue(DynamicProperty property, object instance)
         {
             var s = property.GetValue(instance, false);
-            return ObjectFactory.Global.Get<IJsonProvider>().Serialize(s);
+
+            return ObjectFactory.Context.Get<IJsonProvider>().Serialize(s);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Aoite.Data
         {
             if(value is string)
             {
-                value = ObjectFactory.Global.Get<IJsonProvider>().Deserialize(value.ToString(), property.Property.PropertyType);
+                value = ObjectFactory.Context.Get<IJsonProvider>().Deserialize(value.ToString(), property.Property.PropertyType);
             }
             property.SetValue(instance, value, false);
         }

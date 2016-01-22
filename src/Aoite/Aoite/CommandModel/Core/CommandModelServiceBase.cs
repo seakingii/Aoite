@@ -11,7 +11,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。
         /// </summary>
-        public CommandModelServiceBase() : this(ObjectFactory.Global) { }
+        public CommandModelServiceBase() : this(ObjectFactory.Context) { }
 
         /// <summary>
         /// 指定服务容器，初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。

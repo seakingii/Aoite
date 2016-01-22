@@ -10,7 +10,7 @@ namespace System
     {
         static Log()
         {
-            Logger = ObjectFactory.Global.Get<ILogger>();
+            Logger = ObjectFactory.Context.Get<ILogger>();
         }
 
         /// <summary>

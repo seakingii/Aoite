@@ -23,7 +23,13 @@ namespace System
         /// <summary>
         /// 获取默认的全局服务容器。
         /// </summary>
-        public readonly static IocContainer Global = new IocContainer();
+        public readonly static IIocContainer Global = new IocContainer();
+
+        /// <summary>
+        /// 获取基于当前上下文的服务容器。如果当前环境是 Web 环境将返回 <see cref="Web.Webx.Container"/>，否则返回 <see cref="Global"/>。
+        /// </summary>
+        public static IIocContainer Context => GA.IsWebRuntime ? Web.Webx.Container : Global;
+
         private readonly static ConcurrentDictionary<string, List<Type>> _AllTypes;
 
         //TODO: 需要在 ASP.NET 运行环境下测试一下，看是否会自动加载懒加载的程序集？

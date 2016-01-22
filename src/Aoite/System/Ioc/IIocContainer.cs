@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Collections.Generic;
+
+namespace System
 {
     /// <summary>
     /// 定义一个服务容器。
@@ -9,6 +11,22 @@
         /// 获取父级服务容器。
         /// </summary>
         IIocContainer Parent { get; }
+        /// <summary>
+        /// 获取或设置一个值，表示是都禁用自动智能解析的功能。
+        /// </summary>
+        bool DisabledAutoResolving { get; set; }
+        /// <summary>
+        /// 获取所有服务类型。
+        /// </summary>
+        Type[] ServiceTypes { get; }
+        /// <summary>
+        /// 获取所有值的名称。
+        /// </summary>
+        string[] ValueNames { get; }
+        /// <summary>
+        /// 获取所有绑定到类型的值的名称。
+        /// </summary>
+        IEnumerable<KeyValuePair<Type, string[]>> TypeValueNames { get; }
         /// <summary>
         /// 将指定服务添加到服务容器中。
         /// </summary>
