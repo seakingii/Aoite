@@ -165,6 +165,15 @@
     <Compile Include="Aoite\Serialization\Json\JTypeResolver.cs" />
     <Compile Include="Aoite\Serialization\Json\JObjectConverter.cs" />
     <Compile Include="Aoite\Serialization\Json\Utf16StringValidator.cs" />
+    <Compile Include="System\DependencyInjection\CallSites.cs" />
+    <Compile Include="System\DependencyInjection\IServiceBinder.cs" />
+    <Compile Include="System\DependencyInjection\IServiceBuilder.cs" />
+    <Compile Include="System\DependencyInjection\DIExtensions.cs" />
+    <Compile Include="System\DependencyInjection\ITypeServiceBinder.cs" />
+    <Compile Include="System\DependencyInjection\IValueServiceBinder.cs" />
+    <Compile Include="System\DependencyInjection\ServiceLifetime.cs" />
+    <Compile Include="System\DependencyInjection\ServiceLifetimeAttribute.cs" />
+    <Compile Include="System\DependencyInjection\ServiceLocator.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.Async.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />

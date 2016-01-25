@@ -20,7 +20,7 @@ namespace System.Core
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
                     Thread.Sleep(100 - i);
-                    using("x".Locking())
+                    using(GA.Locking("x"))
                     {
                         if(x < 10) x++;
                     }
@@ -29,11 +29,11 @@ namespace System.Core
             Task.WaitAll(tasks.ToArray());
             Assert.Equal(10, x);
 
-            var lockable = "x".Locking();
+            var lockable = GA.Locking("x");
 
             var t = Task.Factory.StartNew(() =>
             {
-                Assert.Throws<TimeoutException>(() => "x".Locking(TimeSpan.FromMilliseconds(300)));
+                Assert.Throws<TimeoutException>(() => GA.Locking("x", TimeSpan.FromMilliseconds(300)));
             });
             t.Wait();
             lockable.Dispose();
@@ -42,11 +42,11 @@ namespace System.Core
         [Fact]
         public void TryLockingTest()
         {
-            var lockable = "x".Locking();
+            var lockable = GA.Locking("x");
 
             var t = Task.Factory.StartNew(() =>
             {
-                Assert.Null("x".TryLocking(TimeSpan.FromMilliseconds(300)));
+                Assert.Null(GA.TryLocking("x", TimeSpan.FromMilliseconds(300)));
             });
             t.Wait();
             lockable.Dispose();

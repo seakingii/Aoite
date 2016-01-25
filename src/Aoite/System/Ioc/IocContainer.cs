@@ -132,6 +132,7 @@ namespace System
                 ? new SingletonInstanceBox(serviceType.FullName, callback)
                 : new InstanceBox(serviceType.FullName, callback));
         }
+
         /// <summary>
         /// 从服务容器中移除指定的服务类型。
         /// </summary>
@@ -145,6 +146,7 @@ namespace System
 
             this.MapRemove(serviceType);
         }
+
         /// <summary>
         /// 获取指定类型的服务对象。
         /// </summary>
@@ -190,7 +192,7 @@ namespace System
             if(serviceType == null) throw new ArgumentNullException(nameof(serviceType));
 
             //- 确保类型在当前容器的获取行为是独立的。
-            using((this.UUID + serviceType.AssemblyQualifiedName).Locking())
+            using(GA.Locking(this.UUID + serviceType.AssemblyQualifiedName))
             {
                 //- 通过非智能解析，获取实例盒
                 var box = this.FindInstanceBox(serviceType);

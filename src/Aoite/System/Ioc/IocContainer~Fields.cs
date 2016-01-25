@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace System
 {
@@ -13,38 +14,42 @@ namespace System
         /// <summary>
         /// 表示一个缓存列表，映射对应类型的实例盒。优先级中（2）。
         /// </summary>
-        private readonly ConcurrentDictionary<Type, InstanceBox> CacheType = new ConcurrentDictionary<Type, InstanceBox>(serviceTypeComparer);
+        private readonly ConcurrentDictionary<Type, List<InstanceBox>> CacheType = new ConcurrentDictionary<Type, List<InstanceBox>>(serviceTypeComparer);
         /// <summary>
         /// 表示一个缓存列表，映射所有类型的构造函数的参数名称的实例盒。优先级最低（3）。
         /// </summary>
         private readonly ConcurrentDictionary<string, InstanceBox> CacheName = new ConcurrentDictionary<string, InstanceBox>(StringComparer.CurrentCultureIgnoreCase);
 
-        private void Map(Type type, InstanceBox box)
+        private void Map(Type type, params InstanceBox[] boxes)
         {
-            CacheType[type] = box;
+            var list = new List<InstanceBox>(boxes);
+
+            CacheType.AddOrUpdate(type, t => list, (t, s) => list);
         }
+
         private void MapRemove(Type type)
         {
-            InstanceBox box;
-            CacheType.TryRemove(type, out box);
+            List<InstanceBox> boxes;
+            CacheType.TryRemove(type, out boxes);
         }
         private bool MapContains(Type type)
         {
             return CacheType.ContainsKey(type);
         }
-        private InstanceBox FindInstanceBox(Type type/*, bool autoResolve*/)
+        private InstanceBox[] FindInstanceBoxes(Type type)
         {
-            return CacheType.TryGetValue(type);
-            //InstanceBox box;
-            //if(!CacheType.TryGetValue(type, out box))
-            //    lock(type)
-            //    {
-            //        if(!CacheType.TryGetValue(type, out box))
-            //        {
-            //            if(autoResolve) box = AutoResolveExpectType(type);
-            //        }
-            //    }
-            //return box;
+            List<InstanceBox> boxes;
+            if(CacheType.TryGetValue(type, out boxes)) return boxes.ToArray();
+            return new InstanceBox[0];
+        }
+        private InstanceBox FindInstanceBox(Type type)
+        {
+            return FindInstanceBoxes(type).FirstOrDefault();
+        }
+        private bool FindInstanceBox(Type type, out InstanceBox instanceBox)
+        {
+            instanceBox = FindInstanceBox(type);
+            return instanceBox != null;
         }
 
         private void Map(string name, InstanceBox box)
@@ -76,7 +81,7 @@ namespace System
         private void MapRemove(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            using(type.Locking())
+            using(GA.Locking(type))
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return;
                 InstanceBox box;
@@ -87,7 +92,7 @@ namespace System
         private bool MapContains(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            using(type.Locking())
+            using(GA.Locking(type))
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return false;
                 return typeObjectCaches.ContainsKey(name);
@@ -96,7 +101,7 @@ namespace System
         private InstanceBox FindInstanceBox(Type type, string name)
         {
             ConcurrentDictionary<string, InstanceBox> typeObjectCaches = null;
-            using(type.Locking())
+            using(GA.Locking(type))
             {
                 if(!CacheTypeName.TryGetValue(type, out typeObjectCaches)) return null;
                 InstanceBox box;

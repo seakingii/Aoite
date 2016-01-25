@@ -17,7 +17,7 @@ namespace Aoite.Redis
             this._client._tranCommands = new LinkedList<RedisCommand>();
         }
 
-        protected override void ThrowIfDisposed()
+        protected internal override void ThrowIfDisposed()
         {
             base.ThrowIfDisposed();
             if(this._client._tranCommands == null) throw new RedisException("Redis 的事务已结束。");

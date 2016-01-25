@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -267,7 +268,7 @@ namespace System
 
         #endregion
 
-        #region Lock
+        #region Interlocked
 
         /// <summary>
         /// 原子操作形式判断 <paramref name="localtion"/> 是否与 <paramref name="value"/> 匹配。
@@ -275,7 +276,7 @@ namespace System
         /// <param name="localtion">要加载的 64 位值。</param>
         /// <param name="value">要判断的 64 位值。</param>
         /// <returns>如果匹配则返回 true，否则返回 false。</returns>
-        public static bool LockEquals(ref long localtion, long value)
+        public static bool LEquals(ref long localtion, long value)
         {
             return Interlocked.Read(ref localtion) == value;
         }
@@ -285,7 +286,7 @@ namespace System
         /// </summary>
         /// <param name="localtion">要加载的 64 位值。</param>
         /// <returns>加载的值。</returns>
-        public static long LockRead(ref long localtion)
+        public static long LRead(ref long localtion)
         {
             return Interlocked.Read(ref localtion);
         }
@@ -296,9 +297,27 @@ namespace System
         /// <param name="localtion">要设置为指定值的变量。</param>
         /// <param name="value">参数被设置为的值。</param>
         /// <returns>原始值。</returns>
-        public static long LockWrite(ref long localtion, long value)
+        public static long LWrite(ref long localtion, long value)
         {
             return Interlocked.Exchange(ref localtion, value);
+        }
+        /// <summary>
+        /// 以原子操作的形式递增指定变量的值并存储结果。
+        /// </summary>
+        /// <param name="localtion">其值要递增的变量。</param>
+        /// <returns>递增的值。</returns>
+        public static long LIncrement(ref long localtion)
+        {
+            return Interlocked.Increment(ref localtion);
+        }
+        /// <summary>
+        /// 以原子操作的形式递减指定变量的值并存储结果。
+        /// </summary>
+        /// <param name="localtion">其值要递减的变量。</param>
+        /// <returns>递减的值。</returns>
+        public static long Decrement(ref long localtion)
+        {
+            return Interlocked.Decrement(ref localtion);
         }
 
         #endregion
@@ -415,7 +434,7 @@ namespace System
         /// <param name="t1">第一个对象的实例。</param>
         /// <param name="t2">第二个对象的实例。</param>
         /// <returns>两个对象的比较结果。</returns>
-        public static CompareResult Compare<T>(this T t1, T t2) where T : class
+        public static CompareResult Compare<T>(T t1, T t2) where T : class
         {
             var type = typeof(T);
             return Compare(type.Name, type, t1, t2);
@@ -426,10 +445,96 @@ namespace System
         /// <typeparam name="T">对象的数据类型。</typeparam>
         /// <param name="t1">第一个对象的实例。</param>
         /// <param name="t2">第二个对象的实例。</param>
-        public static void CompareThrown<T>(this T t1, T t2) where T : class
+        public static void CompareThrown<T>(T t1, T t2) where T : class
         {
             var type = typeof(T);
             Compare(type.Name, type, t1, t2).ThrowIfExists();
+        }
+
+        #endregion
+
+        #region Locking
+
+        readonly static TimeSpan DefaultLockingTimeout = new TimeSpan(0, 1, 0);
+
+        /// <summary>
+        /// 采用默认的超时时间（1分钟），锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <returns>一个可解锁的对象。</returns>
+        public static IDisposable Locking<TSeed>(TSeed seed)
+        {
+            return Locking(seed, DefaultLockingTimeout);
+        }
+
+        /// <summary>
+        /// 给定超时时间，锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <param name="timeout">锁的超时时间。</param>
+        /// <returns>一个可解锁的对象。</returns>
+        public static IDisposable Locking<TSeed>(TSeed seed, TimeSpan timeout)
+        {
+            if(seed == null) throw new ArgumentNullException(nameof(seed));
+
+            var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
+            var locker = s.Lock(timeout);
+            if(locker == null) throw new TimeoutException($"锁 { seed } 占用超时，已经超过预期时间 { timeout } 。");
+            return locker;
+        }
+        /// <summary>
+        /// 采用默认的超时时间（1分钟），尝试锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <returns>一个可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
+        public static IDisposable TryLocking<TSeed>(TSeed seed)
+        {
+            return TryLocking(seed, DefaultLockingTimeout);
+        }
+
+        /// <summary>
+        /// 给定超时时间，尝试锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <param name="timeout">锁的超时时间。</param>
+        /// <returns>一个可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
+        public static IDisposable TryLocking<TSeed>(TSeed seed, TimeSpan timeout)
+        {
+            if(seed == null) throw new ArgumentNullException(nameof(seed));
+
+            var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
+            return s.Lock(timeout);
+        }
+        class Seed
+        {
+            public object _key;
+            public Seed(object key)
+            {
+                _key = key;
+            }
+            public IDisposable Lock(TimeSpan timeout)
+            {
+                if(!Monitor.TryEnter(this, timeout)) return null;
+                return new SeedLocker(this);
+            }
+        }
+        class SeedLocker : ObjectDisposableBase
+        {
+            private Seed _seed;
+            public SeedLocker(Seed seed)
+            {
+                _seed = seed;
+            }
+
+            protected override void DisposeManaged() => Monitor.Exit(_seed);
+        }
+        class Seed<TSeed>
+        {
+            public readonly static ConcurrentDictionary<TSeed, Seed> LockeableObjects = new ConcurrentDictionary<TSeed, Seed>();
         }
 
         #endregion

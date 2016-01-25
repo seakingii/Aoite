@@ -15,6 +15,7 @@ namespace System.Ioc
             var container = new IocContainer();
 
             container.Add(type);
+            //container.Bind(type).Singleton();
 
             Assert.NotNull(container.GetService(type));
             Assert.NotNull(container.GetService(itype));

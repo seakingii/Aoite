@@ -46,7 +46,7 @@
         /// <summary>
         /// 对已释放的对象执行操作时所引发的异常。
         /// </summary>
-        protected virtual void ThrowIfDisposed()
+        internal protected virtual void ThrowIfDisposed()
         {
             if(this._IsDisposed) throw new ObjectDisposedException(this.GetType().FullName);
         }

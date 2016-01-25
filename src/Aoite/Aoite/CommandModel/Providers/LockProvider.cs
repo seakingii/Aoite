@@ -33,10 +33,10 @@ namespace Aoite.CommandModel
             }
 
             key = "$LockProvider::" + key;
-            
+
             var realTimeout = timeout ?? RedisExtensions.DefaultLockTimeout;
 
-            return key.Locking(realTimeout);
+            return GA.Locking(key, realTimeout);
         }
     }
 }

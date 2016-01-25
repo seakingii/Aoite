@@ -206,8 +206,8 @@ namespace System
                 return instance;
             }
             //- 如果已强制映射，发生这种情况是在构造函数里的接口，有默认映射行为
-            if(this.CacheType.TryGetValue(expectType, out instance)) return instance;
-
+            if(this.FindInstanceBox(expectType, out instance)) return instance;
+            
             Type actualType;
             var defaultMappingAttr = expectType.GetAttribute<DefaultMappingAttribute>();
             if(defaultMappingAttr != null)
@@ -238,7 +238,7 @@ namespace System
                     if(actualType == null) return null;
                 }
                 //- 判定实际类型是否已注册
-                if(this.CacheType.TryGetValue(actualType, out instance))
+                if(this.FindInstanceBox(actualType, out instance))
                 {
                     this.Map(expectType, instance);
                     return instance;

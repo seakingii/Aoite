@@ -14,6 +14,9 @@
         /// 获取或设置一个值，表示映射是否采用单例模式。
         /// </summary>
         public bool SingletonMode { get; set; }
+
+        public DependencyInjection.ServiceLifetime Litetime { get; set; }
+
         /// <summary>
         /// 实例的获取方式回调方法。
         /// </summary>
@@ -28,9 +31,9 @@
     /// <summary>
     /// 表示实例创建的委托。
     /// </summary>
-    /// <param name="lastMappingArguments">后期绑定的参数列表。</param>
+    /// <param name="lastMappingValues">后期绑定的参数列表。</param>
     /// <returns>一个实例。</returns>
-    public delegate object InstanceCreatorCallback(object[] lastMappingArguments);
+    public delegate object InstanceCreatorCallback(params object[] lastMappingValues);
     /// <summary>
     /// 通过 <see cref="Object{T}"/> 获取实例时，动态设置后期映射的参数值数组。
     /// </summary>
