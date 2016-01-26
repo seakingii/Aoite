@@ -241,7 +241,7 @@ namespace System.Web
         private const string ContainerName = "$Webx:Container";
         private static IIocContainer SetContainer(IIocContainer value)
         {
-            var config = value.GetValue("$AppSettings") as NameValueCollection
+            var config = value.Get("$AppSettings") as NameValueCollection
                   ?? System.Web.Configuration.WebConfigurationManager.AppSettings
                   ?? new NameValueCollection();
 

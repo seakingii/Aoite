@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aoite.DI;
 
-namespace System.DependencyInjection
+namespace System
 {
-    class ServiceLifetimeAttribute : Attribute
+    public class ServiceLifetimeAttribute : Attribute
     {
         public ServiceLifetime Lifetime { get; }
         public ServiceLifetimeAttribute(ServiceLifetime lifetime)

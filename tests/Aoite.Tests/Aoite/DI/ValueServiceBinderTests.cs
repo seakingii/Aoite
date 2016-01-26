@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     public class ValueServiceBinderTests
     {
-        readonly ServiceLocator _locator;
+        readonly IocContainer _locator;
         readonly ServiceBuilder _builder;
         public ValueServiceBinderTests()
         {
-            this._locator = new ServiceLocator();
+            this._locator = new IocContainer();
             this._builder = new ServiceBuilder(this._locator);
         }
 
@@ -68,12 +68,12 @@ namespace System.DependencyInjection
         public void Instance_Test()
         {
             var binder = this.Create(typeof(IService1), "abc");
-            binder.Instance(new Service1());
+            binder.Singleton(new Service1());
             var callSite = binder.CallSite;
             Assert.Equal(ServiceLifetime.Singleton, callSite.Lifetime);
             Assert.IsType<Service1>(callSite.Invoke());
 
-            binder.Instance(new Service1_2());
+            binder.Singleton(new Service1_2());
             callSite = binder.CallSite;
             Assert.Equal(ServiceLifetime.Singleton, callSite.Lifetime);
             Assert.IsType<Service1_2>(callSite.Invoke());

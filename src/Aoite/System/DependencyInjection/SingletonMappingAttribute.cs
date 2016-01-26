@@ -4,9 +4,17 @@
     /// 表示依赖注入采用单例模式的特性。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
-    public class SingletonMappingAttribute : Attribute
+    public class SingletonMappingAttribute : ServiceLifetimeAttribute
     {
-        internal static readonly Type Type = typeof(SingletonMappingAttribute);
+        public SingletonMappingAttribute() : base(Aoite.DI.ServiceLifetime.Singleton) { }
+    }
+    /// <summary>
+    /// 表示依赖注入采用单例模式的特性。
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+    public class ScopedMappingAttribute : ServiceLifetimeAttribute
+    {
+        public ScopedMappingAttribute() : base(Aoite.DI.ServiceLifetime.Scoped) { }
     }
 
     /// <summary>
@@ -18,6 +26,6 @@
         /// <summary>
         /// 设置或获取一个值，表示构造函数解析排序。数值越小优先解析。
         /// </summary>
-        public int Order { get; set; }
+        public int Order { get; set; } = 1;
     }
 }

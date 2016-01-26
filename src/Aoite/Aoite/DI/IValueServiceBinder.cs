@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 定义一个值服务的绑定器。
@@ -23,7 +23,7 @@ namespace System.DependencyInjection
 
         public string Name => this._name;
 
-        public ValueServiceBinder(ServiceLocator locator, ServiceBuilder builder, Type expectType, string name)
+        public ValueServiceBinder(IocContainer locator, ServiceBuilder builder, Type expectType, string name)
             : base(locator, builder, expectType)
         {
             this._name = name;

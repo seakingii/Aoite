@@ -17,11 +17,11 @@ namespace System.Ioc
             container.Add(type);
             //container.Bind(type).Singleton();
 
-            Assert.NotNull(container.GetService(type));
-            Assert.NotNull(container.GetService(itype));
-            Assert.NotEqual(container.GetService(type), container.GetService(type));
-            Assert.NotEqual(container.GetService(type), container.GetService(itype));
-            Assert.IsAssignableFrom(type, container.GetService(itype));
+            Assert.NotNull(container.Get(type));
+            Assert.NotNull(container.Get(itype));
+            Assert.NotEqual(container.Get(type), container.Get(type));
+            Assert.NotEqual(container.Get(type), container.Get(itype));
+            Assert.IsAssignableFrom(type, container.Get(itype));
         }
 
         [Fact(DisplayName = "添加服务 - 智能解析 - 单例模式")]
@@ -33,11 +33,11 @@ namespace System.Ioc
             var container = new IocContainer();
 
             container.Add(type, true);
-            Assert.NotNull(container.GetService(type));
-            Assert.NotNull(container.GetService(itype));
-            Assert.Equal(container.GetService(type), container.GetService(type));
-            Assert.Equal(container.GetService(type), container.GetService(itype));
-            Assert.IsAssignableFrom(type, container.GetService(itype));
+            Assert.NotNull(container.Get(type));
+            Assert.NotNull(container.Get(itype));
+            Assert.Equal(container.Get(type), container.Get(type));
+            Assert.NotEqual(container.Get(type), container.Get(itype));
+            Assert.IsAssignableFrom(type, container.Get(itype));
         }
 
         [Fact(DisplayName = "添加服务 - 指定实例")]
@@ -47,7 +47,7 @@ namespace System.Ioc
             container.Add(typeof(IService2), new XService2());
 
             var childContainer = new IocContainer(container);
-            Assert.IsAssignableFrom<XService2>(childContainer.GetService(typeof(IService2)));
+            Assert.IsAssignableFrom<XService2>(childContainer.Get(typeof(IService2)));
         }
 
         [Fact(DisplayName = "获取服务 - 智能解析")]
@@ -57,9 +57,9 @@ namespace System.Ioc
             var container = new IocContainer();
 
             Assert.False(container.Contains(itype));
-            Assert.NotNull(container.GetService(itype));
+            Assert.NotNull(container.Get(itype));
             Assert.False(container.Contains(typeof(IService_NotFound)));
-            Assert.Null(container.GetService(typeof(IService_NotFound)));
+            Assert.Null(container.Get(typeof(IService_NotFound)));
         }
 
         [Fact(DisplayName = "获取服务 - 获取顺序1")]
@@ -69,7 +69,7 @@ namespace System.Ioc
             var container = new IocContainer();
             container.Add(type, true);
             var childContainer = new IocContainer(container);
-            Assert.Equal(childContainer.GetService(type), container.GetService(type));
+            Assert.Equal(childContainer.Get(type), container.Get(type));
         }
 
         [Fact(DisplayName = "获取服务 - 获取顺序2")]
@@ -80,7 +80,7 @@ namespace System.Ioc
             var childContainer = new IocContainer(container);
             container.Add(type, true);
             childContainer.Add(type, true);
-            Assert.NotEqual(childContainer.GetService(type), container.GetService(type));
+            Assert.NotEqual(childContainer.Get(type), container.Get(type));
         }
 
         [Fact(DisplayName = "匹配服务")]
@@ -106,11 +106,11 @@ namespace System.Ioc
             Assert.True(container.Contains(itype));
             Assert.True(childContainer.Contains(itype));
             container.Add(itype, lmp => new DefaultService2());
-            Assert.IsAssignableFrom<XService2>(childContainer.GetService(itype));
-            Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
+            Assert.IsAssignableFrom<XService2>(childContainer.Get(itype));
+            Assert.IsAssignableFrom<DefaultService2>(container.Get(itype));
             childContainer.Remove(itype);
-            Assert.IsAssignableFrom<DefaultService2>(childContainer.GetService(itype));
-            Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
+            Assert.IsAssignableFrom<DefaultService2>(childContainer.Get(itype));
+            Assert.IsAssignableFrom<DefaultService2>(container.Get(itype));
             Assert.False(childContainer.Contains(itype));
         }
 
@@ -124,8 +124,8 @@ namespace System.Ioc
             Assert.True(container.Contains(itype));
             Assert.True(childContainer.Contains(itype));
             container.Add(itype, lmp => new DefaultService2());
-            Assert.IsAssignableFrom<XService2>(childContainer.GetService(itype));
-            Assert.IsAssignableFrom<DefaultService2>(container.GetService(itype));
+            Assert.IsAssignableFrom<XService2>(childContainer.Get(itype));
+            Assert.IsAssignableFrom<DefaultService2>(container.Get(itype));
             childContainer.Remove(itype, true);
             Assert.False(container.Contains(itype));
             Assert.False(childContainer.Contains(itype));
@@ -139,23 +139,23 @@ namespace System.Ioc
         public void Value_Test1()
         {
             var container = new IocContainer();
-            container.AddValue("A", 15);
-            Assert.Equal(15, container.GetValue("A"));
+            container.Add("A", 15);
+            Assert.Equal(15, container.Get("A"));
 
             int index = 0;
-            container.AddValue("B", lmp => ++index);
-            Assert.Equal(1, container.GetValue("B"));
-            Assert.Equal(2, container.GetValue("B"));
+            container.Add("B", lmp => ++index);
+            Assert.Equal(1, container.Get("B"));
+            Assert.Equal(2, container.Get("B"));
             index = 0;
 
-            container.AddValue("C", lmp => ++index, true);
+            container.Add("C", lmp => ++index, true);
 
-            Assert.Equal(1, container.GetValue("C"));
-            Assert.Equal(1, container.GetValue("C"));
+            Assert.Equal(1, container.Get("C"));
+            Assert.Equal(1, container.Get("C"));
 
-            Assert.True(container.ContainsValue("A"));
-            container.RemoveValue("A");
-            Assert.False(container.ContainsValue("A"));
+            Assert.True(container.Contains("A"));
+            container.Remove("A");
+            Assert.False(container.Contains("A"));
         }
 
         [Fact(DisplayName = "添加值 - 父级")]
@@ -163,28 +163,28 @@ namespace System.Ioc
         {
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
-            container.AddValue("A", 15);
-            Assert.Equal(15, childContainer.GetValue("A"));
+            container.Add("A", 15);
+            Assert.Equal(15, childContainer.Get("A"));
 
             int index = 0;
-            container.AddValue("B", lmp => ++index);
-            Assert.Equal(1, childContainer.GetValue("B"));
-            Assert.Equal(2, childContainer.GetValue("B"));
+            container.Add("B", lmp => ++index);
+            Assert.Equal(1, childContainer.Get("B"));
+            Assert.Equal(2, childContainer.Get("B"));
             index = 0;
 
-            container.AddValue("C", lmp => ++index, true);
+            container.Add("C", lmp => ++index, true);
 
-            Assert.Equal(1, childContainer.GetValue("C"));
-            Assert.Equal(1, childContainer.GetValue("C"));
+            Assert.Equal(1, childContainer.Get("C"));
+            Assert.Equal(1, childContainer.Get("C"));
 
-            Assert.True(childContainer.ContainsValue("A", true));
-            container.RemoveValue("A", true);
-            Assert.False(childContainer.ContainsValue("A", true));
+            Assert.True(childContainer.Contains("A", true));
+            container.Remove("A", true);
+            Assert.False(childContainer.Contains("A", true));
 
             index = 0;
-            container.AddValue("D", lmp => ++index);
-            Assert.Equal(1, childContainer.GetValue("D"));
-            Assert.Equal(2, container.GetValue("D"));
+            container.Add("D", lmp => ++index);
+            Assert.Equal(1, childContainer.Get("D"));
+            Assert.Equal(2, container.Get("D"));
 
         }
 
@@ -193,18 +193,18 @@ namespace System.Ioc
         {
             var parentContainer = new IocContainer();
             var childContainer = new IocContainer(parentContainer);
-            parentContainer.AddValue("value1", 1);
-            parentContainer.AddValue("value2", "2");
-            parentContainer.AddValue("value3", false);
+            parentContainer.Add("value1", 1);
+            parentContainer.Add("value2", "2");
+            parentContainer.Add("value3", false);
 
-            childContainer.AddValue("value1", 9999);
-            childContainer.AddValue("value2", "9999");
+            childContainer.Add("value1", 9999);
+            childContainer.Add("value2", "9999");
 
             childContainer.Add(typeof(IValueService), typeof(ValueService1));
             parentContainer.Add(typeof(IValueService), typeof(ValueService2));
 
-            var childService = childContainer.GetService(typeof(IValueService)) as IValueService;
-            var parentService = parentContainer.GetService(typeof(IValueService)) as IValueService;
+            var childService = childContainer.Get(typeof(IValueService)) as IValueService;
+            var parentService = parentContainer.Get(typeof(IValueService)) as IValueService;
 
             Assert.Equal(1, parentService.Value1);
             Assert.Equal("2", parentService.Value2);
@@ -225,23 +225,23 @@ namespace System.Ioc
         {
             var type = typeof(IValueService);
             var container = new IocContainer();
-            container.AddValue(type, "A", 15);
-            Assert.Equal(15, container.GetValue(type, "A"));
+            container.Add(type, "A", 15);
+            Assert.Equal(15, container.Get(type, "A"));
 
             int index = 0;
-            container.AddValue(type, "B", lmp => ++index);
-            Assert.Equal(1, container.GetValue(type, "B"));
-            Assert.Equal(2, container.GetValue(type, "B"));
+            container.Add(type, "B", lmp => ++index);
+            Assert.Equal(1, container.Get(type, "B"));
+            Assert.Equal(2, container.Get(type, "B"));
             index = 0;
 
-            container.AddValue(type, "C", lmp => ++index, true);
+            container.Add(type, "C", lmp => ++index, true);
 
-            Assert.Equal(1, container.GetValue(type, "C"));
-            Assert.Equal(1, container.GetValue(type, "C"));
+            Assert.Equal(1, container.Get(type, "C"));
+            Assert.Equal(1, container.Get(type, "C"));
 
-            Assert.True(container.ContainsValue(type, "A"));
-            container.RemoveValue(type, "A");
-            Assert.False(container.ContainsValue(type, "A"));
+            Assert.True(container.Contains(type, "A"));
+            container.Remove(type, "A");
+            Assert.False(container.Contains(type, "A"));
         }
 
         [Fact(DisplayName = "关联类型添加值 - 父级")]
@@ -250,28 +250,28 @@ namespace System.Ioc
             var type = typeof(IValueService);
             var container = new IocContainer();
             var childContainer = new IocContainer(container);
-            container.AddValue(type, "A", 15);
-            Assert.Equal(15, childContainer.GetValue(type, "A"));
+            container.Add(type, "A", 15);
+            Assert.Equal(15, childContainer.Get(type, "A"));
 
             int index = 0;
-            container.AddValue(type, "B", lmp => ++index);
-            Assert.Equal(1, childContainer.GetValue(type, "B"));
-            Assert.Equal(2, childContainer.GetValue(type, "B"));
+            container.Add(type, "B", lmp => ++index);
+            Assert.Equal(1, childContainer.Get(type, "B"));
+            Assert.Equal(2, childContainer.Get(type, "B"));
             index = 0;
 
-            container.AddValue(type, "C", lmp => ++index, true);
+            container.Add(type, "C", lmp => ++index, true);
 
-            Assert.Equal(1, childContainer.GetValue(type, "C"));
-            Assert.Equal(1, childContainer.GetValue(type, "C"));
+            Assert.Equal(1, childContainer.Get(type, "C"));
+            Assert.Equal(1, childContainer.Get(type, "C"));
 
-            Assert.True(childContainer.ContainsValue(type, "A", true));
-            container.RemoveValue(type, "A", true);
-            Assert.False(childContainer.ContainsValue(type, "A", true));
+            Assert.True(childContainer.Contains(type, "A", true));
+            container.Remove(type, "A", true);
+            Assert.False(childContainer.Contains(type, "A", true));
 
             index = 0;
-            container.AddValue(type, "D", lmp => ++index);
-            Assert.Equal(1, childContainer.GetValue(type, "D"));
-            Assert.Equal(2, container.GetValue(type, "D"));
+            container.Add(type, "D", lmp => ++index);
+            Assert.Equal(1, childContainer.Get(type, "D"));
+            Assert.Equal(2, container.Get(type, "D"));
 
         }
 
@@ -280,18 +280,18 @@ namespace System.Ioc
         {
             var parentContainer = new IocContainer();
             var childContainer = new IocContainer(parentContainer);
-            parentContainer.AddValue("value1", 1);
-            parentContainer.AddValue("value2", "2");
-            parentContainer.AddValue("value3", false);
+            parentContainer.Add("value1", 1);
+            parentContainer.Add("value2", "2");
+            parentContainer.Add("value3", false);
 
-            childContainer.AddValue("value1", 9999);
-            childContainer.AddValue("value2", "9999");
+            childContainer.Add("value1", 9999);
+            childContainer.Add("value2", "9999");
 
             childContainer.Add(typeof(IValueService), typeof(ValueService1));
             parentContainer.Add(typeof(IValueService), typeof(ValueService2));
 
-            var childService = childContainer.GetService(typeof(IValueService)) as IValueService;
-            var parentService = parentContainer.GetService(typeof(IValueService)) as IValueService;
+            var childService = childContainer.Get(typeof(IValueService)) as IValueService;
+            var parentService = parentContainer.Get(typeof(IValueService)) as IValueService;
 
             Assert.Equal(1, parentService.Value1);
             Assert.Equal("2", parentService.Value2);
@@ -301,8 +301,8 @@ namespace System.Ioc
             Assert.Equal("9999", childService.Value2);
             Assert.Equal(false, childService.Value3);
 
-            childContainer.AddValue(typeof(IValueService), "value2", "8888");
-            var childService2 = childContainer.GetService(typeof(IValueService)) as IValueService;
+            childContainer.Add(typeof(IValueService), "value2", "8888");
+            var childService2 = childContainer.Get(typeof(IValueService)) as IValueService;
 
             Assert.Equal(9999, childService2.Value1);
             Assert.Equal("9999", childService2.Value2); //- 因为已映射，所以这里的值还是历史值
@@ -311,7 +311,7 @@ namespace System.Ioc
             childContainer.Remove(typeof(IValueService));
             childContainer.Add(typeof(IValueService), typeof(ValueService1));
 
-            var childService3 = childContainer.GetService(typeof(IValueService)) as IValueService;
+            var childService3 = childContainer.Get(typeof(IValueService)) as IValueService;
             Assert.Equal("8888", childService3.Value2);
         }
 
@@ -324,8 +324,8 @@ namespace System.Ioc
         public void LastMappingTest1()
         {
             var container = new IocContainer();
-            container.AddValue("baseValue1", 10);
-            container.AddValue("baseValue2", 20);
+            container.Add("baseValue1", 10);
+            container.Add("baseValue2", 20);
             container.Add(typeof(LastMapperTestModel));
             var model = container.Get(typeof(LastMapperTestModel), 50, 80) as LastMapperTestModel;
 
@@ -339,8 +339,8 @@ namespace System.Ioc
         public void LastMappingTest2()
         {
             var container = new IocContainer();
-            container.AddValue("baseValue1", 10);
-            container.AddValue("baseValue2", 20);
+            container.Add("baseValue1", 10);
+            container.Add("baseValue2", 20);
             container.Add(typeof(LastMapperTestModel));
             var ex = Assert.Throws<ArgumentException>(() => container.Get(typeof(LastMapperTestModel), 50));
             Assert.Equal("value1", ex.ParamName);

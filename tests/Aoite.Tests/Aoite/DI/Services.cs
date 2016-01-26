@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     public interface IService1 { }
     public class Service1 : IService1 { }

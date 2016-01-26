@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 定义一个服务调用位置。
@@ -52,20 +55,20 @@ namespace System.DependencyInjection
     class ScopedCallSite : CallSiteBase
     {
         public override ServiceLifetime Lifetime { get { return ServiceLifetime.Scoped; } }
-        private Threading.ThreadLocal<object> _local;
-        private readonly Threading.ThreadLocal<InstanceCreatorCallback> _lazyCallback;
+        private ThreadLocal<object> _local;
+        private readonly ThreadLocal<InstanceCreatorCallback> _lazyCallback;
         private readonly string Id = Guid.NewGuid().ToString();
 
         public ScopedCallSite(Func<InstanceCreatorCallback> callbackFactory)
         {
-            this._lazyCallback = new Threading.ThreadLocal<InstanceCreatorCallback>(callbackFactory);
+            this._lazyCallback = new ThreadLocal<InstanceCreatorCallback>(callbackFactory);
         }
 
         protected override object OnInvoke(params object[] lastMappingValues)
         {
-            if(GA.IsWebRuntime) return Web.Webx.GetTemp(Id, () => this._lazyCallback.Value(lastMappingValues));
+            if(GA.IsWebRuntime) return Webx.GetTemp(Id, () => this._lazyCallback.Value(lastMappingValues));
 
-            if(this._local == null) this._local = new Threading.ThreadLocal<object>();
+            if(this._local == null) this._local = new ThreadLocal<object>();
             if(!this._local.IsValueCreated) this._local.Value = this._lazyCallback.Value(lastMappingValues);
             return this._local.Value;
         }
@@ -90,10 +93,10 @@ namespace System.DependencyInjection
     {
         public override ServiceLifetime Lifetime { get { return ServiceLifetime.LastMapping; } }
 
-        private Reflection.ParameterInfo _parameter;
+        private ParameterInfo _parameter;
         private Type _actualType;
         private int _valueIndex;
-        public LastMappingCallSite(Type actualType, Reflection.ParameterInfo parameter, int valueIndex)
+        public LastMappingCallSite(Type actualType, ParameterInfo parameter, int valueIndex)
         {
             this._actualType = actualType;
             this._parameter = parameter;

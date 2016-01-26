@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     public class ServiceLocatorTests
     {
         [Fact]
         public void Create_Test()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             Assert.Null(locator.Parent);
             Assert.False(locator.DisabledAutoResolving);
         }
@@ -20,7 +20,7 @@ namespace System.DependencyInjection
         [Fact]
         public void FindActualType_Test()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             Assert.Equal(typeof(Service2_2), locator.FindActualType(typeof(IService2)));
             Assert.Null(locator.FindActualType(Types.Int32));
 
@@ -29,15 +29,15 @@ namespace System.DependencyInjection
             Assert.Equal(typeof(Service1), locator.FindActualType(typeof(IService1)));
         }
 
-        private ServiceLocator Create()
+        private IocContainer Create()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             locator.Imports(build => build
                                         .UseRange<IService1>().As<Service1>()
                                         .UseRange<IService1>().As<Service1_2>()
                                         .Use<IService2>().Singleton(lmps => new Service2_2())
-                                        .Use("a").Instance(1)
-                                        .Use<IService1>("a").Instance(2));
+                                        .Use("a").Singleton(1)
+                                        .Use<IService1>("a").Singleton(2));
             return locator;
         }
 

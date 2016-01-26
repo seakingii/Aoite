@@ -22,11 +22,11 @@ namespace System
         /// <returns>如果匹配返回 true，否则返回 false。</returns>
         bool NamespaceIsMatch(string @namespace);
         /// <summary>
-        /// 判断指定 <paramref name="expectType"/> 和 <paramref name="actualType"/> 是否开启单例模式。
-        /// </summary>
-        /// <param name="expectType">预期定义的类型。</param>
-        /// <param name="actualType">实际映射的类型。</param>
-        /// <returns>如果启用单例模式则返回 true，否则返回 false。</returns>
+        ///// 判断指定 <paramref name="expectType"/> 和 <paramref name="actualType"/> 是否开启单例模式。
+        ///// </summary>
+        ///// <param name="expectType">预期定义的类型。</param>
+        ///// <param name="actualType">实际映射的类型。</param>
+        ///// <returns>如果启用单例模式则返回 true，否则返回 false。</returns>
         bool IsSingletonMode(Type expectType, Type actualType);
         /// <summary>
         /// 判断指定 <paramref name="type"/> 是否是一个预期定义的类型。

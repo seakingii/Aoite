@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 定义类型服务的绑定器。
@@ -54,6 +54,17 @@ namespace System.DependencyInjection
         /// <summary>
         /// 绑定为智能模式的服务。根据 <see cref="IServiceBinder.ExpectType"/> 的特性创建不同模式的服务（默认为短暂模式）。
         /// </summary>
+        /// <returns>服务构建器。</returns>
+        IServiceBuilder As();
+        /// <summary>
+        /// 绑定为智能模式的服务。根据 <see cref="IServiceBinder.ExpectType"/> 的特性创建不同模式的服务（默认为短暂模式）。
+        /// </summary>
+        /// <param name="callback">用于创建服务的回调对象。这允许将服务声明为可用，但将对象的创建延迟到请求该服务之后。</param>
+        /// <returns>服务构建器。</returns>
+        IServiceBuilder As(InstanceCreatorCallback callback);
+        /// <summary>
+        /// 绑定为智能模式的服务。根据 <see cref="IServiceBinder.ExpectType"/> 的特性创建不同模式的服务（默认为短暂模式）。
+        /// </summary>
         /// <param name="actualType">实际的服务类型。</param>
         /// <returns>服务构建器。</returns>
         IServiceBuilder As(Type actualType);
@@ -64,7 +75,7 @@ namespace System.DependencyInjection
         private readonly bool _overwrite;
         public bool Overwrite => this._overwrite;
 
-        public TypeServiceBinder(ServiceLocator locator, ServiceBuilder builder, Type expectType, bool overwrite)
+        public TypeServiceBinder(IocContainer locator, ServiceBuilder builder, Type expectType, bool overwrite)
             : base(locator, builder, expectType)
         {
             this._overwrite = overwrite;
@@ -92,8 +103,11 @@ namespace System.DependencyInjection
             return this;
         }
 
+        public IServiceBuilder As()
+            => this.ThrowIfDAR().SetCallSite(this._locator.CreateFromActualType(this._expectType, null));
+
         public IServiceBuilder As(Type actualType)
-            => this.ThrowIfDAR().TestActualType(actualType).SetCallSite(this._locator.CreateCallSite(this._expectType, actualType));
+            => this.ThrowIfDAR().TestActualType(actualType).SetCallSite(this._locator.CreateFromActualType(this._expectType, actualType));
 
         public IServiceBuilder Scoped()
             => this.ThrowIfDAR().SetCallSite(new ScopedCallSite(this.CreateCallback));

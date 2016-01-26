@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 定义服务的构建器。
@@ -49,13 +49,13 @@ namespace System.DependencyInjection
 
     class ServiceBuilder : ObjectDisposableBase, IServiceBuilder
     {
-        private ServiceLocator _locator;
+        private IocContainer _locator;
         public readonly Lazy<List<TypeServiceBinder>> TypeBinders;
         public readonly Lazy<List<ValueServiceBinder>> ValueBinders;
         private bool _promote;
         public bool IsPromote => _promote;
 
-        public ServiceBuilder(ServiceLocator locator)
+        public ServiceBuilder(IocContainer locator)
         {
             if(locator == null) throw new ArgumentNullException(nameof(locator));
             this._locator = locator;

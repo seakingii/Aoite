@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     public class ServiceBuilderTests
     {
         [Fact]
         public void Create_Test()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             using(var builder = new ServiceBuilder(locator))
             {
                 builder.Promote();
@@ -23,7 +23,7 @@ namespace System.DependencyInjection
         [Fact]
         public void Add_Test()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             using(var builder = new ServiceBuilder(locator))
             {
                 var binder = builder.UseRange(Types.String);
@@ -37,7 +37,7 @@ namespace System.DependencyInjection
         [Fact]
         public void Set_Test()
         {
-            var locator = new ServiceLocator();
+            var locator = new IocContainer();
             using(var builder = new ServiceBuilder(locator))
             {
                 var binder = builder.Use(Types.String);

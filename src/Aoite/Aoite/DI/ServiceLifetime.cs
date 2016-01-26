@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 表示服务的生命周期。

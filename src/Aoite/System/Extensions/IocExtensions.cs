@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 /// <summary>
 /// 表示 <see cref="IIocContainer"/> 的扩展方法。
@@ -121,6 +122,9 @@ public static class IocExtensions
         return (TService)service;
     }
 
+    public static TService[] GetAll<TService>(this IIocContainer container, params object[] lastMappingValues) 
+        => container.GetAll(typeof(TService), lastMappingValues).Cast<TService>().ToArray();
+
     /// <summary>
     /// 尝试获取指定类型的服务对象。
     /// </summary>
@@ -179,11 +183,11 @@ public static class IocExtensions
     /// <param name="value">参数值。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddValue<TService>(this IIocContainer container, string name, object value, bool promote = false)
+    public static IIocContainer Add<TService>(this IIocContainer container, string name, object value, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddValue(typeof(TService), name, value, promote);
+        container.Add(typeof(TService), name, value, promote);
         return container;
     }
     /// <summary>
@@ -196,13 +200,14 @@ public static class IocExtensions
     /// <param name="singletonMode">true，则启用单例模式；否则为 false。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer AddValue<TService>(this IIocContainer container, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+    public static IIocContainer Add<TService>(this IIocContainer container, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.AddValue(typeof(TService), name, callback, singletonMode, promote);
+        container.Add(typeof(TService), name, callback, singletonMode, promote);
         return container;
     }
+
     /// <summary>
     /// 从服务容器中移除指定关联的服务类型的参数。
     /// </summary>
@@ -211,13 +216,14 @@ public static class IocExtensions
     /// <param name="name">要移除的参数名称。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>服务容器。</returns>
-    public static IIocContainer RemoveValue<TService>(this IIocContainer container, string name, bool promote = false)
+    public static IIocContainer Remove<TService>(this IIocContainer container, string name, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        container.RemoveValue(typeof(TService), name, promote);
+        container.Remove(typeof(TService), name, promote);
         return container;
     }
+
     /// <summary>
     /// 获取指定关联的服务类型和参数名称的值。
     /// </summary>
@@ -226,11 +232,11 @@ public static class IocExtensions
     /// <param name="name">参数名称。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。</param>
     /// <returns>参数名称的值。- 或 -如果没有参数名称的值，则为 null 值。</returns>
-    public static object GetValue<TService>(this IIocContainer container, string name, params object[] lastMappingValues)
+    public static object Get<TService>(this IIocContainer container, string name, params object[] lastMappingValues)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        return container.GetValue(typeof(TService), name, lastMappingValues);
+        return container.Get(typeof(TService), name, lastMappingValues);
     }
     /// <summary>
     /// 查找服务容器是否包含指定关联的服务类型指定的参数。
@@ -240,11 +246,11 @@ public static class IocExtensions
     /// <param name="name">要查找的参数名称。</param>
     /// <param name="promote">true，则将此请求提升到任何父服务容器；否则为 false。</param>
     /// <returns>如果存在返回 true，否则返回 false。</returns>
-    public static bool ContainsValue<TService>(this IIocContainer container, string name, bool promote = false)
+    public static bool Contains<TService>(this IIocContainer container, string name, bool promote = false)
     {
         if(container == null) throw new ArgumentNullException(nameof(container));
 
-        return container.ContainsValue(typeof(TService), name, promote);
+        return container.Contains(typeof(TService), name, promote);
     }
 
     #endregion

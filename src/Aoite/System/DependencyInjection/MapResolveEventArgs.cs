@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using Aoite.DI;
+
+namespace System
 {
     /// <summary>
     /// 表示映射解析的事件参数。
@@ -15,7 +17,7 @@
         /// </summary>
         public bool SingletonMode { get; set; }
 
-        public DependencyInjection.ServiceLifetime Litetime { get; set; }
+        public ServiceLifetime Litetime { get; set; }
 
         /// <summary>
         /// 实例的获取方式回调方法。

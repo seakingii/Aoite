@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     /// <summary>
     /// 定义服务的绑定器。
@@ -20,7 +20,7 @@ namespace System.DependencyInjection
         /// </summary>
         /// <param name="value">要添加的服务的实例。 此对象必须实现 <see cref="ExpectType"/>> 所指示的类型或从其继承。</param>
         /// <returns>服务构建器。</returns>
-        IServiceBuilder Instance(object value);
+        IServiceBuilder Singleton(object value);
         /// <summary>
         /// 绑定为单例模式的服务。
         /// </summary>
@@ -43,14 +43,14 @@ namespace System.DependencyInjection
 
     abstract class ServiceBinderBase : IServiceBinder
     {
-        protected readonly ServiceLocator _locator;
+        protected readonly IocContainer _locator;
         protected readonly ServiceBuilder _builder;
         protected readonly Type _expectType;
         private ICallSite _callSite;
         public Type ExpectType => this._expectType;
         public ICallSite CallSite => this._callSite;
 
-        public ServiceBinderBase(ServiceLocator locator, ServiceBuilder builder, Type expectType)
+        public ServiceBinderBase(IocContainer locator, ServiceBuilder builder, Type expectType)
         {
             this._locator = locator;
             this._builder = builder;
@@ -62,6 +62,9 @@ namespace System.DependencyInjection
             if(callback == null) throw new ArgumentNullException(nameof(callback));
             return this;
         }
+
+        public IServiceBuilder As(InstanceCreatorCallback callback)
+            => this.TestCallback(callback).SetCallSite(this._locator.CreateFromCallback(this._expectType, null, () => callback));
 
         protected IServiceBuilder SetCallSite(ICallSite callSite)
         {
@@ -75,7 +78,7 @@ namespace System.DependencyInjection
         public IServiceBuilder Singleton(InstanceCreatorCallback callback)
             => this.TestCallback(callback).SetCallSite(new SingletonCallSite(() => callback));
 
-        public IServiceBuilder Instance(object value)
+        public IServiceBuilder Singleton(object value)
             => this.SetCallSite(new SingletonCallSite(() => lms => value));
 
         public IServiceBuilder Transient(InstanceCreatorCallback callback)

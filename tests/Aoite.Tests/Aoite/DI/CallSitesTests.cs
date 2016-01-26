@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace System.DependencyInjection
+namespace Aoite.DI
 {
     public class CallSitesTests
     {
@@ -29,14 +30,14 @@ namespace System.DependencyInjection
             int x = 1;
             var callSite = new ScopedCallSite(() => lmps => x++);
 
-            var t = new Threading.Thread(() =>
+            var t = new Thread(() =>
             {
                 Assert.Equal(1, callSite.Invoke());
                 Assert.Equal(1, callSite.Invoke());
             });
             t.Start();
             t.Join();
-            var t2 = new Threading.Thread(() =>
+            var t2 = new Thread(() =>
             {
                 Assert.Equal(2, callSite.Invoke());
                 Assert.Equal(2, callSite.Invoke());
@@ -54,14 +55,14 @@ namespace System.DependencyInjection
             int x = 1;
             var callSite = new SingletonCallSite(() => lmps => x++);
 
-            var t = new Threading.Thread(() =>
+            var t = new Thread(() =>
             {
                 Assert.Equal(1, callSite.Invoke());
                 Assert.Equal(1, callSite.Invoke());
             });
             t.Start();
             t.Join();
-            var t2 = new Threading.Thread(() =>
+            var t2 = new Thread(() =>
             {
                 Assert.Equal(1, callSite.Invoke());
                 Assert.Equal(1, callSite.Invoke());

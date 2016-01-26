@@ -4,42 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aoite.DI;
 
-namespace System.DependencyInjection
+namespace System
 {
-
-    interface IIocContainer2 : IServiceProvider
-    {
-        /// <summary>
-        /// 获取父级服务容器。
-        /// </summary>
-        IIocContainer2 Parent { get; }
-        /// <summary>
-        /// 创建基于当前服务容器的子服务容器。
-        /// </summary>
-        /// <returns>一个新的服务容器。</returns>
-        IIocContainer2 CreateChildLocator();
-        bool DisabledAutoResolving { get; set; }
-        object Get(Type expectType, params object[] lastMappingValues);
-        object GetFixed(Type expectType, params object[] lastMappingValues);
-        object[] GetAll(Type expectType, params object[] lastMappingValues);
-        object Get(string name, params object[] lastMappingValues);
-        object Get(Type expectType, string name, params object[] lastMappingValues);
-        bool Contains(Type expectType, bool promote = false);
-        bool Contains(string name, bool promote = false);
-        bool Contains(Type expectType, string name, bool promote = false);
-        void Remove(Type expectType, bool promote = false);
-        void Remove(string name, bool promote = false);
-        void Remove(Type expectType, string name, bool promote = false);
-        void DestroyAll();
-    }
-    sealed class ServiceLocator : IIocContainer2
+    public sealed class IocContainer : IIocContainer
     {
         private bool _hasParent;
         public bool DisabledAutoResolving { get; set; }
-        public ServiceLocator Parent { get; }
+        public IocContainer Parent { get; }
 
-        IIocContainer2 IIocContainer2.Parent => this.Parent;
+        IIocContainer IIocContainer.Parent => this.Parent;
 
         /// <summary>
         /// 表示解析映射类型时发生。
@@ -100,28 +75,39 @@ namespace System.DependencyInjection
             return MapFilter.FindActualType(ObjectFactory.AllTypes, expectType, fullNames);
         }
 
-        private bool FindCallSite(ServiceLocator locator, Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
+        static bool FindCallSite(IocContainer container, Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
         {
-            //- 优先级1：目标类型+参数名
-            if(locator.FindCallSite(actualType, pName, out callSite)) return true;
-            //- 优先级2：预期类型+参数名
-            if(hasExpectedType && locator.FindCallSite(expectType, pName, out callSite)) return true;
-            //- 优先级3：参数名
-            if(!isSimpleType && locator.FindCallSite(pType, out callSite)) return true;
-
+            do
+            {
+                //- 优先级1：目标类型+参数名
+                if(container.FindCallSite(actualType, pName, out callSite)) return true;
+                //- 优先级2：预期类型+参数名
+                if(hasExpectedType && container.FindCallSite(expectType, pName, out callSite)) return true;
+                //- 优先级3：参数名
+                if(isSimpleType)
+                {
+                    if(container.FindCallSite(pName, out callSite)) return true;
+                }
+                else if(container.FindCallSite(pType, out callSite)) return true;
+            } while(container._hasParent && (container = container.Parent) != null);
             return false;
         }
 
         private bool FindCallSite(Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
         {
-            if(this.FindCallSite(this, expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
-            if(this._hasParent && this.FindCallSite(this.Parent, expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
+            if(FindCallSite(this, expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
 
             var parameterActualType = this.FindActualType(pType);
 
-            if(this.FindCallSite(this, expectType, actualType, parameterActualType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
-            if(this._hasParent && this.FindCallSite(this.Parent, expectType, actualType, parameterActualType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
+            if(parameterActualType == null) return false;
 
+            if(FindCallSite(this, expectType, actualType, parameterActualType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
+
+            if(!isSimpleType && !this.DisabledAutoResolving)
+            {
+                callSite = this.CreateFromActualType(pType, parameterActualType);
+                return callSite != null;
+            }
             return false;
         }
 
@@ -171,28 +157,33 @@ namespace System.DependencyInjection
             throw new AggregateException(actualType.FullName + "没有在映射列表中找到匹配的构造函数。错误内容可以详见 System.Exception.Data 字典。", exceptions);
         }
 
-        internal List<ICallSite> CreateCallSites(Type expectType) => new List<ICallSite>(1) { this.CreateCallSite(expectType, null) };
-        internal ICallSite CreateCallSite(Type expectType, Type actualType)
-        {
-            var lifetime = ServiceLifetime.Transient;
-            var sla = expectType.GetAttribute<ServiceLifetimeAttribute>();
-            if(sla != null) lifetime = sla.Lifetime;
 
+        internal ICallSite CreateFromActualType(Type expectType, Type actualType)
+        {
             Func<InstanceCreatorCallback> callback;
             if(actualType == null)
             {
                 var callSite = this.OnMapResolve(expectType);
                 if(callSite != null) return callSite;
 
-                callback = () => this.CreateCallback(expectType, this.ForceFindActualType(expectType));
+                actualType = this.FindActualType(expectType);
+                if(actualType == null) return null;
+                this.TestActualType(actualType);
+                //callback = () => this.CreateCallback(expectType, );
             }
-            else
-            {
-                callback = () => this.CreateCallback(expectType, actualType);
-            }
+
+            callback = () => this.CreateCallback(expectType, actualType);
+
+            return this.CreateFromCallback(expectType, actualType, callback);
+        }
+        internal ICallSite CreateFromCallback(Type expectType, Type actualType, Func<InstanceCreatorCallback> callback)
+        {
+            var lifetime = ServiceLifetime.Transient;
+            var sla = expectType.GetAttribute<ServiceLifetimeAttribute>();
+            if(sla != null) lifetime = sla.Lifetime;
+            if(actualType != null && (sla = actualType.GetAttribute<ServiceLifetimeAttribute>()) != null) lifetime = sla.Lifetime;
             return this.CreateCallSite(lifetime, callback);
         }
-
         internal Type ForceFindActualType(Type expectType)
         {
             var actualType = this.FindActualType(expectType);
@@ -201,7 +192,7 @@ namespace System.DependencyInjection
             return actualType;
         }
 
-        internal ServiceLocator TestActualType(Type actualType)
+        internal IocContainer TestActualType(Type actualType)
         {
             if(actualType == null) throw new ArgumentNullException(nameof(actualType));
             if(actualType.IsAbstract || actualType.IsInterface || actualType.IsValueType)
@@ -211,37 +202,60 @@ namespace System.DependencyInjection
 
         #endregion
 
-        public ServiceLocator() { }
+        public IocContainer()
+        {
+            this.Add<IIocContainer>(this);
+        }
 
         /// <summary>
         /// 创建基于当前服务容器的子服务容器。
         /// </summary>
         /// <returns>一个新的服务容器。</returns>
-        public IIocContainer2 CreateChildLocator()
+        public IIocContainer CreateChildLocator()
         {
-            return new ServiceLocator(this);
+            return new IocContainer(this);
         }
 
-        internal ServiceLocator(ServiceLocator parent)
+        internal IocContainer(IocContainer parent) : this()
         {
             if(parent == null) throw new ArgumentNullException(nameof(parent));
             this.Parent = parent;
             this._hasParent = true;
         }
 
-        static void AppendToLocator(ServiceLocator locator, ServiceBuilder builder)
+        static void SetTypeBinder(IocContainer locator, TypeServiceBinder item)
+        {
+            locator.CacheType.AddOrUpdate(item.ExpectType, t => new List<ICallSite>(1) { item.CallSite }, (t, list) =>
+            {
+                if(item.Overwrite) list.Clear();
+                list.Insert(0, item.CallSite);
+                list.TrimExcess();
+                return list;
+            });
+        }
+
+        static void SetValueBinder(IocContainer locator, ValueServiceBinder item)
+        {
+            var type = item.ExpectType ?? EmptyType;
+            locator.CacheTypeName.AddOrUpdate(type, t =>
+            {
+                var dict = new ConcurrentDictionary<string, ICallSite>();
+                dict[item.Name] = item.CallSite;
+                return dict;
+            }, (t, dict) =>
+            {
+                dict[item.Name] = item.CallSite;
+                return dict;
+            });
+        }
+
+        static void AppendToLocator(IocContainer locator, ServiceBuilder builder)
         {
             if(builder.TypeBinders.IsValueCreated)
             {
                 foreach(var item in builder.TypeBinders.Value)
                 {
-                    locator.CacheType.AddOrUpdate(item.ExpectType, t => new List<ICallSite>(1) { item.CallSite }, (t, list) =>
-                    {
-                        if(item.Overwrite) list.Clear();
-                        list.Insert(0, item.CallSite);
-                        list.TrimExcess();
-                        return list;
-                    });
+                    SetTypeBinder(locator, item);
                 }
             }
 
@@ -249,23 +263,12 @@ namespace System.DependencyInjection
             {
                 foreach(var item in builder.ValueBinders.Value)
                 {
-                    var type = item.ExpectType ?? EmptyType;
-                    locator.CacheTypeName.AddOrUpdate(type, t =>
-                    {
-                        var dict = new ConcurrentDictionary<string, ICallSite>();
-                        dict[item.Name] = item.CallSite;
-                        return dict;
-                    }, (t, dict) =>
-                    {
-                        dict[item.Name] = item.CallSite;
-                        return dict;
-                    });
-
+                    SetValueBinder(locator, item);
                 }
             }
         }
 
-        public ServiceLocator Imports(Action<IServiceBuilder> callback)
+        public IIocContainer Imports(Action<IServiceBuilder> callback)
         {
             if(callback == null) throw new ArgumentNullException(nameof(callback));
             using(var builder = new ServiceBuilder(this))
@@ -324,44 +327,144 @@ namespace System.DependencyInjection
 
         #endregion
 
+        #region Add
+
+        private IIocContainer InnerAddType(Type expectType, Func<TypeServiceBinder, IServiceBuilder> callback, bool promote)
+        {
+            var binder = new TypeServiceBinder(this, null, expectType, true);
+            callback(binder);
+            var locator = this;
+            do
+            {
+                SetTypeBinder(locator, binder);
+            } while(promote && locator._hasParent && (locator = locator.Parent) != null);
+
+            return this;
+        }
+
+        private IIocContainer InnerAddValue(Type expectType, string name, Func<ValueServiceBinder, IServiceBuilder> callback, bool promote)
+        {
+            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
+            var binder = new ValueServiceBinder(this, null, expectType, name);
+            callback(binder);
+            var locator = this;
+            do
+            {
+                SetValueBinder(locator, binder);
+            } while(promote && locator._hasParent && (locator = locator.Parent) != null);
+
+            return this;
+        }
+
+
+        public IIocContainer Add(Type expectType, bool singletonMode = false, bool promote = false)
+            => this.InnerAddType(expectType, b => singletonMode ? b.Singleton() : b.As(), promote);
+        public IIocContainer Add(Type expectType, Type actualType, bool singletonMode = false, bool promote = false)
+            => this.InnerAddType(expectType, b => singletonMode ? b.Singleton(actualType) : b.As(actualType), promote);
+        public IIocContainer Add(Type expectType, object serviceInstance, bool promote = false)
+            => this.InnerAddType(expectType, b => b.Singleton(serviceInstance), promote);
+        public IIocContainer Add(Type expectType, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+            => this.InnerAddType(expectType, b => singletonMode ? b.Singleton(callback) : b.As(callback), promote);
+
+        public IIocContainer Add(string name, object value, bool promote = false)
+            => this.InnerAddValue(EmptyType, name, b => b.Singleton(value), promote);
+        public IIocContainer Add(string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+            => this.InnerAddValue(EmptyType, name, b => singletonMode ? b.Singleton(callback) : b.Transient(callback), promote);
+
+        public IIocContainer Add(Type expectType, string name, object value, bool promote = false)
+            => this.InnerAddValue(expectType, name, b => b.Singleton(value), promote);
+        public IIocContainer Add(Type expectType, string name, InstanceCreatorCallback callback, bool singletonMode = false, bool promote = false)
+            => this.InnerAddValue(expectType, name, b => singletonMode ? b.Singleton(callback) : b.Transient(callback), promote);
+
+        #endregion
+
         #region Get
 
+        static ICallSite GetCallSite(IocContainer container, Type expectType)
+        {
+            ICallSite callSite;
+            if(!container.FindCallSite(expectType, out callSite) && container._hasParent)
+            {
+                return GetCallSite(container.Parent, expectType);
+            }
+            return callSite;
+        }
+
+        private object InnerGet(Type expectType, bool autoResolving, params object[] lastMappingValues)
+        {
+            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
+
+            using(GA.Locking(this.UUID + expectType.AssemblyQualifiedName))
+            {
+                var callSite = GetCallSite(this, expectType);
+                if(callSite == null && autoResolving)
+                {
+                    callSite = this.CreateFromActualType(expectType, null);
+                    if(callSite == null) return null;
+                    CacheType.TryAdd(expectType, new List<ICallSite>(1) { callSite });
+                }
+                return callSite?.Invoke(lastMappingValues);
+            }
+        }
+
+        private readonly string UUID = Guid.NewGuid().ToString();
         public object Get(Type expectType, params object[] lastMappingValues)
         {
             if(this.DisabledAutoResolving) return this.GetFixed(expectType, lastMappingValues);
-
-            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
-            return CacheType.GetOrAdd(expectType, CreateCallSites).FirstOrDefault().Invoke(lastMappingValues);
+            return this.InnerGet(expectType, true, lastMappingValues);
         }
 
         public object GetFixed(Type expectType, params object[] lastMappingValues)
-        {
-            if(expectType == null) throw new ArgumentNullException(nameof(expectType));
-            ICallSite callSite;
-            if(this.FindCallSite(expectType, out callSite)) return callSite.Invoke(lastMappingValues);
-            return null;
-        }
+            => this.InnerGet(expectType, false, lastMappingValues);
 
+        static IEnumerable<ICallSite> GetCallSites(IocContainer container, Type expectType)
+        {
+            List<ICallSite> callSites;
+            if(container.FindCallSites(expectType, out callSites))
+            {
+                foreach(var item in callSites.ToArray())
+                {
+                    yield return item;
+                }
+            }
+            if(container._hasParent)
+            {
+                foreach(var item in GetCallSites(container.Parent, expectType))
+                {
+                    yield return item;
+                }
+            }
+            yield break;
+        }
         public object[] GetAll(Type expectType, params object[] lastMappingValues)
         {
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
-            List<ICallSite> callSites;
-            if(this.FindCallSites(expectType, out callSites))
-            {
-                return (from callSite in callSites select callSite.Invoke(lastMappingValues)).ToArray();
-            }
-            return new object[0];
+
+            return (from callSite in GetCallSites(this, expectType) select callSite.Invoke(lastMappingValues)).ToArray();
         }
 
         public object Get(string name, params object[] lastMappingValues) => this.Get(EmptyType, name, lastMappingValues);
+
+
+        static ICallSite GetCallSite(IocContainer container, Type expectType, string name)
+        {
+            ICallSite callSite;
+            if(!container.FindCallSite(expectType, name, out callSite) && container._hasParent)
+            {
+                return GetCallSite(container.Parent, expectType, name);
+            }
+            return callSite;
+        }
 
         public object Get(Type expectType, string name, params object[] lastMappingValues)
         {
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            ICallSite callSite;
-            if(this.FindCallSite(expectType, name, out callSite)) return callSite.Invoke(lastMappingValues);
+            var callSite = GetCallSite(this, expectType, name);
+            if(callSite != null) return callSite.Invoke(lastMappingValues);
             return null;
         }
 
