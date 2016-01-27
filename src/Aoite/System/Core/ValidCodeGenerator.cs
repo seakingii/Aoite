@@ -18,7 +18,7 @@ namespace System
         /// <param name="width">图像的宽度，小于 1 则自动计算。</param>
         /// <param name="height">图像的高度，小于 1 则自动计算。默认为 22。</param>
         /// <param name="familyName">字体名称。</param>
-        /// <returns>一个图像对象。</returns>
+        /// <returns>图像对象。</returns>
         public static Image Create(string code, int width = 0, int height = 0, string familyName = "Arial")
         {
             if(string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
@@ -62,7 +62,7 @@ namespace System
         /// </summary>
         /// <param name="image">转换的图像。</param>
         /// <param name="format">转换的图像格式。</param>
-        /// <returns>一个内存流对象。</returns>
+        /// <returns>内存流对象。</returns>
         public static MemoryStream ToStream(this Image image, ImageFormat format)
         {
             MemoryStream ms = new MemoryStream();

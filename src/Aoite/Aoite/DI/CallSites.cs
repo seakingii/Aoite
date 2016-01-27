@@ -10,7 +10,7 @@ using System.Web;
 namespace Aoite.DI
 {
     /// <summary>
-    /// 定义一个服务调用位置。
+    /// 定义一个服务调用点。
     /// </summary>
     public interface ICallSite
     {

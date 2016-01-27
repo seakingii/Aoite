@@ -47,7 +47,7 @@ namespace Aoite.DI
             var locator = this.Create();
 
             Assert.IsType<Service1_2>(locator.Get<IService1>());
-            var services = locator.GetAll<IService1>();
+            var services = locator.GetAll<IService1>().ToArray();
             Assert.IsType<Service1_2>(services[0]);
             Assert.IsType<Service1>(services[1]);
             Assert.IsType<Service2_2>(locator.Get<IService2>());

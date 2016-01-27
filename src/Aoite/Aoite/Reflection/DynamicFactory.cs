@@ -268,7 +268,7 @@ namespace System
         /// 创建指定 <paramref name="constructorInfo"/> 的动态构造函数。
         /// </summary>
         /// <param name="constructorInfo">构造函数的元数据。</param>
-        /// <returns>一个绑定到实例构造函数的委托。</returns>
+        /// <returns>绑定到实例构造函数的委托。</returns>
         public static DynamicConstructorHandler CreateConstructorHandler(this ConstructorInfo constructorInfo)
         {
             if(constructorInfo == null) throw new ArgumentNullException(nameof(constructorInfo));
@@ -303,7 +303,7 @@ namespace System
         /// </summary>
         /// <param name="type">构造函数的定义类。</param>
         /// <param name="types">表示需要的构造函数的参数个数、顺序和类型的 <see cref="Type"/> 对象的数组。- 或 -<see cref="Type"/> 对象的空数组，用于获取不带参数的构造函数。这样的空数组由 static 字段 <see cref="Type.EmptyTypes"/> 提供。</param>
-        /// <returns>一个绑定到实例构造函数的委托。</returns>
+        /// <returns>绑定到实例构造函数的委托。</returns>
         public static DynamicConstructorHandler CreateConstructorHandler(this Type type, params Type[] types)
         {
             var ctor = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, types, null);
@@ -315,7 +315,7 @@ namespace System
         /// 创建指定类型的实例对象。
         /// </summary>
         /// <param name="type">创建实例的类型。</param>
-        /// <returns>一个 <paramref name="type"/> 的新实例。</returns>
+        /// <returns><paramref name="type"/> 的新实例。</returns>
         public static object CreateUninitializedInstance(this Type type)
         {
             return FormatterServices.GetUninitializedObject(type);
@@ -326,7 +326,7 @@ namespace System
         /// </summary>
         /// <param name="type">创建实例的类型。</param>
         /// <param name="args">构造函数的参数。</param>
-        /// <returns>一个 <paramref name="type"/> 的新实例。</returns>
+        /// <returns><paramref name="type"/> 的新实例。</returns>
         public static object CreateInstance(this Type type, params object[] args)
         {
             return Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, null, args, null);
@@ -337,7 +337,7 @@ namespace System
         /// </summary>
         /// <typeparam name="T">创建实例的类型。</typeparam>
         /// <param name="args">构造函数的参数。</param>
-        /// <returns>一个 <typeparamref name="T"/> 的新实例。</returns>
+        /// <returns><typeparamref name="T"/> 的新实例。</returns>
         public static T CreateInstance<T>(params object[] args)
         {
             return (T)CreateInstance(typeof(T), args);

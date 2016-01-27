@@ -85,7 +85,7 @@ namespace Aoite.Serialization
         /// 快速反序列化 JSON 字符串。
         /// </summary>
         /// <param name="json">JSON 字符串。</param>
-        /// <returns>一个对象。</returns>
+        /// <returns>对象实例。</returns>
         public object FastRead(string json)
         {
             return _serializer.DeserializeObject(json);
@@ -95,7 +95,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="json">JSON 字符串。</param>
-        /// <returns>一个对象。</returns>
+        /// <returns>对象实例。</returns>
         public TData FastRead<TData>(string json)
         {
             return _serializer.Deserialize<TData>(json);
@@ -105,7 +105,7 @@ namespace Aoite.Serialization
         /// </summary>
         /// <param name="json">JSON 字符串。</param>
         /// <param name="type">可序列化对象的类型。</param>
-        /// <returns>一个对象。</returns>
+        /// <returns>对象实例。</returns>
         public object FastRead(string json, Type type)
         {
             return _serializer.Deserialize(json, type);

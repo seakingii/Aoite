@@ -9,7 +9,7 @@
         /// 获取请求客户端地址。
         /// </summary>
         /// <param name="request">当前 HTTP 请求。</param>
-        /// <returns>一个客户端地址。</returns>
+        /// <returns>客户端地址。</returns>
         public static string GetClientAddress(this HttpRequest request)
         {
             string ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];

@@ -16,7 +16,7 @@ namespace System.Collections.Generic
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="collection">集合。</param>
         /// <param name="totalCount">数据的总行数。</param>
-        /// <returns>一个实体的数据集合。。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         public static PageData<TEntity> ToGrid<TEntity>(this IEnumerable<TEntity> collection, long totalCount = 0)
         {
             if(collection == null) throw new ArgumentNullException(nameof(collection));

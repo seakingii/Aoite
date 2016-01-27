@@ -67,7 +67,7 @@ namespace Aoite.CommandModel
         /// <param name="command">命令模型。</param>
         /// <param name="executing">命令模型执行前发生的方法。</param>
         /// <param name="executed">命令模型执行后发生的方法。</param>
-        /// <returns>一个异步操作。</returns>
+        /// <returns>异步操作。</returns>
         protected virtual Task<TCommand> ExecuteAsync<TCommand>(TCommand command
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
@@ -78,7 +78,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <typeparam name="T">数据类型。</typeparam>
         /// <param name="timeout">获取锁的超时设定。</param>
-        /// <returns>一个锁。</returns>
+        /// <returns>可释放的锁实例。</returns>
         protected IDisposable AcquireLock<T>(TimeSpan? timeout = null)
             => this.AcquireLock(typeof(T).FullName, timeout);
 
@@ -87,7 +87,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">锁的键。</param>
         /// <param name="timeout">获取锁的超时设定。</param>
-        /// <returns>一个锁。</returns>
+        /// <returns>可释放的锁实例。</returns>
         protected virtual IDisposable AcquireLock(string key, TimeSpan? timeout = null)
             => this._Container.Get<ILockProvider>().Lock(key, timeout);
 
@@ -112,7 +112,7 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 开始事务模式。
         /// </summary>
-        /// <returns>一个事务。</returns>
+        /// <returns>可释放的事务实例。</returns>
         protected virtual ITransaction BeginTransaction()
             => new DefaultTransaction();
 
@@ -121,7 +121,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="type">实体的数据类型。</param>
         /// <param name="keyValue">实体的主键。</param>
-        /// <returns>一个非 null 值的字符串。</returns>
+        /// <returns>非 null 值的字符串。</returns>
         protected virtual string GenerateEntityCacheKey(Type type, object keyValue)
             => type.Name + ":" + keyValue;
 

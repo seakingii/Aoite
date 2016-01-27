@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Aoite.DI;
 
 /// <summary>
 /// 表示 <see cref="IIocContainer"/> 的扩展方法。
@@ -122,39 +124,15 @@ public static class IocExtensions
         return (TService)service;
     }
 
-    public static TService[] GetAll<TService>(this IIocContainer container, params object[] lastMappingValues) 
-        => container.GetAll(typeof(TService), lastMappingValues).Cast<TService>().ToArray();
-
     /// <summary>
-    /// 尝试获取指定类型的服务对象。
+    /// 获取指定类型的所有服务对象。
     /// </summary>
-    /// <typeparam name="TService">要添加的服务类型。</typeparam>
-    /// <typeparam name="TValue">返回值的数据类型。</typeparam>
+    /// <typeparam name="TService">一个对象，它指定要获取的服务对象的类型。</typeparam>
     /// <param name="container">服务容器。</param>
-    /// <param name="callback">当服务存在时发生的回调方法。</param>
     /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
-    /// <returns>回调方法的值。</returns>
-    public static TValue TryGet<TService, TValue>(this IIocContainer container, Func<TService, TValue> callback, params object[] lastMappingValues)
-    {
-        var service = Get<TService>(container, lastMappingValues);
-        if(service != null) return callback(service);
-        return default(TValue);
-    }
-
-    /// <summary>
-    /// 尝试获取指定类型的服务对象。
-    /// </summary>
-    /// <typeparam name="TService">要添加的服务类型。</typeparam>
-    /// <param name="container">服务容器。</param>
-    /// <param name="callback">当服务存在时发生的回调方法。</param>
-    /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
-    /// <returns><typeparamref name="TService"/> 类型的服务对象。- 或 -如果没有 <typeparamref name="TService"/>> 类型的服务对象，则为默认值。</returns>
-    public static TService TryGet<TService>(this IIocContainer container, Action<TService> callback, params object[] lastMappingValues)
-    {
-        var service = Get<TService>(container, lastMappingValues);
-        if(service != null) callback(service);
-        return service;
-    }
+    /// <returns><typeparamref name="TService"/> 类型的所有服务对象。</returns>
+    public static IEnumerable<TService> GetAll<TService>(this IIocContainer container, params object[] lastMappingValues)
+        => container.GetAll(typeof(TService), lastMappingValues).Cast<TService>();
 
     /// <summary>
     /// 查找服务容器是否包含指定的服务类型。
@@ -254,6 +232,58 @@ public static class IocExtensions
     }
 
     #endregion
+
+    /// <summary>
+    /// 添加或覆盖一个预期服务类型。
+    /// </summary>
+    /// <typeparam name="TExpect">预期服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>类型服务的绑定器。</returns>
+    public static ITypeServiceBinder Use<TExpect>(this IServiceBuilder binder) => binder.Use(typeof(TExpect));
+    /// <summary>
+    /// 添加一个预期服务类型。
+    /// </summary>
+    /// <typeparam name="TExpect">预期服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>类型服务的绑定器。</returns>
+    public static ITypeServiceBinder UseRange<TExpect>(this IServiceBuilder binder) => binder.UseRange(typeof(TExpect));
+    /// <summary>
+    /// 添加或覆盖一个值服务。
+    /// </summary>
+    /// <typeparam name="TExpect">预期服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <param name="name">值服务的参数名称。</param>
+    /// <returns>类型服务的绑定器。</returns>
+    public static IValueServiceBinder Use<TExpect>(this IServiceBuilder binder, string name) => binder.Use(typeof(TExpect), name);
+
+    /// <summary>
+    /// 绑定为短暂模式的服务。
+    /// </summary>
+    /// <typeparam name="TActual">实际的服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>服务构建器。</returns>
+    public static IServiceBuilder Transient<TActual>(this ITypeServiceBinder binder) => binder.Transient(typeof(TActual));
+    /// <summary>
+    /// 绑定为单例模式的服务。
+    /// </summary>
+    /// <typeparam name="TActual">实际的服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>服务构建器。</returns>
+    public static IServiceBuilder Singleton<TActual>(this ITypeServiceBinder binder) => binder.Singleton(typeof(TActual));
+    /// <summary>
+    /// 绑定为范围模式的服务。
+    /// </summary>
+    /// <typeparam name="TActual">实际的服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>服务构建器。</returns>
+    public static IServiceBuilder Scoped<TActual>(this ITypeServiceBinder binder) => binder.Scoped(typeof(TActual));
+    /// <summary>
+    /// 绑定为智能模式的服务。根据 <see cref="IServiceBinder.ExpectType"/> 的特性创建不同模式的服务（默认为短暂模式）。
+    /// </summary>
+    /// <typeparam name="TActual">实际的服务类型。</typeparam>
+    /// <param name="binder">绑定器。</param>
+    /// <returns>服务构建器。</returns>
+    public static IServiceBuilder As<TActual>(this ITypeServiceBinder binder) => binder.As(typeof(TActual));
 
     #region AutoMap
 

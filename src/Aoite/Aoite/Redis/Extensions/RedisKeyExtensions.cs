@@ -193,7 +193,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="newKey">新的键名。</param>
-        /// <returns>一个状态的结果。</returns>
+        /// <returns>结果。</returns>
         public static Result Rename(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -209,7 +209,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">键名。</param>
         /// <param name="newKey">新的键名。</param>
-        /// <returns>一个状态的结果。</returns>
+        /// <returns>结果。</returns>
         public static bool RenameNx(this IRedisClient client, string key, string newKey)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -239,7 +239,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>一个支持迭代的枚举。</returns>
+        /// <returns>支持迭代的枚举。</returns>
         public static IEnumerable<string> Scan(this IRedisClient client, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<string>(client, "SCAN", null, cursor, pattern, count

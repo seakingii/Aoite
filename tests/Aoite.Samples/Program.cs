@@ -90,7 +90,7 @@ namespace Aoite.Samples
             string loginUserName = null;
 
             //- Create a ioc container.
-            var container = new IocContainer()
+            var container = ObjectFactory.CreateContainer()
                 .Add<IUserFactory>(new UserFactory(c => loginUserName))//- Get current login user callback.
                 .Add<IDbEngine>(lmps => engine.Context);//- Get or create a new current thread db context.
 

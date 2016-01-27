@@ -36,7 +36,7 @@ namespace Aoite.Serialization.Json
         /// </summary>
         /// <param name="obj">要序列化的对象。</param>
         /// <param name="serializer">负责序列化的对象。</param>
-        /// <returns>一个对象，包含表示该对象数据的键/值对。</returns>
+        /// <returns>包含表示该对象数据的键/值对。</returns>
         public abstract IDictionary<string, object> Serialize(object obj, JSerializer serializer);
     }
 }

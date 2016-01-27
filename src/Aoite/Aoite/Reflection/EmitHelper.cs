@@ -39,7 +39,7 @@ namespace Aoite.Reflection
         /// 完成动态方法并创建一个可用于执行该方法的委托。
         /// </summary>
         /// <typeparam name="D">一个签名与动态方法的签名匹配的委托类型。</typeparam>
-        /// <returns>一个指定类型的委托，可用于执行动态方法。</returns>
+        /// <returns>指定类型的委托，可用于执行动态方法。</returns>
         public D CreateDelegate<D>()
             where D : class
         {

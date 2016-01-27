@@ -23,8 +23,8 @@ namespace Aoite.DI
 
         public string Name => this._name;
 
-        public ValueServiceBinder(IocContainer locator, ServiceBuilder builder, Type expectType, string name)
-            : base(locator, builder, expectType)
+        public ValueServiceBinder(IocContainer container, ServiceBuilder builder, Type expectType, string name)
+            : base(container, builder, expectType)
         {
             this._name = name;
         }

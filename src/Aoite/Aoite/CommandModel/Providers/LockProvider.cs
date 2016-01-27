@@ -20,7 +20,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="key">锁的键名。</param>
         /// <param name="timeout">锁的超时设定。</param>
-        /// <returns>一个锁。</returns>
+        /// <returns>可释放的锁实例。</returns>
         public virtual IDisposable Lock(string key, TimeSpan? timeout = null)
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));

@@ -24,7 +24,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="context">命令模型的上下文。</param>
         /// <param name="command">命令模型。</param>
-        /// <returns>一个异步操作。</returns>
+        /// <returns>异步操作。</returns>
         Task<TCommand> ExecuteAsync(IContext context, TCommand command);
     }
 
@@ -45,7 +45,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="context">命令模型的上下文。</param>
         /// <param name="command">命令模型。</param>
-        /// <returns>一个异步操作。</returns>
+        /// <returns>异步操作。</returns>
         public virtual Task<TCommand> ExecuteAsync(IContext context, TCommand command)
         {
             var task = this.ExecuteResultAsync(context, command);
@@ -62,7 +62,7 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="context">命令模型的上下文。</param>
         /// <param name="command">命令模型。</param>
-        /// <returns>一个异步操作。</returns>
+        /// <returns>异步操作。</returns>
         protected abstract Task<TResult> ExecuteResultAsync(IContext context, TCommand command);
     }
 }

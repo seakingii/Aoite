@@ -122,7 +122,7 @@ namespace System.Collections.Generic
         /// 获取指定键的节点。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>一个节点。</returns>
+        /// <returns>节点。</returns>
         public TNode GetNode(string key)
         {
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
@@ -138,7 +138,7 @@ namespace System.Collections.Generic
         /// 获取指定键的节点。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>一个节点。</returns>
+        /// <returns>节点。</returns>
         public TNode GetNode(byte[] key)
         {
             if(key == null) throw new ArgumentNullException(nameof(key));

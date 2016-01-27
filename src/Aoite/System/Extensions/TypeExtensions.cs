@@ -150,7 +150,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="name">字段名称。</param>
-        /// <returns>一个字段或一个 null 值。</returns>
+        /// <returns>字段或一个 null 值。</returns>
         public static FieldInfo FindField(this Type type, string name)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -163,7 +163,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="name">属性名称。</param>
-        /// <returns>一个属性或一个 null 值。</returns>
+        /// <returns>属性或一个 null 值。</returns>
         public static PropertyInfo FindProperty(this Type type, string name)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -176,7 +176,7 @@ namespace System
         /// <param name="type">数据类型。</param>
         /// <param name="name">方法名称。</param>
         /// <param name="types">方法的参数类型数组。</param>
-        /// <returns>一个方法或一个 null 值。</returns>
+        /// <returns>方法或一个 null 值。</returns>
         public static MethodInfo FindMethod(this Type type, string name, params Type[] types)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
@@ -189,7 +189,7 @@ namespace System
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <param name="types">构造函数的参数类型数组。</param>
-        /// <returns>一个构造函数或一个 null 值。</returns>
+        /// <returns>构造函数或一个 null 值。</returns>
         public static ConstructorInfo FindConstructor(this Type type, params Type[] types)
         {
             if(type == null) throw new ArgumentNullException(nameof(type));

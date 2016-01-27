@@ -76,7 +76,7 @@ namespace System.Web
         /// 返回一个包含内容 URL 的字符串。
         /// </summary>
         /// <param name="contentPath">内容路径。</param>
-        /// <returns>一个包含内容 URL 的字符串。</returns>
+        /// <returns>包含内容 URL 的字符串。</returns>
         public static string MapUrl(string contentPath)
         {
             if(string.IsNullOrWhiteSpace(contentPath)) throw new ArgumentNullException(nameof(contentPath));
@@ -195,7 +195,7 @@ namespace System.Web
         /// <summary>
         /// 呈现所有已添加的脚本，并清空脚本。
         /// </summary>
-        /// <returns>一个脚本字符串。</returns>
+        /// <returns>脚本字符串。</returns>
         public static IHtmlString ReaderScripts()
         {
             var scriptBuilder = GetTemp<Text.StringBuilder>(SCRIPT_STRING_BUILDER);

@@ -8,7 +8,7 @@ using Aoite.DI;
 
 namespace System
 {
-    public sealed class IocContainer : IIocContainer
+    sealed class IocContainer : IIocContainer
     {
         private bool _hasParent;
         public bool DisabledAutoResolving { get; set; }
@@ -16,12 +16,9 @@ namespace System
 
         IIocContainer IIocContainer.Parent => this.Parent;
 
-        /// <summary>
-        /// 表示解析映射类型时发生。
-        /// </summary>
         public event MapResolveEventHandler MapResolve;
 
-        internal ICallSite OnMapResolve(Type expectType)
+        private ICallSite OnMapResolve(Type expectType)
         {
             var e = ObjectFactory.InternalOnMapResolve(MapResolve, this, expectType)
                 ?? ObjectFactory.InternalOnMapResolve(null, this, expectType);
@@ -32,6 +29,18 @@ namespace System
                 return this.CreateCallSite(e.Litetime, () => e.Callback);
             }
             return null;
+        }
+
+        public IocContainer()
+        {
+            this.Add<IIocContainer>(this);
+        }
+
+        internal IocContainer(IocContainer parent) : this()
+        {
+            if(parent == null) throw new ArgumentNullException(nameof(parent));
+            this.Parent = parent;
+            this._hasParent = true;
         }
 
         private ICallSite CreateCallSite(ServiceLifetime lifetime, Func<InstanceCreatorCallback> callback)
@@ -50,6 +59,12 @@ namespace System
 
         #region Create CallSite
 
+        //- 查找指定预期服务类型的实际服务类型
+        /// <summary>
+        /// 查找指定预期服务类型的实际服务类型。
+        /// </summary>
+        /// <param name="expectType">预期服务类型。</param>
+        /// <returns>找到匹配的实际服务类型，或一个 null 值。</returns>
         internal Type FindActualType(Type expectType)
         {
             var defaultMappingAttr = expectType.GetAttribute<DefaultMappingAttribute>();
@@ -75,42 +90,54 @@ namespace System
             return MapFilter.FindActualType(ObjectFactory.AllTypes, expectType, fullNames);
         }
 
-        static bool FindCallSite(IocContainer container, Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
+        //- 查找指定容器的所有上级链中符合条件的构造函数参数的 CallSite
+        private static bool FindParameterCallSite(IocContainer container, Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
         {
             do
             {
-                //- 优先级1：目标类型+参数名
+                //- 优先级1：实际的服务类型+参数名
                 if(container.FindCallSite(actualType, pName, out callSite)) return true;
-                //- 优先级2：预期类型+参数名
+                //- 优先级2：预期的服务类型+参数名
                 if(hasExpectedType && container.FindCallSite(expectType, pName, out callSite)) return true;
                 //- 优先级3：参数名
-                if(isSimpleType)
-                {
-                    if(container.FindCallSite(pName, out callSite)) return true;
-                }
-                else if(container.FindCallSite(pType, out callSite)) return true;
+                if(container.FindCallSite(pName, out callSite)) return true;
+                //- 优先级4：参数类型
+                if(!isSimpleType && container.FindCallSite(pType, out callSite)) return true;
+
             } while(container._hasParent && (container = container.Parent) != null);
             return false;
         }
 
-        private bool FindCallSite(Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
+        //- 查找指定容器的所有上级链中符合条件的构造函数参数的 CallSite，如果都找不到，尝试智能解析
+        private bool FindParameterCallSite(Type expectType, Type actualType, Type pType, string pName, bool hasExpectedType, bool isSimpleType, out ICallSite callSite)
         {
-            if(FindCallSite(this, expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
+            if(FindParameterCallSite(this, expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
 
-            var parameterActualType = this.FindActualType(pType);
-
-            if(parameterActualType == null) return false;
-
-            if(FindCallSite(this, expectType, actualType, parameterActualType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
-
-            if(!isSimpleType && !this.DisabledAutoResolving)
+            //- 简单类型不进行【关联实际服务类型】和【智能解析实际服务类型】
+            if(!isSimpleType)
             {
-                callSite = this.CreateFromActualType(pType, parameterActualType);
-                return callSite != null;
+                var parameterActualType = this.FindActualType(pType);
+
+                if(parameterActualType == null) return false;
+
+                if(FindParameterCallSite(this, expectType, actualType, parameterActualType, pName, hasExpectedType, isSimpleType, out callSite)) return true;
+
+                if(!this.DisabledAutoResolving)
+                {
+                    callSite = this.AutoResolving(pType, parameterActualType);
+                    return callSite != null;
+                }
             }
+
             return false;
         }
 
+        /// <summary>
+        /// 指定预期和实际服务类型，创建一个实例构造器的回调函数。
+        /// </summary>
+        /// <param name="expectType">预期服务类型。</param>
+        /// <param name="actualType">实际服务类型。</param>
+        /// <returns>实例构造器委托。</returns>
         internal InstanceCreatorCallback CreateCallback(Type expectType, Type actualType)
         {
             this.TestActualType(actualType);
@@ -138,9 +165,9 @@ namespace System
                     {
                         callSite = new LastMappingCallSite(actualType, p, lastMappingIndex++);
                     }
-                    else if(!this.FindCallSite(expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite))
+                    else if(!this.FindParameterCallSite(expectType, actualType, pType, pName, hasExpectedType, isSimpleType, out callSite))
                     {
-                        exceptions.Add(new ArgumentException($"类型{actualType.FullName}()：构造函数的参数“{pName}”尚未配置映射，并且自动分析失败。", pName));
+                        exceptions.Add(new ArgumentException($"实际服务类型{actualType.FullName}()：构造函数的参数“{pName}”尚未配置映射，并且自动分析失败。", pName));
                         callSites = null;
                         break;
                     }
@@ -157,37 +184,49 @@ namespace System
             throw new AggregateException(actualType.FullName + "没有在映射列表中找到匹配的构造函数。错误内容可以详见 System.Exception.Data 字典。", exceptions);
         }
 
-
-        internal ICallSite CreateFromActualType(Type expectType, Type actualType)
+        /// <summary>
+        /// 自动解析指定预期和实际服务类型，创建一个服务调用点。
+        /// </summary>
+        /// <param name="expectType">预期服务类型。</param>
+        /// <param name="actualType">实际服务类型。可以是一个 null 值。</param>
+        /// <param name="force">指示一个值，当 <paramref name="actualType"/> 是一个 null 值，并且通过 <paramref name="expectType"/> 找不到实际服务类型时是否抛出异常。</param>
+        /// <returns>服务调用点。</returns>
+        internal ICallSite AutoResolving(Type expectType, Type actualType, bool force = false)
         {
             Func<InstanceCreatorCallback> callback;
             if(actualType == null)
             {
+
                 var callSite = this.OnMapResolve(expectType);
                 if(callSite != null) return callSite;
-
-                actualType = this.FindActualType(expectType);
+                actualType = force ? this.ForceFindActualType(expectType) : this.FindActualType(expectType);
                 if(actualType == null) return null;
                 this.TestActualType(actualType);
-                //callback = () => this.CreateCallback(expectType, );
+                //callback = () =>
+                //{
+                //    actualType = this.ForceFindActualType(expectType);
+                //    return this.CreateCallback(expectType, actualType);
+                //};
             }
-
             callback = () => this.CreateCallback(expectType, actualType);
 
-            return this.CreateFromCallback(expectType, actualType, callback);
+            return this.AutoResolving(expectType, actualType, callback);
         }
-        internal ICallSite CreateFromCallback(Type expectType, Type actualType, Func<InstanceCreatorCallback> callback)
+
+        internal ICallSite AutoResolving(Type expectType, Type actualType, Func<InstanceCreatorCallback> callback)
         {
             var lifetime = ServiceLifetime.Transient;
             var sla = expectType.GetAttribute<ServiceLifetimeAttribute>();
             if(sla != null) lifetime = sla.Lifetime;
             if(actualType != null && (sla = actualType.GetAttribute<ServiceLifetimeAttribute>()) != null) lifetime = sla.Lifetime;
+
             return this.CreateCallSite(lifetime, callback);
         }
+
         internal Type ForceFindActualType(Type expectType)
         {
             var actualType = this.FindActualType(expectType);
-            if(actualType == null) throw new NotSupportedException($"预期类型“{expectType.FullName}”找不到匹配的目标类型。可能原因：1、这是一个值类型；2、没有注册接口或基类的映射关联；3、通过默认规则没有找到接口的相同程序集中的关联类型。");
+            if(actualType == null) throw new NotSupportedException($"预期服务类型“{expectType.FullName}”找不到匹配的实际服务类型。可能原因：1、这是一个值类型；2、没有注册接口或基类的映射关联；3、通过默认规则没有找到接口的相同程序集中的关联类型。");
             this.TestActualType(actualType);
             return actualType;
         }
@@ -196,36 +235,20 @@ namespace System
         {
             if(actualType == null) throw new ArgumentNullException(nameof(actualType));
             if(actualType.IsAbstract || actualType.IsInterface || actualType.IsValueType)
-                throw new ArgumentException($"类型“{actualType.FullName}”映射失败，不允许将基类、接口或值类型作为映射关联的目标类型。", nameof(actualType));
+                throw new ArgumentException($"实际服务类型“{actualType.FullName}”映射失败，不允许将基类、接口或值类型作为映射关联的实际服务类型。", nameof(actualType));
             return this;
         }
 
         #endregion
 
-        public IocContainer()
-        {
-            this.Add<IIocContainer>(this);
-        }
-
-        /// <summary>
-        /// 创建基于当前服务容器的子服务容器。
-        /// </summary>
-        /// <returns>一个新的服务容器。</returns>
-        public IIocContainer CreateChildLocator()
+        public IIocContainer CreateChildContainer()
         {
             return new IocContainer(this);
         }
 
-        internal IocContainer(IocContainer parent) : this()
+        private static void SetTypeBinder(IocContainer container, TypeServiceBinder item)
         {
-            if(parent == null) throw new ArgumentNullException(nameof(parent));
-            this.Parent = parent;
-            this._hasParent = true;
-        }
-
-        static void SetTypeBinder(IocContainer locator, TypeServiceBinder item)
-        {
-            locator.CacheType.AddOrUpdate(item.ExpectType, t => new List<ICallSite>(1) { item.CallSite }, (t, list) =>
+            container.CacheType.AddOrUpdate(item.ExpectType, t => new List<ICallSite>(1) { item.CallSite }, (t, list) =>
             {
                 if(item.Overwrite) list.Clear();
                 list.Insert(0, item.CallSite);
@@ -234,10 +257,10 @@ namespace System
             });
         }
 
-        static void SetValueBinder(IocContainer locator, ValueServiceBinder item)
+        private static void SetValueBinder(IocContainer container, ValueServiceBinder item)
         {
             var type = item.ExpectType ?? EmptyType;
-            locator.CacheTypeName.AddOrUpdate(type, t =>
+            container.CacheTypeName.AddOrUpdate(type, t =>
             {
                 var dict = new ConcurrentDictionary<string, ICallSite>();
                 dict[item.Name] = item.CallSite;
@@ -249,13 +272,13 @@ namespace System
             });
         }
 
-        static void AppendToLocator(IocContainer locator, ServiceBuilder builder)
+        private static void AppendToContainer(IocContainer container, ServiceBuilder builder)
         {
             if(builder.TypeBinders.IsValueCreated)
             {
                 foreach(var item in builder.TypeBinders.Value)
                 {
-                    SetTypeBinder(locator, item);
+                    SetTypeBinder(container, item);
                 }
             }
 
@@ -263,7 +286,7 @@ namespace System
             {
                 foreach(var item in builder.ValueBinders.Value)
                 {
-                    SetValueBinder(locator, item);
+                    SetValueBinder(container, item);
                 }
             }
         }
@@ -275,11 +298,11 @@ namespace System
             {
                 callback(builder);
 
-                var locator = this;
+                var container = this;
                 do
                 {
-                    AppendToLocator(locator, builder);
-                } while(builder.IsPromote && locator._hasParent && (locator = locator.Parent) != null);
+                    AppendToContainer(container, builder);
+                } while(builder.IsPromote && container._hasParent && (container = container.Parent) != null);
             }
             return this;
         }
@@ -294,12 +317,12 @@ namespace System
         class EmptyTypeClass { }
         private readonly static Type EmptyType = typeof(EmptyTypeClass);
 
-        public bool FindCallSite(string name, out ICallSite callSite)
+        internal bool FindCallSite(string name, out ICallSite callSite)
         {
             return this.FindCallSite(EmptyType, name, out callSite);
         }
 
-        public bool FindCallSite(Type expectType, out ICallSite callSite)
+        internal bool FindCallSite(Type expectType, out ICallSite callSite)
         {
             List<ICallSite> callSites;
             if(CacheType.TryGetValue(expectType, out callSites))
@@ -312,12 +335,12 @@ namespace System
 
         }
 
-        public bool FindCallSites(Type expectType, out List<ICallSite> callSites)
+        internal bool FindCallSites(Type expectType, out List<ICallSite> callSites)
         {
             return CacheType.TryGetValue(expectType, out callSites);
         }
 
-        public bool FindCallSite(Type expectType, string name, out ICallSite callSite)
+        internal bool FindCallSite(Type expectType, string name, out ICallSite callSite)
         {
             ConcurrentDictionary<string, ICallSite> nameCallSites;
             if(CacheTypeName.TryGetValue(expectType, out nameCallSites) && nameCallSites.TryGetValue(name, out callSite)) return true;
@@ -333,11 +356,11 @@ namespace System
         {
             var binder = new TypeServiceBinder(this, null, expectType, true);
             callback(binder);
-            var locator = this;
+            var container = this;
             do
             {
-                SetTypeBinder(locator, binder);
-            } while(promote && locator._hasParent && (locator = locator.Parent) != null);
+                SetTypeBinder(container, binder);
+            } while(promote && container._hasParent && (container = container.Parent) != null);
 
             return this;
         }
@@ -349,15 +372,14 @@ namespace System
 
             var binder = new ValueServiceBinder(this, null, expectType, name);
             callback(binder);
-            var locator = this;
+            var container = this;
             do
             {
-                SetValueBinder(locator, binder);
-            } while(promote && locator._hasParent && (locator = locator.Parent) != null);
+                SetValueBinder(container, binder);
+            } while(promote && container._hasParent && (container = container.Parent) != null);
 
             return this;
         }
-
 
         public IIocContainer Add(Type expectType, bool singletonMode = false, bool promote = false)
             => this.InnerAddType(expectType, b => singletonMode ? b.Singleton() : b.As(), promote);
@@ -401,7 +423,7 @@ namespace System
                 var callSite = GetCallSite(this, expectType);
                 if(callSite == null && autoResolving)
                 {
-                    callSite = this.CreateFromActualType(expectType, null);
+                    callSite = this.AutoResolving(expectType, null);
                     if(callSite == null) return null;
                     CacheType.TryAdd(expectType, new List<ICallSite>(1) { callSite });
                 }
@@ -438,11 +460,11 @@ namespace System
             }
             yield break;
         }
-        public object[] GetAll(Type expectType, params object[] lastMappingValues)
+        public IEnumerable<object> GetAll(Type expectType, params object[] lastMappingValues)
         {
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
 
-            return (from callSite in GetCallSites(this, expectType) select callSite.Invoke(lastMappingValues)).ToArray();
+            return from callSite in GetCallSites(this, expectType) select callSite.Invoke(lastMappingValues);
         }
 
         public object Get(string name, params object[] lastMappingValues) => this.Get(EmptyType, name, lastMappingValues);

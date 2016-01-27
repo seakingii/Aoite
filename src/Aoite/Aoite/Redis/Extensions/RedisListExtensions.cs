@@ -244,7 +244,7 @@ namespace System
         /// <para>当 <paramref name="index"/> 参数超出范围，或对一个空列表( <paramref name="key"/> 不存在)进行 LSET 时，返回一个错误</para>
         /// </param>
         /// <param name="value">设置的元素值。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result LSet(this IRedisClient client, string key, long index, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -260,7 +260,7 @@ namespace System
         /// <param name="key">列表的键名。</param>
         /// <param name="start">开始索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
         /// <param name="stop">结束索引（含）。负数偏移量表示从值最后开始计数，-1 表示最后一个，-2 表示倒数第二个，以此类推。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result LTrim(this IRedisClient client, string key, long start, long stop)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

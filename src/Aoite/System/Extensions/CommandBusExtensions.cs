@@ -112,7 +112,7 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TEntity FindOne<TEntity>(this ICommandBus bus, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TEntity>(bus, keyValue, tunnel);
 
@@ -124,7 +124,7 @@ namespace System
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TEntity FindOne<TEntity>(this ICommandBus bus, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TEntity>(bus, keyName, keyValue, tunnel);
 
@@ -136,7 +136,7 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TView FindOne<TEntity, TView>(this ICommandBus bus, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TView>(bus, null, keyValue, tunnel);
 
@@ -149,7 +149,7 @@ namespace System
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TView FindOne<TEntity, TView>(this ICommandBus bus, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => Filter(bus, DbExtensions.GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tunnel);
 
@@ -164,7 +164,7 @@ namespace System
         /// <param name="bus">命令总线。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         public static bool Exists<TEntity>(this ICommandBus bus, object keyValue, ICommandTunnel tunnel = null)
             => Exists<TEntity>(bus, null, keyValue, tunnel);
 
@@ -176,7 +176,7 @@ namespace System
         /// <param name="keyName">主键的列名。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         public static bool Exists<TEntity>(this ICommandBus bus, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => Filter(bus, DbExtensions.GetKeyValues<TEntity>(keyName, keyValue)).Exists<TEntity>(tunnel);
 

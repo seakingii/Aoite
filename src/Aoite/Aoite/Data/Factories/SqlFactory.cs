@@ -120,7 +120,7 @@ namespace Aoite.Data.Factories
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateLastIdentityCommand(TypeMapper mapper, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -135,7 +135,7 @@ namespace Aoite.Data.Factories
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateInsertCommand(TypeMapper mapper, object entity, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -174,7 +174,7 @@ namespace Aoite.Data.Factories
         /// <param name="entity">实体的实例对象。</param>
         /// <param name="where">条件参数。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateUpdateCommand(TypeMapper mapper, object entity, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -210,7 +210,7 @@ namespace Aoite.Data.Factories
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateDeleteCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -255,7 +255,7 @@ namespace Aoite.Data.Factories
         /// <param name="where">条件参数。</param>
         /// <param name="top">指定 TOP 数量，小于 1 则忽略作用。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, int top = 0, ICommandTunnel tunnel = null)
         {
             if(where == null) throw new ArgumentNullException(nameof(where));
@@ -274,7 +274,7 @@ namespace Aoite.Data.Factories
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateExistsCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -291,7 +291,7 @@ namespace Aoite.Data.Factories
         /// <param name="mapper">类型映射器。</param>
         /// <param name="where">条件参数。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个查询命令。</returns>
+        /// <returns>查询命令。</returns>
         public virtual ExecuteCommand CreateRowCountCommand(TypeMapper mapper, WhereParameters where, ICommandTunnel tunnel = null)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));

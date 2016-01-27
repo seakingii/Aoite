@@ -35,7 +35,7 @@ namespace System
         /// <see cref="BinaryValue"/> 和 <see cref="<#=type.Name #>"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个二进制的值。</param>
-        /// <returns>一个 <see cref="<#=type.Name #>"/> 的新实例。</returns>
+        /// <returns><see cref="<#=type.Name #>"/> 的新实例。</returns>
         public static implicit operator <#=type.Name #>(BinaryValue value)
             => HasValue(value) ? BitConverter.To<#=type.Name #>(value._ByteArray, 0) : default(<#=type.Name #>);
 
@@ -43,7 +43,7 @@ namespace System
         /// <see cref="<#=type.Name #>"/> 和 <see cref="BinaryValue"/> 的隐式转换。
         /// </summary>
         /// <param name="value">一个 <see cref="<#=type.Name #>"/> 的新实例。</param>
-        /// <returns>一个二进制的值。</returns>
+        /// <returns>二进制的值。</returns>
         public static implicit operator BinaryValue(<#=type.Name #> value)
             => new BinaryValue(BitConverter.GetBytes(value));
 

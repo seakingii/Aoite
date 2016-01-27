@@ -23,6 +23,6 @@
     /// 表示动态创建实例的委托。
     /// </summary>
     /// <param name="parameters">构造函数的参数值集合。</param>
-    /// <returns>一个动态创建的实例。</returns>
+    /// <returns>动态创建的实例。</returns>
     public delegate object DynamicConstructorHandler(params object[] parameters);
 }

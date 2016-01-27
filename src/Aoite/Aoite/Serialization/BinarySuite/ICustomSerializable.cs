@@ -9,7 +9,7 @@
         /// 反序列化指定字节数组。
         /// </summary>
         /// <param name="reader">反序列化读取器。</param>
-        /// <returns>一个对象。</returns>
+        /// <returns>对象实例。</returns>
         object Deserialize(ObjectReader reader);
         /// <summary>
         /// 序列化指定对象。

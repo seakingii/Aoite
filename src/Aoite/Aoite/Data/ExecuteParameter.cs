@@ -30,7 +30,7 @@ namespace Aoite.Data
         /// 指定 <see cref="DbCommand"/>，生成一个 <see cref="DbParameter"/>。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/>。</param>
-        /// <returns>一个已生成的 <see cref="DbParameter"/>。</returns>
+        /// <returns>已生成的 <see cref="DbParameter"/>。</returns>
         public virtual DbParameter CreateParameter(DbCommand command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));

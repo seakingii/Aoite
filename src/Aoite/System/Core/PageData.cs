@@ -39,7 +39,7 @@ namespace System
         /// 获取指定索引的数据。
         /// </summary>
         /// <param name="index">数据的索引。</param>
-        /// <returns>一个数据。</returns>
+        /// <returns>数据。</returns>
         public TModel this[int index]
         {
             get

@@ -8,15 +8,21 @@ namespace System.Web.Mvc
 {
     public class AoiteDependencyResolver : IDependencyResolver
     {
-        public object GetService(Type serviceType)
+        private IIocContainer _container;
+        public AoiteDependencyResolver(IIocContainer container)
         {
-            return ObjectFactory.Context.Get(serviceType);
+            if(container == null) throw new ArgumentNullException(nameof(container));
+            this._container = container;
         }
 
-        public IEnumerable<object> GetServices(Type serviceType)
+        public virtual object GetService(Type serviceType)
         {
-            //ObjectFactory.Context.GetService
-            throw new NotImplementedException();
+            return this._container.Get(serviceType);
+        }
+
+        public virtual IEnumerable<object> GetServices(Type serviceType)
+        {
+            return this._container.GetAll(serviceType);
         }
     }
 }

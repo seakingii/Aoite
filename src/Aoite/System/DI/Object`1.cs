@@ -10,7 +10,7 @@
         /// <summary>
         /// 当获取 <typeparamref name="T"/> 实例，并且调用方没有指定后期映射的参数值数组时发生。
         /// </summary>
-        public static event LastMappingHandler LastMapping;
+        public static event LastMappingValuesHandler LastMapping;
         /// <summary>
         /// 获取或创建指定数据类型的实例。如果 <typeparamref name="T"/> 是一个接口、基类，将返回接口映射的实例；如果 <typeparamref name="T"/> 是一个普通的类型，将会自动创建新的映射，并返回实例。
         /// </summary>

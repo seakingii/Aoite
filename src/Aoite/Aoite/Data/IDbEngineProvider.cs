@@ -28,7 +28,7 @@ namespace Aoite.Data
         /// <summary>
         /// 创建并返回一个到数据源的连接。
         /// </summary>
-        /// <returns>一个到数据源的连接。</returns>
+        /// <returns>到数据源的连接。</returns>
         DbConnection CreateConnection();
     }
 }

@@ -44,7 +44,7 @@ namespace Aoite.CommandModel
         /// <param name="user">当前已授权的登录用户。</param>
         /// <param name="mockFactoryCallback">模拟的执行器工厂回调函数。</param>
         /// <param name="redisProvider">Redis 提供程序。若为 null 值表示启用基于应用程序域各种提供程序的服务容器。</param>
-        /// <returns>一个服务容器。</returns>
+        /// <returns>服务容器。</returns>
         public static IIocContainer CreateContainer(object user = null
             , Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)
@@ -56,7 +56,7 @@ namespace Aoite.CommandModel
         /// <param name="userFactory">用户工厂。</param>
         /// <param name="mockFactoryCallback">模拟的执行器工厂回调函数。</param>
         /// <param name="redisProvider">Redis 提供程序。若为 null 值表示启用基于应用程序域各种提供程序的服务容器。</param>
-        /// <returns>一个服务容器。</returns>
+        /// <returns>服务容器。</returns>
         public static IIocContainer CreateContainer(IUserFactory userFactory
             , Action<MockExecutorFactory> mockFactoryCallback = null
             , IRedisProvider redisProvider = null)

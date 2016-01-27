@@ -43,16 +43,16 @@ namespace Aoite.DI
 
     abstract class ServiceBinderBase : IServiceBinder
     {
-        protected readonly IocContainer _locator;
+        protected readonly IocContainer _container;
         protected readonly ServiceBuilder _builder;
         protected readonly Type _expectType;
         private ICallSite _callSite;
         public Type ExpectType => this._expectType;
         public ICallSite CallSite => this._callSite;
 
-        public ServiceBinderBase(IocContainer locator, ServiceBuilder builder, Type expectType)
+        public ServiceBinderBase(IocContainer container, ServiceBuilder builder, Type expectType)
         {
-            this._locator = locator;
+            this._container = container;
             this._builder = builder;
             this._expectType = expectType;
         }
@@ -64,10 +64,11 @@ namespace Aoite.DI
         }
 
         public IServiceBuilder As(InstanceCreatorCallback callback)
-            => this.TestCallback(callback).SetCallSite(this._locator.CreateFromCallback(this._expectType, null, () => callback));
+            => this.TestCallback(callback).SetCallSite(this._container.AutoResolving(this._expectType, null, () => callback));
 
         protected IServiceBuilder SetCallSite(ICallSite callSite)
         {
+            if(callSite == null) throw new ArgumentNullException(nameof(callSite));
             this._callSite = callSite;
             return this._builder;
         }

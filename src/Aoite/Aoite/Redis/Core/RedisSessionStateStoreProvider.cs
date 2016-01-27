@@ -93,7 +93,7 @@ namespace Aoite.Redis
         /// 获取当前请求的会话标识符的 Redis 键名。
         /// </summary>
         /// <param name="id">当前请求的会话标识符。</param>
-        /// <returns>一个 Redis 键名。</returns>
+        /// <returns>Redis 键名。</returns>
         protected virtual string GetRedisKey(string id)
         {
             return this.Name + "::" + id;

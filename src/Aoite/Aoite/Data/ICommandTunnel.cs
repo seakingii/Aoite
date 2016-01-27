@@ -15,14 +15,14 @@ namespace Aoite.Data
         /// 获取个性化表名。
         /// </summary>
         /// <param name="mapper">映射器。</param>
-        /// <returns>一个字符串。</returns>
+        /// <returns>字符串。</returns>
         string GetTableName(TypeMapper mapper);
         /// <summary>
         /// 给定映射器和执行命令，获取一个个性化的执行命令。
         /// </summary>
         /// <param name="mapper">映射器。</param>
         /// <param name="command">执行命令。</param>
-        /// <returns>一个新的执行命令。</returns>
+        /// <returns>新的执行命令。</returns>
         ExecuteCommand GetCommand(TypeMapper mapper, ExecuteCommand command);
     }
     class EmptyCommandTunnel : ICommandTunnel

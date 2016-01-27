@@ -75,39 +75,39 @@ namespace Aoite.DI
         private readonly bool _overwrite;
         public bool Overwrite => this._overwrite;
 
-        public TypeServiceBinder(IocContainer locator, ServiceBuilder builder, Type expectType, bool overwrite)
-            : base(locator, builder, expectType)
+        public TypeServiceBinder(IocContainer container, ServiceBuilder builder, Type expectType, bool overwrite)
+            : base(container, builder, expectType)
         {
             this._overwrite = overwrite;
         }
 
         private TypeServiceBinder ThrowIfDAR()
         {
-            if(this._locator.DisabledAutoResolving) throw new NotSupportedException($"定位器禁止了智能解析，请显示注册{this._expectType.FullName}目标类型。");
+            if(this._container.DisabledAutoResolving) throw new NotSupportedException($"定位器禁止了智能解析，请显示注册{this._expectType.FullName}实际服务类型。");
             return this;
         }
 
         private InstanceCreatorCallback CreateCallback()
         {
-            return this.CreateCallback(this._locator.ForceFindActualType(this._expectType));
+            return this.CreateCallback(this._container.ForceFindActualType(this._expectType));
         }
 
         private InstanceCreatorCallback CreateCallback(Type actualType)
         {
-            return this._locator.CreateCallback(this._expectType, actualType);
+            return this._container.CreateCallback(this._expectType, actualType);
         }
 
         private TypeServiceBinder TestActualType(Type actualType)
         {
-            this._locator.TestActualType(actualType);
+            this._container.TestActualType(actualType);
             return this;
         }
 
         public IServiceBuilder As()
-            => this.ThrowIfDAR().SetCallSite(this._locator.CreateFromActualType(this._expectType, null));
+            => this.ThrowIfDAR().SetCallSite(this._container.AutoResolving(this._expectType, null, true));
 
         public IServiceBuilder As(Type actualType)
-            => this.ThrowIfDAR().TestActualType(actualType).SetCallSite(this._locator.CreateFromActualType(this._expectType, actualType));
+            => this.ThrowIfDAR().TestActualType(actualType).SetCallSite(this._container.AutoResolving(this._expectType, actualType));
 
         public IServiceBuilder Scoped()
             => this.ThrowIfDAR().SetCallSite(new ScopedCallSite(this.CreateCallback));

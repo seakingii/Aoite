@@ -47,7 +47,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">集合的键名数组。</param>
-        /// <returns>一个包含差集成员列表。</returns>
+        /// <returns>包含差集成员列表。</returns>
         public static BinaryValue[] SDiff(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -80,7 +80,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">集合的键名数组。</param>
-        /// <returns>一个包含交集成员列表。</returns>
+        /// <returns>包含交集成员列表。</returns>
         public static BinaryValue[] SInter(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -128,7 +128,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">集合的键名。</param>
-        /// <returns>一个集合的所有成员。</returns>
+        /// <returns>集合的所有成员。</returns>
         public static BinaryValue[] SMembers(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -144,7 +144,7 @@ namespace System
         /// <param name="source">源集合。</param>
         /// <param name="destination">目标集合。</param>
         /// <param name="member">移动的成员。</param>
-        /// <returns>一个值，表示移动是否成功。</returns>
+        /// <returns>表示移动是否成功。</returns>
         public static bool SMove(this IRedisClient client, string source, string destination, BinaryValue member)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -173,7 +173,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">集合的键名。</param>
-        /// <returns>一个的随机成员。当 <paramref name="key"/> 不存在或 <paramref name="key"/> 是空集时，返回 null。</returns>
+        /// <returns>随机成员。当 <paramref name="key"/> 不存在或 <paramref name="key"/> 是空集时，返回 null。</returns>
         public static BinaryValue SRandMember(this IRedisClient client, string key)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -223,7 +223,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keys">集合的键名数组。</param>
-        /// <returns>一个包含并集成员列表。</returns>
+        /// <returns>包含并集成员列表。</returns>
         public static BinaryValue[] SUnion(this IRedisClient client, params string[] keys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -259,7 +259,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="System.RedisKeyExtensions.Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>一个支持迭代的枚举。</returns>
+        /// <returns>支持迭代的枚举。</returns>
         public static IEnumerable<BinaryValue> SScan(this IRedisClient client, string key, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<BinaryValue>(client, "SSCAN", key, cursor, pattern, count

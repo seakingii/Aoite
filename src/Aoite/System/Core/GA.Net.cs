@@ -64,7 +64,7 @@ namespace System
             /// </summary>
             /// <param name="host">主机地址。</param>
             /// <param name="port">主机端口。</param>
-            /// <returns>一个新的 <see cref="IPEndPoint"/> 实例。</returns>
+            /// <returns>新的 <see cref="IPEndPoint"/> 实例。</returns>
             public static IPEndPoint CreateEndPoint(string host, int port)
             {
                 return new IPEndPoint((string.IsNullOrWhiteSpace(host) || host.iEquals("localhost"))

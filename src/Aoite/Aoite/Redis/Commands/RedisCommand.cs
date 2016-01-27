@@ -41,7 +41,7 @@ namespace Aoite.Redis.Commands
             /// <typeparam name="T">返回值的数据类型。</typeparam>
             /// <param name="command">命令。</param>
             /// <param name="parseItemCount">返回值的解析项量。</param>
-            /// <returns>一个命令。</returns>
+            /// <returns>命令。</returns>
             public static RedisCommand<T[]> Array<T>(RedisCommand<T> command, int parseItemCount = 1)
             {
                 return RedisArray.Create(command, parseItemCount);

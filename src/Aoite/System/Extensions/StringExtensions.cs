@@ -22,7 +22,7 @@ namespace System
         /// 将当前字符串转换为智能小写模式。
         /// </summary>
         /// <param name="s">当前字符串。</param>
-        /// <returns>一个新的字符串。</returns>
+        /// <returns>新的字符串。</returns>
         public static string ToCamelCase(this string s)
         {
             if(s == null || s.Length == 0) return s;
@@ -52,7 +52,7 @@ namespace System
         /// </summary>
         /// <param name="value">当前字符串。</param>
         /// <param name="encoding">编码。为 null 值表示 UTF8 的编码。</param>
-        /// <returns>一个字节组。</returns>
+        /// <returns>字节组。</returns>
         public static byte[] ToBytes(this string value, Encoding encoding = null)
             => (encoding ?? GA.UTF8).GetBytes(value);
 
@@ -105,7 +105,7 @@ namespace System
         /// 在当前字符串的前后增加“%”符号。
         /// </summary>
         /// <param name="input">当前字符串。</param>
-        /// <returns>一个新的字符串。</returns>
+        /// <returns>新的字符串。</returns>
         public static string ToLiking(this string input)
             => string.Concat("%", input, "%");
 
@@ -148,7 +148,7 @@ namespace System
         /// <param name="input">一个字符串。</param>
         /// <param name="maxLength">字符串的最大长度（含）。</param>
         /// <param name="ellipsis">指定省略号的字符串，默认为“...”。</param>
-        /// <returns>一个新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
+        /// <returns>新的字符串 -或- 原字符串，该字符串的最大长度不超过 <paramref name="maxLength"/>。</returns>
         public static string CutString(this string input, int maxLength, string ellipsis = "...")
         {
             if(input == null || input.Length <= maxLength) return input;
@@ -162,7 +162,7 @@ namespace System
         /// </summary>
         /// <param name="input">一个字符串。</param>
         /// <param name="length">获取的字符串长度。</param>
-        /// <returns>一个新的字符串。</returns>
+        /// <returns>新的字符串。</returns>
         public static string Starts(this string input, int length)
         {
             if(string.IsNullOrWhiteSpace(input)) return string.Empty;
@@ -174,7 +174,7 @@ namespace System
         /// </summary>
         /// <param name="input">一个字符串。</param>
         /// <param name="length">获取的字符串长度。</param>
-        /// <returns>一个新的字符串。</returns>
+        /// <returns>新的字符串。</returns>
         public static string Ends(this string input, int length)
         {
             if(string.IsNullOrWhiteSpace(input)) return string.Empty;

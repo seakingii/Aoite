@@ -41,7 +41,7 @@
         /// </summary>
         /// <param name="context">命令模型的上下文。</param>
         /// <param name="command">命令模型。</param>
-        /// <returns>一个执行的结果值。</returns>
+        /// <returns>执行的结果值。</returns>
         protected abstract TResult ExecuteResult(IContext context, TCommand command);
 
     }

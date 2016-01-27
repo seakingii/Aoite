@@ -112,14 +112,14 @@ namespace Aoite.Data
         /// <summary>
         /// 创建一个关联当前执行器的 <see cref="DbCommand"/> 的实例。
         /// </summary>
-        /// <returns>一个关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
+        /// <returns>关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
         protected virtual DbCommand CreateDbCommand() => this.CreateDbCommand(this.Command);
 
         /// <summary>
         /// 指定执行命令，创建一个关联当前执行器的 <see cref="DbCommand"/> 的实例。
         /// </summary>
         /// <param name="command">执行的命令。</param>
-        /// <returns>一个关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
+        /// <returns>关联当前执行器的 <see cref="DbCommand"/> 的实例。</returns>
         protected virtual DbCommand CreateDbCommand(ExecuteCommand command)
         {
             var dbCommand = this.Engine.Provider.DbFactory.CreateCommand();
@@ -155,7 +155,7 @@ namespace Aoite.Data
         /// <typeparam name="TValue">返回结果的数据类型。</typeparam>
         /// <param name="type">执行的命令类型。</param>
         /// <param name="callback">执行时的回调方法。</param>
-        /// <returns>一个执行结果。</returns>
+        /// <returns>执行结果。</returns>
         protected virtual TValue Execute<TValue>(ExecuteType type, Func<DbCommand, TValue> callback)
         {
             var dbCommand = this.CreateDbCommand();
@@ -187,7 +187,7 @@ namespace Aoite.Data
         /// 提供一个 <see cref="DbCommand"/> 的实例，创建一个关联的数据适配器。
         /// </summary>
         /// <param name="command">一个 <see cref="DbCommand"/> 的实例。</param>
-        /// <returns>一个关联 <paramref name="command"/> 的数据适配器。</returns>
+        /// <returns>关联 <paramref name="command"/> 的数据适配器。</returns>
         protected virtual DbDataAdapter CreateDataAdapter(DbCommand command)
         {
             var adapter = this.Engine.Provider.DbFactory.CreateDataAdapter();
@@ -256,7 +256,7 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回数据集。
         /// </summary>
-        /// <returns>一个数据集。</returns>
+        /// <returns>数据集。</returns>
         public DataSet ToDataSet() => this.ToDataSet<DataSet>();
 
         /// <summary>
@@ -303,14 +303,14 @@ namespace Aoite.Data
         /// 执行查询命令，并返回实体。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public virtual TEntity ToEntity<TEntity>() => this.Execute(ExecuteType.Reader, DbExtensions.ExecuteEntity<TEntity>);
 
         /// <summary>
         /// 执行查询命令，并返回实体的集合。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         public virtual List<TEntity> ToEntities<TEntity>() => this.Execute(ExecuteType.Reader, DbExtensions.ExecuteEntities<TEntity>);
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         public virtual PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;
@@ -347,13 +347,13 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回匿名实体。
         /// </summary>
-        /// <returns>一个匿名实体。</returns>
+        /// <returns>匿名实体。</returns>
         public virtual dynamic ToEntity() => this.Execute(ExecuteType.Reader, DbExtensions.ExecuteEntity);
 
         /// <summary>
         /// 执行查询命令，并返回匿名实体的集合。
         /// </summary>
-        /// <returns>一个匿名实体的集合。</returns>
+        /// <returns>匿名实体的集合。</returns>
         public virtual List<dynamic> ToEntities() => this.Execute(ExecuteType.Reader, DbExtensions.ExecuteEntities);
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        /// <returns>包含总记录数的匿名实体的集合。</returns>
         public virtual PageData<dynamic> ToEntities(int pageNumber, int pageSize = 10)
         {
             if(pageNumber < 1) pageNumber = 1;

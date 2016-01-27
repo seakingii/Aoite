@@ -34,7 +34,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         bool Exists<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取数据表的总行数。
@@ -49,7 +49,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         TEntity FindOne<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取一个对象。
@@ -57,14 +57,14 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         TView FindOne<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         List<TEntity> FindAll<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
@@ -72,7 +72,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         List<TView> FindAll<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
@@ -80,7 +80,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的分页集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         PageData<TEntity> FindAll<TEntity>(IPagination page, ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，获取对象的列表。
@@ -89,7 +89,7 @@ namespace Aoite.Data
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的分页集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null);
     }
 

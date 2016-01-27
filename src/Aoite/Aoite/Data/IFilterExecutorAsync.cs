@@ -32,7 +32,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         Task<bool> ExistsAsync<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取数据表的总行数。
@@ -47,7 +47,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<TEntity> FindOneAsync<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取一个对象。
@@ -55,14 +55,14 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<TView> FindOneAsync<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取对象的列表。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         Task<List<TEntity>> FindAllAsync<TEntity>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取对象的列表。
@@ -70,7 +70,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         Task<List<TView>> FindAllAsync<TEntity, TView>(ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取对象的列表。
@@ -78,7 +78,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的分页集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<TEntity>> FindAllAsync<TEntity>(IPagination page, ICommandTunnel tunnel = null);
         /// <summary>
         /// 根据当前提供匹配条件，异步获取对象的列表。
@@ -87,7 +87,7 @@ namespace Aoite.Data
         /// <typeparam name="TView">视图的数据类型。</typeparam>
         /// <param name="page">一个分页的实现。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体的分页集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<TView>> FindAllAsync<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null);
     }
 

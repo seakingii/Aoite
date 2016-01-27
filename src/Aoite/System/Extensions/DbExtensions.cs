@@ -70,7 +70,7 @@ namespace System
         /// 将指定的执行命令转换成完整字符串形式。
         /// </summary>
         /// <param name="command">执行命令。</param>
-        /// <returns>一个完整执行命令的字符串形式。</returns>
+        /// <returns>完整执行命令的字符串形式。</returns>
         public static string ToFullString(this ExecuteCommand command)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
@@ -93,7 +93,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TEntity ExecuteEntity<TEntity>(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -111,7 +111,7 @@ namespace System
         /// 执行查询，转换并返回结果换后的实体。
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static dynamic ExecuteEntity(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -128,7 +128,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>一个实体集合。</returns>
+        /// <returns>实体的集合。</returns>
         public static List<TEntity> ExecuteEntities<TEntity>(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -151,7 +151,7 @@ namespace System
         /// 执行查询，转换并返回结果集转换后的实体集合。
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
-        /// <returns>一个实体集合</returns>
+        /// <returns>实体的集合</returns>
         public static List<dynamic> ExecuteEntities(this DbCommand dbCommand)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -173,7 +173,7 @@ namespace System
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static Task<TEntity> ExecuteEntityAsync<TEntity>(this DbCommand dbCommand, CancellationToken cancellationToken)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -195,7 +195,7 @@ namespace System
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static Task<dynamic> ExecuteEntityAsync(this DbCommand dbCommand, CancellationToken cancellationToken)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -216,7 +216,7 @@ namespace System
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体集合。</returns>
+        /// <returns>实体的集合。</returns>
         public static Task<List<TEntity>> ExecuteEntitiesAsync<TEntity>(this DbCommand dbCommand, CancellationToken cancellationToken)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -243,7 +243,7 @@ namespace System
         /// </summary>
         /// <param name="dbCommand">数据源命令。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体集合</returns>
+        /// <returns>实体的集合</returns>
         public static Task<List<dynamic>> ExecuteEntitiesAsync(this DbCommand dbCommand, CancellationToken cancellationToken)
         {
             if(dbCommand == null) throw new ArgumentNullException(nameof(dbCommand));
@@ -304,7 +304,7 @@ namespace System
         /// <typeparam name="TDataSet">数据集的数据类型。</typeparam>
         /// <param name="dbCommand">数据库命令。</param>
         /// <param name="dataAdpater">数据源适配器。</param>
-        /// <returns>一个数据集。</returns>
+        /// <returns>数据集。</returns>
         public static TDataSet ExecuteDataSet<TDataSet>(this DbCommand dbCommand, DbDataAdapter dataAdpater)
             where TDataSet : DataSet, new()
         {
@@ -376,7 +376,7 @@ namespace System
         /// <param name="executor">执行器。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一张包含总记录数的表。</returns>
+        /// <returns>包含总记录数的表。</returns>
         public static Task<PageTable> ToTableAsync(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
         {
             if(executor == null) throw new ArgumentNullException(nameof(executor));
@@ -390,7 +390,7 @@ namespace System
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="executor">执行器。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         public static Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(this IDbExecutor executor, IPagination page)
         {
             return executor.ToEntitiesAsync<TEntity>(CancellationToken.None, page);
@@ -402,7 +402,7 @@ namespace System
         /// <param name="executor">执行器。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         public static Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
         {
             if(executor == null) throw new ArgumentNullException(nameof(executor));
@@ -415,7 +415,7 @@ namespace System
         /// </summary>
         /// <param name="executor">执行器。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        /// <returns>包含总记录数的匿名实体的集合。</returns>
         public static Task<PageData<dynamic>> ToEntitiesAsync(this IDbExecutor executor, IPagination page)
         {
             return executor.ToEntitiesAsync(CancellationToken.None, page);
@@ -426,7 +426,7 @@ namespace System
         /// <param name="executor">执行器。</param>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        /// <returns>包含总记录数的匿名实体的集合。</returns>
         public static Task<PageData<dynamic>> ToEntitiesAsync(this IDbExecutor executor, CancellationToken cancellationToken, IPagination page)
         {
             if(executor == null) throw new ArgumentNullException(nameof(executor));
@@ -441,7 +441,7 @@ namespace System
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="executor">执行器。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         public static PageData<TEntity> ToEntities<TEntity>(this IDbExecutor executor, IPagination page)
         {
             if(executor == null) throw new ArgumentNullException(nameof(executor));
@@ -454,7 +454,7 @@ namespace System
         /// </summary>
         /// <param name="executor">执行器。</param>
         /// <param name="page">一个分页的实现。</param>
-        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        /// <returns>包含总记录数的匿名实体的集合。</returns>
         public static PageData<dynamic> ToEntities(this IDbExecutor executor, IPagination page)
         {
             if(executor == null) throw new ArgumentNullException(nameof(executor));
@@ -618,7 +618,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TEntity FindOne<TEntity>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TEntity>(engine, keyValue, tunnel);
 
@@ -630,7 +630,7 @@ namespace System
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TEntity FindOne<TEntity>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TEntity>(engine, keyName, keyValue, tunnel);
 
@@ -642,7 +642,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TView FindOne<TEntity, TView>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
             => FindOne<TEntity, TView>(engine, null, keyValue, tunnel);
 
@@ -655,7 +655,7 @@ namespace System
         /// <param name="keyName">主键的列名。可以为 null 值。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tunnel);
 
@@ -670,7 +670,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         public static bool Exists<TEntity>(this IDbEngine engine, object keyValue, ICommandTunnel tunnel = null)
             => Exists<TEntity>(engine, null, keyValue, tunnel);
 
@@ -682,7 +682,7 @@ namespace System
         /// <param name="keyName">主键的列名。</param>
         /// <param name="keyValue">主键的列值。</param>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
-        /// <returns>一个值，表示数据是否存在。</returns>
+        /// <returns>表示数据是否存在。</returns>
         public static bool Exists<TEntity>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
              => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).Exists<TEntity>(tunnel);
 
@@ -967,7 +967,7 @@ namespace System
         /// <param name="engine">数据源查询与交互引擎的实例。</param>
         /// <param name="ps">参数集合实例。</param>
         /// <param name="binary">二元运算符。</param>
-        /// <returns>一个条件查询语句。</returns>
+        /// <returns>条件查询语句。</returns>
         public static string CreateWhere(this IDbEngine engine, ExecuteParameterCollection ps, string binary = "AND")
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));

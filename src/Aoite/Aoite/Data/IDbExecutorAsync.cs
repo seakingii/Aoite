@@ -56,13 +56,13 @@ namespace Aoite.Data
         /// <summary>
         /// 异步执行查询命令，并返回数据集。
         /// </summary>
-        /// <returns>一个数据集。</returns>
+        /// <returns>数据集。</returns>
         Task<DataSet> ToDataSetAsync();
         /// <summary>
         /// 异步执行查询命令，并返回数据集。
         /// </summary>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个数据集。</returns>
+        /// <returns>数据集。</returns>
         Task<DataSet> ToDataSetAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -139,21 +139,21 @@ namespace Aoite.Data
         /// 异步执行查询命令，并返回实体。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<TEntity> ToEntityAsync<TEntity>();
         /// <summary>
         /// 异步执行查询命令，并返回实体。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<TEntity> ToEntityAsync<TEntity>(CancellationToken cancellationToken);
 
         /// <summary>
         /// 异步执行查询，并返回实体的集合。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体的集合。</returns>
         Task<List<TEntity>> ToEntitiesAsync<TEntity>();
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Aoite.Data
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体的集合。</returns>
         Task<List<TEntity>> ToEntitiesAsync<TEntity>(CancellationToken cancellationToken);
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(int pageNumber, int pageSize = 10);
 
         /// <summary>
@@ -180,29 +180,29 @@ namespace Aoite.Data
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<TEntity>> ToEntitiesAsync<TEntity>(CancellationToken cancellationToken, int pageNumber, int pageSize = 10);
         /// <summary>
         /// 异步执行查询命令，并返回匿名实体。
         /// </summary>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<dynamic> ToEntityAsync();
         /// <summary>
         /// 异步执行查询命令，并返回匿名实体。
         /// </summary>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<dynamic> ToEntityAsync(CancellationToken cancellationToken);
         /// <summary>
         /// 异步执行查询，并返回匿名实体的集合。
         /// </summary>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<List<dynamic>> ToEntitiesAsync();
         /// <summary>
         /// 异步执行查询，并返回匿名实体的集合。
         /// </summary>
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         Task<List<dynamic>> ToEntitiesAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Aoite.Data
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<dynamic>> ToEntitiesAsync(int pageNumber, int pageSize = 10);
         /// <summary>
         /// 执行分页查询命令，并返回匿名实体的集合。
@@ -218,7 +218,7 @@ namespace Aoite.Data
         /// <param name="cancellationToken">针对取消请求监视的标记。</param>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         Task<PageData<dynamic>> ToEntitiesAsync(CancellationToken cancellationToken, int pageNumber, int pageSize = 10);
     }
 }

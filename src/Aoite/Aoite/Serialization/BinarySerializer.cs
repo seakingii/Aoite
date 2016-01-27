@@ -30,7 +30,7 @@ namespace Aoite.Serialization
         /// <summary>
         /// 获取序列化器。
         /// </summary>
-        /// <returns>一个序列化器。</returns>
+        /// <returns>序列化器。</returns>
         protected virtual BinaryFormatter GetSerializer()
         {
             if(CreateSerializer == null)

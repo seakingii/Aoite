@@ -43,21 +43,21 @@ namespace System
         /// <summary>
         /// 将当前错误转换为 <see cref="Result"/> 类的新实例。
         /// </summary>
-        /// <returns>一个 <see cref="Result"/> 类的新实例。</returns>
+        /// <returns><see cref="Result"/> 类的新实例。</returns>
         public Result ToResult() => new Result(this, this.Status);
 
         /// <summary>
         /// 将当前错误转换为 <see cref="Result{TValue}"/> 类的新实例。
         /// </summary>
         /// <typeparam name="TValue">返回值的数据类型。</typeparam>
-        /// <returns>一个 <see cref="Result{TValue}"/> 类的新实例。</returns>
+        /// <returns><see cref="Result{TValue}"/> 类的新实例。</returns>
         public Result<TValue> ToResult<TValue>() => new Result<TValue>(this, this.Status);
 
         /// <summary>
         /// 将当前错误转换为 <typeparamref name="TResult" /> 类的新实例。
         /// </summary>
         /// <typeparam name="TResult">结果的数据类型。</typeparam>
-        /// <returns>一个 <typeparamref name="TResult" /> 类的新实例。</returns>
+        /// <returns><typeparamref name="TResult" /> 类的新实例。</returns>
         public TResult ToCustomResult<TResult>() where TResult : Result
             => (TResult)this.ToCustomResult(typeof(TResult));
 
@@ -65,7 +65,7 @@ namespace System
         /// 将当前错误转换为 <paramref name="resultType"/> 类的新实例。
         /// </summary>
         /// <param name="resultType">结果的数据类型。</param>
-        /// <returns>一个 <paramref name="resultType"/> 类的新实例。</returns>
+        /// <returns><paramref name="resultType"/> 类的新实例。</returns>
         public Result ToCustomResult(Type resultType)
         {
             var result = Activator.CreateInstance(resultType) as Result;

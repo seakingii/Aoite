@@ -15,7 +15,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="key">HyperLogLog 的键名。</param>
         /// <param name="elements">元素的数组。</param>
-        /// <returns>一个值，如果 HyperLogLog 的内部储存被修改了，那么返回 true， 否则返回 false。</returns>
+        /// <returns>如果 HyperLogLog 的内部储存被修改了，那么返回 true， 否则返回 false。</returns>
         public static bool PFAdd(this IRedisClient client, string key, params BinaryValue[] elements)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -46,7 +46,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="destKey">目标键名。合并得出的 HyperLogLog 会被储存在 <paramref name="destKey"/> 键里面，如果该键并不存在，那么命令在执行之前，会先为该键创建一个空的 HyperLogLog。</param>
         /// <param name="sourceKeys">源键名列表。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result PFMerge(this IRedisClient client, string destKey, params string[] sourceKeys)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

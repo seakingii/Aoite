@@ -49,16 +49,16 @@ namespace Aoite.DI
 
     class ServiceBuilder : ObjectDisposableBase, IServiceBuilder
     {
-        private IocContainer _locator;
+        private IocContainer _container;
         public readonly Lazy<List<TypeServiceBinder>> TypeBinders;
         public readonly Lazy<List<ValueServiceBinder>> ValueBinders;
         private bool _promote;
         public bool IsPromote => _promote;
 
-        public ServiceBuilder(IocContainer locator)
+        public ServiceBuilder(IocContainer container)
         {
-            if(locator == null) throw new ArgumentNullException(nameof(locator));
-            this._locator = locator;
+            if(container == null) throw new ArgumentNullException(nameof(container));
+            this._container = container;
             this.TypeBinders = new Lazy<List<TypeServiceBinder>>();
             this.ValueBinders = new Lazy<List<ValueServiceBinder>>();
         }
@@ -67,7 +67,7 @@ namespace Aoite.DI
         {
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
 
-            var binder = new TypeServiceBinder(this._locator, this, expectType, overiwrite);
+            var binder = new TypeServiceBinder(this._container, this, expectType, overiwrite);
             this.TypeBinders.Value.Add(binder);
             return binder;
         }
@@ -83,7 +83,7 @@ namespace Aoite.DI
             if(checkexpectTypeNull && expectType == null) throw new ArgumentNullException(nameof(expectType));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            var binder = new ValueServiceBinder(this._locator, this, expectType, name);
+            var binder = new ValueServiceBinder(this._container, this, expectType, name);
             this.ValueBinders.Value.Add(binder);
             return binder;
         }

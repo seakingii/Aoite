@@ -96,7 +96,7 @@ namespace System
         /// <summary>
         /// 初始化一个有顺序规则 <see cref="Guid"/> 的新实例。
         /// </summary>
-        /// <returns>一个 <see cref="Guid"/> 的新实例。</returns>
+        /// <returns><see cref="Guid"/> 的新实例。</returns>
         public static Guid NewComb()
         {
             const int RPC_S_OK = 0;
@@ -462,7 +462,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TSeed">种子的数据类型。</typeparam>
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
-        /// <returns>一个可解锁的对象。</returns>
+        /// <returns>可解锁的对象。</returns>
         public static IDisposable Locking<TSeed>(TSeed seed)
         {
             return Locking(seed, DefaultLockingTimeout);
@@ -474,7 +474,7 @@ namespace System
         /// <typeparam name="TSeed">种子的数据类型。</typeparam>
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
         /// <param name="timeout">锁的超时时间。</param>
-        /// <returns>一个可解锁的对象。</returns>
+        /// <returns>可解锁的对象。</returns>
         public static IDisposable Locking<TSeed>(TSeed seed, TimeSpan timeout)
         {
             if(seed == null) throw new ArgumentNullException(nameof(seed));
@@ -489,7 +489,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TSeed">种子的数据类型。</typeparam>
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
-        /// <returns>一个可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
+        /// <returns>可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
         public static IDisposable TryLocking<TSeed>(TSeed seed)
         {
             return TryLocking(seed, DefaultLockingTimeout);
@@ -501,7 +501,7 @@ namespace System
         /// <typeparam name="TSeed">种子的数据类型。</typeparam>
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
         /// <param name="timeout">锁的超时时间。</param>
-        /// <returns>一个可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
+        /// <returns>可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
         public static IDisposable TryLocking<TSeed>(TSeed seed, TimeSpan timeout)
         {
             if(seed == null) throw new ArgumentNullException(nameof(seed));

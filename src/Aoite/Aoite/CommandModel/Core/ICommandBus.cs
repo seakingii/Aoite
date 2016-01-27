@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
         /// <param name="command">命令模型。</param>
         /// <param name="executing">命令模型执行前发生的方法。</param>
         /// <param name="executed">命令模型执行后发生的方法。</param>
-        /// <returns>一个异步操作。</returns>
+        /// <returns>异步操作。</returns>
         System.Threading.Tasks.Task<TCommand> ExecuteAsync<TCommand>(TCommand command
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand;

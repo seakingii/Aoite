@@ -166,15 +166,14 @@
     <Compile Include="Aoite\Serialization\Json\JObjectConverter.cs" />
     <Compile Include="Aoite\Serialization\Json\Utf16StringValidator.cs" />
     <Compile Include="Aoite\DI\CallSites.cs" />
-    <Compile Include="System\DependencyInjection\IIocContainer.cs" />
+    <Compile Include="System\DI\IIocContainer.cs" />
     <Compile Include="Aoite\DI\IServiceBinder.cs" />
     <Compile Include="Aoite\DI\IServiceBuilder.cs" />
-    <Compile Include="System\DependencyInjection\DIExtensions.cs" />
     <Compile Include="Aoite\DI\ITypeServiceBinder.cs" />
     <Compile Include="Aoite\DI\IValueServiceBinder.cs" />
     <Compile Include="Aoite\DI\ServiceLifetime.cs" />
-    <Compile Include="System\DependencyInjection\ServiceLifetimeAttribute.cs" />
-    <Compile Include="System\DependencyInjection\IocContainer.cs" />
+    <Compile Include="System\DI\Attributes.cs" />
+    <Compile Include="System\DI\IocContainer.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.Async.cs" />
     <Compile Include="System\Extensions\CommandBusExtensions.cs" />
     <Compile Include="System\Extensions\CommandModelExtensions.cs" />
@@ -333,6 +332,7 @@
     <Compile Include="System\Core\BinaryValue~Implicit.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>BinaryValue~Implicit.tt</DependentUpon>
     </Compile>
     <Compile Include="System\Core\CodeTimer.cs" />
     <Compile Include="System\Core\DataSecurity.cs" />
@@ -368,17 +368,14 @@
     <Compile Include="System\Core\GA.IO.cs" />
     <Compile Include="System\Core\GA.Net.cs" />
     <Compile Include="System\Core\IJsonProvider.cs" />
-    <Compile Include="Aoite\DI\DefaultMappingAttribute.cs" />
-    <Compile Include="System\DependencyInjection\IContainerProvider.cs" />
-    <Compile Include="System\DependencyInjection\IMapFilter.cs" />
-    <Compile Include="System\DependencyInjection\LastMappingAttribute.cs" />
-    <Compile Include="System\DependencyInjection\MapFilter.cs" />
-    <Compile Include="System\DependencyInjection\MapResolveEventArgs.cs" />
-    <Compile Include="System\DependencyInjection\NamesapceRule.cs" />
-    <Compile Include="System\DependencyInjection\NamesapceRuleMode.cs" />
-    <Compile Include="System\DependencyInjection\ObjectFactory.cs" />
-    <Compile Include="System\DependencyInjection\Object`1.cs" />
-    <Compile Include="System\DependencyInjection\SingletonMappingAttribute.cs" />
+    <Compile Include="System\DI\IContainerProvider.cs" />
+    <Compile Include="System\DI\IMapFilter.cs" />
+    <Compile Include="System\DI\MapFilter.cs" />
+    <Compile Include="System\DI\MapResolveEventArgs.cs" />
+    <Compile Include="System\DI\NamesapceRule.cs" />
+    <Compile Include="System\DI\NamesapceRuleMode.cs" />
+    <Compile Include="System\DI\ObjectFactory.cs" />
+    <Compile Include="System\DI\Object`1.cs" />
     <Compile Include="System\Mapping\IPropertyMapper.cs" />
     <Compile Include="System\Mapping\ITypeMapper.cs" />
     <Compile Include="System\Mapping\PropertyMapper.cs" />

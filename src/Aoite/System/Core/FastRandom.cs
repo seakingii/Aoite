@@ -100,7 +100,7 @@ namespace System
         /// </summary>
         /// <param name="minValue">返回的随机数的下界（随机数可取该下界值）。</param>
         /// <param name="maxValue">返回的随机数的上界（随机数不能取该上界值）。<paramref name="maxValue"/> 必须大于或等于 <paramref name="minValue"/>。</param>
-        /// <returns>一个大于等于 <paramref name="minValue"/> 且小于 <paramref name="maxValue"/> 的 32 位带符号整数，即：返回的值范围包括 <paramref name="minValue"/> 但不包括 <paramref name="maxValue"/>。如果 <paramref name="minValue"/> 等于 <paramref name="maxValue"/>，则返回 <paramref name="minValue"/>。</returns>
+        /// <returns>大于等于 <paramref name="minValue"/> 且小于 <paramref name="maxValue"/> 的 32 位带符号整数，即：返回的值范围包括 <paramref name="minValue"/> 但不包括 <paramref name="maxValue"/>。如果 <paramref name="minValue"/> 等于 <paramref name="maxValue"/>，则返回 <paramref name="minValue"/>。</returns>
         public int Next(int minValue, int maxValue)
         {
             if(minValue > maxValue)
@@ -133,7 +133,7 @@ namespace System
         /// </summary>
         /// <param name="length">随机字符串的长度。</param>
         /// <param name="type">随机字符串的类型。</param>
-        /// <returns>一个固定长度的随机字符串。</returns>
+        /// <returns>固定长度的随机字符串。</returns>
         public string NextString(int length, CharacterType type = CharacterType.Default)
         {
             if(length < 1) throw new ArgumentOutOfRangeException(nameof(length));
@@ -157,7 +157,7 @@ namespace System
         /// <param name="minLength">返回的随机字符串长度的下界（可取该下界值）。</param>
         /// <param name="maxLength">返回的随机字符串长度的上界（不能取该上界值）。<paramref name="maxLength"/> 必须大于或等于 <paramref name="minLength"/>。</param>
         /// <param name="type">随机字符串的类型。</param>
-        /// <returns>一个字符串长度大于等于 <paramref name="minLength"/> 且小于 <paramref name="maxLength"/> 的字符串。</returns>
+        /// <returns>字符串长度大于等于 <paramref name="minLength"/> 且小于 <paramref name="maxLength"/> 的字符串。</returns>
         public string NextString(int minLength, int maxLength, CharacterType type = CharacterType.Default)
         {
             if(minLength < 1) throw new ArgumentOutOfRangeException(nameof(minLength));
@@ -313,7 +313,7 @@ namespace System
         /// <summary>
         /// 返回一个随机的布尔值。
         /// </summary>
-        /// <returns>一个 <see cref="Boolean"/> 的随机值。</returns>
+        /// <returns><see cref="Boolean"/> 的随机值。</returns>
         public bool NextBool()
         {
             if(bitMask == 1)

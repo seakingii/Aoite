@@ -421,7 +421,7 @@ namespace System
         /// <param name="cursor">起始游标，0 表示开始一次新的迭代。</param>
         /// <param name="pattern">给定模式相匹配的元素。匹配语法可以参考 <seealso cref="System.RedisKeyExtensions.Keys(IRedisClient, String)"/> 方法。</param>
         /// <param name="count">每次迭代所返回的元素数量。</param>
-        /// <returns>一个支持迭代的枚举。</returns>
+        /// <returns>支持迭代的枚举。</returns>
         public static IEnumerable<RedisScoreItem> ZScan(this IRedisClient client, string key, long cursor = 0, string pattern = null, long count = 10)
         {
             return new RedisScan<RedisScoreItem>(client, "ZSCAN", key, cursor, pattern, count
@@ -439,7 +439,7 @@ namespace System
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
         /// <param name="offset">返回结果的偏移量。</param>
         /// <param name="count">返回结果的数量。</param>
-        /// <returns>一个从低到高的顺序列表，列表里面包含了有序集合在指定范围内的成员。</returns>
+        /// <returns>从低到高的顺序列表，列表里面包含了有序集合在指定范围内的成员。</returns>
         public static BinaryValue[] ZRangeByLex(this IRedisClient client, string key
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false
@@ -468,7 +468,7 @@ namespace System
         /// <param name="max">最大成员值。可以为 null 值，表示正无限。</param>
         /// <param name="exclusiveMin">指示最小是否为开区间（true 时表示不含最小值）。</param>
         /// <param name="exclusiveMax">指示最大值是否为开区间（true 时表示不含最大值）。</param>
-        /// <returns>一个包含了有序集合在指定范围内的成员数量。</returns>
+        /// <returns>包含了有序集合在指定范围内的成员数量。</returns>
         public static long ZLexCount(this IRedisClient client, string key
             , BinaryValue min, BinaryValue max
             , bool exclusiveMin = false, bool exclusiveMax = false)

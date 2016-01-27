@@ -62,7 +62,7 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回数据集。
         /// </summary>
-        /// <returns>一个数据集。</returns>
+        /// <returns>数据集。</returns>
         DataSet ToDataSet();
         /// <summary>
         /// 执行查询命令，并返回自定义的数据集。
@@ -98,20 +98,20 @@ namespace Aoite.Data
         /// <summary>
         /// 执行查询命令，并返回匿名实体的集合。
         /// </summary>
-        /// <returns>一个匿名实体的集合。</returns>
+        /// <returns>匿名实体的集合。</returns>
         List<dynamic> ToEntities();
         /// <summary>
         /// 执行分页查询命令，并返回匿名实体的集合。
         /// </summary>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的匿名实体集合。</returns>
+        /// <returns>包含总记录数的匿名实体的集合。</returns>
         PageData<dynamic> ToEntities(int pageNumber, int pageSize = 10);
         /// <summary>
         /// 执行查询命令，并返回实体的集合。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体的集合。</returns>
+        /// <returns>实体的集合。</returns>
         List<TEntity> ToEntities<TEntity>();
         /// <summary>
         /// 执行分页查询命令，并返回实体的集合。
@@ -119,18 +119,18 @@ namespace Aoite.Data
         /// <typeparam name="TEntity">实体的类型。</typeparam>
         /// <param name="pageNumber">以 1 起始的页码。</param>
         /// <param name="pageSize">分页大小。</param>
-        /// <returns>一个包含总记录数的实体集合。</returns>
+        /// <returns>包含总记录数的实体的集合。</returns>
         PageData<TEntity> ToEntities<TEntity>(int pageNumber, int pageSize = 10);
         /// <summary>
         /// 执行查询命令，并返回匿名实体。
         /// </summary>
-        /// <returns>一个匿名实体。</returns>
+        /// <returns>匿名实体。</returns>
         dynamic ToEntity();
         /// <summary>
         /// 执行查询命令，并返回实体。
         /// </summary>
         /// <typeparam name="TEntity">实体的类型。</typeparam>
-        /// <returns>一个实体。</returns>
+        /// <returns>实体。</returns>
         TEntity ToEntity<TEntity>();
     }
 }

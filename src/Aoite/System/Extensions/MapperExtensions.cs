@@ -13,7 +13,7 @@ namespace System
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="row">数据行。</param>
-        /// <returns>一个映射目标的新实例。</returns>
+        /// <returns>映射目标的新实例。</returns>
         public static IMapTo From(this TypeMapper mapper, DataRow row)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -31,7 +31,7 @@ namespace System
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="reader">数据读取器。</param>
-        /// <returns>一个映射目标的新实例。</returns>
+        /// <returns>映射目标的新实例。</returns>
         public static IMapTo From(this TypeMapper mapper, IDataReader reader)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -49,7 +49,7 @@ namespace System
         /// </summary>
         /// <param name="mapper">类型映射器。</param>
         /// <param name="entity">实体。</param>
-        /// <returns>一个映射目标的新实例。</returns>
+        /// <returns>映射目标的新实例。</returns>
         public static IMapTo<DataRow> From(this TypeMapper mapper, object entity)
         {
             if(mapper == null) throw new ArgumentNullException(nameof(mapper));

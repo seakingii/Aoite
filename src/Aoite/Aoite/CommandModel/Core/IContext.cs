@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
         /// 获取或设置键的值。
         /// </summary>
         /// <param name="key">键。</param>
-        /// <returns>一个值。</returns>
+        /// <returns>给定键的值。</returns>
         object this[object key] { get; set; }
         /// <summary>
         /// 获取上下文中的 <see cref="IDbEngine"/> 实例。该实例应不为 null 值，且线程唯一。

@@ -229,7 +229,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="path">序列化的路径。</param>
         /// <param name="data">可序列化的对象。</param>
-        /// <returns>一个结果，指示序列化是否成功。</returns>
+        /// <returns>指示序列化是否成功。</returns>
         public Result Write<TData>(string path, TData data)
         {
             using(var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -244,7 +244,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="stream">可序列化的流。</param>
         /// <param name="data">可序列化的对象。</param>
-        /// <returns>一个结果，指示序列化是否成功。</returns>
+        /// <returns>指示序列化是否成功。</returns>
         public Result Write<TData>(Stream stream, TData data)
         {
             Result result = new Result();
@@ -269,7 +269,7 @@ namespace System
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
         /// <param name="encoding">自定义字符编码。</param>
-        /// <returns>一个结果，指示序列化是否成功。</returns>
+        /// <returns>指示序列化是否成功。</returns>
         public Result<string> WriteString<TData>(TData data, Encoding encoding = null)
         {
             Result<string> result = new Result<string>();
@@ -296,7 +296,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
-        /// <returns>一个结果，指示序列化是否成功。</returns>
+        /// <returns>指示序列化是否成功。</returns>
         public Result<byte[]> WriteBytes<TData>(TData data)
         {
             using(MemoryStream stream = new MemoryStream())
@@ -312,7 +312,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TData">可序列化对象的类型。</typeparam>
         /// <param name="data">可序列化为字符串的对象。</param>
-        /// <returns>一个二进制数组。</returns>
+        /// <returns>二进制数组。</returns>
         public byte[] FastWriteBytes<TData>(TData data)
         {
             return this.WriteBytes<TData>(data).UnsafeValue;

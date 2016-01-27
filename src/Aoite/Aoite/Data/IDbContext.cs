@@ -28,7 +28,7 @@ namespace Aoite.Data
         /// <summary>
         /// 指定事务的隔离级别，并打开数据源连接（如果没有打开）。
         /// </summary>
-        /// <param name="isolationLevel">指定事务的隔离级别。。</param>
+        /// <param name="isolationLevel">指定事务的隔离级别。</param>
         IDbContext OpenTransaction(IsolationLevel isolationLevel);
         /// <summary>
         /// 提交数据源事务。

@@ -12,7 +12,7 @@ namespace System
         /// 使用客户端向 Redis 服务器发送一个 PING。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result Ping(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -23,7 +23,7 @@ namespace System
         /// 请求服务器关闭与当前客户端的连接。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result Quit(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -35,7 +35,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="index">以 0 作为起始索引值。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result Select(this IRedisClient client, int index)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

@@ -15,7 +15,7 @@ namespace System
         /// <para>即使 BGREWRITEAOF 执行失败，也不会有任何数据丢失，因为旧的 AOF 文件在 BGREWRITEAOF 成功之前不会被修改。</para>
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result BgRewriteAof(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -26,7 +26,7 @@ namespace System
         /// 在后台异步保存当前数据库的数据到磁盘。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result BgSave(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -51,7 +51,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="ip">客户端地址。</param>
         /// <param name="port">客户端端口。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result ClientKill(this IRedisClient client, string ip, int port)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -101,7 +101,7 @@ namespace System
         /// <param name="connectionName">用于识别当前正在与服务器进行连接的客户端名称。
         /// <para>要移除一个连接的名字， 可以将连接的名字设为空字符串 "" 。</para>
         /// </param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result ClientSetName(this IRedisClient client, string connectionName)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -125,7 +125,7 @@ namespace System
         /// 在后台异步保存当前数据库的数据到磁盘。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result ConfigResetStat(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -136,7 +136,7 @@ namespace System
         /// 启动 Redis 服务器时所指定的 redis.conf 文件进行改写。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result ConfigRewrite(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -149,7 +149,7 @@ namespace System
         /// <param name="client">Redis 客户端。</param>
         /// <param name="parameter">配置参数。</param>
         /// <param name="value">参数的值。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result ConfigSet(this IRedisClient client, string parameter, BinaryValue value)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -173,7 +173,7 @@ namespace System
         /// 清空整个 Redis 服务器的数据(删除所有数据库的所有键)。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result FlushAll(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -184,7 +184,7 @@ namespace System
         /// 清空当前数据库中的所有键。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result FlushDb(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -197,7 +197,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="section">节点。</param>
-        /// <returns>一个字符串。</returns>
+        /// <returns>字符串。</returns>
         public static string Info(this IRedisClient client, string section = null)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -209,7 +209,7 @@ namespace System
         /// 返回最近一次 Redis 成功将数据保存到磁盘上的时间。
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个时间。</returns>
+        /// <returns>时间。</returns>
         public static DateTime LastSave(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
@@ -221,7 +221,7 @@ namespace System
         /// <para>一般来说，在生产环境很少执行 SAVE 操作，因为它会阻塞所有客户端，保存数据库的任务通常由 BGSAVE 命令异步地执行。然而，如果负责保存数据的后台子进程不幸出现问题时， SAVE 可以作为保存数据的最后手段来使用。</para>
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result Save(this IRedisClient client)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));

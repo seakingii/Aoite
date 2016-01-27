@@ -60,7 +60,7 @@ namespace System
         /// <summary>
         /// 创建对象时发生。 
         /// </summary>
-        /// <returns>一个新的对象。</returns>
+        /// <returns>新的对象。</returns>
         protected virtual T OnCreateObject()
         {
             return this._objectFactory == null ? (T)Activator.CreateInstance(typeof(T), true) : this._objectFactory();
@@ -69,7 +69,7 @@ namespace System
         /// <summary>
         /// 获取一个对象池的对象。
         /// </summary>
-        /// <returns>一个已释放或新的对象。</returns>
+        /// <returns>已释放或新的对象。</returns>
         public virtual T Acquire()
         {
             this.ThrowIfDisposed();

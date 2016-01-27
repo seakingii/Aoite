@@ -38,7 +38,7 @@ namespace System
         /// </summary>
         /// <typeparam name="T">要转换的数据类型。</typeparam>
         /// <param name="value">请求类型转换的值。</param>
-        /// <returns>一个数据类型的值，或一个 null 值。</returns>
+        /// <returns>数据类型的值，或一个 null 值。</returns>
         public static T CastTo<T>(this object value)
             => (T)CastTo(value, typeof(T));
 
@@ -47,7 +47,7 @@ namespace System
         /// </summary>
         /// <param name="value">请求类型转换的值。</param>
         /// <param name="type">要转换的数据类型。</param>
-        /// <returns>一个数据类型的值，或一个 null 值。</returns>
+        /// <returns>数据类型的值，或一个 null 值。</returns>
         public static object CastTo(this object value, Type type)
             => type.ChangeType(value);
 
@@ -69,7 +69,7 @@ namespace System
         /// <typeparam name="TTarget">新的数据类型。</typeparam>
         /// <param name="source">复制的源对象。</param>
         /// <param name="targetStrategy">复制目标的策略。</param>
-        /// <returns>一个 <typeparamref name="TTarget"/> 的心实例。</returns>
+        /// <returns><typeparamref name="TTarget"/> 的心实例。</returns>
         public static TTarget CopyTo<TTarget>(this object source, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
             if(source == null) return default(TTarget);
@@ -151,7 +151,7 @@ namespace System
         /// <typeparam name="T2">返回的数据类型。</typeparam>
         /// <param name="collection">当前集合。</param>
         /// <param name="func">执行的委托。</param>
-        /// <returns>一个集合。</returns>
+        /// <returns>集合。</returns>
         public static T2[] Each<T, T2>(this IEnumerable<T> collection, Func<T, T2> func)
         {
             if(collection == null) return null;

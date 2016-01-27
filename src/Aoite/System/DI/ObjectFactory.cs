@@ -17,13 +17,15 @@ namespace System
         /// </summary>
         public static event MapResolveEventHandler MapResolve;
         /// <summary>
-        /// 表示解析后期映射类型时发生。
-        /// </summary>
-        public static event MapResolveEventHandler LastMappingResolve;
-        /// <summary>
         /// 获取默认的全局服务容器。
         /// </summary>
         public readonly static IIocContainer Global = new IocContainer();
+
+        /// <summary>
+        /// 创建一个新的服务容器。
+        /// </summary>
+        /// <returns>新的服务容器。</returns>
+        public static IIocContainer CreateContainer() => new IocContainer();
 
         /// <summary>
         /// 获取基于当前上下文的服务容器。如果当前环境是 Web 环境将返回 <see cref="Web.Webx.Container"/>，否则返回 <see cref="Global"/>。
@@ -42,7 +44,7 @@ namespace System
         /// 获取指定 <see cref="Type"/> 的完全限定名，获取匹配的  <see cref="Type"/>。
         /// </summary>
         /// <param name="fullName">完全限定名。</param>
-        /// <returns>一个匹配的  <see cref="Type"/>，或一个 null 值。</returns>
+        /// <returns>匹配的  <see cref="Type"/>，或一个 null 值。</returns>
         public static Type GetType(string fullName)
         {
             List<Type> types;
@@ -50,8 +52,11 @@ namespace System
             return null;
         }
 
-        private static MapResolveEventArgs InternalOnEvent(MapResolveEventHandler handler, object sender, Type expectType)
+    
+        internal static MapResolveEventArgs InternalOnMapResolve(MapResolveEventHandler handler, object sender, Type expectType)
         {
+            if(handler == null) handler = MapResolve;
+
             if(handler != null)
             {
                 var e = new MapResolveEventArgs(expectType);
@@ -61,14 +66,7 @@ namespace System
             }
             return null;
         }
-        internal static MapResolveEventArgs InternalOnMapResolve(MapResolveEventHandler handler, object sender, Type expectType)
-        {
-            return InternalOnEvent(handler ?? MapResolve, sender, expectType);
-        }
-        internal static MapResolveEventArgs InternalOnLastMappingResolve(MapResolveEventHandler handler, object sender, Type expectType)
-        {
-            return InternalOnEvent(handler ?? LastMappingResolve, sender, expectType);
-        }
+
 
         static Type[] GetTypes(Assembly a)
         {

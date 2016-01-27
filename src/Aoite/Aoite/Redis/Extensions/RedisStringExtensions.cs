@@ -159,7 +159,7 @@ namespace System
         /// </summary>
         /// <param name="client">Redis 客户端。</param>
         /// <param name="keyValues">键值的字典。</param>
-        /// <returns>一个结果。</returns>
+        /// <returns>结果。</returns>
         public static Result MSet(this IRedisClient client, RedisDictionary keyValues)
         {
             if(client == null) throw new ArgumentNullException(nameof(client));
