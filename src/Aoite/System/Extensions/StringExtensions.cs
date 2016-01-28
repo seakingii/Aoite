@@ -212,8 +212,14 @@ namespace System
         /// <returns>字符串的字节数。</returns>
         public static int GetDataLength(this string val)
         {
-            if(val == null) return 0;
-            return Encoding.Default.GetByteCount(val);
+            if(val == null || val.Length == 0) return 0;
+
+            CharEnumerator ce = val.GetEnumerator();
+            int length = 0;
+            while(ce.MoveNext())
+                length += (ce.Current >= 0 && ce.Current <= 128) ? 1 : 2;
+            return length;
+            //return Encoding.Default.GetByteCount(val);
         }
     }
 }

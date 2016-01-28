@@ -101,5 +101,14 @@ namespace System.Extensions
             var s = "0123456789";
             Assert.Equal("0123456", s.RemoveEnds(3));
         }
+
+        [Fact]
+        public void GetDataLengthTest()
+        {
+            Assert.Equal(3, "abc".GetDataLength());
+            Assert.Equal(5, "你abc".GetDataLength());
+            Assert.Equal(5, "èabc".GetDataLength());
+            Assert.Equal(7, "你好abc".GetDataLength());
+        }
     }
 }
