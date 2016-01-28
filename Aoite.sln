@@ -25,7 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0C9A1BD9-D
 		docs\GettingStarted.md = docs\GettingStarted.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Mvc5", "Aoite.Mvc5\Aoite.Mvc5.csproj", "{45AF4A3E-9B56-498E-AD1B-94F1247BC457}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{7C2F7EDB-EE1C-4086-B0CA-2EA8A8F1BB0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.Mvc5", "src\Aoite.Mvc5\Aoite.Mvc5.csproj", "{45AF4A3E-9B56-498E-AD1B-94F1247BC457}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\src\Aoite\Aoite.csproj">
+    <ProjectReference Include="..\Aoite\Aoite.csproj">
       <Project>{5b0d8879-660c-4701-8117-c1499c9b65e7}</Project>
       <Name>Aoite</Name>
     </ProjectReference>
