@@ -182,6 +182,7 @@ ORDER BY a.column_id", "@tableName", this.Name)
 
         public bool IsUnicodeCharacher { get; private set; }
 
+        private bool _appendNotNullAribute = false;
 
         private string ParseDbType()
         {
@@ -194,6 +195,7 @@ ORDER BY a.column_id", "@tableName", this.Name)
                 case SqlDbType.Image:
                 case SqlDbType.Binary:
                 case SqlDbType.VarBinary:
+                    this._appendNotNullAribute = true;
                     return "byte[]";
 
                 case SqlDbType.Bit: return GetTypeName("bool");
@@ -201,6 +203,7 @@ ORDER BY a.column_id", "@tableName", this.Name)
                 case SqlDbType.NChar:
                 case SqlDbType.NText:
                 case SqlDbType.NVarChar:
+                    this._appendNotNullAribute = true;
                     this.IsUnicodeCharacher = true;
                     return "string";
 
@@ -209,6 +212,7 @@ ORDER BY a.column_id", "@tableName", this.Name)
                 case SqlDbType.Text:
                 case SqlDbType.VarChar:
                 case SqlDbType.Xml:
+                    this._appendNotNullAribute = true;
                     return "string";
 
                 case SqlDbType.DateTime:
@@ -234,28 +238,19 @@ ORDER BY a.column_id", "@tableName", this.Name)
 
                 case SqlDbType.Variant:
                 case SqlDbType.Udt:
+                    this._appendNotNullAribute = true;
                     return "object";
 
-                case SqlDbType.Structured: return "DataTable";
+                case SqlDbType.Structured:
+                    this._appendNotNullAribute = true;
+                    return "DataTable";
                 case SqlDbType.DateTimeOffset: return GetTypeName("DateTimeOffset");
                 default:
                     throw new ArgumentOutOfRangeException("sqlType");
             }
         }
-        private string _PropertyType;
 
-        public string PropertyType
-        {
-            get
-            {
-                if(string.IsNullOrEmpty(_PropertyType))
-                {
-                    this._PropertyType = this.ParseDbType();
-                }
-                return _PropertyType;
-            }
-            set { _PropertyType = value; }
-        }
+        public string PropertyType { get; set; }
 
         public string GetTypeName(string typeName)
         {
@@ -293,16 +288,23 @@ ORDER BY a.column_id", "@tableName", this.Name)
             {
                 return this.IsPrimaryKey ? "Column(true)" : string.Empty;
             }
-            return $"Column(\"{this.Name}\"{(this.IsPrimaryKey ? ",true" : string.Empty)})";
+            return $"Column(\"{this.Name}\"{(this.IsPrimaryKey ? ", true" : string.Empty)})";
         }
 
-        private string GenerateNotNullAttribute() => this.IsNullable ? string.Empty : "NotNull";
-
+        private string GenerateNotNullAttribute()
+        {
+            if(!this.IsNullable)
+            {
+                if(this._appendNotNullAribute)
+                    return "NotNull";
+            }
+            return string.Empty;
+        }
         private string GenerateStringLengthAttribute()
         {
             if(this.PropertyType == "string" && this.MaxLength > 0)
             {
-                return $"StringLength({this.MaxLength},{this.IsUnicodeCharacher.ToString().ToLower()})";
+                return $"StringLength({this.MaxLength}, {this.IsUnicodeCharacher.ToString().ToLower()})";
             }
             return string.Empty;
         }
@@ -310,9 +312,9 @@ ORDER BY a.column_id", "@tableName", this.Name)
 
         private string GenerateAttributes()
         {
-            var attrs = new string[] { this.GenerateColumnAttribute(), this.GenerateNotNullAttribute(), this.GenerateStringLengthAttribute() };
+            var attrs = new string[] { this.GenerateColumnAttribute(), this.GenerateStringLengthAttribute(), this.GenerateNotNullAttribute() };
 
-            return attrs.Join(start: "[", end: "]");
+            return attrs.Join(", ", start: "[", end: "]");
         }
         private string InnerGenerateCode(ObjectInfo objectInfo, SettingInfo setting)
         {
@@ -323,6 +325,8 @@ ORDER BY a.column_id", "@tableName", this.Name)
 
         public string GenerateCode(ObjectInfo objectInfo, SettingInfo setting, string owner)
         {
+            if(string.IsNullOrEmpty(PropertyType)) this.PropertyType = this.ParseDbType();
+
             var comments = this.Comments;
             if(!string.IsNullOrEmpty(comments))
             {
