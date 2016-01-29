@@ -42,6 +42,35 @@ namespace Aoite.Data
             return new DbExecutor(this, command, null, null, true);
         }
 
+        /// <summary>
+        /// 测试数据源的连接。
+        /// </summary>
+        public virtual Result TestConnection()
+        {
+            Result r = new Result();
+
+            DbConnection conn = null;
+            try
+            {
+                using(conn = this.Provider.CreateConnection())
+                {
+                    conn.Open();
+                }
+            }
+            catch(Exception ex)
+            {
+                r.ToFailded(ex);
+            }
+            finally
+            {
+                if(conn != null)
+                {
+                    conn.TryClose();
+                }
+            }
+            return r;
+        }
+
         private readonly System.Threading.ThreadLocal<DbContext> _threadLocalContent = new System.Threading.ThreadLocal<DbContext>();
         /// <summary>
         /// 释放并关闭当前线程上下文的 <see cref="IDbContext"/>。
@@ -114,17 +143,17 @@ namespace Aoite.Data
         internal protected virtual void OnExecuted(IDbEngine engine, ExecuteType type, ExecuteCommand command, DbCommand dbCommand, object result)
             => this.Executed?.Invoke(engine, command.GetEventArgs(type, dbCommand, result));
 
-
-        private const string Provider_Microsoft_SQL_Server_Simple = "sql";
-        private const string Provider_Microsoft_SQL_Server = "mssql";
-        private const string Provider_Microsoft_SQL_Server_Compact_Simple1 = "sqlce";
-        private const string Provider_Microsoft_SQL_Server_Compact_Simple2 = "ce";
-        private const string Provider_Microsoft_SQL_Server_Compact = "mssqlce";
-        private const string Provider_Microsoft_OleDb2003 = "oledb2003";
-        private const string Provider_Microsoft_OleDb2007 = "oledb2007";
-        private const string Provider_SQLite = "sqlite";
-        private const string Provider_Oracle = "oracle";
-        private const string Provider_MySql = "mysql";
+        /// <summary>
+        /// 获取当前程序集支持的所有提供程序。
+        /// </summary>
+        /// <returns></returns>
+        public static System.Collections.Generic.IEnumerable<string> GetAllProviders()
+        {
+            return from g in ObjectFactory.AllTypes
+                   from type in g.Value
+                   where type.IsDefined(DbProvidersAttributeType, false)
+                   select type.GetAttribute<DbProvidersAttribute>().Names[0];
+        }
 
         private static readonly Type DbProvidersAttributeType = typeof(DbProvidersAttribute);
 
@@ -154,7 +183,6 @@ namespace Aoite.Data
             var ctor = type.GetConstructor(new Type[] { Types.String });
             if(ctor == null) throw new NotSupportedException($"当前运行环境名称为“{provider}”的数据库提供程序找不到“{type.FullName}(connectionString)” 的构造函数。");
             return (IDbEngineProvider)DynamicFactory.CreateConstructorHandler(ctor)(connectionString);
-            //- 支持.NET 4.0 4.5 4.6
         }
 
         /// <summary>

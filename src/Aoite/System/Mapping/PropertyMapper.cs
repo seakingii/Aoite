@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace System
 {
@@ -33,6 +34,11 @@ namespace System
         public object TypeDefaultValue { get { return this._LazyTypeDefaultValue.Value; } }
 
         /// <summary>
+        /// 获取属性验证器数组。
+        /// </summary>
+        public IPropertyValidator[] Validators { get; }
+
+        /// <summary>
         /// 指定属性元数据，初始化一个 <see cref="PropertyMapper"/> 类的新实例。
         /// </summary>
         /// <param name="typeMapper">类型的映射器。</param>
@@ -52,6 +58,44 @@ namespace System
 
             var keyAttr = property.GetAttribute<IKeyAttribute>();
             this.IsKey = (keyAttr != null && keyAttr.IsKey) || string.Equals(property.Name, DbExtensions.DefaultKeyName, StringComparison.CurrentCultureIgnoreCase);
+
+            this.Validators = property.GetAttributes<IPropertyValidator>().ToArray();
         }
+
+        /// <summary>
+        /// 检验指定实例的属性值。
+        /// </summary>
+        /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <param name="value">属性的值。</param>
+        /// <returns>返回属性值。</returns>
+        protected override object Validate(object instance, object value)
+        {
+            foreach(var validator in this.Validators)
+            {
+                value = validator.Validate(this.TypeMapper, this, instance, value);
+            }
+            return base.Validate(instance, value);
+        }
+    }
+
+    /// <summary>
+    /// 定义一个属性的验证器。
+    /// </summary>
+    public interface IPropertyValidator
+    {
+        /// <summary>
+        /// 设置或获取一个值，指示属性检查的排序。排序越小排在越前面。
+        /// </summary>
+        int Order { get; set; }
+
+        /// <summary>
+        /// 验证指定属性的值。
+        /// </summary>
+        /// <param name="typeMapper">类型的映射器。</param>
+        /// <param name="propertyMapper">属性的映射器。</param>
+        /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <param name="value">属性的值。</param>
+        /// <returns>返回新的属性值。</returns>
+        object Validate(TypeMapper typeMapper, PropertyMapper propertyMapper, object instance, object value);
     }
 }

@@ -122,6 +122,7 @@
     <Compile Include="Aoite\Data\Samples\JsonPopulateAttributeTests.cs" />
     <Compile Include="Aoite\Data\Samples\SelectCommandBuilderTests.cs" />
     <Compile Include="Aoite\Data\Samples\SimpleDataTests.cs" />
+    <Compile Include="Aoite\Data\Samples\ValidatorAttributeTests.cs" />
     <Compile Include="Aoite\Data\Samples\WhereCommandBuilderTests.cs" />
     <Compile Include="Aoite\Dbx\ExecuteCommandTests.cs" />
     <Compile Include="Aoite\Logger\Text\DefaultLogDescriptorTests.cs" />

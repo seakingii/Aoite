@@ -43,21 +43,30 @@ namespace System
         }
 
         /// <summary>
+        /// 检验指定实例的属性值。
+        /// </summary>
+        /// <param name="instance">一个实例，null 值表示静态属性。</param>
+        /// <param name="value">属性的值。</param>
+        /// <returns>返回属性值。</returns>
+        protected virtual object Validate(object instance, object value) { return value; }
+
+        /// <summary>
         /// 指定一个实例，设置当前属性的值。
         /// </summary>
         /// <param name="instance">一个实例，null 值表示静态属性。</param>
         /// <param name="value">属性的值。</param>
-        /// <param name="allowPopulate">指示是否启用动态属性移植的特性。</param>
-        public virtual void SetValue(object instance, object value, bool allowPopulate = false)
+        /// <param name="allowExtend">指示是否允许扩展的特性。</param>
+        public virtual void SetValue(object instance, object value, bool allowExtend = false)
         {
-            if(allowPopulate)
+            if(allowExtend)
             {
                 var populate = Populate;
                 if(populate != null)
                 {
-                    Populate.SetValue(this, instance, value);
+                    Populate.SetValue(this, instance, this.Validate(instance, value));
                     return;
                 }
+                value = this.Validate(instance, value);
             }
 
             this.SetValueHandler(instance, value);
@@ -67,13 +76,19 @@ namespace System
         /// 指定一个实例，获取当前属性的值。
         /// </summary>
         /// <param name="instance">一个实例，null 值表示静态属性。</param>
-        /// <param name="allowPopulate">指示是否启用动态属性移植的特性。</param>
+        /// <param name="allowExtend">指示是否允许扩展的特性。</param>
         /// <returns>属性的值。</returns>
-        public virtual object GetValue(object instance, bool allowPopulate = false)
+        public virtual object GetValue(object instance, bool allowExtend = false)
         {
-            var populate = Populate;
-            if(allowPopulate && populate != null) return Populate.GetValue(this, instance);
-
+            if(allowExtend)
+            {
+                var populate = Populate;
+                if(populate != null)
+                {
+                    return this.Validate(instance, Populate.GetValue(this, instance));
+                }
+                return this.Validate(instance, this.GetValueHandler(instance));
+            }
             return this.GetValueHandler(instance);
         }
     }

@@ -77,11 +77,11 @@
             /// <summary>
             /// 程序集的唯一标识。
             /// </summary>
-            public const string Guid = "14d7026d-bd80-4191-8b87-56046b7ad731";
+            public const string Guid = "fe4d1ba8-aff0-41cc-aa8b-53f68efce92c";
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".0.0";
+            public const string AssemblyVersion = Version + ".1.0";
             /// <summary>
             /// 程序集的简单描述。
             /// </summary>
