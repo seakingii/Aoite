@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc.Async;
 
 namespace System.Web.Mvc
 {
     /// <summary>
     /// 表示一个依赖关系解析程序。
     /// </summary>
-    public class AoiteDependencyResolver : IDependencyResolver
+    public class ContainerDependencyResolver : IDependencyResolver
     {
         private IIocContainer _container;
 
         /// <summary>
-        /// 提供服务容器，初始化一个 <see cref="AoiteDependencyResolver"/> 类的新实例。
+        /// 提供服务容器，初始化一个 <see cref="ContainerDependencyResolver"/> 类的新实例。
         /// </summary>
-        /// <param name="container"></param>
-        public AoiteDependencyResolver(IIocContainer container)
+        /// <param name="container">服务容器。</param>
+        public ContainerDependencyResolver(IIocContainer container)
         {
             if(container == null) throw new ArgumentNullException(nameof(container));
             this._container = container;

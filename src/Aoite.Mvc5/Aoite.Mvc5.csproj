@@ -88,19 +88,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\JsonEnumConverter.cs" />
+    <Compile Include="Mvc\JsonHandlerAttribute.cs" />
+    <Compile Include="Mvc\JsonNetResult.cs" />
     <Compile Include="Core\WebConfig.cs" />
     <Compile Include="Core\XHttpApplication.cs" />
     <Compile Include="Mvc\ActionExecuteEventArgs.cs" />
-    <Compile Include="Mvc\AoiteDependencyResolver.cs" />
+    <Compile Include="Mvc\AoiteAsyncActionInvoker.cs" />
+    <Compile Include="Mvc\ContainerDependencyResolver.cs" />
     <Compile Include="Mvc\AoiteMvcExtensions.cs" />
-    <Compile Include="Mvc\JsonNetResult.cs" />
+    <Compile Include="Mvc\DIAttribute.cs" />
+    <Compile Include="Mvc\DIModelBinder.cs" />
+    <Compile Include="Mvc\IAppJsPathProvider.cs" />
+    <Compile Include="Mvc\JsonNetValueProviderFactory.cs" />
     <Compile Include="Mvc\MvcBasicActionFilterAttribute.cs" />
     <Compile Include="Mvc\MvcClient.cs" />
     <Compile Include="Mvc\RedirectToActionResult.cs" />
     <None Include="Mvc\UnitTestExtensions.cs" />
     <Compile Include="Mvc\RequestRouteInfo.cs" />
-    <Compile Include="Mvc\XControllerBase`1.cs" />
-    <Compile Include="Mvc\XDefaultControllerFactory.cs" />
     <Compile Include="Mvc\XWebViewPageBase`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

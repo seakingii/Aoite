@@ -22,8 +22,18 @@ namespace System.Web
         /// </summary>
         public static void Startup()
         {
+            JsonConvert.DefaultSettings = () => DefaultJsonSetting;
+
+            var container = Webx.Container;
+            container.Add<IJsonProvider, JsonNetProvider>();
+            container.Add<Web.Mvc.Async.IAsyncActionInvoker>(new Web.Mvc.AoiteAsyncActionInvoker());
+
+            Web.Mvc.DependencyResolver.SetResolver(new Web.Mvc.ContainerDependencyResolver(Webx.Container));
+            Web.Mvc.ModelBinders.Binders.DefaultBinder = new Web.Mvc.DIModelBinder(Web.Mvc.ModelBinders.Binders.DefaultBinder);
+            Web.Mvc.ValueProviderFactories.Factories.Remove(Web.Mvc.ValueProviderFactories.Factories.OfType<Web.Mvc.JsonValueProviderFactory>().FirstOrDefault());
+            Web.Mvc.ValueProviderFactories.Factories.Add(new Web.Mvc.JsonNetValueProviderFactory());
             Web.Mvc.GlobalFilters.Filters.Add(new Web.Mvc.Filters.MvcBasicActionFilterAttribute());
-            Webx.Container.Add<IJsonProvider, JsonNetProvider>(); 
+            Web.Mvc.GlobalFilters.Filters.Add(new Web.Mvc.Filters.JsonHandlerAttribute());
         }
 
         [SingletonMapping]
@@ -31,12 +41,12 @@ namespace System.Web
         {
             public object Deserialize(string input, Type targetType)
             {
-                return JsonConvert.DeserializeObject(input, targetType, WebConfig.DefaultJsonSetting);
+                return JsonConvert.DeserializeObject(input, targetType);
             }
 
             public string Serialize(object obj)
             {
-                return JsonConvert.SerializeObject(obj, WebConfig.DefaultJsonSetting);
+                return JsonConvert.SerializeObject(obj);
             }
         }
 
@@ -80,9 +90,9 @@ namespace System.Web
         /// </summary>
         /// <param name="value">转换的对象。</param>
         /// <returns>返回一个 JSON 字符串。</returns>
-        public static string ToJson(this object value)
+        public static string ToJson(object value)
         {
-            return JsonConvert.SerializeObject(value, WebConfig.DefaultJsonSetting);
+            return JsonConvert.SerializeObject(value/*, WebConfig.DefaultJsonSetting*/);
         }
 
         /// <summary>

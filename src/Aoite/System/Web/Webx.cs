@@ -38,7 +38,7 @@ namespace System.Web
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            var items = HttpContext.Current.Items;
+            var items = Items;
             var value = items[name];
             if(value == null)
             {
@@ -62,7 +62,7 @@ namespace System.Web
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            var items = HttpContext.Current.Items;
+            var items = Items;
             if(value == null) items.Remove(name);
             else items[name] = value;
             return value;
@@ -90,80 +90,6 @@ namespace System.Web
         /// <param name="virtualPath">虚拟路径（绝对路径或相对路径）。</param>
         /// <returns>由 <paramref name="virtualPath"/> 指定的服务器物理路径。</returns>
         public static string MapPath(string virtualPath) => Hosting.HostingEnvironment.MapPath(virtualPath);
-
-        #endregion
-
-        #region Cookie
-
-        private readonly static string RootPath = Webx.MapUrl("~/");
-
-        /// <summary>
-        /// 新建或更新客户端的 Cookie。
-        /// </summary>
-        /// <param name="name">新 Cookie 的名称。</param>
-        /// <param name="value">新 Cookie 的值。如果值为 null 值，则表示移除该项。</param>
-        /// <param name="path">要与当前 Cookie 一起传输的虚拟路径。</param>
-        /// <param name="httpOnly">指定 Cookie 是否可通过客户端脚本访问。</param>
-        public static void Cookie(string name, string value, string path = null, bool httpOnly = false)
-            => Cookie(name, value, DateTime.Now.AddDays(3), path ?? RootPath, httpOnly);
-
-        /// <summary>
-        /// 新建或更新客户端的 Cookie。
-        /// </summary>
-        /// <param name="name">新 Cookie 的名称。</param>
-        /// <param name="value">新 Cookie 的值。如果值为 null 值，则表示移除该项。</param>
-        /// <param name="expires">此 Cookie 的过期日期和时间。</param>
-        /// <param name="path">要与当前 Cookie 一起传输的虚拟路径。</param>
-        /// <param name="httpOnly">指定 Cookie 是否可通过客户端脚本访问。</param>
-        public static void Cookie(string name, string value, DateTime expires, string path = null, bool httpOnly = false)
-        {
-            var ctx = HttpContext.Current;
-            var request = ctx.Request;
-            var response = ctx.Response;
-
-            var cookie = response.Cookies[name];
-            cookie.Value = value;
-            cookie.Expires = value == null ? DateTime.Now.AddYears(-1) : expires;
-            cookie.HttpOnly = httpOnly;
-            if(path != null) cookie.Path = path;
-        }
-
-        /// <summary>
-        /// 指定名称，获取客户端的 Cookie 值。
-        /// </summary>
-        /// <param name="name">Cookie 的名称。</param>
-        /// <returns> Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
-        public static string Cookie(string name)
-        {
-            var cookie = HttpContext.Current.Request.Cookies[name];
-            if(cookie == null || cookie.Value == null) return string.Empty;
-            return cookie.Value;
-        }
-
-        /// <summary>
-        /// 指定名称，移除客户端的 Cookie 值。
-        /// </summary>
-        /// <param name="name">Cookie 的名称。</param>
-        /// <returns> Cookie 的值。默认值为 <see cref="String.Empty"/>。</returns>
-        public static string CookieRemove(string name)
-        {
-            var value = Cookie(name);
-            Cookie(name, null, DateTime.Now);
-            return value;
-        }
-
-        /// <summary>
-        /// 移除客户端的所有 Cookie。
-        /// </summary>
-        public static void CookieClear()
-        {
-            var ctx = HttpContext.Current;
-            var response = ctx.Response;
-            foreach(var key in ctx.Request.Cookies.AllKeys)
-            {
-                response.Cookies[key].Expires = DateTime.Now.AddYears(-1);
-            }
-        }
 
         #endregion
 
@@ -215,7 +141,7 @@ namespace System.Web
 
         private const string IsJsonResponseName = "$Webx:IS_JSON_RESPONSE";
         /// <summary>
-        /// 获取一个值，指示客户端是否要求 JSON 的响应。
+        /// 设置或获取一个值，指示客户端是否要求 JSON 的响应。
         /// </summary>
         public static bool IsJsonResponse
         {
@@ -232,13 +158,27 @@ namespace System.Web
                 }
                 return isJsonResult.Value;
             }
+            set { SetTemp(IsJsonResponseName, value); }
         }
 
         #endregion
 
         #region Identity
 
-        private const string ContainerName = "$Webx:Container";
+        /// <summary>
+        /// 获取一个基于 <see cref="HttpContext.Items"/> 的存取器。
+        /// </summary>
+        public static IItemsAccessor Items => Container.Get<IItemsAccessor>();
+        /// <summary>
+        /// 获取一个基于 <see cref="HttpContext.Session"/> 的存取器。
+        /// </summary>
+        public static ISessionAccessor Session => Container.Get<ISessionAccessor>();
+        /// <summary>
+        /// 获取一个基于 Cookie 的存取器。
+        /// </summary>
+        public static ICookieAccessor Cookie => Container.Get<ICookieAccessor>();
+
+
         private static IIocContainer SetContainer(IIocContainer value)
         {
             var config = value.Get("$AppSettings") as NameValueCollection
@@ -258,11 +198,12 @@ namespace System.Web
 
             if(!value.Contains<IUserFactory>(true)) value.Add<IUserFactory>(value.Get<IIdentityStore>());
 
-            HttpContext.Current.Application[ContainerName] = value;
+            _WebContainer = value;
             return value;
         }
 
-        private static IIocContainer GetContainer() => HttpContext.Current.Application[ContainerName] as IIocContainer;
+
+        private static IIocContainer _WebContainer;
 
         /// <summary>
         /// 获取或设置用于 Webx 的服务容器。
@@ -271,8 +212,8 @@ namespace System.Web
         {
             get
             {
-                var container = GetContainer();
-                if(container == null) return GetContainer() ?? SetContainer(ObjectFactory.Global);
+                var container = _WebContainer;
+                if(container == null) return _WebContainer ?? SetContainer(ObjectFactory.Global);
                 return container;
             }
             set
@@ -321,19 +262,25 @@ namespace System.Web
         [SingletonMapping]
         internal class SessionIdentityStore : IIdentityStore
         {
+            ISessionAccessor _session;
+            public SessionIdentityStore(ISessionAccessor session)
+            {
+                if(session == null) throw new ArgumentNullException(nameof(session));
+                this._session = session;
+            }
             public void Set(object user)
             {
-                HttpContext.Current.Session[IdentityName] = user;
+                this._session[IdentityName] = user;
             }
 
             public object Get()
             {
-                return HttpContext.Current.Session[IdentityName];
+                return this._session[IdentityName];
             }
 
             public void Remove()
             {
-                HttpContext.Current.Session.Remove(IdentityName);
+                this._session.Remove(IdentityName);
             }
 
             public object GetUser(IIocContainer container)

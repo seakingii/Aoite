@@ -36,19 +36,17 @@ namespace System.Web.Mvc
         /// <param name="context">执行结果时所处的上下文。</param>
         public override void ExecuteResult(ControllerContext context)
         {
-            if(this.Data == null) return;
-            if(context == null)
-                throw new ArgumentNullException("context");
+          
+            if(context == null) throw new ArgumentNullException(nameof(context));
             if(this.JsonRequestBehavior == JsonRequestBehavior.DenyGet
                 && string.Equals(context.HttpContext.Request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("JSON 不允许以 GET 方法调用！");
 
             HttpResponseBase response = context.HttpContext.Response;
-            response.ContentType = string.IsNullOrEmpty(this.ContentType) ? "application/json" : this.ContentType;
-
+            response.ContentType = string.IsNullOrWhiteSpace(this.ContentType) ? "application/json" : this.ContentType;
             if(this.ContentEncoding != null) response.ContentEncoding = this.ContentEncoding;
-
-            response.Write(this.Data.ToJson());
+            if(this.Data == null) return;
+            response.Write(WebConfig.ToJson(this.Data));
         }
     }
 }
