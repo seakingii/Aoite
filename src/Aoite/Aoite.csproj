@@ -391,6 +391,7 @@
     <Compile Include="System\Result\Result`1.cs" />
     <Compile Include="System\Result\SuccessfullyResult.cs" />
     <Compile Include="System\Web\IIdentityStore.cs" />
+    <Compile Include="System\Web\IHttpAccessor.cs" />
     <Compile Include="System\Web\Webx.cs" />
   </ItemGroup>
   <ItemGroup>

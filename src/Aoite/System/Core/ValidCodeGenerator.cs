@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Text;
 
 namespace System
 {
@@ -17,9 +19,10 @@ namespace System
         /// <param name="code">验证码。</param>
         /// <param name="width">图像的宽度，小于 1 则自动计算。</param>
         /// <param name="height">图像的高度，小于 1 则自动计算。默认为 22。</param>
+        /// <param name="bgColor">默认背景颜色。</param>
         /// <param name="familyName">字体名称。</param>
         /// <returns>图像对象。</returns>
-        public static Image Create(string code, int width = 0, int height = 0, string familyName = "Arial")
+        public static Image Create(string code, int width = 0, int height = 0, Color? bgColor = null, string familyName = "Arial")
         {
             if(string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
             if(string.IsNullOrWhiteSpace(familyName)) throw new ArgumentNullException(nameof(familyName));
@@ -29,13 +32,13 @@ namespace System
             using(Graphics g = Graphics.FromImage(image))
             {
                 //清空图片背景色
-                g.Clear(Color.White);
+                g.Clear(bgColor ?? Color.White);
                 for(int i = 0; i < 50; i++)
                 {
                     int x = FastRandom.Instance.Next(image.Width);
                     int y = FastRandom.Instance.Next(image.Height);
                     image.SetPixel(x, y, Color.FromArgb(FastRandom.Instance.Next()));
-                } 
+                }
                 // 画图片的背景噪音线
                 for(int i = 0; i < 10; i++)
                 {
@@ -45,13 +48,15 @@ namespace System
                     int y2 = FastRandom.Instance.Next(image.Height);
                     g.DrawLine(new Pen(Color.Silver), x1, y1, x2, y2);
                 }
+                var font = new Font(familyName, height / 2, (FontStyle.Bold));
+                var brush = new LinearGradientBrush(new Rectangle(0, 0, image.Width, image.Height), Color.FromArgb(198, 6, 8), Color.FromArgb(193, 23, 23), 1.2F, true);
 
-                Font font = new System.Drawing.Font(familyName, 12, (FontStyle.Bold));
-                LinearGradientBrush brush = new LinearGradientBrush(new Rectangle(0, 0, image.Width, image.Height), Color.FromArgb(198, 6, 8), Color.FromArgb(193, 23, 23), 1.2F, true);
-                g.DrawString(code, font, brush, 2, 2);
+                g.DrawString(code, font, brush
+                    , new RectangleF(0, 0, width, height)
+                    , new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
 
                 //画图片的前景噪音点
-                g.DrawRectangle(new Pen(Color.FromArgb(237,237,237)), 0, 0, image.Width - 1, image.Height - 1);
+                g.DrawRectangle(new Pen(Color.FromArgb(237, 237, 237)), 0, 0, image.Width - 1, image.Height - 1);
                 return image;
             }
 
@@ -74,5 +79,5 @@ namespace System
             return ms;
         }
     }
-
 }
+

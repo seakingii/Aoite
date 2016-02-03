@@ -26,6 +26,13 @@ namespace System.Web.Mvc.Filters
             var result = WebConfig.Mvc.OnActionExecuting(filterContext.Controller, filterContext, allowAnonymous);
             if(result != null) filterContext.Result = result;
 
+
+            if(filterContext.Result is HttpUnauthorizedResult && !Webx.IsAjaxRequest)
+            {
+                var loginUrl = Webx.Container.Get("login.url", filterContext.RequestContext.HttpContext.Request.RawUrl) as string;
+                if(loginUrl != null) filterContext.Result = new RedirectResult(loginUrl);
+            }
+
             base.OnActionExecuting(filterContext);
         }
 
@@ -38,7 +45,22 @@ namespace System.Web.Mvc.Filters
             var result = WebConfig.Mvc.OnActionExecuted(filterContext.Controller, filterContext, MvcClient.AllowAnonymous);
             if(result != null) filterContext.Result = result;
 
+            var jsonResult = filterContext.Result as JsonResult;
+
+            if(jsonResult != null && !(jsonResult is JsonNetResult))
+            {
+                filterContext.Result = new JsonNetResult
+                {
+                    ContentEncoding = jsonResult.ContentEncoding,
+                    ContentType = jsonResult.ContentType,
+                    Data = jsonResult.Data,
+                    JsonRequestBehavior = jsonResult.JsonRequestBehavior
+                };
+            }
+
+
             base.OnActionExecuted(filterContext);
         }
+
     }
 }

@@ -46,6 +46,13 @@ namespace System.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// 将当前请求视为尚未授权。
+        /// </summary>
+        public void Unauthorized()
+        {
+            this.Result = new HttpUnauthorizedResult();
+        }
         internal ActionExecutingEventArgs(ActionExecutingContext filterContext, bool allowAnonymous)
             : base(allowAnonymous)
         {

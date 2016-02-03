@@ -262,7 +262,7 @@ namespace System
             var type = item.ExpectType ?? EmptyType;
             container.CacheTypeName.AddOrUpdate(type, t =>
             {
-                var dict = new ConcurrentDictionary<string, ICallSite>();
+                var dict = new ConcurrentDictionary<string, ICallSite>(StringComparer.CurrentCultureIgnoreCase);
                 dict[item.Name] = item.CallSite;
                 return dict;
             }, (t, dict) =>

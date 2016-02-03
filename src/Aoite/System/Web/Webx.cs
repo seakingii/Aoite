@@ -139,26 +139,26 @@ namespace System.Web
 
         #region Commom
 
-        private const string IsJsonResponseName = "$Webx:IS_JSON_RESPONSE";
+        private const string IsAjaxRequestName = "$Webx:IS_AJAX_REQUEST";
         /// <summary>
-        /// 设置或获取一个值，指示客户端是否要求 JSON 的响应。
+        /// 设置或获取一个值，确定指定的 HTTP 请求是否为 AJAX 请求。
         /// </summary>
-        public static bool IsJsonResponse
+        public static bool IsAjaxRequest
         {
             get
             {
-                var isJsonResult = GetTemp<bool?>(IsJsonResponseName, defaultValue: null);
+                var isJsonResult = GetTemp<bool?>(IsAjaxRequestName, defaultValue: null);
                 if(isJsonResult == null)
                 {
                     var request = HttpContext.Current.Request;
                     isJsonResult = ((request["X-Requested-With"] == "XMLHttpRequest")
                         || ((request.Headers != null) && (request.Headers["X-Requested-With"] == "XMLHttpRequest")));
 
-                    SetTemp(IsJsonResponseName, isJsonResult);
+                    SetTemp(IsAjaxRequestName, isJsonResult);
                 }
                 return isJsonResult.Value;
             }
-            set { SetTemp(IsJsonResponseName, value); }
+            set { SetTemp(IsAjaxRequestName, value); }
         }
 
         #endregion

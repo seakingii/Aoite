@@ -88,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\JsonEnumConverter.cs" />
-    <Compile Include="Mvc\JsonHandlerAttribute.cs" />
     <Compile Include="Mvc\JsonNetResult.cs" />
     <Compile Include="Core\WebConfig.cs" />
     <Compile Include="Core\XHttpApplication.cs" />
@@ -98,7 +97,7 @@
     <Compile Include="Mvc\AoiteMvcExtensions.cs" />
     <Compile Include="Mvc\DIAttribute.cs" />
     <Compile Include="Mvc\DIModelBinder.cs" />
-    <Compile Include="Mvc\IAppJsPathProvider.cs" />
+    <Compile Include="Mvc\IAppPathProvider.cs" />
     <Compile Include="Mvc\JsonNetValueProviderFactory.cs" />
     <Compile Include="Mvc\MvcBasicActionFilterAttribute.cs" />
     <Compile Include="Mvc\MvcClient.cs" />

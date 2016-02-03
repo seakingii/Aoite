@@ -33,7 +33,6 @@ namespace System.Web
             Web.Mvc.ValueProviderFactories.Factories.Remove(Web.Mvc.ValueProviderFactories.Factories.OfType<Web.Mvc.JsonValueProviderFactory>().FirstOrDefault());
             Web.Mvc.ValueProviderFactories.Factories.Add(new Web.Mvc.JsonNetValueProviderFactory());
             Web.Mvc.GlobalFilters.Filters.Add(new Web.Mvc.Filters.MvcBasicActionFilterAttribute());
-            Web.Mvc.GlobalFilters.Filters.Add(new Web.Mvc.Filters.JsonHandlerAttribute());
         }
 
         [SingletonMapping]

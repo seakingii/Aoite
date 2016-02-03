@@ -136,21 +136,34 @@ namespace System.Web.Mvc
         {
             if(page == null) throw new ArgumentNullException(nameof(page));
 
-            return Optimization.Scripts.Render(AppendPathTick(Webx.Container.Get<IAppJsPathProvider>().GetUrl(page)));
+            return Optimization.Scripts.Render(AppendPathTick(page, Webx.Container.Get<IAppPathProvider>().GetJsUrl(page)));
         }
 
-        private static string[] AppendPathTick(params string[] paths)
+        private static string[] AppendPathTick(WebViewPage page, params string[] paths)
         {
-            for(int i = 0; i < paths.Length; i++)
+            var parentPath = "~/";
+            var enabledFullPath = paths.Length > 0 && paths[0].StartsWith("*");
+
+            int i = 0;
+            if(enabledFullPath)
+            {
+                i = 1;
+                if(paths[0].Length == 1) parentPath = null;
+                else parentPath = "~" + paths[0].Remove(0, 1);
+            }
+            List<string> pathList = new List<string>(paths.Length);
+            var appPath = Webx.Container.Get<IAppPathProvider>();
+            for(; i < paths.Length; i++)
             {
                 var path = paths[i];
+                if(enabledFullPath) path = appPath.GetFullUrl(page, parentPath, path);
+
                 if(path.Contains("?")) path += "&";
                 else path += "?";
-
-                paths[i] = path + "t=" + JsTimeTicks;
+                pathList.Add( path + "t=" + JsTimeTicks);
             }
 
-            return paths;
+            return pathList.ToArray();
         }
 
         /// <summary>
@@ -160,7 +173,7 @@ namespace System.Web.Mvc
         /// <param name="paths">脚本路径的数组。</param>
         /// <returns>返回一批 HTML SCRIPT 代码。</returns>
         public static IHtmlString RenderScripts(this WebViewPage page, params string[] paths)
-            => Optimization.Scripts.Render(AppendPathTick(paths));
+            => Optimization.Scripts.Render(AppendPathTick(page, paths));
 
         /// <summary>
         /// 输出样式文件。
@@ -169,7 +182,7 @@ namespace System.Web.Mvc
         /// <param name="paths">脚本路径的数组。</param>
         /// <returns>返回一个 HTML LINK 代码。</returns>
         public static IHtmlString RenderStyles(this WebViewPage page, params string[] paths)
-            => Optimization.Styles.Render(AppendPathTick(paths));
+            => Optimization.Styles.Render(AppendPathTick(page, paths));
 
         #endregion
 
