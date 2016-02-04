@@ -154,6 +154,33 @@ namespace System
         public static Task<TView> FindOneAsync<TEntity, TView>(this ICommandBus bus, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => Filter(bus, DbExtensions.GetKeyValues<TEntity>(keyName, keyValue)).FindOneAsync<TEntity, TView>(tunnel);
 
+        /// <summary>
+        /// 异步执行一个查找单项的命令模型。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="bus">命令总线。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体。</returns>
+        public static Task<TView> FindOneAsync<TEntity, TView>(this ICommandBus bus, object keyValue, Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => FindOneAsync(bus, null, keyValue, select, tunnel);
+
+        /// <summary>
+        /// 异步执行一个查找单项的命令模型。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="bus">命令总线。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体。</returns>
+        public static Task<TView> FindOneAsync<TEntity, TView>(this ICommandBus bus, string keyName, object keyValue, Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => Filter(bus, DbExtensions.GetKeyValues<TEntity>(keyName, keyValue)).FindOneAsync(select, tunnel);
+
         #endregion
 
         #region Exists & RowCount

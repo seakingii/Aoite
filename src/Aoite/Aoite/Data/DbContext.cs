@@ -9,7 +9,7 @@ namespace Aoite.Data
     /// </summary>
     class DbContext : ObjectDisposableBase, IDbContext
     {
-        DbConnection _connection;
+        Lazy<DbConnection> _lazyConnection;
         DbTransaction _transaction;
 
         /// <summary>
@@ -22,12 +22,12 @@ namespace Aoite.Data
         /// </summary>
         public Guid Id { get; }
 
-        DbConnection IDbContext.Connection { get { return this._connection; } }
+        DbConnection IDbContext.Connection { get { return this._lazyConnection.Value; } }
 
         /// <summary>
         /// 获取一个值，该值指示当前上下文的连接是否已关闭。
         /// </summary>
-        public bool IsClosed { get { return this._connection.State == ConnectionState.Closed; } }
+        public bool IsClosed { get { return this._lazyConnection.Value.State == ConnectionState.Closed; } }
 
         IDbEngineProvider IDbEngine.Provider { get { return this.Owner.Provider; } }
 
@@ -35,7 +35,7 @@ namespace Aoite.Data
         {
             this.Id = Guid.NewGuid();
             this.Owner = owner;
-            this._connection = owner.Provider.CreateConnection();
+            this._lazyConnection = new Lazy<DbConnection>(owner.Provider.CreateConnection);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Aoite.Data
         public IDbContext Open()
         {
             this.ThrowIfDisposed();
-            if(this._connection.State == ConnectionState.Closed) this._connection.Open();
+            if(this._lazyConnection.Value.State == ConnectionState.Closed) this._lazyConnection.Value.Open();
             return this;
         }
 
@@ -61,7 +61,7 @@ namespace Aoite.Data
         {
             this.Open();
             if(this._transaction != null) throw new NotSupportedException("已打开了一个新的事务，无法确定对旧的事务是否已执行提交或回滚操作。");
-            this._transaction = this._connection.BeginTransaction(isolationLevel);
+            this._transaction = this._lazyConnection.Value.BeginTransaction(isolationLevel);
             return this;
         }
 
@@ -74,7 +74,7 @@ namespace Aoite.Data
         {
             this.ThrowIfDisposed();
             if(command == null) throw new ArgumentNullException(nameof(command));
-            return new DbExecutor(this, command, this._connection, this._transaction, false);
+            return new DbExecutor(this, command, this._lazyConnection.Value, this._transaction, false);
         }
 
 #if !NET45 && !NET40
@@ -138,14 +138,14 @@ namespace Aoite.Data
         /// </summary>
         protected override void DisposeManaged()
         {
-            if(this._connection != null)
+            if(this._lazyConnection != null)
             {
                 lock (this)
                 {
-                    var conn = this._connection;
+                    var conn = this._lazyConnection.Value;
                     if(conn != null)
                     {
-                        this._connection = null;
+                        this._lazyConnection = null;
                         if(conn.State != ConnectionState.Closed)
                             try
                             {

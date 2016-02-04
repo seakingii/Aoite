@@ -170,7 +170,7 @@ namespace Aoite.Data
             public AnonymousTypeObject()
             {
                 var type = typeof(TView);
-                if(!type.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)) throw new ArgumentException("只支持匿名对象的类型", type.FullName);
+                if(!type.IsAnonymous()) throw new ArgumentException("只支持匿名对象的类型", type.FullName);
                 this._ctor = type.GetConstructors().First();
                 this.Fields = this._ctor.GetParameters().Join(p => p.Name);
             }

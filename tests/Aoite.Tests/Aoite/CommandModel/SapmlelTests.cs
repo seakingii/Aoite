@@ -80,6 +80,21 @@ namespace Aoite.CommandModel
             Assert.NotEqual(result, service.GetUsername(1));
         }
 
+        [Fact]
+        public void FindDeptName_Test()
+        {
+
+            Db.SetEngine(new Aoite.Data.DbEngine(new Aoite.Data.SqlEngineProvider("1")));
+            var service = this.New(Nickname1, f => f.Enqueue(c =>
+            {
+                var command = c as CMD.CMDWhereBase;
+                Assert.Equal("Id", command.Where.Parameters[0].Name);
+                Assert.Equal(2L, command.Where.Parameters[0].Value);
+                return new { Name = "abc" };
+            }));
+
+            Assert.Equal("abc", service.FindDeptName(2));
+        }
     }
 
     public class DefaultBalanceService : CommandModelServiceBase
@@ -92,6 +107,12 @@ namespace Aoite.CommandModel
                 Money = money,
             });
             return Result.Successfully;
+        }
+
+        public string FindDeptName(long id)
+        {
+            var m = this.Bus.FindOne(id, (DeptModel t) => new { t.Name });
+            return m.Name;
         }
 
         public Result<List<DeptModel>> GetDepts(long parentId)
