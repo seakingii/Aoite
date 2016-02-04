@@ -433,6 +433,9 @@ namespace Aoite.Data.Samples
                 Assert.NotNull(r);
                 var r2 = manager.Engine.FindOne<TestTable, NameTable>(5);
                 Assert.NotNull(r2);
+
+                var r3 = manager.Engine.FindOne(5, (TestTable t) => new { t.UserName });
+                Assert.Equal("user4", r3.UserName);
             }
         }
 

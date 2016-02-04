@@ -550,7 +550,6 @@ namespace System
         {
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             if(entity == null) throw new ArgumentNullException(nameof(entity));
-
             var command = engine.Provider.SqlFactory.CreateInsertCommand(TypeMapper.Instance<TEntity>.Mapper, entity, tunnel);
             return engine.Execute(command).ToNonQuery();
         }
@@ -658,6 +657,33 @@ namespace System
         /// <returns>实体。</returns>
         public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, ICommandTunnel tunnel = null)
             => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne<TEntity, TView>(tunnel);
+
+        /// <summary>
+        /// 获取指定 <paramref name="keyValue"/> 值的数据源对象。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体。</returns>
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, object keyValue, Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => FindOne(engine, null, keyValue, select, tunnel);
+
+        /// <summary>
+        /// 获取指定 <paramref name="keyName"/> 键值的数据源对象。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="engine">数据源查询与交互引擎的实例。</param>
+        /// <param name="keyName">主键的列名。可以为 null 值。</param>
+        /// <param name="keyValue">主键的列值。</param>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体。</returns>
+        public static TView FindOne<TEntity, TView>(this IDbEngine engine, string keyName, object keyValue, Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => Filter(engine, GetKeyValues<TEntity>(keyName, keyValue)).FindOne(select, tunnel);
 
         #endregion
 
