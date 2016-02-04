@@ -24,6 +24,13 @@ namespace Aoite.Data.Builder
         }
 
         [Fact()]
+        public void NameValueOpTest()
+        {
+            var command = engine.Select<TestTable>().WhereValue("ID", 2, "LIKE").OrValue("Name", "name").End();
+            Assert.NotNull(command);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE [ID] LIKE @ID OR [Name]=@Name", command.Text);
+        }
+        [Fact()]
         public void WhereInTest1()
         {
             var command = engine.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();
@@ -35,7 +42,7 @@ namespace Aoite.Data.Builder
         public void WhereInTest2()
         {
             var command = engine.Select<TestTable>()
-                .Where("UserName", "abc")
+                .WhereValue("UserName", "abc")
                 .AndIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
             Assert.Equal("SELECT * FROM [TestTable] WHERE [UserName]=@UserName AND [ID] IN (@id0, @id1, @id2)", command.Text);
@@ -46,7 +53,7 @@ namespace Aoite.Data.Builder
         public void WhereInTest3()
         {
             var command = engine.Select<TestTable>()
-                .Where("@UserName", "abc")
+                .WhereValue("@UserName", "abc")
                 .AndNotIn("ID", "@id", new int[] { 1, 2, 3 }).End();
             Assert.NotNull(command);
             Assert.Equal("SELECT * FROM [TestTable] WHERE [UserName]=@UserName AND [ID] NOT IN (@id0, @id1, @id2)", command.Text);

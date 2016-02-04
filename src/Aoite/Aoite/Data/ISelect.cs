@@ -40,8 +40,9 @@
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
-        IWhere Where(string name, object value);
+        IWhere WhereValue(string name, object value, string op = "=");
         /// <summary>
         /// 进入 WHERE SQL 实现。
         /// </summary>

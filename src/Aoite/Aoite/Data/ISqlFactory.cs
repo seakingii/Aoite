@@ -61,6 +61,17 @@ namespace Aoite.Data
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>查询命令。</returns>
         ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, TypeMapper viewMapper, WhereParameters where, int top = 0, ICommandTunnel tunnel = null);
+
+        /// <summary>
+        /// 指定实体类型映射器、列集合和条件创建一个查询的命令。
+        /// </summary>
+        /// <param name="entityMapper">实体的类型映射器。</param>
+        /// <param name="fields">SELECT 的列集合(以“,”分隔），可以为 null 值，表示所有字段。</param>
+        /// <param name="where">条件参数。</param>
+        /// <param name="top">指定 TOP 数量，小于 1 则忽略作用。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>查询命令。</returns>
+        ExecuteCommand CreateQueryCommand(TypeMapper entityMapper, string fields, WhereParameters where, int top = 0, ICommandTunnel tunnel = null);
         /// <summary>
         /// 指定类型映射器和条件参数创建一个表总行数的命令。
         /// </summary>

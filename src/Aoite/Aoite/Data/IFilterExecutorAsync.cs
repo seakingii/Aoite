@@ -46,6 +46,35 @@ namespace Aoite.Data
         /// 根据当前提供匹配条件，异步获取一个对象。
         /// </summary>
         /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体。</returns>
+        Task<TView> FindOneAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null);
+        /// <summary>
+        /// 根据当前提供匹配条件，异步获取对象的列表。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>实体的集合。</returns>
+        Task<List<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null);
+        /// <summary>
+        /// 根据当前提供匹配条件，异步获取对象的列表。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
+        /// <typeparam name="TView">视图的数据类型。</typeparam>
+        /// <param name="select">视图选择器。可以为 null 值，表示不采用匿名对象的方式。</param>
+        /// <param name="page">一个分页的实现。</param>
+        /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
+        /// <returns>包含总记录数的实体的集合。</returns>
+        Task<PageData<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, IPagination page, ICommandTunnel tunnel = null);
+
+        /// <summary>
+        /// 根据当前提供匹配条件，异步获取一个对象。
+        /// </summary>
+        /// <typeparam name="TEntity">实体的数据类型。</typeparam>
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>实体。</returns>
         Task<TEntity> FindOneAsync<TEntity>(ICommandTunnel tunnel = null);
@@ -93,7 +122,6 @@ namespace Aoite.Data
 
     partial class FilterExecutor : IFilterExecutorAsync
     {
-
         public Task<int> ModifyAsync<TEntity>(object entity, ICommandTunnel tunnel = null)
         {
             var command = this._engine.Provider.SqlFactory.CreateUpdateCommand(TypeMapper.Instance<TEntity>.Mapper, entity, this._where, tunnel);
@@ -117,6 +145,47 @@ namespace Aoite.Data
         {
             var command = this._engine.Provider.SqlFactory.CreateRowCountCommand(TypeMapper.Instance<TEntity>.Mapper, this._where, tunnel);
             return this._engine.Execute(command).ToScalarAsync<long>();
+        }
+
+
+        public Task<TView> FindOneAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+        {
+            if(select == null) return this.FindOneAsync<TEntity, TView>(tunnel);
+
+            var atObj = new AnonymousTypeObject<TView>();
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, atObj.Fields, this._where, 1, tunnel);
+            return this._engine.Execute(command).ToEntityAsync().ContinueWith(t =>
+            {
+                if(t.Result == null) return default(TView);
+                return atObj.Create(t.Result as DynamicEntityValue);
+            });
+        }
+        public Task<List<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+        {
+            if(select == null) return this.FindAllAsync<TEntity, TView>(tunnel);
+
+            var atObj = new AnonymousTypeObject<TView>();
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, atObj.Fields, this._where, 0, tunnel);
+            return this._engine.Execute(command).ToEntitiesAsync().ContinueWith(t =>
+            {
+                return (from item in t.Result select atObj.Create(item as DynamicEntityValue)).ToList();
+            });
+        }
+        public Task<PageData<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, IPagination page, ICommandTunnel tunnel = null)
+        {
+            if(select == null) return this.FindAllAsync<TEntity, TView>(page, tunnel);
+
+            var atObj = new AnonymousTypeObject<TView>();
+            var command = this._engine.Provider.SqlFactory.CreateQueryCommand(TypeMapper.Instance<TEntity>.Mapper, atObj.Fields, this._where, 0, tunnel);
+            return this._engine.Execute(command).ToEntitiesAsync(page).ContinueWith(t =>
+            {
+                var pageData = t.Result;
+                return new PageData<TView>()
+                {
+                    Rows = (from item in pageData.Rows select atObj.Create(item as DynamicEntityValue)).ToArray(),
+                    Total = pageData.Total
+                };
+            });
         }
 
         public Task<TEntity> FindOneAsync<TEntity>(ICommandTunnel tunnel = null)

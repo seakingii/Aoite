@@ -8,7 +8,7 @@ using Aoite.Data;
 
 namespace Aoite.CommandModel
 {
-    partial class CommandFilterExecutor: IFilterExecutorAsync
+    partial class CommandFilterExecutor : IFilterExecutorAsync
     {
         public Task<bool> ExistsAsync<TEntity>(ICommandTunnel tunnel = null)
             => this._bus.ExecuteAsync(new CMD.Exists<TEntity> { Where = this._where, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
@@ -40,6 +40,15 @@ namespace Aoite.CommandModel
 
         public Task<long> RowCountAsync<TEntity>(ICommandTunnel tunnel = null)
             => this._bus.ExecuteAsync(new CMD.RowCount<TEntity> { Where = this._where, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
+
+        public Task<TView> FindOneAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => this._bus.ExecuteAsync(new CMD.FindOne<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
+
+        public Task<List<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => this._bus.ExecuteAsync(new CMD.FindAll<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
+
+        public Task<PageData<TView>> FindAllAsync<TEntity, TView>(Func<TEntity, TView> select, IPagination page, ICommandTunnel tunnel = null)
+            => this._bus.ExecuteAsync(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Select = select, Page = page, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
     }
 }
 #endif

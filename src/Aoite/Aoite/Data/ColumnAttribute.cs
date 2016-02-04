@@ -89,15 +89,15 @@ namespace Aoite.Data
     public class StringLengthAttribute : Attribute, IPropertyValidator
     {
         /// <summary>
-        /// 设置或获取一个值，指示属性检查的排序。排序越小排在越前面。
+        /// 获取或设置一个值，指示属性检查的排序。排序越小排在越前面。
         /// </summary>
         public int Order { get; set; } = 1;
         /// <summary>
-        /// 设置或获取一个值，指示字符串的最大长度，小于 1 表示不控制。
+        /// 获取或设置一个值，指示字符串的最大长度，小于 1 表示不控制。
         /// </summary>
         public int MaxLength { get; }
         /// <summary>
-        /// 设置或获取一个值，为 true 时 ASCII 码超过 128 的字符都会被计算 2 个字节长度，否则所有字符都只计算 1 个字节长度。
+        /// 获取或设置一个值，为 true 时 ASCII 码超过 128 的字符都会被计算 2 个字节长度，否则所有字符都只计算 1 个字节长度。
         /// </summary>
         public bool IsUnicodeCharacher { get; }
 
@@ -133,7 +133,7 @@ namespace Aoite.Data
     public class NotNullAttribute : Attribute, IPropertyValidator
     {
         /// <summary>
-        /// 设置或获取一个值，指示属性检查的排序。排序越小排在越前面。
+        /// 获取或设置一个值，指示属性检查的排序。排序越小排在越前面。
         /// </summary>
         public int Order { get; set; } = 0;
 

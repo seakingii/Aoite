@@ -12,7 +12,7 @@ namespace System.Web
     public interface IHttpAccessor
     {
         /// <summary>
-        /// 设置或获取指定名称的值。
+        /// 获取或设置指定名称的值。
         /// </summary>
         /// <param name="name">名称。</param>
         /// <returns>值。</returns>

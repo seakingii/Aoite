@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Aoite.Data
 {
@@ -100,7 +101,7 @@ namespace Aoite.Data
         public IWhere Where<T>(string fieldName, string namePrefix, T[] values) => this.Where().And(fieldName, namePrefix, values);
 
 
-        public IWhere Where(string name, object value) => this.Where().And(name, value);
+        public IWhere WhereValue(string name, object value, string op = "=") => this.Where().AndValue(name, value, op);
         public IWhere Where(string expression, string name, object value) => this.Where().And(expression, name, value);
 
         public IWhere WhereIn<T>(string fieldName, string namePrefix, T[] values) => this.Where().AndIn(fieldName, namePrefix, values);
@@ -219,13 +220,22 @@ namespace Aoite.Data
             this.And();
             return this.Append(expression, name, value);
         }
-        public IWhere And(string name, object value)
+
+
+        private IWhere AddNameValueOP(string name, object value, string op,Func<string,string,object ,IWhere> next)
         {
+            if(op == null) op = "=";
+            if(op.Count(c => char.IsLetter(c)) == op.Length) op = " " + op + " ";
+
             var factory = this._engine.Provider.SqlFactory;
             name = factory.UnescapeName(name);
-            var expression = factory.EscapeName(name, NamePoint.Field) + "="
+            var expression = factory.EscapeName(name, NamePoint.Field) + op
                            + factory.EscapeName(name, NamePoint.Value);
-            return this.And(expression, name, value);
+            return next(expression, name, value);
+        }
+        public IWhere AndValue(string name, object value, string op = "=")
+        {
+            return AddNameValueOP(name, value, op, this.And);
         }
         public IWhere Or(string expression) => this.Or().Sql(expression);
 
@@ -234,13 +244,9 @@ namespace Aoite.Data
             this.Or();
             return this.Append(expression, name, value);
         }
-        public IWhere Or(string name, object value)
+        public IWhere OrValue(string name, object value, string op = "=")
         {
-            var factory = this._engine.Provider.SqlFactory;
-            name = factory.UnescapeName(name);
-            var expression = factory.EscapeName(name, NamePoint.Field) + "="
-                           + factory.EscapeName(name, NamePoint.Value);
-            return this.Or(expression, name, value);
+            return AddNameValueOP(name, value, op, this.Or);
         }
 
         public IWhere And<T>(string fieldName, string namePrefix, T[] values)

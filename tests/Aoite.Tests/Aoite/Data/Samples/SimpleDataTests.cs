@@ -458,7 +458,17 @@ namespace Aoite.Data.Samples
                 Assert.Equal(5, r2.Count);
             }
         }
-
+        [Fact()]
+        public void FineAllWhereTest2()
+        {
+            using(var manager = this.CreateManager())
+            {
+                CreateTable(manager);
+                InsertRows(manager);
+                var r2 = manager.Engine.Filter("id<=@uid", new ExecuteParameterCollection("@uid", 5)).FindAll((TestTable t) => new { t.UserName });
+                Assert.Equal(5, r2.Count);
+            }
+        }
 #if !NET40
         [Fact()]
         public async void ToNonQueryAsyncTest()

@@ -141,7 +141,7 @@ namespace System.Web
 
         private const string IsAjaxRequestName = "$Webx:IS_AJAX_REQUEST";
         /// <summary>
-        /// 设置或获取一个值，确定指定的 HTTP 请求是否为 AJAX 请求。
+        /// 获取或设置一个值，确定指定的 HTTP 请求是否为 AJAX 请求。
         /// </summary>
         public static bool IsAjaxRequest
         {

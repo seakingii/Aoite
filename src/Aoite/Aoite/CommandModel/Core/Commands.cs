@@ -175,7 +175,10 @@ namespace CMD
         /// 获取或设置一个实体。
         /// </summary>
         public TView Result { get; set; }
-
+        /// <summary>
+        /// 获取或设置视图选择器。可以为 null 值，表示不采用匿名对象的方式。
+        /// </summary>
+        public Func<TEntity, TView> Select { get; set; }
         /// <summary>
         /// 初始化一个 <see cref="CMD.FindOne{TEntity, TView}"/> 类的新实例。
         /// </summary>
@@ -186,13 +189,13 @@ namespace CMD
             : ExecutorAsyncBase<FindOne<TEntity, TView>, TView>
         {
             protected override Task<TView> ExecuteResultAsync(IContext context, FindOne<TEntity, TView> command)
-                => context.Engine.Filter(command.Where).FindOneAsync<TEntity, TView>(command.Tunnel);
+                => context.Engine.Filter(command.Where).FindOneAsync(command.Select, command.Tunnel);
 #else
             : ExecutorBase<FindOne<TEntity, TView>, TView>
         {
 #endif
             protected override TView ExecuteResult(IContext context, FindOne<TEntity, TView> command)
-                => context.Engine.Filter(command.Where).FindOne<TEntity, TView>(command.Tunnel);
+                => context.Engine.Filter(command.Where).FindOne(command.Select, command.Tunnel);
 
         }
     }
@@ -208,6 +211,10 @@ namespace CMD
         /// 获取或设置一个实体的集合。
         /// </summary>
         public List<TView> Result { get; set; }
+        /// <summary>
+        /// 获取或设置视图选择器。可以为 null 值，表示不采用匿名对象的方式。
+        /// </summary>
+        public Func<TEntity, TView> Select { get; set; }
 
         /// <summary>
         /// 初始化一个 <see cref="CMD.FindAll{TEntity, TView}"/> 类的新实例。
@@ -219,13 +226,13 @@ namespace CMD
             : ExecutorAsyncBase<FindAll<TEntity, TView>, List<TView>>
         {
             protected override Task<List<TView>> ExecuteResultAsync(IContext context, FindAll<TEntity, TView> command)
-                => context.Engine.Filter(command.Where).FindAllAsync<TEntity, TView>(command.Tunnel);
+                => context.Engine.Filter(command.Where).FindAllAsync(command.Select, command.Tunnel);
 #else
             : ExecutorBase<FindAll<TEntity, TView>, List<TView>>
         {
 #endif
             protected override List<TView> ExecuteResult(IContext context, FindAll<TEntity, TView> command)
-               => context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.Tunnel);
+               => context.Engine.Filter(command.Where).FindAll(command.Select, command.Tunnel);
 
         }
     }
@@ -241,6 +248,10 @@ namespace CMD
         /// 获取或设置分页的数据。
         /// </summary>
         public IPagination Page { get; set; }
+        /// <summary>
+        /// 获取或设置视图选择器。可以为 null 值，表示不采用匿名对象的方式。
+        /// </summary>
+        public Func<TEntity, TView> Select { get; set; }
 
         /// <summary>
         /// 获取或设置一个实体的分页集合。
@@ -257,13 +268,13 @@ namespace CMD
             : ExecutorAsyncBase<FindAllPage<TEntity, TView>, PageData<TView>>
         {
             protected override Task<PageData<TView>> ExecuteResultAsync(IContext context, FindAllPage<TEntity, TView> command)
-                => context.Engine.Filter(command.Where).FindAllAsync<TEntity, TView>(command.Page, command.Tunnel);
+                => context.Engine.Filter(command.Where).FindAllAsync(command.Select, command.Page, command.Tunnel);
 #else
             : ExecutorBase<FindAllPage<TEntity, TView>, PageData<TView>>
         {
 #endif
             protected override PageData<TView> ExecuteResult(IContext context, FindAllPage<TEntity, TView> command)
-                => context.Engine.Filter(command.Where).FindAll<TEntity, TView>(command.Page, command.Tunnel);
+                => context.Engine.Filter(command.Where).FindAll(command.Select, command.Page, command.Tunnel);
 
         }
 

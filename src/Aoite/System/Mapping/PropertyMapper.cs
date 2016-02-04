@@ -84,7 +84,7 @@ namespace System
     public interface IPropertyValidator
     {
         /// <summary>
-        /// 设置或获取一个值，指示属性检查的排序。排序越小排在越前面。
+        /// 获取或设置一个值，指示属性检查的排序。排序越小排在越前面。
         /// </summary>
         int Order { get; set; }
 

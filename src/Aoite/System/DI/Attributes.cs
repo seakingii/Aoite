@@ -69,7 +69,7 @@ namespace System
     public class OrderMappingAttribute : Attribute
     {
         /// <summary>
-        /// 设置或获取一个值，表示构造函数解析排序。数值越小优先解析。默认为 1。
+        /// 获取或设置一个值，表示构造函数解析排序。数值越小优先解析。默认为 1。
         /// </summary>
         public int Order { get; set; } = 1;
     }

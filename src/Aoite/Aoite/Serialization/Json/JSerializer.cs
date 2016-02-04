@@ -57,6 +57,7 @@ namespace Aoite.Serialization.Json
             this._maxJsonLength = DefaultMaxJsonLength;
         }
 
+
         /// <summary>
         /// 获取或设置一个值，表示是否启用名称智能小写模式。默认为 false，表示使用原来的名称。
         /// </summary>
@@ -364,6 +365,11 @@ namespace Aoite.Serialization.Json
 
         private void SerializeValueInternal(object o, StringBuilder sb, int depth, Hashtable objectsInUse, PropertyMapper propertyMapper)
         {
+            if(o is Data.DynamicEntityValue)
+            {
+                this.SerializeValueInternal((o as Data.DynamicEntityValue).NameValues, sb, depth, objectsInUse, propertyMapper);
+                return;
+            }
             // 'null' is a special JavaScript token
             if(o == null || DBNull.Value.Equals(o))
             {

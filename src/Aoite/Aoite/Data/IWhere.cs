@@ -65,8 +65,9 @@
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
-        IWhere And(string name, object value);
+        IWhere AndValue(string name, object value, string op = "=");
         /// <summary>
         /// 添加 OR 表达式。
         /// </summary>
@@ -86,8 +87,9 @@
         /// </summary>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
-        IWhere Or(string name, object value);
+        IWhere OrValue(string name, object value, string op = "=");
         /// <summary>
         /// 添加 AND 表达式“AND (fieldName=@namePrefix0 OR fieldName=@namePrefix1)”。
         /// </summary>

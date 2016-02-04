@@ -48,5 +48,14 @@ namespace Aoite.CommandModel
 
         public long RowCount<TEntity>(ICommandTunnel tunnel = null)
             => this._bus.Execute(new CMD.RowCount<TEntity> { Where = this._where, Tunnel = tunnel }).Result;
+
+        public TView FindOne<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => this._bus.Execute(new CMD.FindOne<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).Result;
+
+        public List<TView> FindAll<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
+            => this._bus.Execute(new CMD.FindAll<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).Result;
+
+        public PageData<TView> FindAll<TEntity, TView>(Func<TEntity, TView> select, IPagination page, ICommandTunnel tunnel = null)
+            => this._bus.Execute(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Select = select, Page = page, Tunnel = tunnel }).Result;
     }
 }

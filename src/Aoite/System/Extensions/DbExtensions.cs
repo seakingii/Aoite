@@ -915,7 +915,7 @@ namespace System
                         {
                             var tmpKV = itemMapper[keyProp.Name]?.GetValue(item, true);
                             if(tmpKV == null) throw CreateKeyNotFoundException<TEntity>(keyProp.Name);
-                            builder.And(keyProp.Name, tmpKV);
+                            builder.AndValue(keyProp.Name, tmpKV);
                         }
                         builder.EndGroup();
                     }
