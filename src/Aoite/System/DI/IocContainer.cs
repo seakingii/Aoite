@@ -8,6 +8,19 @@ using Aoite.DI;
 
 namespace System
 {
+    /// <summary>
+    /// 定义一个预期类型工厂。
+    /// </summary>
+    public interface IActualTypeFactory
+    {
+        /// <summary>
+        /// 获取指定预期服务类型的实际类型名称集合。
+        /// </summary>
+        /// <param name="expectType">预期服务类型。</param>
+        /// <returns>实际类型名称集合。</returns>
+        IEnumerable<string> GetAllActualType(Type expectType);
+    }
+
     sealed class IocContainer : IIocContainer
     {
         private bool _hasParent;
@@ -31,9 +44,14 @@ namespace System
             return null;
         }
 
+        class ActualTypeFactory : IActualTypeFactory
+        {
+            public IEnumerable<string> GetAllActualType(Type expectType) => MapFilter.GetAllActualType(expectType);
+        }
         public IocContainer()
         {
             this.Add<IIocContainer>(this);
+            this.Add<IActualTypeFactory>(new ActualTypeFactory());
         }
 
         internal IocContainer(IocContainer parent) : this()
@@ -59,7 +77,6 @@ namespace System
 
         #region Create CallSite
 
-        //- 查找指定预期服务类型的实际服务类型
         /// <summary>
         /// 查找指定预期服务类型的实际服务类型。
         /// </summary>
@@ -77,7 +94,7 @@ namespace System
             //- 否则就是一个接口
 
             //- 获取通过接口名称智能分析出来的所有名称限定符
-            var fullNames = MapFilter.GetAllActualType(expectType);
+            var fullNames = this.Get<IActualTypeFactory>() .GetAllActualType(expectType);
 
             //- 从智能映射表中获取（当前程序集）
             foreach(var fullName in fullNames)

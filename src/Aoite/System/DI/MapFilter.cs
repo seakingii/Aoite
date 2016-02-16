@@ -145,7 +145,7 @@ namespace System
             return FindActualType(allTypes, expectType, fullNames);
         }
 
-        internal static Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType, HashSet<string> fullNames)
+        internal static Type FindActualType(IDictionary<string, List<Type>> allTypes, Type expectType, IEnumerable<string> fullNames)
         {
             return (from item in allTypes
                     where fullNames.Contains(item.Key)
