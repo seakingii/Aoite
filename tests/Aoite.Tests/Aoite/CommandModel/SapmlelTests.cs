@@ -6,7 +6,6 @@ namespace Aoite.CommandModel
 {
     public class SapmlelTests
     {
-
         const string Nickname1 = "张三";
         const string Nickname2 = "李四";
 
@@ -90,6 +89,7 @@ namespace Aoite.CommandModel
                 var command = c as CMD.CMDWhereBase;
                 Assert.Equal("Id", command.Where.Parameters[0].Name);
                 Assert.Equal(2L, command.Where.Parameters[0].Value);
+                Assert.Equal("[Id]=@Id", command.Where.Where);
                 return new { Name = "abc" };
             }));
 
