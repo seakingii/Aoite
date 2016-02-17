@@ -52,6 +52,7 @@ namespace System
         {
             this.Add<IIocContainer>(this);
             this.Add<IActualTypeFactory>(new ActualTypeFactory());
+            this.Add<Aoite.Data.IDbEngine>(lmps => Db.Context);
         }
 
         internal IocContainer(IocContainer parent) : this()

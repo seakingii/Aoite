@@ -82,8 +82,6 @@ namespace Aoite.CommandModel
         [Fact]
         public void FindDeptName_Test()
         {
-
-            Db.SetEngine(new Aoite.Data.DbEngine(new Aoite.Data.SqlEngineProvider("1")));
             var service = this.New(Nickname1, f => f.Enqueue(c =>
             {
                 var command = c as CMD.CMDWhereBase;

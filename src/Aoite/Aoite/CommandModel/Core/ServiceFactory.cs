@@ -75,6 +75,7 @@ namespace Aoite.CommandModel
                 container.Add<IExecutorFactory>(executorFactory);
             }
             if(Db.Engine != null) container.Add<IDbEngine>(lmps => Db.Context);
+            else container.Add<IDbEngine>(lmps => new DbEngine(new SqlEngineProvider("UNIT TEST")));
             return container;
         }
 
