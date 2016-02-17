@@ -117,10 +117,12 @@ namespace System.Web.Mvc
         /// <summary>
         /// 开始事务模式。
         /// </summary>
+        /// <param name="controller">控制器。</param>
+        /// <param name="asyncEnabled">描述了当使用 Task 或 async/await .NET 异步编程模式时，与事务范围关联的环境事务将跨线程连续任务执行。</param>
         /// <returns>返回一个事务。</returns>
-        public static ITransaction BeginTransaction(this IController controller)
+        public static ITransaction BeginTransaction(this IController controller, bool asyncEnabled)
         {
-            return new Aoite.CommandModel.DefaultTransaction();
+            return new Aoite.CommandModel.DefaultTransaction(asyncEnabled);
         }
 
         #endregion
@@ -160,7 +162,7 @@ namespace System.Web.Mvc
 
                 if(path.Contains("?")) path += "&";
                 else path += "?";
-                pathList.Add( path + "t=" + JsTimeTicks);
+                pathList.Add(path + "t=" + JsTimeTicks);
             }
 
             return pathList.ToArray();

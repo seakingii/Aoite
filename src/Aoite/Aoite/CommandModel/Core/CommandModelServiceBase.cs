@@ -113,8 +113,9 @@ namespace Aoite.CommandModel
         /// 开始事务模式。
         /// </summary>
         /// <returns>可释放的事务实例。</returns>
-        protected virtual ITransaction BeginTransaction()
-            => new DefaultTransaction();
+        /// <param name="asyncEnabled">描述了当使用 Task 或 async/await .NET 异步编程模式时，与事务范围关联的环境事务将跨线程连续任务执行。</param>
+        protected virtual ITransaction BeginTransaction(bool asyncEnabled = false)
+            => new DefaultTransaction(asyncEnabled);
 
         /// <summary>
         /// 获取指定实体数据类型的缓存键。
