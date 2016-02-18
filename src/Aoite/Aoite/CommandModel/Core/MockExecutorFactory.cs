@@ -62,7 +62,6 @@ namespace Aoite.CommandModel
             return executor;
         }
 
-
         Queue<Func<ICommand, object>> _queues = new Queue<Func<ICommand, object>>();
 
         /// <summary>
@@ -70,11 +69,36 @@ namespace Aoite.CommandModel
         /// </summary>
         /// <param name="mockHandler">模拟的执行器。</param>
         /// <returns>当前执行器工厂。</returns>
+        [Obsolete]
         public MockExecutorFactory Enqueue(Func<ICommand, object> mockHandler)
         {
             _queues.Enqueue(mockHandler);
             return this;
         }
+
+        /// <summary>
+        /// 弱类型命令模型，添加一个按顺序先进先出的模拟的模型执行方法。
+        /// </summary>
+        /// <param name="mockHandler">模拟的执行器。</param>
+        /// <returns>当前执行器工厂。</returns>
+        public MockExecutorFactory Mock(Func<ICommand, object> mockHandler)
+        {
+            _queues.Enqueue(mockHandler);
+            return this;
+        }
+
+        /// <summary>
+        /// 强类型命令模型，添加一个按顺序先进先出的模拟的模型执行方法。
+        /// </summary>
+        /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
+        /// <param name="mockHandler">模拟的执行器。</param>
+        /// <returns>当前执行器工厂。</returns>
+        public MockExecutorFactory Mock<TCommand>(Func<TCommand, object> mockHandler) where TCommand : ICommand
+        {
+            _queues.Enqueue(c => mockHandler((TCommand)c));
+            return this;
+        }
+
         class AnonymousTypeObject
         {
             private readonly System.Reflection.ConstructorInfo _ctor;

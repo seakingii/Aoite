@@ -82,7 +82,7 @@ namespace Aoite.CommandModel
         [Fact]
         public void FindDeptName_Test()
         {
-            var service = this.New(Nickname1, f => f.Enqueue(c =>
+            var service = this.New(Nickname1, f => f.Mock(c =>
             {
                 var command = c as CMD.CMDWhereBase;
                 Assert.Equal("Id", command.Where.Parameters[0].Name);
