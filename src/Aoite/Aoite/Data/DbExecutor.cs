@@ -146,7 +146,12 @@ namespace Aoite.Data
         /// <param name="parameters">参数集合。</param>
         protected virtual void FillParameters(DbCommand command, ExecuteParameterCollection parameters)
         {
-            foreach(var p in parameters) command.Parameters.Add(p.CreateParameter(command));
+            foreach(var p in parameters)
+            {
+                var dbp = p.CreateParameter(command);
+                dbp.ParameterName = this.Engine.Provider.SqlFactory.EscapeName(dbp.ParameterName, NamePoint.Parameter);
+                command.Parameters.Add(dbp);
+            }
         }
 
         /// <summary>

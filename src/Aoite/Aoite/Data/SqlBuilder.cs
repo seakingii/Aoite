@@ -132,7 +132,7 @@ namespace Aoite.Data
 
         public SqlBuilder Parameter(string name, object value)
         {
-            this.Parameters.Add(this._engine.Provider.SqlFactory.EscapeName(name, NamePoint.Parameter), value);
+            this.Parameters.Add(name, value);
             return this;
         }
 

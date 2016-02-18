@@ -108,7 +108,7 @@ namespace Aoite.Data.Builder
         public void SelectSomeWhere()
         {
             var command = engine.Select<TestTable>()
-                            .Where("ID", "@id", new int[] { 1, 2, 3 })
+                            .Where("ID", "id", new int[] { 1, 2, 3 })
                             .End();
             Assert.NotNull(command);
             Assert.Equal("SELECT * FROM [TestTable] WHERE ([ID]=@id0 OR [ID]=@id1 OR [ID]=@id2)", command.Text);
