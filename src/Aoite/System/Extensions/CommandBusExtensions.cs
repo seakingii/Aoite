@@ -269,7 +269,7 @@ namespace System
         {
             if(bus == null) throw new ArgumentNullException(nameof(bus));
             var builder = new SqlBuilder(bus.GetDbEngine());
-            whereCallback(builder);
+            whereCallback(builder.Where());
             return Filter(bus, builder.WhereText, builder.Parameters);
         }
 
