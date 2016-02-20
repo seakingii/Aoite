@@ -12,6 +12,12 @@ namespace System
         /// 获取或设置 WHERE 的语句。可以为 null 值。
         /// </summary>
         public string Where { get; set; }
+
+        /// <summary>
+        /// 获取或设置 ORDER BY 的语句。可以为 null 值。
+        /// </summary>
+        public string OrderBy { get; set; }
+
         /// <summary>
         /// 获取或设置 WHERE 的参数集合。可以为 null 值。
         /// </summary>
@@ -43,7 +49,9 @@ namespace System
         public string AppendTo(string commandText)
         {
             var whereText = this.Where;
+            var orderText = this.OrderBy;
             if(!string.IsNullOrWhiteSpace(whereText)) commandText = string.Concat(commandText, " WHERE ", whereText);
+            if(!string.IsNullOrWhiteSpace(orderText)) commandText = string.Concat(commandText, " ORDER BY ", orderText);
             return commandText;
         }
 
@@ -64,5 +72,14 @@ namespace System
         /// <param name="binary">二元运算符。</param>
         public static WhereParameters Parse(IDbEngine engine, ExecuteParameterCollection ps = null, string binary = "AND")
             => new WhereParameters(engine.CreateWhere(ps, binary), ps);
+
+        /// <summary>
+        /// 返回一个模拟的 SQL 语句。
+        /// </summary>
+        /// <returns>返回 SQL 语句。</returns>
+        public override string ToString()
+        {
+            return this.AppendTo("SELECT * FROM WP");
+        }
     }
 }

@@ -461,6 +461,36 @@ namespace Aoite.Data.Samples
                 Assert.Equal(5, r2.Count);
             }
         }
+
+        [Fact()]
+        public void OrderByTest()
+        {
+            using(var manager = this.CreateManager())
+            {
+                var executor = manager.Engine.Filter().OrderBy(nameof(TestTable.UserName));
+
+                Assert.Equal("SELECT * FROM WP ORDER BY UserName", executor.ToString());
+
+
+                executor = manager.Engine.Filter().OrderBy("username asc","password desc");
+
+                Assert.Equal("SELECT * FROM WP ORDER BY username asc, password desc", executor.ToString());
+
+                executor = manager.Engine.Filter().OrderByDescending(nameof(TestTable.UserName));
+
+                Assert.Equal("SELECT * FROM WP ORDER BY UserName DESC", executor.ToString());
+
+
+                executor = manager.Engine.Filter().OrderByDescending("username", "password");
+
+                Assert.Equal("SELECT * FROM WP ORDER BY username DESC, password DESC", executor.ToString());
+
+                //CreateTable(manager);
+                //InsertRows(manager);
+
+                //Assert.Equal(5, r2.Count);
+            }
+        }
         [Fact()]
         public void FineAllWhereTest2()
         {

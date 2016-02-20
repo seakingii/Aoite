@@ -18,6 +18,23 @@ namespace Aoite.CommandModel
             this._where = where;
         }
 
+        public IFilterExecutor OrderBy(params string[] fields)
+        {
+            this._where.OrderBy = fields.Join(", ");
+            return this;
+        }
+
+        public IFilterExecutor OrderByDescending(params string[] fields)
+        {
+            this.OrderBy(fields.Each(f => f + " DESC"));
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return this._where.ToString();
+        }
+
         public bool Exists<TEntity>(ICommandTunnel tunnel = null)
             => this._bus.Execute(new CMD.Exists<TEntity> { Where = this._where, Tunnel = tunnel }).Result;
 

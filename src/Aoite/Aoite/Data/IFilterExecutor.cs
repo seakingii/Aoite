@@ -120,6 +120,18 @@ namespace Aoite.Data
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>包含总记录数的实体的集合。</returns>
         PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null);
+        /// <summary>
+        /// 对根据当前提供的匹配条件进行正序排序。
+        /// </summary>
+        /// <param name="fields">字段集合。</param>
+        /// <returns>返回数据筛选执行器。</returns>
+        IFilterExecutor OrderBy(params string[] fields);
+        /// <summary>
+        /// 对根据当前提供的匹配条件进行倒序排序。
+        /// </summary>
+        /// <param name="fields">字段集合。</param>
+        /// <returns>返回数据筛选执行器。</returns>
+        IFilterExecutor OrderByDescending(params string[] fields);
     }
 
     partial class FilterExecutor : IFilterExecutor
@@ -131,6 +143,23 @@ namespace Aoite.Data
         {
             this._engine = engine;
             this._where = where;
+        }
+
+        public IFilterExecutor OrderBy(params string[] fields)
+        {
+            this._where.OrderBy= fields.Join(", ");
+            return this;
+        }
+
+        public IFilterExecutor OrderByDescending(params string[] fields)
+        {
+            this.OrderBy(fields.Each(f => f + " DESC"));
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return this._where.ToString();
         }
 
         public int Modify<TEntity>(object entity, ICommandTunnel tunnel = null)
