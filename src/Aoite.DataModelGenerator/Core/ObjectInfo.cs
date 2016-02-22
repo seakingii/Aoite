@@ -304,7 +304,9 @@ ORDER BY a.column_id", "@tableName", this.Name)
         {
             if(this.PropertyType == "string" && this.MaxLength > 0)
             {
-                return $"StringLength({this.MaxLength}, {this.IsUnicodeCharacher.ToString().ToLower()})";
+                var max = this.MaxLength;
+                if(this.IsUnicodeCharacher) max /= 2;
+                return $"StringLength({max}, {this.IsUnicodeCharacher.ToString().ToLower()})";
             }
             return string.Empty;
         }
