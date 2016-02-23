@@ -125,6 +125,10 @@
     <Compile Include="Aoite\Data\Samples\ValidatorAttributeTests.cs" />
     <Compile Include="Aoite\Data\Samples\WhereCommandBuilderTests.cs" />
     <Compile Include="Aoite\Dbx\ExecuteCommandTests.cs" />
+    <Compile Include="Aoite\LevelDB\DatabaseTest.cs" />
+    <Compile Include="Aoite\LevelDB\DBTests.cs" />
+    <Compile Include="Aoite\LevelDB\NativeTests.cs" />
+    <Compile Include="Aoite\LevelDB\ReactiveTests.cs" />
     <Compile Include="Aoite\Logger\Text\DefaultLogDescriptorTests.cs" />
     <Compile Include="Aoite\Logger\Text\LogPathFactoriesTests.cs" />
     <Compile Include="Aoite\Logger\Text\StreamTextWriterFactoryTests.cs" />

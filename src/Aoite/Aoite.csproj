@@ -157,6 +157,20 @@
     <Compile Include="Aoite\Data\IFilterExecutor.cs" />
     <Compile Include="Aoite\Data\ISqlFactory.cs" />
     <Compile Include="Aoite\Data\ICommandTunnel.cs" />
+    <Compile Include="Aoite\LevelDB\CompressionLevel.cs" />
+    <Compile Include="Aoite\LevelDB\Iterator.cs" />
+    <Compile Include="Aoite\LevelDB\LDB.cs" />
+    <Compile Include="Aoite\LevelDB\LevelDBException.cs" />
+    <Compile Include="Aoite\LevelDB\LevelDBHandle.cs" />
+    <Compile Include="Aoite\LevelDB\LevelDBInterop.cs" />
+    <Compile Include="Aoite\LevelDB\Obsolete\Cache.cs" />
+    <Compile Include="Aoite\LevelDB\Obsolete\Comparator.cs" />
+    <Compile Include="Aoite\LevelDB\Obsolete\Env.cs" />
+    <Compile Include="Aoite\LevelDB\Obsolete\WriteOptions.cs" />
+    <Compile Include="Aoite\LevelDB\Options.cs" />
+    <Compile Include="Aoite\LevelDB\ReadOptions.cs" />
+    <Compile Include="Aoite\LevelDB\Snapshot.cs" />
+    <Compile Include="Aoite\LevelDB\WriteBatch.cs" />
     <Compile Include="Aoite\Serialization\Json\AtlasWeb.cs" />
     <Compile Include="Aoite\Serialization\Json\JSerializer.cs" />
     <Compile Include="Aoite\Serialization\Json\JConverter.cs" />
@@ -401,6 +415,8 @@
     <None Include="..\..\comm\aoite.snk">
       <Link>aoite.snk</Link>
     </None>
+    <EmbeddedResource Include="Aoite\LevelDB\Interop\LevelDBx32.gz" />
+    <EmbeddedResource Include="Aoite\LevelDB\Interop\LevelDBx64.gz" />
     <None Include="Aoite\Redis\ReadMe.md" />
     <Compile Include="System\Extensions\DbExtensions.Async.cs" />
   </ItemGroup>
