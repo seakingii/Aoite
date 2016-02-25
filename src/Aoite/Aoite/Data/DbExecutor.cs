@@ -150,6 +150,7 @@ namespace Aoite.Data
             {
                 var dbp = p.CreateParameter(command);
                 dbp.ParameterName = this.Engine.Provider.SqlFactory.EscapeName(dbp.ParameterName, NamePoint.Parameter);
+                if(dbp.Value == null) dbp.Value = DBNull.Value;
                 command.Parameters.Add(dbp);
             }
         }

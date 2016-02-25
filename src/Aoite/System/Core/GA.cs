@@ -611,15 +611,15 @@ namespace System
             var randomNumber = random.Next(1, 65535) * (random.NextDouble() + 2.0) + 65535;
             switch(Type.GetTypeCode(type))
             {
-                case TypeCode.Decimal: return (Decimal)((decimal)randomNumber % Decimal.MaxValue);
+                case TypeCode.Decimal: return Math.Round((Decimal)((decimal)randomNumber % Decimal.MaxValue), 2);
                 case TypeCode.Byte: return (Byte)(randomNumber % Byte.MaxValue);
                 case TypeCode.Char: return (Char)(randomNumber % Char.MaxValue);
-                case TypeCode.Double: return (Double)(randomNumber % Double.MaxValue);
+                case TypeCode.Double: return Math.Round((Double)(randomNumber % Double.MaxValue), 2);
                 case TypeCode.Int16: return (Int16)(randomNumber % Int16.MaxValue);
                 case TypeCode.Int32: return (Int32)(randomNumber % Int32.MaxValue);
                 case TypeCode.Int64: return (Int64)(randomNumber % Int64.MaxValue);
                 case TypeCode.SByte: return (SByte)(randomNumber % SByte.MaxValue);
-                case TypeCode.Single: return (Single)(randomNumber % Single.MaxValue);
+                case TypeCode.Single: return Math.Round((Single)(randomNumber % Single.MaxValue), 2);
                 case TypeCode.UInt16: return (UInt16)(randomNumber % UInt16.MaxValue);
                 case TypeCode.UInt32: return (UInt32)(randomNumber % UInt32.MaxValue);
                 case TypeCode.UInt64: return (UInt64)(randomNumber % UInt64.MaxValue);

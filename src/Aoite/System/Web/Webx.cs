@@ -178,11 +178,15 @@ namespace System.Web
         /// </summary>
         public static ICookieAccessor Cookie => Container.Get<ICookieAccessor>();
 
+        /// <summary>
+        /// 获取该网站的应用程序设置。
+        /// </summary>
+        public static NameValueCollection AppSettings => System.Web.Configuration.WebConfigurationManager.AppSettings;
 
         private static IIocContainer SetContainer(IIocContainer value)
         {
             var config = value.Get("$AppSettings") as NameValueCollection
-                  ?? System.Web.Configuration.WebConfigurationManager.AppSettings
+                  ?? AppSettings
                   ?? new NameValueCollection();
 
             var redisAddress = config.Get("redis.address");

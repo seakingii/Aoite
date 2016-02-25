@@ -34,6 +34,7 @@ namespace Aoite.CommandModel
             var executor = Executors.TryGetValue(typeof(TCommand)) as IExecutorMetadata<TCommand>;
             if(executor == null)
             {
+                if(_queues.Count == 0) throw new NotSupportedException($"命令{typeof(TCommand).FullName}没有模拟执行器。");
                 var handler = _queues.Dequeue();
                 if(handler != null)
                 {

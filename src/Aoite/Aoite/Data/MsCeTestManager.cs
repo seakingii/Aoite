@@ -9,6 +9,12 @@ namespace Aoite.Data
     /// </summary>
     public class MsCeTestManager : TestManagerBase
     {
+        static readonly string DefaultDirectory = GA.FullPath("_databases");
+        static MsCeTestManager()
+        {
+            GA.IO.DeleteDirectory(DefaultDirectory).Wait();
+            AppDomain.CurrentDomain.UnhandledException += (ss, ee) => { GA.IO.DeleteDirectory(DefaultDirectory).Wait(); };
+        }
         /// <summary>
         /// 获取数据源路径。
         /// </summary>
@@ -17,7 +23,7 @@ namespace Aoite.Data
         /// <summary>
         /// 随机的数据源路径，初始化一个 <see cref="Aoite.Data.MsCeTestManager"/> 类的新实例。
         /// </summary>
-        public MsCeTestManager() : this(Path.Combine(GA.FullPath("_databases"), Guid.NewGuid().ToString() + ".sdf")) { }
+        public MsCeTestManager() : this(Path.Combine(DefaultDirectory, Guid.NewGuid().ToString() + ".sdf")) { }
 
         /// <summary>
         /// 随机的数据源路径，初始化一个 <see cref="Aoite.Data.MsCeTestManager"/> 类的新实例。
@@ -44,15 +50,16 @@ namespace Aoite.Data
         }
 
         internal static readonly Regex RegexReplaceVarchar = new Regex(@"\bvarchar\b", RegexOptions.Multiline | RegexOptions.Compiled);
+        internal static readonly Regex RegexReplaceMax = new Regex(@"\(max\)", RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>
-        /// 由于 Miscsoft SQL Server Compact 不支持 varchar 数据类型，此方法将所有 varchar 转换为 nvarchar。
+        /// 由于 Miscsoft SQL Server Compact 不支持 varchar 数据类型和 MAX 长度，此方法将所有 varchar 转换为 nvarchar 和 2000 长度。
         /// </summary>
         /// <param name="sql">SQL 脚本。</param>
         /// <returns>新的 SQL 脚本。</returns>
         public static string ReplaceVarchar(string sql)
         {
-            return RegexReplaceVarchar.Replace(sql, "nvarchar");
+            return RegexReplaceMax.Replace(RegexReplaceVarchar.Replace(sql, "nvarchar"), "(2000)");
         }
 
         /// <summary>

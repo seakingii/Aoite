@@ -62,9 +62,41 @@ namespace System.Web
             //DateFormatString = "yyyy'-'MM'-'dd HH':'mm':'ss",
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             //Converters = new List<JsonConverter>() { new JsonEnumConverter(), /*new ResultConverter()*/ },
-
+            Converters = new List<JsonConverter>() { new Int64JsonConverter() }
         };
 
+        class Int64JsonConverter : JsonConverter
+        {
+
+            public override bool CanConvert(Type objectType)
+            {
+                return objectType == Types.Int64 || objectType == typeof(Nullable<Int64>);
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                var jt = Newtonsoft.Json.Linq.JToken.ReadFrom(reader);
+                if(jt.Type == Newtonsoft.Json.Linq.JTokenType.Null) return null;
+                if(jt.Type == Newtonsoft.Json.Linq.JTokenType.String)
+                {
+                    var s = (string)jt;
+                    return long.Parse(s);
+                }
+                return (long)jt;
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                if(value == null) writer.WriteNull();
+                else
+                {
+                    var longValue = (long)value;
+                    writer.WriteValue(value.ToString());
+                    //if(longValue > 9007199254740992) writer.WriteValue(value.ToString());
+                    //else writer.WriteValue(longValue);
+                }
+            }
+        }
         #endregion
 
         /// <summary>

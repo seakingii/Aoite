@@ -1007,9 +1007,15 @@ namespace System
             {
                 if(index++ > 0) builder.Append(' ').Append(binary).Append(' ');
                 var name = factory.UnescapeName(p.Name);
-                builder
-                    .Append(factory.EscapeName(name, NamePoint.Field))
-                    .Append('=').Append(factory.EscapeName(name, NamePoint.Value));
+                builder.Append(factory.EscapeName(name, NamePoint.Field));
+                if(p.Value == null || p.Value == DBNull.Value)
+                {
+                    builder.Append(" IS NULL");
+                }
+                else
+                {
+                    builder.Append('=').Append(factory.EscapeName(name, NamePoint.Value));
+                }
             }
             return builder.ToString();
         }

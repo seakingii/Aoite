@@ -10,14 +10,21 @@ namespace System
     public static class StringExtensions
     {
         /// <summary>
-        /// 返回当前字符串的 MD5 加密后小写形式的字符串。
+        /// 返回当前字符串的 MD5 哈希后小写形式的字符串。
         /// </summary>
-        /// <param name="text">需加密的字符串。</param>
+        /// <param name="text">需哈希的字符串。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>加密后的字符串。</returns>
+        /// <returns>哈希后的字符串。</returns>
         public static string ToMd5(this string text, Encoding encoding = null)
-            => DataSecurity.Crypto(SecurityAlgorithms.MD5, text, encoding).ToLower();
+            => DataSecurity.Crypto(HashAlgorithms.MD5, text, encoding).ToLower();
 
+        /// <summary>
+        /// 返回当前字节数组的 MD5 哈希后小写形式的字符串。
+        /// </summary>
+        /// <param name="bytes">需哈希的字节数组。</param>
+        /// <returns>哈希后的字符串。</returns>
+        public static string ToMd5(this byte[] bytes)
+            => DataSecurity.Crypto(HashAlgorithms.MD5, bytes).ToHexString().ToLower();
         /// <summary>
         /// 将当前字符串转换为智能小写模式。
         /// </summary>

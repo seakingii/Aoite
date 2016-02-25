@@ -58,7 +58,7 @@ namespace Aoite.Data
                     }
                     key = line.RemoveStarts(3).RemoveEnds(3).Trim();
                 }
-                else script.AppendLine(line);
+                else if(!string.IsNullOrWhiteSpace(line)) script.AppendLine(line);
             }
 
             if(key != null) this.Add(key, script.ToString());

@@ -9,37 +9,49 @@ namespace System
     public static class DataSecurity
     {
         /// <summary>
-        /// 指定加密算法，加密指定的文本。
+        /// 指定哈希算法，哈希指定的文本。
         /// </summary>
-        /// <param name="alog">加密算法。</param>
-        /// <param name="text">需加密的字符串。</param>
+        /// <param name="alog">哈希算法。</param>
+        /// <param name="text">需哈希的字符串。</param>
         /// <param name="encoding">编码方式。</param>
-        /// <returns>加密后的字符串。</returns>
-        public static string Crypto(SecurityAlgorithms alog, string text, Encoding encoding = null)
+        /// <returns>哈希后的字符串。</returns>
+        public static string Crypto(HashAlgorithms alog, string text, Encoding encoding = null)
+        {
+            return Crypto(alog, (encoding ?? Encoding.UTF8).GetBytes(text)).ToHexString();
+        }
+
+
+        /// <summary>
+        /// 指定哈希算法，哈希指定的。
+        /// </summary>
+        /// <param name="alog">哈希算法。</param>
+        /// <param name="bytes">要计算其哈希代码的输入。</param>
+        /// <returns>计算所得的哈希代码。</returns>
+        public static byte[] Crypto(HashAlgorithms alog, byte[] bytes)
         {
             HashAlgorithm algorithm;
             switch(alog)
             {
-                case SecurityAlgorithms.SHA1:
+                case HashAlgorithms.SHA1:
                     algorithm = CreateSHA1();
                     break;
-                case SecurityAlgorithms.SHA256:
+                case HashAlgorithms.SHA256:
                     algorithm = CreateSHA256();
                     break;
-                case SecurityAlgorithms.SHA384:
+                case HashAlgorithms.SHA384:
                     algorithm = CreateSHA384();
                     break;
-                case SecurityAlgorithms.SHA512:
+                case HashAlgorithms.SHA512:
                     algorithm = CreateSHA512();
                     break;
-                case SecurityAlgorithms.MD5:
+                case HashAlgorithms.MD5:
                     algorithm = CreateMD5();
                     break;
                 default: throw new NotSupportedException();
             }
             using(algorithm)
             {
-                return algorithm.ComputeHash((encoding ?? Encoding.UTF8).GetBytes(text)).ToHexString();
+                return algorithm.ComputeHash(bytes);
             }
         }
 
@@ -95,9 +107,9 @@ namespace System
     }
 
     /// <summary>
-    /// 表示安全加密算法。
+    /// 表示安全哈希算法。
     /// </summary>
-    public enum SecurityAlgorithms
+    public enum HashAlgorithms
     {
         /// <summary>
         /// 使用 <see cref="Security.Cryptography.SHA1"/> 哈希函数计算基于哈希值的消息验证代码 (HMAC)。
