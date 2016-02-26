@@ -116,6 +116,12 @@ namespace Aoite.Data
             return this;
         }
 
+        public ISelect OrderByDescending(params string[] fields)
+        {
+            if(fields == null || fields.Length == 0) return this;
+            return this.OrderBy(fields.Each(f => f + " DESC"));
+        }
+
         public ISelect GroupBy(params string[] fields)
         {
             if(fields == null || fields.Length == 0) return this;

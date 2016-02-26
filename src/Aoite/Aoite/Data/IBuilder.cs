@@ -30,6 +30,12 @@
         /// <returns> <see cref="ISelect"/> 的实例。</returns>
         ISelect OrderBy(params string[] fields);
         /// <summary>
+        /// 添加 ORDER BY 倒序的字段。
+        /// </summary>
+        /// <param name="fields">字段的集合。</param>
+        /// <returns> <see cref="ISelect"/> 的实例。</returns>
+        ISelect OrderByDescending(params string[] fields);
+        /// <summary>
         /// 添加 GROUP BY 的字段。
         /// </summary>
         /// <param name="fields">字段的集合。</param>
