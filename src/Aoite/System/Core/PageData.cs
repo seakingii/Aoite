@@ -28,7 +28,7 @@ namespace System
     /// 表示一个表格数据源。
     /// </summary>
     /// <typeparam name="TModel">数据源的行数据类型。</typeparam>
-    public class PageData<TModel> : PageData, IEnumerable<TModel>
+    public class PageData<TModel> : PageData/*, IEnumerable<TModel>*/
     {
         /// <summary>
         /// 初始化一个 <see cref="PageData{TModel}"/> 类的新实例。
@@ -61,19 +61,19 @@ namespace System
         /// <returns>行的数据。</returns>
         public override Array GetRows() => this.Rows;
 
-        private IEnumerator<TModel> GetEnumerator()
-        {
-            if(this.Rows != null)
-            {
-                foreach(var item in this.Rows)
-                {
-                    yield return item;
-                }
-            }
-            yield break;
-        }
+        //private IEnumerator<TModel> GetEnumerator()
+        //{
+        //    if(this.Rows != null)
+        //    {
+        //        foreach(var item in this.Rows)
+        //        {
+        //            yield return item;
+        //        }
+        //    }
+        //    yield break;
+        //}
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-        IEnumerator<TModel> IEnumerable<TModel>.GetEnumerator() => this.GetEnumerator();
+        //IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        //IEnumerator<TModel> IEnumerable<TModel>.GetEnumerator() => this.GetEnumerator();
     }
 }
