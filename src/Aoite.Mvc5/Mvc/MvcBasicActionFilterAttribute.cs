@@ -43,7 +43,7 @@ namespace System.Web.Mvc.Filters
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             var result = WebConfig.Mvc.OnActionExecuted(filterContext.Controller, filterContext, MvcClient.AllowAnonymous);
-            if(filterContext.Result != result) filterContext.Result = result;
+            if(result != null) filterContext.Result = result;
 
             var jsonResult = filterContext.Result as JsonResult;
 

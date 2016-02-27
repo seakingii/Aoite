@@ -246,7 +246,6 @@ namespace System.Web
                 if(handler != null)
                 {
                     var e = new Web.Mvc.ActionExecutedEventArgs(filterContext, allowAnonymous);
-                    e.Result = filterContext.Result;
                     handler(sender, e);
                     return e.Result;
                 }
