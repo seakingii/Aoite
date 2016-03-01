@@ -22,7 +22,8 @@ namespace Aoite.Data
         /// </summary>
         public Guid Id { get; }
 
-        DbConnection IDbContext.Connection { get { return this._lazyConnection.Value; } }
+        IDbConnection IDbContext.Connection { get { return this._lazyConnection.Value; } }
+        IDbTransaction IDbContext.Transaction { get { return this._transaction; } }
 
         /// <summary>
         /// 获取一个值，该值指示当前上下文的连接是否已关闭。
@@ -138,6 +139,7 @@ namespace Aoite.Data
         /// </summary>
         protected override void DisposeManaged()
         {
+            base.DisposeManaged();
             if(this._lazyConnection != null)
             {
                 lock (this)
@@ -155,17 +157,21 @@ namespace Aoite.Data
                                     conn.TryClose();
                                 }
                             }
-                            catch(Exception)
-                            {
-
-                                throw;
-                            }
+                            catch(Exception) { }
 
                         this._transaction = null;
                         this.Owner.ResetContext();
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 执行与释放或重置非托管资源相关的应用程序定义的任务。
+        /// </summary>
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
         }
     }
 }

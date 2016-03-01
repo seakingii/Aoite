@@ -58,6 +58,15 @@ namespace Aoite.CommandModel
         }
 
         /// <summary>
+        /// 执行一个命令模型。
+        /// </summary>
+        /// <param name="context">命令模型的上下文。</param>
+        /// <param name="command">命令模型。</param>
+        /// <returns>执行的结果值。</returns>
+        protected override TResult ExecuteResult(IContext context, TCommand command)
+            => ExecuteResultAsync(context, command).Result;
+
+        /// <summary>
         /// 异步执行一个命令模型。
         /// </summary>
         /// <param name="context">命令模型的上下文。</param>

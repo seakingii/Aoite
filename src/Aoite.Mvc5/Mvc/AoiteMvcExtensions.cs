@@ -114,17 +114,6 @@ namespace System.Web.Mvc
             return Webx.Container.Get<Aoite.CommandModel.ICounterProvider>().Increment(key, increment);
         }
 
-        /// <summary>
-        /// 开始事务模式。
-        /// </summary>
-        /// <param name="controller">控制器。</param>
-        /// <param name="asyncEnabled">描述了当使用 Task 或 async/await .NET 异步编程模式时，与事务范围关联的环境事务将跨线程连续任务执行。</param>
-        /// <returns>返回一个事务。</returns>
-        public static ITransaction BeginTransaction(this IController controller, bool asyncEnabled)
-        {
-            return new Aoite.CommandModel.DefaultTransaction(asyncEnabled);
-        }
-
         #endregion
 
         #region WebViewPage
@@ -185,6 +174,18 @@ namespace System.Web.Mvc
         /// <returns>返回一个 HTML LINK 代码。</returns>
         public static IHtmlString RenderStyles(this WebViewPage page, params string[] paths)
             => Optimization.Styles.Render(AppendPathTick(page, paths));
+
+        /// <summary>
+        /// 输出当前页面 Model 的 JSON 声明。
+        /// </summary>
+        /// <param name="page">当前视图页。</param>
+        /// <param name="name">在 Javascript 中变量声明的名称。</param>
+        /// <returns>返回一个 HTML 代码。</returns>
+        public static IHtmlString RenderModelJson(this WebViewPage page, string name = "model")
+        {
+            var modelJson = page.Model == null ? "{}" : WebConfig.ToJson(page.Model);
+            return MvcHtmlString.Create($"<script>window.{name} = {modelJson};</script>");
+        }
 
         #endregion
 

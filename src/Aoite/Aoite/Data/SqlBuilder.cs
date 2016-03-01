@@ -89,7 +89,6 @@ namespace Aoite.Data
             return this;
         }
 
-
         public IWhere Where()
         {
             if(_whereBuilder == null) _whereBuilder = new StringBuilder();

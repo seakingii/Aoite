@@ -100,8 +100,14 @@ namespace Aoite.Data
         {
             get
             {
-                if(this._threadLocalContent.Value == null) this._threadLocalContent.Value = new DbContext(this);
-                return this._threadLocalContent.Value;
+                var context = this._threadLocalContent.Value;
+                if(context == null || context.IsDisposed)
+                {
+                    context = new DbContext(this);
+                    this._threadLocalContent.Value = context;
+                }
+
+                return context;
             }
         }
 

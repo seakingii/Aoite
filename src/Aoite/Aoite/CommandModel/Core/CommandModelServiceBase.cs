@@ -112,10 +112,10 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 开始事务模式。
         /// </summary>
+        /// <param name="isolationLevel">指定事务的隔离级别。</param>
         /// <returns>可释放的事务实例。</returns>
-        /// <param name="asyncEnabled">描述了当使用 Task 或 async/await .NET 异步编程模式时，与事务范围关联的环境事务将跨线程连续任务执行。</param>
-        protected virtual ITransaction BeginTransaction(bool asyncEnabled = false)
-            => new DefaultTransaction(asyncEnabled);
+        protected virtual ITransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.Unspecified)
+            => new DefaultTransaction(this._Container, isolationLevel);
 
         /// <summary>
         /// 获取指定实体数据类型的缓存键。
@@ -192,5 +192,6 @@ namespace Aoite.CommandModel
         /// <returns>存在返回 true，否则返回 false。</returns>
         protected bool ExstisEntity<T>(object keyValue)
             => this.Exstis(this.GenerateEntityCacheKey(typeof(T), keyValue));
+
     }
 }

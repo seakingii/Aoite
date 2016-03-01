@@ -142,6 +142,14 @@ namespace System
             => string.IsNullOrWhiteSpace(input);
 
         /// <summary>
+        /// 判定当前字符串是否不是一个空的字符串。
+        /// </summary>
+        /// <param name="input">当前字符串。</param>
+        /// <returns>如果字符串为 null、空 或 空白，将返回 true，否则返回 false。</returns>
+        public static bool IsNotNull(this string input)
+            => !string.IsNullOrWhiteSpace(input);
+
+        /// <summary>
         /// 将指定的字节数组转换成十六进制的字符串。
         /// </summary>
         /// <param name="source">一个字节数组。</param>

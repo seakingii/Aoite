@@ -16,7 +16,11 @@ namespace Aoite.Data
         /// <summary>
         /// 获取当前上下文的数据库连接对象。
         /// </summary>
-        DbConnection Connection { get; }
+        IDbConnection Connection { get; }
+        /// <summary>
+        /// 获取当前上下文的数据库连接的事务对象。
+        /// </summary>
+        IDbTransaction Transaction { get; }
         /// <summary>
         /// 打开连接。在执行查询时，若数据源尚未打开则自动打开数据源。
         /// </summary>
