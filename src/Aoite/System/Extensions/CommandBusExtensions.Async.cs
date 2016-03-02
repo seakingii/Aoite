@@ -33,7 +33,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
         public static Task<int> AddAnonymousAsync<TEntity>(this ICommandBus bus, object entity, ICommandTunnel tunnel = null)
-            => bus.ExecuteAsync(new CMD.Add<TEntity>() { Entity = entity, Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
+            => bus.CallAsync(new CMD.Add<TEntity>() { Entity = entity, Tunnel = tunnel });
 
         /// <summary>
         /// 异步执行一个获取递增列值的命令模型。
@@ -43,7 +43,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>递增列值。</returns>
         public static Task<long> GetIdentityAsync<TEntity>(this ICommandBus bus, ICommandTunnel tunnel = null)
-            => bus.ExecuteAsync(new CMD.GetIdentity<TEntity>() { Tunnel = tunnel }).ContinueWith(t => t.Result.Result);
+            => bus.CallAsync(new CMD.GetIdentity<TEntity>() { Tunnel = tunnel });
 
         #endregion
 

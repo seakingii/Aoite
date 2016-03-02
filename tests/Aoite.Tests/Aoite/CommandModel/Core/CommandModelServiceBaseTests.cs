@@ -136,10 +136,7 @@ namespace Aoite.CommandModel.Core
         {
             var container = new IocContainer();
             var s = new SimpleCommandModelService(container);
-            using(var tran = s.BeginTransactionTest())
-            {
-                Assert.IsType<DefaultTransaction>(tran);
-            }
+            Assert.ThrowsAny<NotSupportedException>(s.BeginTransactionTest);
         }
     }
 }

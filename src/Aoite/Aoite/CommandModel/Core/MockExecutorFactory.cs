@@ -89,6 +89,18 @@ namespace Aoite.CommandModel
         }
 
         /// <summary>
+        /// 弱类型命令模型，添加一个按顺序先进先出的模拟的模型执行方法。
+        /// </summary>
+        /// <param name="mockHandler">模拟的执行器。</param>
+        /// <returns>当前执行器工厂。</returns>
+        public MockExecutorFactory Mock(Action<ICommand> mockHandler)
+        {
+            _queues.Enqueue(c => { mockHandler(c); return null; });
+            return this;
+        }
+
+
+        /// <summary>
         /// 强类型命令模型，添加一个按顺序先进先出的模拟的模型执行方法。
         /// </summary>
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>

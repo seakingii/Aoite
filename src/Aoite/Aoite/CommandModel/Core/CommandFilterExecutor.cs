@@ -36,43 +36,43 @@ namespace Aoite.CommandModel
         }
 
         public bool Exists<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Exists<TEntity> { Where = this._where, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.Exists<TEntity> { Where = this._where, Tunnel = tunnel });
 
         public List<TEntity> FindAll<TEntity>(ICommandTunnel tunnel = null)
             => this.FindAll<TEntity, TEntity>(tunnel);
 
         public List<TView> FindAll<TEntity, TView>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAll<TEntity, TView> { Where = this._where, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindAll<TEntity, TView> { Where = this._where, Tunnel = tunnel });
 
 
         public PageData<TEntity> FindAll<TEntity>(IPagination page, ICommandTunnel tunnel = null)
             => this.FindAll<TEntity, TEntity>(page, tunnel);
 
         public PageData<TView> FindAll<TEntity, TView>(IPagination page, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Page = page, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Page = page, Tunnel = tunnel });
 
         public TEntity FindOne<TEntity>(ICommandTunnel tunnel = null)
             => this.FindOne<TEntity, TEntity>(tunnel);
 
         public TView FindOne<TEntity, TView>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindOne<TEntity, TView> { Where = this._where, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindOne<TEntity, TView> { Where = this._where, Tunnel = tunnel });
 
         public int Modify<TEntity>(object entity, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Modify<TEntity> { Where = this._where, Entity = entity, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.Modify<TEntity> { Where = this._where, Entity = entity, Tunnel = tunnel });
 
         public int Remove<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.Remove<TEntity> { Where = this._where, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.Remove<TEntity> { Where = this._where, Tunnel = tunnel });
 
         public long RowCount<TEntity>(ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.RowCount<TEntity> { Where = this._where, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.RowCount<TEntity> { Where = this._where, Tunnel = tunnel });
 
         public TView FindOne<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindOne<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindOne<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel });
 
         public List<TView> FindAll<TEntity, TView>(Func<TEntity, TView> select, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAll<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindAll<TEntity, TView> { Where = this._where, Select = select, Tunnel = tunnel });
 
         public PageData<TView> FindAll<TEntity, TView>(Func<TEntity, TView> select, IPagination page, ICommandTunnel tunnel = null)
-            => this._bus.Execute(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Select = select, Page = page, Tunnel = tunnel }).Result;
+            => this._bus.Call(new CMD.FindAllPage<TEntity, TView> { Where = this._where, Select = select, Page = page, Tunnel = tunnel });
     }
 }

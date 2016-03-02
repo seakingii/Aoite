@@ -32,7 +32,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>受影响的行。</returns>
         public static long AddAnonymous<TEntity>(this ICommandBus bus, object entity, ICommandTunnel tunnel = null)
-            => bus.Execute(new CMD.Add<TEntity>() { Entity = entity, Tunnel = tunnel }).Result;
+            => bus.Call(new CMD.Add<TEntity>() { Entity = entity, Tunnel = tunnel });
 
         /// <summary>
         /// 执行一个获取递增列值的命令模型。
@@ -42,7 +42,7 @@ namespace System
         /// <param name="tunnel">用于个性化表名和命令的暗道，可以为 null 值。</param>
         /// <returns>递增列值。</returns>
         public static long GetIdentity<TEntity>(this ICommandBus bus, ICommandTunnel tunnel = null)
-            => bus.Execute(new CMD.GetIdentity<TEntity>() { Tunnel = tunnel }).Result;
+            => bus.Call(new CMD.GetIdentity<TEntity>() { Tunnel = tunnel });
 
         #endregion
 
@@ -296,6 +296,43 @@ namespace System
 
             return new CommandFilterExecutor(bus, where);
         }
+
+        #endregion
+
+        #region Run
+
+        /// <summary>
+        /// 调用一个命令模型，并返回命令模型执行的值。
+        /// </summary>
+        /// <typeparam name="TResult">返回值的数据类型。</typeparam>
+        /// <param name="bus">命令总线。</param>
+        /// <param name="command">命令模型。</param>
+        /// <param name="executing">命令模型执行前发生的方法。</param>
+        /// <param name="executed">命令模型执行后发生的方法。</param>
+        /// <returns>命令模型的值。</returns>
+        public static TResult Call<TResult>(this ICommandBus bus,ICommand<TResult> command
+            , CommandExecutingHandler<ICommand<TResult>> executing = null
+            , CommandExecutedHandler<ICommand<TResult>> executed = null)
+        {
+            return bus.Execute(command, executing, executed).Result;
+        }
+
+        /// <summary>
+        /// 以异步的方式调用一个命令模型，并返回命令模型执行的值的异步操作。
+        /// </summary>
+        /// <typeparam name="TResult">返回值的数据类型。</typeparam>
+        /// <param name="bus">命令总线。</param>
+        /// <param name="command">命令模型。</param>
+        /// <param name="executing">命令模型执行前发生的方法。</param>
+        /// <param name="executed">命令模型执行后发生的方法。</param>
+        /// <returns>异步操作。</returns>
+        public static Task<TResult> CallAsync<TResult>(this ICommandBus bus, ICommand<TResult> command
+            , CommandExecutingHandler<ICommand<TResult>> executing = null
+            , CommandExecutedHandler<ICommand<TResult>> executed = null)
+        {
+            return bus.ExecuteAsync(command, executing, executed).ContinueWith(t => t.Result.Result);
+        }
+
 
         #endregion
     }
