@@ -314,6 +314,8 @@ namespace System
             , CommandExecutingHandler<ICommand<TResult>> executing = null
             , CommandExecutedHandler<ICommand<TResult>> executed = null)
         {
+            if(bus == null) throw new ArgumentNullException(nameof(bus));
+
             return bus.Execute(command, executing, executed).Result;
         }
 
@@ -330,6 +332,8 @@ namespace System
             , CommandExecutingHandler<ICommand<TResult>> executing = null
             , CommandExecutedHandler<ICommand<TResult>> executed = null)
         {
+            if(bus == null) throw new ArgumentNullException(nameof(bus));
+
             return bus.ExecuteAsync(command, executing, executed).ContinueWith(t => t.Result.Result);
         }
 
