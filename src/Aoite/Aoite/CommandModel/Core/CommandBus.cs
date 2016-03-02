@@ -37,7 +37,7 @@ namespace Aoite.CommandModel
             var executorMetadata = executorFactory.Create(command);
             var executor = executorMetadata.Executor;
 
-            // 执行器元数据 && 事务仓储
+            // 执行器元数据 && 事件仓储
             if(executorMetadata.RaiseExecuting(context, command)
                 && eventStore.RaiseExecuting(context, command)
                 && (executing == null || executing(context, command)))
@@ -86,7 +86,7 @@ namespace Aoite.CommandModel
             var executor = executorMetadata.Executor;
 
             Task<TCommand> task;
-            // 执行器元数据 && 事务仓储
+            // 执行器元数据 && 事件仓储
             if(executorMetadata.RaiseExecuting(context, command)
                 && eventStore.RaiseExecuting(context, command)
                 && (executing == null || executing(context, command)))

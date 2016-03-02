@@ -48,7 +48,7 @@ namespace Aoite.Samples
             CodeTimer.TimeLine(provider.GetType().Name + " - Serialize", 10 * 10000, i => json = provider.Serialize(obj));
             CodeTimer.TimeLine(provider.GetType().Name + " - Deserialize", 10 * 10000, i => newObj = provider.Deserialize(json, obj.GetType()));
         }
-        static void Main()
+        static void Main4()
         {
             var u = new User() { Id = 599, Username = "asdf2", CreateTime = DateTime.Now };
             for(int i = 0; i < 3; i++)
@@ -185,6 +185,32 @@ namespace Aoite.Samples
                 Console.WriteLine();
             } while(true);
 
+        }
+
+        static void Main()
+        {
+            var container = ObjectFactory.CreateContainer();
+            var bus = new CommandBus(container);
+            string s = null;
+            const int testCount = 10 * 1000;
+            for(int i = 0; i < 5; i++)
+            {
+                CodeTimer.TimeLine("Call", testCount, x => s = bus.Call(new TestCommand()));
+                CodeTimer.TimeLine("Execute", testCount, x => s = bus.Execute(new TestCommand()).Result);
+                Console.WriteLine();
+            }
+            Console.ReadLine();
+        }
+    }
+
+    public class TestCommand : CommandBase<string>
+    {
+        class Executor : ExecutorBase<TestCommand, string>
+        {
+            protected override string ExecuteResult(IContext context, TestCommand command)
+            {
+                return "1234";
+            }
         }
     }
 

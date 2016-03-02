@@ -300,6 +300,50 @@ namespace System
         #endregion
 
         #region Run
+        private static class CommandBusWapper<TCommand, TResult>
+            where TCommand : ICommand<TResult>
+        {
+            public static TResult Execute(ICommandBus bus, TCommand command
+            , CommandExecutingHandler<ICommand<TResult>> executing
+            , CommandExecutedHandler<ICommand<TResult>> executed)
+            {
+                CommandExecutingHandler<TCommand> executing2 = null;
+                CommandExecutedHandler<TCommand> executed2 = null;
+                if(executing != null) executing2 = (a, b) => executing(a, b);
+                if(executed != null) executed2 = (a, b, c) => executed(a, b, c);
+
+                return bus.Execute(command, executing2, executed2).Result;
+            }
+
+            public static Task<TResult> ExecuteAsync(ICommandBus bus, TCommand command
+            , CommandExecutingHandler<ICommand<TResult>> executing
+            , CommandExecutedHandler<ICommand<TResult>> executed)
+            {
+                CommandExecutingHandler<TCommand> executing2 = null;
+                CommandExecutedHandler<TCommand> executed2 = null;
+                if(executing != null) executing2 = (a, b) => executing(a, b);
+                if(executed != null) executed2 = (a, b, c) => executed(a, b, c);
+
+                return bus.ExecuteAsync(command, executing2, executed2).ContinueWith(t => t.Result.Result);
+            }
+        }
+
+        private readonly static Collections.Concurrent.ConcurrentDictionary<Type, Tuple<DynamicMethodInvoker, DynamicMethodInvoker>>
+            Invokers = new Collections.Concurrent.ConcurrentDictionary<Type, Tuple<DynamicMethodInvoker, DynamicMethodInvoker>>();
+        readonly static Type CommandBusWapperType = typeof(CommandBusWapper<,>);
+        private static Tuple<DynamicMethodInvoker, DynamicMethodInvoker> GetInvoker<TResult>(ICommand<TResult> command)
+        {
+            if(command == null) throw new ArgumentNullException(nameof(command));
+
+            return Invokers.GetOrAdd(command.GetType(), type =>
+                 {
+                     var flags = Reflection.BindingFlags.Static | Reflection.BindingFlags.Public;
+                     var resultType = typeof(TResult);
+                     return Tuple.Create(DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("Execute", flags))
+                         , DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("ExecuteAsync", flags)));
+                 }
+            );
+        }
 
         /// <summary>
         /// 调用一个命令模型，并返回命令模型执行的值。
@@ -310,14 +354,15 @@ namespace System
         /// <param name="executing">命令模型执行前发生的方法。</param>
         /// <param name="executed">命令模型执行后发生的方法。</param>
         /// <returns>命令模型的值。</returns>
-        public static TResult Call<TResult>(this ICommandBus bus,ICommand<TResult> command
+        public static TResult Call<TResult>(this ICommandBus bus, ICommand<TResult> command
             , CommandExecutingHandler<ICommand<TResult>> executing = null
             , CommandExecutedHandler<ICommand<TResult>> executed = null)
         {
             if(bus == null) throw new ArgumentNullException(nameof(bus));
 
-            return bus.Execute(command, executing, executed).Result;
+            return (TResult)GetInvoker(command).Item1(null, bus, command, executing, executed);
         }
+
 
         /// <summary>
         /// 以异步的方式调用一个命令模型，并返回命令模型执行的值的异步操作。
@@ -334,7 +379,7 @@ namespace System
         {
             if(bus == null) throw new ArgumentNullException(nameof(bus));
 
-            return bus.ExecuteAsync(command, executing, executed).ContinueWith(t => t.Result.Result);
+            return (Task<TResult>)GetInvoker(command).Item2(null, bus, command, executing, executed);
         }
 
 

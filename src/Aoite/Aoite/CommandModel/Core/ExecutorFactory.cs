@@ -10,8 +10,8 @@ namespace Aoite.CommandModel
     public class ExecutorFactory : CommandModelContainerProviderBase, IExecutorFactory
     {
         private const string CommandNameSuffix = "Command";
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>
-            Executors = new System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>();
+        // private readonly System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>
+        //    Executors = new System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>();
 
         /// <summary>
         /// 初始化 <see cref="ExecutorFactory"/> 类的新实例。
@@ -28,6 +28,7 @@ namespace Aoite.CommandModel
         public virtual IExecutorMetadata<TCommand> Create<TCommand>(TCommand command) where TCommand : ICommand
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
+
             try
             {
                 return Singleton<TCommand>.Instance;
