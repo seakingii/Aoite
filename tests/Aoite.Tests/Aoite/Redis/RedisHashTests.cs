@@ -6,7 +6,7 @@ using Aoite.Redis;
 
 namespace Aoite.Tests
 {
-    public class RedisHashTests : TestBase
+    public class RedisHashTests : RedisTestBase
     {
         [Fact()]
         public void TestHDel()

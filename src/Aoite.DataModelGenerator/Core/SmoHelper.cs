@@ -17,7 +17,8 @@ namespace Aoite.DataModelGenerator
             " CLUSTERED",
             "WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]",
             " ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]",
-            " ASC"
+            " ASC",
+            " ON [PRIMARY]"
         };
         public static string CreateScripts()
         {
@@ -32,7 +33,7 @@ namespace Aoite.DataModelGenerator
             options.DriPrimaryKey = true;
             options.NoCollation = true;
 
-            sb.AppendLine("/****** Script Date: " + DateTime.Now.ToString() + " ******/").AppendLine();
+            sb.AppendLine("/****** Script Date: " + DateTime.Now.ToString() + " ******/").AppendLine().AppendLine();
 
             foreach(Table table in database.Tables)
             {

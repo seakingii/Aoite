@@ -18,7 +18,7 @@ namespace Aoite.CommandModel
         /// <param name="user">模拟的用户。</param>
         /// <param name="command">命令模型。</param>
         /// <param name="container">服务容器。</param>
-        /// <param name="lazyEngine">延迟模式的上下文中的 <see cref="IDbEngine"/> 实例。</param>
+        /// <param name="lazyEngine">延迟模式的上下文中的 <see cref="Aoite.Data.IDbEngine"/> 实例。</param>
         public MockContext(object user, IIocContainer container, ICommand command, Lazy<Data.IDbEngine> lazyEngine)
             : base(container, command, new Lazy<System.Collections.Specialized.HybridDictionary>(), lazyEngine)
         {

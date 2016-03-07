@@ -3,7 +3,7 @@ using System;
 
 namespace Aoite.Redis
 {
-    public class RedisHyperLogLogTests : TestBase
+    public class RedisHyperLogLogTests : RedisTestBase
     {
         [Fact()]
         public void PfAddTest()

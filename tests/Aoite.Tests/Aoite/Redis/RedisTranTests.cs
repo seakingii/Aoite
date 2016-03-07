@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Aoite.Redis
 {
-    public class RedisTranTests : TestBase
+    public class RedisTranTests : RedisTestBase
     {
         [Fact()]
         public void MultiTest()

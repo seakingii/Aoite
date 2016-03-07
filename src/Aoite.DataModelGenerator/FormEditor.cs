@@ -21,5 +21,11 @@ namespace Aoite.DataModelGenerator
             this.Text = title + " - 查看代码";
             textEditorControl1.Text = code;
         }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            this.Show();
+        }
     }
 }

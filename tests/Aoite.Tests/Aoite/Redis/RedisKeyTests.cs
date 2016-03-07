@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Aoite.Redis
 {
-    public class RedisKeyTests : TestBase
+    public class RedisKeyTests : RedisTestBase
     {
         [Fact()]
         public void TestDel()

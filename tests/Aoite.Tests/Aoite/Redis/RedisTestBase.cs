@@ -2,7 +2,7 @@
 
 namespace Aoite.Redis
 {
-    public abstract class TestBase
+    public abstract class RedisTestBase
     {
         public IRedisClient CreateClient()
         {

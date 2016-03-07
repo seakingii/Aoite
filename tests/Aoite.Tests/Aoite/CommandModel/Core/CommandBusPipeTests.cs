@@ -11,17 +11,10 @@ namespace Aoite.CommandModel.Core
     public class CommandBusPipeTests : TestBase
     {
 
-        private MyServices New(object user = null, Action<MockExecutorFactory> callback = null)
-        {
-            var service = ServiceFactory.CreateMockService<MyServices>(user, callback);
-            service.Container.Add<Aoite.Data.IDbEngine>(this.Engine);
-            return service;
-        }
-
         [Fact]
         public async void AddDbTests()
         {
-            var s = this.New();
+            var s = this.CreateService<MyServices>();
             var model = GA.CreateMockModel<Models.Member>();
             model.Id = 0;
             Assert.True(await s.Add(model));
