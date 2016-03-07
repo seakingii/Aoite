@@ -10,28 +10,28 @@ namespace Aoite.Redis
     public class RedisDictionary : Dictionary<string, BinaryValue>
     {
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例为空且具有默认的初始容量，并使用键类型的默认相等比较器。
+        /// 初始化一个 <see cref="RedisDictionary"/> 类的新实例，该实例为空且具有默认的初始容量，并使用键类型的默认相等比较器。
         /// </summary>
         public RedisDictionary() : base() { }
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例为空且具有指定的初始容量，并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisDictionary"/> 类的新实例，该实例为空且具有指定的初始容量，并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="capacity"><see cref="RedisDictionary"/> 可包含的初始元素数。</param>
         public RedisDictionary(int capacity) : base(capacity) { }
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue&gt; 中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue&gt; 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="dictionary">System.Collections.Generic.IDictionary&lt;System.String, System.BinaryValue&gt;，它的元素被复制到新的 <see cref="RedisDictionary"/></param>
         public RedisDictionary(IDictionary<string, BinaryValue> dictionary) : base(dictionary) { }
         /// <summary>
-        /// 用序列化数据初始化 <see cref="RedisDictionary"/> 类的新实例。
+        /// 用序列化数据初始化一个 <see cref="RedisDictionary"/> 类的新实例。
         /// </summary>
         /// <param name="info">一个 <see cref="SerializationInfo"/> 对象，它包含序列化 <see cref="RedisDictionary"/> 所需的信息。</param>
         /// <param name="context"><see cref="StreamingContext"/> 结构，该结构包含与 <see cref="RedisDictionary"/> 相关联的序列化流的源和目标。</param>
         protected RedisDictionary(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="System.Collections.IDictionary"/> 中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="System.Collections.IDictionary"/> 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="dictionary"><see cref="System.Collections.IDictionary"/>，它的元素被复制到新的 <see cref="RedisDictionary"/></param>
         public RedisDictionary(System.Collections.IDictionary dictionary)
@@ -44,7 +44,7 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 初始化 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="RedisFieldItem"/> 数组中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisDictionary"/> 类的新实例，该实例包含从指定的 <see cref="RedisFieldItem"/> 数组中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="items"><see cref="RedisFieldItem"/> 数组，它的元素被复制到新的 <see cref="RedisDictionary"/></param>
         public RedisDictionary(params RedisFieldItem[] items)

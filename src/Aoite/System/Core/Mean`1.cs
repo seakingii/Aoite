@@ -12,7 +12,7 @@ namespace System
         private Lazy<T> _lazy;
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数。
         /// </summary>
         public Mean()
         {
@@ -21,7 +21,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数和指定的初始化模式。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用目标类型的默认构造函数和指定的初始化模式。
         /// </summary>
         /// <param name="isThreadSafe">true 表示此示例可由多个线程同时使用；false 表示此实例一次只能由一个线程使用。</param>
         public Mean(bool isThreadSafe)
@@ -31,7 +31,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数。
         /// </summary>
         /// <param name="valueFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         public Mean(Func<T> valueFactory)
@@ -41,7 +41,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例，其中使用 T 的默认构造函数和指定的线程安全性模式。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例，其中使用 T 的默认构造函数和指定的线程安全性模式。
         /// </summary>
         /// <param name="mode">线程安全性模式。</param>
         public Mean(LazyThreadSafetyMode mode)
@@ -51,7 +51,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数和初始化模式。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例。发生延迟初始化时，使用指定的初始化函数和初始化模式。
         /// </summary>
         /// <param name="valueFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         /// <param name="isThreadSafe">true 表示此示例可由多个线程同时使用；false 表示此实例一次只能由一个线程使用。</param>
@@ -62,7 +62,7 @@ namespace System
         }
 
         /// <summary>
-        /// 初始化 <see cref="Mean{T}"/> 类的新实例，其中使用指定的初始化函数和线程安全性模式。
+        /// 初始化一个 <see cref="Mean{T}"/> 类的新实例，其中使用指定的初始化函数和线程安全性模式。
         /// </summary>
         /// <param name="valueFactory">在需要时被调用以产生延迟初始化值的委托。</param>
         /// <param name="mode">线程安全性模式。</param>

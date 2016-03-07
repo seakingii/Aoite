@@ -107,6 +107,8 @@ namespace Aoite.Data
         {
             this.Executed?.Invoke(this.Engine, this.Command.GetEventArgs(type, dbCommand, result));
             this.Engine.Owner.OnExecuted(this.Engine, type, this.Command, dbCommand, result);
+
+            GA.TraceInformation(this.Command.ToFullString());
         }
 
         /// <summary>

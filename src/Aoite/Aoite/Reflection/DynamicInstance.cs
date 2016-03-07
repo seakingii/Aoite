@@ -20,19 +20,19 @@ namespace System
         public virtual object Instance { get; }
 
         /// <summary>
-        /// 指定静态方法的类型，初始化 <see cref="DynamicInstance"/> 类的新实例。
+        /// 指定静态方法的类型，初始化一个 <see cref="DynamicInstance"/> 类的新实例。
         /// </summary>
         /// <param name="type">反射的类。</param>
         public DynamicInstance(Type type) : this(null, type, false) { }
 
         /// <summary>
-        /// 指定一个实例，初始化 <see cref="DynamicInstance"/> 类的新实例。
+        /// 指定一个实例，初始化一个 <see cref="DynamicInstance"/> 类的新实例。
         /// </summary>
         /// <param name="instance">反射的实例。</param>
         public DynamicInstance(object instance) : this(instance, instance?.GetType()) { }
 
         /// <summary>
-        /// 指定反射的类型和实例，初始化 <see cref="DynamicInstance"/> 类的新实例。
+        /// 指定反射的类型和实例，初始化一个 <see cref="DynamicInstance"/> 类的新实例。
         /// </summary>
         /// <param name="instance">反射的实例。</param>
         /// <param name="type">反射的类。</param>

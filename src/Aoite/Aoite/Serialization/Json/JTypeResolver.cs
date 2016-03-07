@@ -13,7 +13,7 @@ namespace Aoite.Serialization.Json
     {
 
         /// <summary>
-        /// 初始化 <see cref="JTypeResolver"/> 类的新实例。
+        /// 初始化一个 <see cref="JTypeResolver"/> 类的新实例。
         /// </summary>
         protected JTypeResolver() { }
 

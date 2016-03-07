@@ -46,6 +46,15 @@
         /// <summary>
         /// 进入 WHERE SQL 实现。
         /// </summary>
+        /// <param name="tn">表名的别名。</param>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere WhereValue(string tn, string name, object value, string op = "=");
+        /// <summary>
+        /// 进入 WHERE SQL 实现。
+        /// </summary>
         /// <param name="expression">逻辑表达式（如：“t1.x=@x”）。</param>
         /// <param name="name">参数的名称。</param>
         /// <param name="value">参数的值。</param>

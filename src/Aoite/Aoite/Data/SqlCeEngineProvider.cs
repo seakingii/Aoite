@@ -25,7 +25,7 @@ namespace Aoite.Data
         public override string Name { get { return "sqlce"; } }
 
         /// <summary>
-        /// 指定数据库的连接字符串，初始化 <see cref="SqlCeEngineProvider"/> 类的新实例。
+        /// 指定数据库的连接字符串，初始化一个 <see cref="SqlCeEngineProvider"/> 类的新实例。
         /// </summary>
         /// <param name="connectionString">数据源的连接字符串。</param>
         public SqlCeEngineProvider(string connectionString) : base(connectionString) { }

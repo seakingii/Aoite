@@ -9,22 +9,22 @@ namespace Aoite.Redis
     public class RedisWeightDictionary : Dictionary<string, double>
     {
         /// <summary>
-        /// 初始化 <see cref="RedisWeightDictionary"/> 类的新实例，该实例为空且具有默认的初始容量，并使用键类型的默认相等比较器。
+        /// 初始化一个 <see cref="RedisWeightDictionary"/> 类的新实例，该实例为空且具有默认的初始容量，并使用键类型的默认相等比较器。
         /// </summary>
         public RedisWeightDictionary() : base() { }
         /// <summary>
-        /// 初始化 <see cref="RedisWeightDictionary"/> 类的新实例，该实例为空且具有指定的初始容量，并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisWeightDictionary"/> 类的新实例，该实例为空且具有指定的初始容量，并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="capacity"><see cref="RedisWeightDictionary"/> 可包含的初始元素数。</param>
         public RedisWeightDictionary(int capacity) : base(capacity) { }
         /// <summary>
-        /// 初始化 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.Double&gt; 中复制的元素并为键类型使用默认的相等比较器。
+        /// 初始化一个 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 System.Collections.Generic.IDictionary&lt;System.String, System.Double&gt; 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="dictionary">System.Collections.Generic.IDictionary&lt;System.String, System.Double&gt;，它的元素被复制到新的 <see cref="RedisWeightDictionary"/></param>
         public RedisWeightDictionary(IDictionary<string, double> dictionary) : base(dictionary) { }
 
         /// <summary>
-        /// 使用默认的乘法因子（1），初始化 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 <paramref name="keys"/> 中复制的元素并为键类型使用默认的相等比较器。
+        /// 使用默认的乘法因子（1），初始化一个 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 <paramref name="keys"/> 中复制的元素并为键类型使用默认的相等比较器。
         /// </summary>
         /// <param name="keys">键名的数组。</param>
         public RedisWeightDictionary(params string[] keys)
@@ -34,7 +34,7 @@ namespace Aoite.Redis
         }
 
         /// <summary>
-        /// 初始化 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 <paramref name="keys"/> 和  <paramref name="weights"/> 中复制的元素。
+        /// 初始化一个 <see cref="RedisWeightDictionary"/> 类的新实例，该实例包含从指定的 <paramref name="keys"/> 和  <paramref name="weights"/> 中复制的元素。
         /// </summary>
         /// <param name="keys">键名的数组。</param>
         /// <param name="weights">乘法因子的数组。</param>

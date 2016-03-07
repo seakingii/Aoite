@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
         public event CommandExecutedHandler<TCommand> Executed;
 
         /// <summary>
-        /// 初始化 <see cref="Event{TCommand}"/> 类的新实例。
+        /// 初始化一个 <see cref="Event{TCommand}"/> 类的新实例。
         /// </summary>
         public Event() { }
 

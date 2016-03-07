@@ -24,7 +24,7 @@ namespace Aoite.CommandModel.Core
             var container = new IocContainer();
             var command = new SimpleCommand();
             var contextFactory = new ContextFactory(container);
-            var context = contextFactory.Create(command);
+            var context = contextFactory.Create(command, new Lazy<System.Collections.Specialized.HybridDictionary>(), new Lazy<Data.IDbEngine>(() => Db.Engine));
             Assert.Equal(command, context.Command);
             Assert.Equal(container, context.Container);
         }

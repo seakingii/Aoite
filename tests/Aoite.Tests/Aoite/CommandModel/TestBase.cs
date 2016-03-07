@@ -13,7 +13,7 @@ namespace Aoite.CommandModel
         private TestManagerBase _testManager;
         private ExecutorFactory _factory;
 
-         private DbEngine _Engine;
+        private DbEngine _Engine;
         /// <summary>
         /// 获取当前运行环境的数据库操作引擎的实例。
         /// </summary>
@@ -23,7 +23,7 @@ namespace Aoite.CommandModel
         /// 获取当前运行环境的数据库操作引擎的实例。
         /// </summary>
         public IDbContext Context { get { return this._Engine?.Context; } }
-        
+
         /// <summary>
         /// 获取一个值，指示当前上下文在线程中是否已创建。
         /// </summary>
@@ -37,7 +37,7 @@ namespace Aoite.CommandModel
         /// <returns>返回命令模型的模拟上下文。</returns>
         public MockContext CreateContext(object user, ICommand command)
         {
-            return new MockContext(user, this._factory.Container, command);
+            return new MockContext(user, this._factory.Container, command, new Lazy<IDbEngine>(() => this._Engine.Context));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Aoite.CommandModel
 
         public TestBase()
         {
-            var container = new IocContainer();
+            var container = ObjectFactory.CreateContainer();
             this._factory = new ExecutorFactory(container);
             var type = this.GetType();
             var db = type.GetAttribute<DbAttribute>();
@@ -129,7 +129,7 @@ namespace Aoite.CommandModel
             }
             this._Engine = this._testManager.Engine;
 
-            container.Add<IDbEngine>(lmps => this.Context);
+            container.Add<IDbEngine>(this._Engine);
 
             var classScripts = this.GetType().GetAttribute<ScriptsAttribute>();
             if(classScripts != null) this._testManager.Execute(classScripts.Keys);

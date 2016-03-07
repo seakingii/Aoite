@@ -69,6 +69,15 @@
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere AndValue(string name, object value, string op = "=");
         /// <summary>
+        /// 生成 AND 表达式（如：“a.name=@name”）。
+        /// </summary>
+        /// <param name="tn">表名的别名。</param>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere AndValue(string tn, string name, object value, string op = "=");
+        /// <summary>
         /// 添加 OR 表达式。
         /// </summary>
         /// <param name="expression">逻辑表达式（如：“t1.x IS NULL”）。</param>
@@ -90,6 +99,15 @@
         /// <param name="op">比较运算符。</param>
         /// <returns> <see cref="IWhere"/> 的实例。</returns>
         IWhere OrValue(string name, object value, string op = "=");
+        /// <summary>
+        /// 添加 OR 表达式（如：“a.name=@name”）。
+        /// </summary>
+        /// <param name="tn">表名的别名。</param>
+        /// <param name="name">参数的名称。</param>
+        /// <param name="value">参数的值。</param>
+        /// <param name="op">比较运算符。</param>
+        /// <returns> <see cref="IWhere"/> 的实例。</returns>
+        IWhere OrValue(string tn, string name, object value, string op = "=");
         /// <summary>
         /// 添加 AND 表达式“AND (fieldName=@namePrefix0 OR fieldName=@namePrefix1)”。
         /// </summary>

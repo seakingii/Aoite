@@ -270,7 +270,9 @@ namespace System
             if(bus == null) throw new ArgumentNullException(nameof(bus));
             var builder = new SqlBuilder(bus.GetDbEngine());
             whereCallback(builder.Where());
-            return Filter(bus, builder.WhereText, builder.Parameters);
+            var wp = new WhereParameters(builder.WhereText, builder.Parameters);
+            wp.OrderBy = builder.OrderByText;
+            return Filter(bus, wp);
         }
 
         /// <summary>
@@ -299,9 +301,9 @@ namespace System
 
         #endregion
 
-        #region Run
+        #region Call
         private static class CommandBusWapper<TCommand, TResult>
-            where TCommand : ICommand<TResult>
+                  where TCommand : ICommand<TResult>
         {
             public static TResult Execute(ICommandBus bus, TCommand command
             , CommandExecutingHandler<ICommand<TResult>> executing
@@ -328,6 +330,7 @@ namespace System
             }
         }
 
+
         private readonly static Collections.Concurrent.ConcurrentDictionary<Type, Tuple<DynamicMethodInvoker, DynamicMethodInvoker>>
             Invokers = new Collections.Concurrent.ConcurrentDictionary<Type, Tuple<DynamicMethodInvoker, DynamicMethodInvoker>>();
         readonly static Type CommandBusWapperType = typeof(CommandBusWapper<,>);
@@ -336,12 +339,12 @@ namespace System
             if(command == null) throw new ArgumentNullException(nameof(command));
 
             return Invokers.GetOrAdd(command.GetType(), type =>
-                 {
-                     var flags = Reflection.BindingFlags.Static | Reflection.BindingFlags.Public;
-                     var resultType = typeof(TResult);
-                     return Tuple.Create(DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("Execute", flags))
-                         , DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("ExecuteAsync", flags)));
-                 }
+                {
+                    var flags = Reflection.BindingFlags.Static | Reflection.BindingFlags.Public;
+                    var resultType = typeof(TResult);
+                    return Tuple.Create(DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("Execute", flags))
+                        , DynamicFactory.CreateMethodInvoker(CommandBusWapperType.MakeGenericType(type, resultType).GetMethod("ExecuteAsync", flags)));
+                }
             );
         }
 
@@ -382,6 +385,39 @@ namespace System
             return (Task<TResult>)GetInvoker(command).Item2(null, bus, command, executing, executed);
         }
 
+        ///// <summary>
+        ///// 调用一个命令模型。
+        ///// </summary>
+        ///// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
+        ///// <param name="bus">命令总线。</param>
+        ///// <param name="command">命令模型。</param>
+        ///// <param name="executing">命令模型执行前发生的方法。</param>
+        ///// <param name="executed">命令模型执行后发生的方法。</param>
+        //public static void Call<TCommand>(this ICommandBus bus, TCommand command
+        //    , CommandExecutingHandler<TCommand> executing = null
+        //    , CommandExecutedHandler<TCommand> executed = null)
+        //    where TCommand : ICommand
+        //{
+        //    if(bus == null) throw new ArgumentNullException(nameof(bus));
+        //    bus.Execute(command, executing, executed);
+        //}
+
+        ///// <summary>
+        ///// 以异步的方式调用一个命令模型。
+        ///// </summary>
+        ///// <param name="bus">命令总线。</param>
+        ///// <param name="command">命令模型。</param>
+        ///// <param name="executing">命令模型执行前发生的方法。</param>
+        ///// <param name="executed">命令模型执行后发生的方法。</param>
+        ///// <returns>异步操作。</returns>
+        //public static Task CallAsync<TCommand>(this ICommandBus bus, TCommand command
+        //    , CommandExecutingHandler<TCommand> executing = null
+        //    , CommandExecutedHandler<TCommand> executed = null)
+        //    where TCommand : ICommand
+        //{
+        //    if(bus == null) throw new ArgumentNullException(nameof(bus));
+        //    return bus.ExecuteAsync(command, executing, executed);
+        //}
 
         #endregion
     }

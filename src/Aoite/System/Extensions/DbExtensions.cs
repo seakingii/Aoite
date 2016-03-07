@@ -75,7 +75,7 @@ namespace System
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
             StringBuilder builder = new StringBuilder(command.Text);
-            if(command.Parameters != null)
+            if(command.Parameters != null && command.Parameters.Count > 0)
             {
                 builder.AppendLine();
                 builder.AppendLine("*** Parameters ***");
@@ -814,7 +814,9 @@ namespace System
             if(engine == null) throw new ArgumentNullException(nameof(engine));
             var builder = new SqlBuilder(engine);
             whereCallback(builder.Where());
-            return Filter(engine, builder.WhereText, builder.Parameters);
+            var wp = new WhereParameters(builder.WhereText, builder.Parameters);
+            wp.OrderBy = builder.OrderByText;
+            return Filter(engine, wp);
         }
 
         /// <summary>

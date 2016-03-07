@@ -105,6 +105,7 @@
     <Compile Include="Aoite\CommandModel\CommandsTests.cs" />
     <Compile Include="Aoite\CommandModel\Core\BindingExecutorAttributeTests.cs" />
     <Compile Include="Aoite\CommandModel\Core\CacheAttributeTests.cs" />
+    <Compile Include="Aoite\CommandModel\Core\CommandBusPipeTests.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandBusTests.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandModelContainerProviderBaseTests.cs" />
     <Compile Include="Aoite\CommandModel\Core\CommandModelServiceBaseTests.cs" />

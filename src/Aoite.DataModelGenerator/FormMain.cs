@@ -183,6 +183,17 @@ namespace Aoite.DataModelGenerator
             this.RefreshDB();
         }
 
+        private void lbl_UnitTestScripts_Click(object sender, EventArgs e)
+        {
+            string scripts = string.Empty;
+            using(var fw = this.BeginRun())
+            {
+                scripts = SmoHelper.CreateScripts();
+            }
+            new FormEditor("表结构", scripts).ShowDialog();
+        }
+
         #endregion
+
     }
 }

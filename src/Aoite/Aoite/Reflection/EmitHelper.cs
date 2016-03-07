@@ -14,7 +14,7 @@ namespace Aoite.Reflection
     internal class EmitHelper
     {
         /// <summary>
-        /// 指定返回类型、参数类型、动态方法逻辑关联的类型，初始化 <see cref="EmitHelper"/> 类的新实例。
+        /// 指定返回类型、参数类型、动态方法逻辑关联的类型，初始化一个 <see cref="EmitHelper"/> 类的新实例。
         /// </summary>
         /// <param name="returnType">返回类型。</param>
         /// <param name="parameterTypes">参数类型。</param>
@@ -25,7 +25,7 @@ namespace Aoite.Reflection
         {
         }
         /// <summary>
-        /// 指定动态方法，初始化 <see cref="EmitHelper"/> 类的新实例。
+        /// 指定动态方法，初始化一个 <see cref="EmitHelper"/> 类的新实例。
         /// </summary>
         /// <param name="dynamicMethod">表示一种可编译、执行和丢弃的动态方法。</param>
         public EmitHelper(DynamicMethod dynamicMethod)

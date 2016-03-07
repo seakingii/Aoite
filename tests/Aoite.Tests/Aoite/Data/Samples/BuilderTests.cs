@@ -31,6 +31,13 @@ namespace Aoite.Data.Builder
             Assert.Equal("SELECT * FROM [TestTable] WHERE [ID] LIKE @ID OR [Name]=@Name", command.Text);
         }
         [Fact()]
+        public void NameValueOpTest2()
+        {
+            var command = engine.Select<TestTable>().WhereValue("a", "ID", 2, "LIKE").OrValue("Name", "name").End();
+            Assert.NotNull(command);
+            Assert.Equal("SELECT * FROM [TestTable] WHERE a.[ID] LIKE @ID OR [Name]=@Name", command.Text);
+        }
+        [Fact()]
         public void WhereInTest1()
         {
             var command = engine.Select<TestTable>().WhereIn("ID", "@id", new int[] { 1, 2, 3 }).End();

@@ -22,7 +22,7 @@ namespace Aoite.CommandModel
         }
 
         /// <summary>
-        /// 初始化 <see cref="CommandModelContainerProviderBase"/> 类的新实例。
+        /// 初始化一个 <see cref="CommandModelContainerProviderBase"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public CommandModelContainerProviderBase(IIocContainer container)

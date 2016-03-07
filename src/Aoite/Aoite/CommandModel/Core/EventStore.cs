@@ -13,7 +13,7 @@ namespace Aoite.CommandModel
             Events = new System.Collections.Concurrent.ConcurrentDictionary<string, List<IEvent>>();
 
         /// <summary>
-        /// 初始化 <see cref="EventStore"/> 类的新实例。
+        /// 初始化一个 <see cref="EventStore"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public EventStore(IIocContainer container) : base(container) { }

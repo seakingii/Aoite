@@ -51,7 +51,11 @@ namespace System
             var whereText = this.Where;
             var orderText = this.OrderBy;
             if(!string.IsNullOrWhiteSpace(whereText)) commandText = string.Concat(commandText, " WHERE ", whereText);
-            if(!string.IsNullOrWhiteSpace(orderText)) commandText = string.Concat(commandText, " ORDER BY ", orderText);
+            if(!string.IsNullOrWhiteSpace(orderText))
+            {
+                if(commandText.Contains("ORDER BY")) throw new NotSupportedException($"语句“{commandText}”已经存在 ORDER BY 语句，无法往其后继续追加。");
+                commandText = string.Concat(commandText, " ORDER BY ", orderText);
+            }
             return commandText;
         }
 

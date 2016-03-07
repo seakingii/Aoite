@@ -34,7 +34,7 @@ namespace System
         }
 
         /// <summary>
-        /// 用序列化数据初始化 <see cref="ResultException"/> 类的新实例。
+        /// 用序列化数据初始化一个 <see cref="ResultException"/> 类的新实例。
         /// </summary>
         /// <param name="info"><see cref="SerializationInfo"/>，它存有有关所引发异常的序列化的对象数据。</param>
         /// <param name="context"><see cref="StreamingContext"/>，它包含有关源或目标的上下文信息。</param>

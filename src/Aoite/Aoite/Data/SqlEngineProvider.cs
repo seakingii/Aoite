@@ -29,7 +29,7 @@ namespace Aoite.Data
         public override string Name { get { return "sql"; } }
 
         /// <summary>
-        /// 指定数据库的连接字符串，初始化 <see cref="SqlEngineProvider"/> 类的新实例。
+        /// 指定数据库的连接字符串，初始化一个 <see cref="SqlEngineProvider"/> 类的新实例。
         /// </summary>
         /// <param name="connectionString">数据源的连接字符串。</param>
         public SqlEngineProvider(string connectionString) : base(connectionString) { }

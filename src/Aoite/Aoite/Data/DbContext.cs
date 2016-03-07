@@ -22,15 +22,19 @@ namespace Aoite.Data
         /// </summary>
         public Guid Id { get; }
 
-        IDbConnection IDbContext.Connection { get { return this._lazyConnection.Value; } }
-        IDbTransaction IDbContext.Transaction { get { return this._transaction; } }
+        IDbConnection IDbContext.Connection => this._lazyConnection.Value;
+        IDbTransaction IDbContext.Transaction => this._transaction;
 
         /// <summary>
         /// 获取一个值，该值指示当前上下文的连接是否已关闭。
         /// </summary>
-        public bool IsClosed { get { return this._lazyConnection.Value.State == ConnectionState.Closed; } }
+        public bool IsClosed => this._lazyConnection.Value.State == ConnectionState.Closed;
 
-        IDbEngineProvider IDbEngine.Provider { get { return this.Owner.Provider; } }
+        IDbEngineProvider IDbEngine.Provider => this.Owner.Provider;
+
+        public IDbContext Context => this;
+
+        public IDbContext ContextTransaction => this.OpenTransaction();
 
         internal DbContext(DbEngine owner)
         {
@@ -60,9 +64,12 @@ namespace Aoite.Data
         /// <param name="isolationLevel">指定事务的隔离级别。</param>
         public IDbContext OpenTransaction(IsolationLevel isolationLevel)
         {
-            this.Open();
-            if(this._transaction != null) throw new NotSupportedException("已打开了一个新的事务，无法确定对旧的事务是否已执行提交或回滚操作。");
-            this._transaction = this._lazyConnection.Value.BeginTransaction(isolationLevel);
+            if(this._transaction == null)
+            {
+                this.Open();
+                //if(this._transaction != null) throw new NotSupportedException("已打开了一个新的事务，无法确定对旧的事务是否已执行提交或回滚操作。");
+                this._transaction = this._lazyConnection.Value.BeginTransaction(isolationLevel);
+            }
             return this;
         }
 

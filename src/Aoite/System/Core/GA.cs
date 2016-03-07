@@ -228,7 +228,8 @@ namespace System
         [Conditional("TRACE")]
         public static void TraceError(string format, params object[] args)
         {
-            System.Diagnostics.Trace.TraceError(format, args);
+            if(args == null || args.Length == 0) Trace.TraceError(format);
+            else Trace.TraceError(format, args);
         }
 
         /// <summary>
@@ -239,7 +240,8 @@ namespace System
         [Conditional("TRACE")]
         public static void TraceWarning(string format, params object[] args)
         {
-            System.Diagnostics.Trace.TraceWarning(format, args);
+            if(args == null || args.Length == 0) Trace.TraceWarning(format);
+            else Trace.TraceWarning(format, args);
         }
 
         /// <summary>
@@ -250,7 +252,8 @@ namespace System
         [Conditional("TRACE")]
         public static void TraceInformation(string format, params object[] args)
         {
-            System.Diagnostics.Trace.TraceInformation(format, args);
+            if(args == null || args.Length == 0) Trace.TraceInformation(format);
+            else Trace.TraceInformation(format, args);
         }
 
         /// <summary>

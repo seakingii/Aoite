@@ -10,11 +10,9 @@ namespace Aoite.CommandModel
     public class ExecutorFactory : CommandModelContainerProviderBase, IExecutorFactory
     {
         private const string CommandNameSuffix = "Command";
-        // private readonly System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>
-        //    Executors = new System.Collections.Concurrent.ConcurrentDictionary<Type, IExecutorMetadata>();
 
         /// <summary>
-        /// 初始化 <see cref="ExecutorFactory"/> 类的新实例。
+        /// 初始化一个 <see cref="ExecutorFactory"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
         public ExecutorFactory(IIocContainer container) : base(container) { }

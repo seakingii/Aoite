@@ -6,7 +6,7 @@ namespace Aoite.CommandModel
     /// <summary>
     /// 表示一个命令模型的基础服务。
     /// </summary>
-    public abstract class CommandModelServiceBase : /*ObjectDisposableBase,*/ ICommandModelService
+    public abstract class CommandModelServiceBase : CommandModelContainerProviderBase, ICommandModelService
     {
         /// <summary>
         /// 初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。
@@ -17,35 +17,27 @@ namespace Aoite.CommandModel
         /// 指定服务容器，初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
-        public CommandModelServiceBase(IIocContainer container)
-        {
-            if(container == null) throw new ArgumentNullException(nameof(container));
-            this._Container = container;
-        }
-
-        private IIocContainer _Container;
-        /// <summary>
-        /// 获取或设置命令模型服务容器。
-        /// </summary>
-        public IIocContainer Container
-        {
-            get { return this._Container; }
-            set
-            {
-                this._Container = value;
-                if(this._Container != null) this._Container.Add<ICommandModelService>(this);
-            }
-        }
+        public CommandModelServiceBase(IIocContainer container) : base(container) { }
 
         /// <summary>
         /// 获取执行命令模型的用户。该属性可能返回 null 值。
         /// </summary>
-        public virtual dynamic User { get { return this._Container.GetUser(); } }
+        public virtual dynamic User => this.Container.GetUser();
 
         /// <summary>
         /// 获取命令总线。
         /// </summary>
-        protected ICommandBus Bus { get { return this._Container.Get<ICommandBus>(); } }
+        protected ICommandBus Bus => this.Container.Get<ICommandBus>();
+        /// <summary>
+        /// 创建命令总线的上下文管道。
+        /// </summary>
+        /// <returns>命令总线的上下文管道。</returns>
+        protected ICommandBusPipe BeginPipe() => Bus.Pipe;
+        /// <summary>
+        /// 创建事务型命令总线的上下文管道。
+        /// </summary>
+        /// <returns>命令总线的上下文管道。</returns>
+        protected ICommandBusPipe BeginPipeTransaction() => Bus.PipeTransaction;
 
         /// <summary>
         /// 执行一个命令模型。
@@ -89,7 +81,7 @@ namespace Aoite.CommandModel
         /// <param name="timeout">获取锁的超时设定。</param>
         /// <returns>可释放的锁实例。</returns>
         protected virtual IDisposable AcquireLock(string key, TimeSpan? timeout = null)
-            => this._Container.Get<ILockProvider>().Lock(key, timeout);
+            => this.Container.Get<ILockProvider>().Lock(key, timeout);
 
         /// <summary>
         /// 获取指定数据类型键的原子递增序列。
@@ -107,15 +99,7 @@ namespace Aoite.CommandModel
         /// <param name="increment">递增量。</param>
         /// <returns>递增的序列。</returns>
         protected virtual long Increment(string key, long increment = 1)
-            => this._Container.Get<ICounterProvider>().Increment(key, increment);
-
-        /// <summary>
-        /// 开始事务模式。
-        /// </summary>
-        /// <param name="isolationLevel">指定事务的隔离级别。</param>
-        /// <returns>可释放的事务实例。</returns>
-        protected virtual ITransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.Unspecified)
-            => new DefaultTransaction(this._Container, isolationLevel);
+            => this.Container.Get<ICounterProvider>().Increment(key, increment);
 
         /// <summary>
         /// 获取指定实体数据类型的缓存键。
@@ -132,7 +116,7 @@ namespace Aoite.CommandModel
         /// <param name="key">缓存键。</param>
         /// <param name="value">缓存值。</param>
         protected virtual void Set(string key, object value)
-            => this._Container.Get<ICacheProvider>().Set(key, value);
+            => this.Container.Get<ICacheProvider>().Set(key, value);
 
         /// <summary>
         /// 设置基于实体的缓存。
@@ -150,7 +134,7 @@ namespace Aoite.CommandModel
         /// <param name="valueFactory">若找不到缓存时的延迟设置回调方法。</param>
         /// <returns>缓存值，或一个 null 值。</returns>
         protected virtual object Get(string key, Func<object> valueFactory = null)
-            => this._Container.Get<ICacheProvider>().Get(key, valueFactory);
+            => this.Container.Get<ICacheProvider>().Get(key, valueFactory);
 
         /// <summary>
         /// 获取缓存。
@@ -182,7 +166,7 @@ namespace Aoite.CommandModel
         /// <param name="key">缓存键。</param>
         /// <returns>存在返回 true，否则返回 false。</returns>
         protected virtual bool Exstis(string key)
-            => this._Container.Get<ICacheProvider>().Exists(key);
+            => this.Container.Get<ICacheProvider>().Exists(key);
 
         /// <summary>
         /// 检测基于实体指定的缓存键是否存在。

@@ -12,7 +12,7 @@ namespace Aoite.CommandModel
         CommandExecutedHandler<TCommand> _executed;
 
         /// <summary>
-        /// 初始化 <see cref="MockEvent{TCommand}"/> 类的新实例。
+        /// 初始化一个 <see cref="MockEvent{TCommand}"/> 类的新实例。
         /// </summary>
         /// <param name="executing">命令模型执行前发生的方法。可以为 null 值。</param>
         /// <param name="executed">命令模型执行后发生的方法。可以为 null 值。</param>

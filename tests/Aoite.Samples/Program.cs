@@ -192,7 +192,7 @@ namespace Aoite.Samples
             var container = ObjectFactory.CreateContainer();
             var bus = new CommandBus(container);
             string s = null;
-            const int testCount = 10 * 1000;
+            const int testCount = 10 * 10000;
             for(int i = 0; i < 5; i++)
             {
                 CodeTimer.TimeLine("Call", testCount, x => s = bus.Call(new TestCommand()));

@@ -24,7 +24,7 @@ namespace System.Data
         public PageTable() { }
 
         /// <summary>
-        /// 使用 <see cref="SerializationInfo"/> 和 <see cref="StreamingContext"/> 初始化 <see cref="PageTable"/> 类的新实例。
+        /// 使用 <see cref="SerializationInfo"/> 和 <see cref="StreamingContext"/> 初始化一个 <see cref="PageTable"/> 类的新实例。
         /// </summary>
         /// <param name="info">将对象序列化或反序列化所需的数据。</param>
         /// <param name="context">给定序列化流的源和目的地。</param>

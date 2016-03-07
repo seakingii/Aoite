@@ -11,14 +11,18 @@ namespace Aoite.CommandModel.Core
 
             public int Result { get; set; }
         }
+        private Context CreateContext(IIocContainer container, ICommand command)
+        {
+            return new Context(container, command, new Lazy<System.Collections.Specialized.HybridDictionary>(), new Lazy<Data.IDbEngine>(() => Db.Engine));
+        }
 
         [Fact()]
         public void CtorArgumentNullExceptionTest()
         {
             var command = new SimpleCommand();
-            Assert.Throws<ArgumentNullException>(() => new Context(null, command));
+            Assert.Throws<ArgumentNullException>(() => CreateContext(null, command));
             var container = new IocContainer();
-            Assert.Throws<ArgumentNullException>(() => new Context(container, null));
+            Assert.Throws<ArgumentNullException>(() => CreateContext(container, null));
         }
 
         [Fact()]
@@ -26,7 +30,7 @@ namespace Aoite.CommandModel.Core
         {
             var container = new IocContainer();
             var command = new SimpleCommand();
-            var context = new Context(container, command);
+            var context = CreateContext(container, command);
             Assert.Null(context.User);
             var username = "user";
             container.Add<IUserFactory>(new UserFactory(ioc => username));
@@ -38,7 +42,7 @@ namespace Aoite.CommandModel.Core
         {
             var container = new IocContainer();
             var command = new SimpleCommand();
-            var context = new Context(container, command);
+            var context = CreateContext(container, command);
             Assert.Equal(0, context.Data.Count);
             context["a"] = 2;
             Assert.Equal(1, context.Data.Count);
@@ -51,7 +55,7 @@ namespace Aoite.CommandModel.Core
         {
             var container = new IocContainer();
             var command = new SimpleCommand();
-            var context = new Context(container, command);
+            var context =  CreateContext(container, command );
             Assert.Equal(command, context.Command);
         }
         [Fact()]
@@ -59,7 +63,7 @@ namespace Aoite.CommandModel.Core
         {
             var container = new IocContainer();
             var command = new SimpleCommand();
-            var context = new Context(container, command);
+            var context =  CreateContext(container, command);
             Assert.Null(context.Engine);
         }
     }

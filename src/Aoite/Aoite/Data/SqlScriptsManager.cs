@@ -11,7 +11,7 @@ namespace Aoite.Data
     public class SqlScriptsManager : Dictionary<string, string>
     {
         /// <summary>
-        /// 初始化 <see cref="SqlScriptsManager"/> 类的新实例。
+        /// 初始化一个 <see cref="SqlScriptsManager"/> 类的新实例。
         /// </summary>
         public SqlScriptsManager() : base(StringComparer.OrdinalIgnoreCase) { }
 

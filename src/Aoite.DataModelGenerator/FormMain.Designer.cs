@@ -37,6 +37,8 @@
             this.lbl_Run = new Aoite.DataModelGenerator.HoverLabel();
             this.lbl_Connect = new Aoite.DataModelGenerator.HoverLabel();
             this.lbl_Generate = new Aoite.DataModelGenerator.HoverLabel();
+            this.lbl_UnitTestScripts = new Aoite.DataModelGenerator.HoverLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -83,11 +85,13 @@
             this.textEditorControl1.Name = "textEditorControl1";
             this.textEditorControl1.Size = new System.Drawing.Size(366, 387);
             this.textEditorControl1.TabIndex = 0;
+            this.textEditorControl1.Text = "";
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.lbl_Refresh);
             this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.lbl_UnitTestScripts);
             this.panel1.Controls.Add(this.lbl_Run);
             this.panel1.Controls.Add(this.lbl_Connect);
             this.panel1.Controls.Add(this.lbl_Generate);
@@ -167,6 +171,22 @@
             this.lbl_Generate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_Generate.Click += new System.EventHandler(this.lbl_Generate_Click);
             // 
+            // lbl_UnitTestScripts
+            // 
+            this.lbl_UnitTestScripts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_UnitTestScripts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(81)))), ((int)(((byte)(34)))));
+            this.lbl_UnitTestScripts.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbl_UnitTestScripts.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbl_UnitTestScripts.ForeColor = System.Drawing.Color.White;
+            this.lbl_UnitTestScripts.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lbl_UnitTestScripts.Location = new System.Drawing.Point(472, 5);
+            this.lbl_UnitTestScripts.Name = "lbl_UnitTestScripts";
+            this.lbl_UnitTestScripts.Size = new System.Drawing.Size(100, 31);
+            this.lbl_UnitTestScripts.TabIndex = 2;
+            this.lbl_UnitTestScripts.Text = "生成单元测试";
+            this.lbl_UnitTestScripts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_UnitTestScripts.Click += new System.EventHandler(this.lbl_UnitTestScripts_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -180,6 +200,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -197,5 +218,6 @@
         private HoverLabel lbl_Run;
         private HoverLabel lbl_Refresh;
         private System.Windows.Forms.Label label1;
+        private HoverLabel lbl_UnitTestScripts;
     }
 }
