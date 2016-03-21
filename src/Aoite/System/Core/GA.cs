@@ -515,12 +515,15 @@ namespace System
         class Seed
         {
             public object _key;
+            //private SemaphoreSlim _sema;
             public Seed(object key)
             {
                 _key = key;
+                //_sema = new SemaphoreSlim(1, 1);
             }
             public IDisposable Lock(TimeSpan timeout)
             {
+              //await  _sema.WaitAsync(timeout);
                 if(!Monitor.TryEnter(this, timeout)) return null;
                 return new SeedLocker(this);
             }
@@ -530,6 +533,7 @@ namespace System
             private Seed _seed;
             public SeedLocker(Seed seed)
             {
+                
                 _seed = seed;
             }
 

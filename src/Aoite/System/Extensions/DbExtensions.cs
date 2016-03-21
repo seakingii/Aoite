@@ -70,8 +70,9 @@ namespace System
         /// 将指定的执行命令转换成完整字符串形式。
         /// </summary>
         /// <param name="command">执行命令。</param>
+        /// <param name="result">表示返回值。</param>
         /// <returns>完整执行命令的字符串形式。</returns>
-        public static string ToFullString(this ExecuteCommand command)
+        public static string ToFullString(this ExecuteCommand command, object result = null)
         {
             if(command == null) throw new ArgumentNullException(nameof(command));
             StringBuilder builder = new StringBuilder(command.Text);
@@ -85,6 +86,68 @@ namespace System
                 }
                 builder.AppendLine("*** Parameters ***");
             }
+            builder.AppendLine("*** Result ***");
+            if(result == null || result.GetType().IsSimpleType())
+            {
+                builder.AppendLine("\t" + (result ?? "<NULL>"));
+            }
+            else
+            {
+                if(result is PageTable)
+                {
+                    var real = result as PageTable;
+                    builder.AppendLine($"*Total*:{real.Total} *Current *:{real.Rows.Count}");
+                    builder.Append("[#]");
+                    foreach(DataColumn column in real.Columns)
+                    {
+                        builder.Append('\t');
+                        builder.Append(column.ColumnName);
+                    }
+                    builder.AppendLine();
+                    var index = 0;
+                    foreach(DataRow row in real.Rows)
+                    {
+                        builder.Append(index++);
+                        foreach(DataColumn column in real.Columns)
+                        {
+                            builder.Append('\t');
+                            builder.Append(row[column]);
+                        }
+                        builder.AppendLine();
+                    }
+                }
+                else if(result is DataSet)
+                {
+                    builder.AppendLine("\t<DataSet>");
+                }
+                else if(result is PageData)
+                {
+                    var real = result as PageData;
+                    var array = real.GetRows();
+                    builder.AppendLine($"*Total*:{real.Total} *Current *:{array.Length}");
+
+                    var index = 0;
+                    foreach(var item in array)
+                    {
+                        builder.AppendLine("\t[" + index++ + "] =" + Serializer.Json.FastWrite(item));
+                    }
+                }
+                else if(result is Collections.IList)
+                {
+                    var real = (result as Collections.IList);
+                    builder.AppendLine($"*Count*:{real.Count}");
+                    var index = 0;
+                    foreach(var item in real)
+                    {
+                        builder.AppendLine("\t[" + index++ + "] =" + Serializer.Json.FastWrite(item));
+                    }
+                }
+                else
+                {
+                    builder.AppendLine("\t" + Serializer.Json.FastWrite(result));
+                }
+            }
+            builder.AppendLine("*** Result ***");
             return builder.ToString();
         }
 

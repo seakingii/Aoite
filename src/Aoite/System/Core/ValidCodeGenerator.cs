@@ -56,7 +56,7 @@ namespace System
                     , new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
 
                 //画图片的前景噪音点
-                g.DrawRectangle(new Pen(Color.FromArgb(237, 237, 237)), 0, 0, image.Width - 1, image.Height - 1);
+                //g.DrawRectangle(new Pen(Color.FromArgb(237, 237, 237)), 0, 0, image.Width - 1, image.Height - 1);
                 return image;
             }
 
