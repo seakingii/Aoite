@@ -88,11 +88,11 @@
         /// <summary>
         /// 指定描述错误的信息和状态码，初始化一个 <see cref="Result"/> 类的新实例。
         /// </summary>
-        /// <param name="mssage">描述错误的信息。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="message">描述错误的信息。如果为 null 值，将不会更改返回结果的状态。</param>
         /// <param name="status">结果的状态码。</param>
-        public Result(string mssage, int status = ResultStatus.Failed)
+        public Result(string message, int status = ResultStatus.Failed)
         {
-            this.ToFailded(mssage, status);
+            this.ToFailded(message, status);
         }
 
         /// <summary>
@@ -159,5 +159,44 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// 指定结果的返回值，创建一个 <see cref="Result{TValue}"/> 类的新实例。
+        /// </summary>
+        /// <typeparam name="TValue">返回值的数据类型。</typeparam>
+        /// <param name="value">结果的返回值。</param>
+        /// <returns>一个 <see cref="Result{TValue}"/> 类的新实例。</returns>
+        public static Result<TValue> Success<TValue>(TValue value) { return new Result<TValue>(value); }
+
+        /// <summary>
+        /// 指定描述错误的信息和状态码，创建一个 <see cref="Result"/> 类的新实例。
+        /// </summary>
+        /// <param name="message">描述错误的信息。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="status">结果的状态码。</param>
+        /// <returns>一个 <see cref="Result"/> 类的新实例。</returns>
+        public static Result Faild(string message, int status = ResultStatus.Failed) { return new Result(message, status); }
+        /// <summary>
+        /// 指定描述错误的信息和状态码，创建一个 <see cref="Result{TValue}"/> 类的新实例。
+        /// </summary>
+        /// <typeparam name="TValue">返回值的数据类型。</typeparam>
+        /// <param name="message">描述错误的信息。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="status">结果的状态码。</param>
+        /// <returns>一个 <see cref="Result{TValue}"/> 类的新实例。</returns>
+        public static Result<TValue> Faild<TValue>(string message, int status = ResultStatus.Failed) { return new Result<TValue>(message, status); }
+        /// <summary>
+        /// 指定引发的异常和状态码，初始化一个 <see cref="Result"/> 类的新实例。
+        /// </summary>
+        /// <param name="exception">引发异常的 <see cref="Exception"/>。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="status">创建的状态码。</param>
+        /// <returns>一个 <see cref="Result"/> 类的新实例。</returns>
+        public static Result Faild(Exception exception, int status = ResultStatus.Failed) { return new Result(exception, status); }
+        /// <summary>
+        /// 指定引发的异常和状态码，初始化一个 <see cref="Result"/> 类的新实例。
+        /// </summary>
+        /// <typeparam name="TValue">返回值的数据类型。</typeparam>
+        /// <param name="exception">引发异常的 <see cref="Exception"/>。如果为 null 值，将不会更改返回结果的状态。</param>
+        /// <param name="status">创建的状态码。</param>
+        /// <returns>一个 <see cref="Result{TValue}"/> 类的新实例。</returns>
+        public static Result<TValue> Faild<TValue>(Exception exception, int status = ResultStatus.Failed) { return new Result<TValue>(exception, status); }
     }
 }
