@@ -54,7 +54,7 @@
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".1.8";
+            public const string AssemblyVersion = Version + ".2.0";
             /// <summary> 
             /// 程序集的简单描述。
             /// </summary>
@@ -86,6 +86,28 @@
             /// 程序集的简单描述。
             /// </summary>
             public const string Description = Name + " Windows Forms 基础套件。";
+        }
+        /// <summary> 
+        /// Aoite ASP.NET MVC 套件。
+        /// </summary>
+        public static class Mvc
+        {
+            /// <summary>
+            /// 程序集的产品名称。
+            /// </summary>
+            public const string Product = Name + " Mvc " + Stage;
+            /// <summary>
+            /// 程序集的唯一标识。
+            /// </summary>
+            public const string Guid = "45af4a3e-9b56-498e-ad1b-94f1247bc457";
+            /// <summary> 
+            /// 程序集详细的版本。
+            /// </summary>
+            public const string AssemblyVersion = Version + ".1.0";
+            /// <summary>
+            /// 程序集的简单描述。
+            /// </summary>
+            public const string Description = Name + " ASP.NET MVC 基础套件。";
         }
 
     }

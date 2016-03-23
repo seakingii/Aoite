@@ -181,7 +181,7 @@ namespace System.Web
         /// <summary>
         /// 获取该网站的应用程序设置。
         /// </summary>
-        public static NameValueCollection AppSettings => System.Web.Configuration.WebConfigurationManager.AppSettings;
+        public static NameValueCollection AppSettings => Configuration.WebConfigurationManager.AppSettings;
 
         private static IIocContainer SetContainer(IIocContainer value)
         {
@@ -245,7 +245,7 @@ namespace System.Web
         /// <returns>客户端唯一标识。</returns>
         public static dynamic Identity
         {
-            get { return GetTemp<object>(IdentityName, Container.Get<IIdentityStore>().Get); }
+            get { return GetTemp(IdentityName, Container.Get<IIdentityStore>().Get); }
             set
             {
                 var store = Container.Get<IIdentityStore>();
@@ -263,31 +263,55 @@ namespace System.Web
             }
         }
 
+        /// <summary>
+        /// 表示一个基于会话的客户端唯一标识的存储功能。
+        /// </summary>
         [SingletonMapping]
-        internal class SessionIdentityStore : IIdentityStore
+        public class SessionIdentityStore : IIdentityStore
         {
             ISessionAccessor _session;
+            /// <summary>
+            /// 初始化一个 <see cref="SessionIdentityStore"/> 类的新实例。
+            /// </summary>
+            /// <param name="session">会话的存取器。</param>
             public SessionIdentityStore(ISessionAccessor session)
             {
                 if(session == null) throw new ArgumentNullException(nameof(session));
                 this._session = session;
             }
-            public void Set(object user)
+
+            /// <summary>
+            /// 设置客户端唯一标识。
+            /// </summary>
+            /// <param name="identity">客户端的唯一标识。</param>
+            public virtual void Set(object identity)
             {
-                this._session[IdentityName] = user;
+                this._session[IdentityName] = identity;
             }
 
-            public object Get()
+            /// <summary>
+            /// 获取客户端的唯一标识。
+            /// </summary>
+            /// <returns>客户端唯一标识，或一个 null 值。</returns>
+            public virtual object Get()
             {
                 return this._session[IdentityName];
             }
 
-            public void Remove()
+            /// <summary>
+            /// 移除客户端的唯一标识。
+            /// </summary>
+            public virtual void Remove()
             {
                 this._session.Remove(IdentityName);
             }
 
-            public object GetUser(IIocContainer container)
+            /// <summary>
+            /// 获取执行命令模型的用户。
+            /// </summary>
+            /// <param name="container">服务容器。</param>
+            /// <returns>客户端唯一标识，或一个 null 值。</returns>
+            public virtual object GetUser(IIocContainer container)
             {
                 return this.Get();
             }
