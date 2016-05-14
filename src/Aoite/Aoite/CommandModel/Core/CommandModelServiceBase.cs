@@ -82,7 +82,24 @@ namespace Aoite.CommandModel
         /// <returns>可释放的锁实例。</returns>
         protected virtual IDisposable AcquireLock(string key, TimeSpan? timeout = null)
             => this.Container.Get<ILockProvider>().Lock(key, timeout);
-
+#if !NET40
+        /// <summary>
+        /// 异步获取一个全局锁的功能，如果获取锁超时将会抛出异常。
+        /// </summary>
+        /// <typeparam name="T">数据类型。</typeparam>
+        /// <param name="timeout">获取锁的超时设定。</param>
+        /// <returns>可释放的异步锁操作。</returns>
+        protected Task<IDisposable> AcquireLockAsync<T>(TimeSpan? timeout = null)
+            => this.AcquireLockAsync(typeof(T).FullName, timeout);
+        /// <summary>
+        /// 异步获取一个全局锁的功能，如果获取锁超时将会抛出异常。
+        /// </summary>
+        /// <param name="key">锁的键。</param>
+        /// <param name="timeout">获取锁的超时设定。</param>
+        /// <returns>可释放的异步锁操作。</returns>
+        protected virtual Task<IDisposable> AcquireLockAsync(string key, TimeSpan? timeout = null)
+            => this.Container.Get<ILockProvider>().LockAsync(key, timeout);
+#endif
         /// <summary>
         /// 获取指定数据类型键的原子递增序列。
         /// </summary>

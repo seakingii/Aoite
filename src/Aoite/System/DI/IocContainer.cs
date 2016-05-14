@@ -436,7 +436,7 @@ namespace System
         {
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
 
-            using(GA.Locking(this.UUID + expectType.AssemblyQualifiedName))
+            using(GA.Lock(this.UUID + expectType.AssemblyQualifiedName))
             {
                 var callSite = GetCallSite(this, expectType);
                 if(callSite == null && autoResolving)
@@ -548,7 +548,7 @@ namespace System
             if(expectType == null) throw new ArgumentNullException(nameof(expectType));
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
             ConcurrentDictionary<string, ICallSite> dict;
-            using(GA.Locking(expectType))
+            using(GA.Lock(expectType))
             {
                 if(CacheTypeName.TryGetValue(expectType, out dict))
                 {

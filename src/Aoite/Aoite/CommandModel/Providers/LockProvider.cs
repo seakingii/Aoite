@@ -33,10 +33,32 @@ namespace Aoite.CommandModel
             }
 
             key = "$LockProvider::" + key;
-
             var realTimeout = timeout ?? RedisExtensions.DefaultLockTimeout;
-
-            return GA.Locking(key, realTimeout);
+            return GA.Lock(key, realTimeout);
         }
+
+#if !NET40
+        /// <summary>
+        /// 提供异步锁的功能。
+        /// </summary>
+        /// <param name="key">锁的键名。</param>
+        /// <param name="timeout">锁的超时设定。</param>
+        /// <returns>可释放的异步锁操作。</returns>
+        public System.Threading.Tasks.Task<IDisposable> LockAsync(string key, TimeSpan? timeout = null)
+        {
+            var redisProvider = this.Container.GetFixed<IRedisProvider>();
+            if(redisProvider != null)
+            {
+                return System.Threading.Tasks.Task.Run(() =>
+                {
+                    var client = this.Container.Get<IRedisProvider>().GetRedisClient();
+                    return client.Lock(key, timeout);
+                });
+            }
+            key = "$LockProvider::" + key;
+            var realTimeout = timeout ?? RedisExtensions.DefaultLockTimeout;
+            return GA.LockAsync(key, realTimeout);
+        }
+#endif
     }
 }

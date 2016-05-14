@@ -458,19 +458,16 @@ namespace System
 
         #region Locking
 
-        readonly static TimeSpan DefaultLockingTimeout = new TimeSpan(0, 1, 0);
-
         /// <summary>
         /// 采用默认的超时时间（1分钟），锁定指定种子。
         /// </summary>
         /// <typeparam name="TSeed">种子的数据类型。</typeparam>
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
         /// <returns>可解锁的对象。</returns>
-        public static IDisposable Locking<TSeed>(TSeed seed)
+        public static IDisposable Lock<TSeed>(TSeed seed)
         {
-            return Locking(seed, DefaultLockingTimeout);
+            return Lock(seed, RedisExtensions.DefaultLockTimeout);
         }
-
         /// <summary>
         /// 给定超时时间，锁定指定种子。
         /// </summary>
@@ -478,66 +475,62 @@ namespace System
         /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
         /// <param name="timeout">锁的超时时间。</param>
         /// <returns>可解锁的对象。</returns>
-        public static IDisposable Locking<TSeed>(TSeed seed, TimeSpan timeout)
-        {
-            if(seed == null) throw new ArgumentNullException(nameof(seed));
-
-            var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
-            var locker = s.Lock(timeout);
-            if(locker == null) throw new TimeoutException($"锁 { seed } 占用超时，已经超过预期时间 { timeout } 。");
-            return locker;
-        }
-        /// <summary>
-        /// 采用默认的超时时间（1分钟），尝试锁定指定种子。
-        /// </summary>
-        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
-        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
-        /// <returns>可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
-        public static IDisposable TryLocking<TSeed>(TSeed seed)
-        {
-            return TryLocking(seed, DefaultLockingTimeout);
-        }
-
-        /// <summary>
-        /// 给定超时时间，尝试锁定指定种子。
-        /// </summary>
-        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
-        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
-        /// <param name="timeout">锁的超时时间。</param>
-        /// <returns>可解锁的对象。如果锁定失败，将会返回 null 值。</returns>
-        public static IDisposable TryLocking<TSeed>(TSeed seed, TimeSpan timeout)
+        public static IDisposable Lock<TSeed>(TSeed seed, TimeSpan timeout)
         {
             if(seed == null) throw new ArgumentNullException(nameof(seed));
 
             var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
             return s.Lock(timeout);
         }
+#if !NET40
+        /// <summary>
+        /// 采用默认的超时时间（1分钟），异步锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <returns>可解锁的异步操作。</returns>
+        public static Threading.Tasks.Task<IDisposable> LockAsync<TSeed>(TSeed seed)
+        {
+            return LockAsync(seed, RedisExtensions.DefaultLockTimeout);
+        }
+        /// <summary>
+        /// 给定超时时间，异步锁定指定种子。
+        /// </summary>
+        /// <typeparam name="TSeed">种子的数据类型。</typeparam>
+        /// <param name="seed">生成锁对象实例的种子，将采用默认的 <see cref="EqualityComparer{TSeed}"/> 匹配种子。</param>
+        /// <param name="timeout">锁的超时时间。</param>
+        /// <returns>可解锁的异步操作。</returns>
+        public static Threading.Tasks.Task<IDisposable> LockAsync<TSeed>(TSeed seed, TimeSpan timeout)
+        {
+            if(seed == null) throw new ArgumentNullException(nameof(seed));
+            
+            var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
+            return s.LockAsync(timeout);
+        }
+#endif
         class Seed
         {
             public object _key;
-            //private SemaphoreSlim _sema;
+            private SemaphoreSlim _sema;
+            private SimpleLockItem _releaseItem;
             public Seed(object key)
             {
                 _key = key;
-                //_sema = new SemaphoreSlim(1, 1);
+                _sema = new SemaphoreSlim(1, 1);
+                _releaseItem = new SimpleLockItem(() => _sema.Release());
             }
             public IDisposable Lock(TimeSpan timeout)
             {
-              //await  _sema.WaitAsync(timeout);
-                if(!Monitor.TryEnter(this, timeout)) return null;
-                return new SeedLocker(this);
+                if(!_sema.Wait(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this._key), timeout);
+                return _releaseItem;
             }
-        }
-        class SeedLocker : ObjectDisposableBase
-        {
-            private Seed _seed;
-            public SeedLocker(Seed seed)
+#if !NET40
+            public async Threading.Tasks.Task<IDisposable> LockAsync(TimeSpan timeout)
             {
-                
-                _seed = seed;
+                if(!await _sema.WaitAsync(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this._key), timeout);
+                return _releaseItem;
             }
-
-            protected override void DisposeManaged() => Monitor.Exit(_seed);
+#endif
         }
         class Seed<TSeed>
         {

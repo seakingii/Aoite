@@ -10,7 +10,7 @@ namespace System
     {
         const string LockKey = "$Redis.Locks$";
         /// <summary>
-        /// 获取或设置默认的锁超时间隔。
+        /// 获取或设置默认的锁超时间隔（默认1分钟）。
         /// </summary>
         public static TimeSpan DefaultLockTimeout = TimeSpan.FromMinutes(1);
 

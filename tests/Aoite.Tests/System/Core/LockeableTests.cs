@@ -11,7 +11,7 @@ namespace System.Core
     public class LockeableTests
     {
         [Fact]
-        public void LockingTest()
+        public async void LockingTest()
         {
             List<Task> tasks = new List<Task>();
             var x = 0;
@@ -20,7 +20,7 @@ namespace System.Core
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
                     Thread.Sleep(100 - i);
-                    using(GA.Locking("x"))
+                    using(GA.Lock("x"))
                     {
                         if(x < 10) x++;
                     }
@@ -29,26 +29,39 @@ namespace System.Core
             Task.WaitAll(tasks.ToArray());
             Assert.Equal(10, x);
 
-            var lockable = GA.Locking("x");
+            var lockable = GA.Lock("x");
 
-            var t = Task.Factory.StartNew(() =>
+            await Task.Factory.StartNew(() =>
             {
-                Assert.Throws<TimeoutException>(() => GA.Locking("x", TimeSpan.FromMilliseconds(300)));
+                   Assert.Throws<TimeoutException>(() => GA.Lock("x", TimeSpan.FromMilliseconds(300)));
             });
-            t.Wait();
             lockable.Dispose();
         }
-
         [Fact]
-        public void TryLockingTest()
+        public async void LockingAsyncTest()
         {
-            var lockable = GA.Locking("x");
-
-            var t = Task.Factory.StartNew(() =>
+            List<Task> tasks = new List<Task>();
+            var x = 0;
+            for(int i = 0; i < 100; i++)
             {
-                Assert.Null(GA.TryLocking("x", TimeSpan.FromMilliseconds(300)));
+                tasks.Add(Task.Factory.StartNew(async () =>
+                {
+                    Thread.Sleep(100 - i);
+                    using(await GA.LockAsync("x"))
+                    {
+                        if(x < 10) x++;
+                    }
+                }));
+            }
+            Task.WaitAll(tasks.ToArray());
+            Assert.Equal(10, x);
+
+            var lockable = GA.Lock("x");
+
+            await Task.Factory.StartNew(() =>
+            {
+                Assert.Throws<TimeoutException>(() => GA.Lock("x", TimeSpan.FromMilliseconds(300)));
             });
-            t.Wait();
             lockable.Dispose();
         }
     }
