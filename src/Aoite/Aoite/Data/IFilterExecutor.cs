@@ -124,13 +124,13 @@ namespace Aoite.Data
         /// 对根据当前提供的匹配条件进行正序排序。
         /// </summary>
         /// <param name="fields">字段集合。</param>
-        /// <returns>返回数据筛选执行器。</returns>
+        /// <returns>数据筛选执行器。</returns>
         IFilterExecutor OrderBy(params string[] fields);
         /// <summary>
         /// 对根据当前提供的匹配条件进行倒序排序。
         /// </summary>
         /// <param name="fields">字段集合。</param>
-        /// <returns>返回数据筛选执行器。</returns>
+        /// <returns>数据筛选执行器。</returns>
         IFilterExecutor OrderByDescending(params string[] fields);
     }
 

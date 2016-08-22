@@ -108,7 +108,7 @@ namespace System
                 List<string> list = new List<string>();
                 using(FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
                 {
-                    StreamReader reader = new StreamReader(stream, encoding ?? Encoding.UTF8);
+                    StreamReader reader = new StreamReader(stream, encoding ?? UTF8);
                     string str;
                     while(!reader.EndOfStream)
                     {
@@ -129,7 +129,7 @@ namespace System
             {
                 using(FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
                 {
-                    return new StreamReader(stream, encoding ?? Encoding.UTF8).ReadToEnd();
+                    return new StreamReader(stream, encoding ?? UTF8).ReadToEnd();
                 }
             }
 

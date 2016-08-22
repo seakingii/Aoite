@@ -59,7 +59,7 @@ namespace System
         {
             get
             {
-                if(this._Encoding == null) return Encoding.UTF8;
+                if(this._Encoding == null) return GA.UTF8;
                 return this._Encoding;
             }
             set

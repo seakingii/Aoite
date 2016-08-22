@@ -47,7 +47,7 @@ namespace System
         /// </summary>
         /// <param name="instance">一个实例，null 值表示静态属性。</param>
         /// <param name="value">属性的值。</param>
-        /// <returns>返回属性值。</returns>
+        /// <returns>属性值。</returns>
         protected virtual object Validate(object instance, object value) { return value; }
 
         /// <summary>

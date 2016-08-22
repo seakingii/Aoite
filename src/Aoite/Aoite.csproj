@@ -332,7 +332,7 @@
     <Compile Include="Aoite\Serialization\BinarySuite\SerializableUsageAttribute.cs" />
     <Compile Include="Aoite\Serialization\JsonSerializer.cs" />
     <Compile Include="Aoite\Serialization\QuicklySerializer.cs" />
-    <Compile Include="Aoite\Serialization\SerializerBase.cs" />
+    <Compile Include="Aoite\Serialization\Serializer.cs" />
     <Compile Include="Aoite\Serialization\XmlSerializer.cs" />
     <Compile Include="Aoite\Data\IDbExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

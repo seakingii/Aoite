@@ -76,7 +76,7 @@ namespace System
         /// </summary>
         /// <param name="user">模拟的登录用户。</param>
         /// <param name="command">命令模型。</param>
-        /// <returns>返回命令模型的模拟上下文。</returns>
+        /// <returns>命令模型的模拟上下文。</returns>
         private MockContext CreateContext(object user, ICommand command)
         {
             return new MockContext(user, this._factory.Container, command, new Lazy<IDbEngine>(() => this.Context));
@@ -88,7 +88,7 @@ namespace System
         /// <typeparam name="TCommand">命令模型的数据类型。</typeparam>
         /// <param name="command">命令模型。</param>
         /// <param name="user">模拟的登录用户。</param>
-        /// <returns>返回命令模型。</returns>
+        /// <returns>命令模型。</returns>
         protected virtual TCommand Execute<TCommand>(TCommand command, object user = null) where TCommand : ICommand
         {
             var executor = this._factory.Create(command);
@@ -101,7 +101,7 @@ namespace System
         /// </summary>
         /// <typeparam name="TModel">数据表的实体类型。</typeparam>
         /// <param name="callback">添加前的回调函数。</param>
-        /// <returns>返回添加的实体。</returns>
+        /// <returns>添加的实体。</returns>
         protected virtual TModel AddMockModel<TModel>(Action<TModel> callback = null, Action<TModel> after = null)
         {
             return AddMockModels(1, callback, after)[0];
@@ -114,7 +114,7 @@ namespace System
         /// <param name="length">添加的行数。</param>
         /// <param name="before">添加前的回调函数。</param>
         /// <param name="after">添加后的回调函数。</param>
-        /// <returns>返回添加的实体列表。</returns>
+        /// <returns>添加的实体列表。</returns>
         protected virtual TModel[] AddMockModels<TModel>(int length = 1, Action<TModel> before = null, Action<TModel> after = null)
         {
             if(length < 1) throw new ArgumentOutOfRangeException("length");
@@ -154,7 +154,7 @@ namespace System
         /// <summary>
         /// 获取一个随机的数字。
         /// </summary>
-        /// <returns>返回一个随机数字。</returns>
+        /// <returns>一个随机数字。</returns>
         protected virtual int GetRandomNumber()
         {
             return FastRandom.Instance.Next();

@@ -69,7 +69,7 @@ namespace Aoite.Logger
 
             this.LogFolder = GA.FullPath("Logs");
             this.LogExtension = ".log";
-            this.Encoding = Encoding.UTF8;
+            this.Encoding = GA.UTF8;
         }
 
         internal StreamWriter _lastWriter;

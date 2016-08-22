@@ -26,7 +26,7 @@ namespace Aoite.LevelDB
             GCHandle selfHandle = default(GCHandle);
             try
             {
-                var utf = Encoding.UTF8.GetBytes(name);
+                var utf = GA.UTF8.GetBytes(name);
                 NativeName = Marshal.AllocHGlobal(utf.Length + 1);
                 Marshal.Copy(utf, 0, NativeName, utf.Length);
 

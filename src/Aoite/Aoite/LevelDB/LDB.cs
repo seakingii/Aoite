@@ -160,7 +160,7 @@ namespace Aoite.LevelDB
         /// </summary>
         /// <param name="key">键。</param>
         /// <param name="options">读的选项。</param>
-        /// <returns>返回一个值，如果值不存在则返回 null 值。</returns>
+        /// <returns>一个值，如果值不存在则返回 null 值。</returns>
         public unsafe BinaryValue Get(BinaryValue key, ReadOptions options = null)
         {
             this.ThrowIfDisposed();
@@ -215,7 +215,7 @@ namespace Aoite.LevelDB
         /// <summary>
         /// 创建数据库快照，可用于快速读取数据库最新的数据。
         /// </summary>
-        /// <returns>返回一个快照。</returns>
+        /// <returns>一个快照。</returns>
         public Snapshot CreateSnapshot()
         {
             var result = new Snapshot(LevelDBInterop.leveldb_create_snapshot(this._handle), this);

@@ -77,7 +77,7 @@ namespace Aoite.LevelDB
         /// <summary>
         /// 获取当前的键。
         /// </summary>
-        /// <returns>返回一个的键。</returns>
+        /// <returns>一个的键。</returns>
         public BinaryValue GetKey()
         {
             var key = this.InnerGetKey();
@@ -87,7 +87,7 @@ namespace Aoite.LevelDB
 
         /// <summary>
         /// 获取当前的字符串值。
-        /// <returns>返回一个字符串的值。</returns>
+        /// <returns>一个字符串的值。</returns>
         /// </summary>
         public BinaryValue GetValue()
         {

@@ -32,7 +32,7 @@ namespace Aoite.Serialization
         {
             if(stream == null) throw new ArgumentNullException(nameof(stream));
             this.Stream = stream;
-            this.Encoding = encoding ?? Encoding.UTF8;
+            this.Encoding = encoding ?? GA.UTF8;
         }
 
 

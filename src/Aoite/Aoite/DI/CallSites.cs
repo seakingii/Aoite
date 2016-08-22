@@ -22,7 +22,7 @@ namespace Aoite.DI
         /// 调用服务。
         /// </summary>
         /// <param name="lastMappingValues">后期映射的参数值数组。请保证数组顺序与构造函数的后期映射的参数顺序一致。</param>
-        /// <returns>返回一个服务的实例。</returns>
+        /// <returns>一个服务的实例。</returns>
         object Invoke(params object[] lastMappingValues);
     }
 

@@ -25,6 +25,13 @@ namespace System
         /// <returns>哈希后的字符串。</returns>
         public static string ToMd5(this byte[] bytes)
             => DataSecurity.Crypto(HashAlgorithms.MD5, bytes).ToHexString().ToLower();
+
+        /// <summary>
+        /// 将 8 位无符号整数的数组转换为其用 Base64 数字编码的等效字符串表示形式。
+        /// </summary>
+        /// <param name="bytes">一个 8 位无符号整数数组。</param>
+        /// <returns><paramref name="bytes"/> 的内容的字符串表示形式，以 Base64 表示。</returns>
+        public static string ToBase64(this byte[] bytes) => Convert.ToBase64String(bytes);
         /// <summary>
         /// 将当前字符串转换为智能小写模式。
         /// </summary>

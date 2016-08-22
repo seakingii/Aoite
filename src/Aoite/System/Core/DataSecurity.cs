@@ -17,7 +17,7 @@ namespace System
         /// <returns>哈希后的字符串。</returns>
         public static string Crypto(HashAlgorithms alog, string text, Encoding encoding = null)
         {
-            return Crypto(alog, (encoding ?? Encoding.UTF8).GetBytes(text)).ToHexString();
+            return Crypto(alog, (encoding ?? GA.UTF8).GetBytes(text)).ToHexString();
         }
 
 
@@ -73,7 +73,7 @@ namespace System
         /// <returns> 44 位加盐散列后的文本。</returns>
         public static string GenerateSaltedHash(string text, Guid salt, Encoding encoding = null)
         {
-            if(encoding == null) encoding = Encoding.UTF8;
+            if(encoding == null) encoding = GA.UTF8;
             return Convert.ToBase64String(GenerateSaltedHash(encoding.GetBytes(text), encoding.GetBytes(salt.ToString("N"))));
         }
 
@@ -103,8 +103,10 @@ namespace System
 
         internal static SHA512 CreateSHA512() => SHA512.Create();
 
-        internal static MD5 CreateMD5() => MD5CryptoServiceProvider.Create();
+        internal static MD5 CreateMD5() => MD5.Create();
+
     }
+
 
     /// <summary>
     /// 表示安全哈希算法。

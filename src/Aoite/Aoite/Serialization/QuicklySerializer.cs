@@ -18,7 +18,7 @@ namespace Aoite.Serialization
         /// <summary>
         /// 初始化一个 <see cref="QuicklySerializer"/> 类的新实例。
         /// </summary>
-        public QuicklySerializer() : this(Encoding.UTF8) { }
+        public QuicklySerializer() : this(GA.UTF8) { }
 
         /// <summary>
         /// 初始化一个 <see cref="QuicklySerializer"/> 类的新实例。
