@@ -12,6 +12,32 @@ namespace System
     /// </summary>
     public static class RSA
     {
+        const int DefaultKeySize = 2048;
+
+        internal static string Base64UrlEncode(byte[] input)
+        {
+            var output = Convert.ToBase64String(input);
+            output = output.Split('=')[0]; // Remove any trailing '='s
+            output = output.Replace('+', '-'); // 62nd char of encoding
+            output = output.Replace('/', '_'); // 63rd char of encoding
+            return output;
+        }
+        internal static byte[] Base64UrlDecode(string input)
+        {
+            var output = input;
+            output = output.Replace('-', '+'); // 62nd char of encoding
+            output = output.Replace('_', '/'); // 63rd char of encoding
+            switch(output.Length % 4) // Pad with trailing '='s
+            {
+                case 0: break; // No pad chars in this case
+                case 2: output += "=="; break; // Two pad chars
+                case 3: output += "="; break;  // One pad char
+                default: throw new InvalidCastException();
+            }
+            var converted = Convert.FromBase64String(output); // Standard base64 decoder
+            return converted;
+        }
+
         /// <summary>
         /// 如果为 true，则使用 OAEP 填充（仅在运行 Microsoft Windows XP 或更高版本的计算机上可用）执行直接的 <see cref="Security.Cryptography.RSA"/> 解密；否则，如果为 false，则使用 PKCS#1 1.5 版填充。
         /// </summary>
@@ -31,11 +57,11 @@ namespace System
         /// <param name="encoding">编码方式。</param>
         /// <param name="dwKeySize">要使用的密钥的大小（以位为单位）。</param>
         /// <returns>已加密的数据。</returns>
-        public static string Encrypt(string data, string publicKey, Encoding encoding = null, int dwKeySize = 2048)
+        public static string Encrypt(string data, string publicKey, Encoding encoding = null, int dwKeySize = DefaultKeySize)
         {
             if(encoding == null) encoding = GA.UTF8;
 
-            return Convert.ToBase64String(Encrypt(encoding.GetBytes(data), publicKey, dwKeySize));
+            return Base64UrlEncode(Encrypt(encoding.GetBytes(data), publicKey, dwKeySize));
         }
 
         /// <summary>
@@ -45,9 +71,12 @@ namespace System
         /// <param name="publicKey">RSA 公钥。</param>
         /// <param name="dwKeySize">要使用的密钥的大小（以位为单位）。</param>
         /// <returns>已加密的数据。</returns>
-        public static byte[] Encrypt(byte[] data, string publicKey, int dwKeySize = 2048)
+        public static byte[] Encrypt(byte[] data, string publicKey, int dwKeySize = DefaultKeySize)
         {
-            return Encrypt(new RSACryptoServiceProvider(dwKeySize), data, publicKey);
+            using(var rsaProvider = new RSACryptoServiceProvider(dwKeySize))
+            {
+                return Encrypt(rsaProvider, data, publicKey);
+            }
         }
 
         /// <summary>
@@ -73,11 +102,11 @@ namespace System
         /// <param name="encoding">编码方式。</param>
         /// <param name="dwKeySize">要使用的密钥的大小（以位为单位）。</param>
         /// <returns>已解密的数据，它是加密前的原始纯文本。</returns>
-        public static string Decrypt(string data, string key, Encoding encoding = null, int dwKeySize = 2048)
+        public static string Decrypt(string data, string key, Encoding encoding = null, int dwKeySize = DefaultKeySize)
         {
             if(encoding == null) encoding = GA.UTF8;
 
-            return encoding.GetString(Decrypt(Convert.FromBase64String(data), key, dwKeySize));
+            return encoding.GetString(Decrypt(Base64UrlDecode(data), key, dwKeySize));
         }
 
         /// <summary>
@@ -87,16 +116,18 @@ namespace System
         /// <param name="key">包含 RSA 公钥和私钥。</param>
         /// <param name="dwKeySize">要使用的密钥的大小（以位为单位）。</param>
         /// <returns>已解密的数据，它是加密前的原始纯文本。</returns>
-        public static byte[] Decrypt(byte[] data, string key, int dwKeySize = 2048)
+        public static byte[] Decrypt(byte[] data, string key, int dwKeySize = DefaultKeySize)
         {
-            return Decrypt(new RSACryptoServiceProvider(dwKeySize), data, key);
+            using(var rsaProvider = new RSACryptoServiceProvider(dwKeySize))
+            {
+                return Decrypt(rsaProvider, data, key);
+            }
         }
 
         private static byte[] Decrypt(RSACryptoServiceProvider rsaProvider, byte[] data, string key)
         {
             if(rsaProvider == null) throw new ArgumentNullException(nameof(rsaProvider));
             if(string.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key));
-
             rsaProvider.FromXmlString(key);
             return rsaProvider.Decrypt(data, RSA_FOAEP);
         }
@@ -139,4 +170,97 @@ namespace System
             KeySize = rsaProvider.KeySize;
         }
     }
+
+    /// <summary>
+    /// 表示 AES 的加密方法。
+    /// </summary>
+    public static class AES
+    {
+        /// <summary>
+        /// 使用 AES 算法对数据进行加密。
+        /// </summary>
+        /// <param name="data">要加密的数据。</param>
+        /// <param name="key">对称算法的密钥。</param>
+        /// <param name="iv">对称算法的初始化向量。</param>
+        /// <param name="encoding">编码方式。</param>
+        /// <returns>已加密的数据。</returns>
+        public static string Encrypt(string data, string key, string iv, Encoding encoding = null)
+        {
+            if(key == null) throw new ArgumentNullException(nameof(key));
+            if(iv == null) throw new ArgumentNullException(nameof(iv));
+            if(encoding == null) encoding = GA.UTF8;
+
+            return RSA.Base64UrlEncode(Encrypt(encoding.GetBytes(data), encoding.GetBytes(key), encoding.GetBytes(iv)));
+        }
+
+        /// <summary>
+        /// 使用 AES 算法对数据进行加密。
+        /// </summary>
+        /// <param name="data">要加密的数据。</param>
+        /// <param name="keyArray">对称算法的密钥。</param>
+        /// <param name="ivArray">对称算法的初始化向量。</param>
+        /// <returns>已加密的数据。</returns>
+        public static byte[] Encrypt(byte[] data, byte[] keyArray, byte[] ivArray)
+        {
+            if(data == null) throw new ArgumentNullException(nameof(data));
+            if(keyArray == null) throw new ArgumentNullException(nameof(keyArray));
+            if(ivArray == null) throw new ArgumentNullException(nameof(ivArray));
+            if(keyArray.Length != 16 || ivArray.Length != 16) throw new InvalidOperationException("Key 或 IV 的长度必须为 16 位。");
+
+            var rDel = new RijndaelManaged();
+            rDel.Key = keyArray;
+            rDel.IV = ivArray;
+            rDel.Mode = CipherMode.CBC;
+            rDel.Padding = PaddingMode.PKCS7;
+
+            return rDel.CreateEncryptor().TransformFinalBlock(data, 0, data.Length);
+        }
+
+        /// <summary>
+        /// 使用 AES 算法对数据进行解密。
+        /// </summary>
+        /// <param name="data">要解密的数据。</param>
+        /// <param name="key">对称算法的密钥。</param>
+        /// <param name="iv">对称算法的初始化向量。</param>
+        /// <param name="encoding">编码方式。</param>
+        /// <returns>已解密的数据。</returns>
+        public static string Decrypt(string data, string key, string iv, Encoding encoding = null)
+        {
+            if(key == null) throw new ArgumentNullException(nameof(key));
+            if(iv == null) throw new ArgumentNullException(nameof(iv));
+
+            if(encoding == null) encoding = GA.UTF8;
+            return encoding.GetString(Decrypt(RSA.Base64UrlDecode(data), encoding.GetBytes(key), encoding.GetBytes(iv)));
+        }
+
+        /// <summary>
+        /// 使用 AES 算法对数据进行解密。
+        /// </summary>
+        /// <param name="data">要解密的数据。</param>
+        /// <param name="keyArray">对称算法的密钥。</param>
+        /// <param name="ivArray">对称算法的初始化向量。</param>
+        /// <returns>已解密的数据。</returns>
+        public static byte[] Decrypt(byte[] data, byte[] keyArray, byte[] ivArray)
+        {
+            if(data == null) throw new ArgumentNullException(nameof(data));
+            if(keyArray == null) throw new ArgumentNullException(nameof(keyArray));
+            if(ivArray == null) throw new ArgumentNullException(nameof(ivArray));
+            if(keyArray.Length != 16 || ivArray.Length != 16) throw new InvalidOperationException("Key 或 IV 的长度必须为 16 位。");
+
+            var rDel = new RijndaelManaged();
+            rDel.Key = keyArray;
+            rDel.IV = ivArray;
+            rDel.Mode = CipherMode.CBC;
+            rDel.Padding = PaddingMode.PKCS7;
+
+            return rDel.CreateDecryptor().TransformFinalBlock(data, 0, data.Length);
+        }
+    }
+
+    //public class CryptoData
+    //{
+    //    public Encoding Encoding { get; set; }
+
+    //    public CryptoData() { }
+    //}
 }

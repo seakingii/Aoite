@@ -315,7 +315,7 @@ namespace System
         /// <returns>二进制数组。</returns>
         public byte[] FastWriteBytes<TData>(TData data)
         {
-            return this.WriteBytes<TData>(data).UnsafeValue;
+            return this.WriteBytes(data).UnsafeValue;
         }
 
         /// <summary>
