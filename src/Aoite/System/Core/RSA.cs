@@ -85,7 +85,6 @@ namespace System
         /// <param name="rsaProvider"><see cref="RSACryptoServiceProvider"/> 的实例。</param>
         /// <param name="data">要加密的数据。</param>
         /// <param name="publicKey">RSA 公钥。</param>
-        /// <param name="encoding">编码方式。</param>
         /// <returns>已加密的数据。</returns>
         public static byte[] Encrypt(RSACryptoServiceProvider rsaProvider, byte[] data, string publicKey)
         {

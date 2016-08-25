@@ -174,7 +174,6 @@
     <Compile Include="Aoite\DI\Services.cs" />
     <Compile Include="Aoite\DI\TypeServiceBinderTests.cs" />
     <Compile Include="Aoite\DI\ValueServiceBinderTests.cs" />
-    <Compile Include="System\Core\RSA.cs" />
     <Compile Include="System\Core\RSATests.cs" />
     <Compile Include="System\Disposable\ObjectDisposableBaseTests.cs" />
     <Compile Include="System\Extensions\CollectionsExtensionsTests.cs" />
