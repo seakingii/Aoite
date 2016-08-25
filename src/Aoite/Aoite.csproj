@@ -181,6 +181,7 @@
     <Compile Include="Aoite\Serialization\Json\JObjectConverter.cs" />
     <Compile Include="Aoite\Serialization\Json\Utf16StringValidator.cs" />
     <Compile Include="Aoite\DI\CallSites.cs" />
+    <Compile Include="System\Core\AES.cs" />
     <Compile Include="System\Core\RSA.cs" />
     <Compile Include="System\DI\IIocContainer.cs" />
     <Compile Include="Aoite\DI\IServiceBinder.cs" />
