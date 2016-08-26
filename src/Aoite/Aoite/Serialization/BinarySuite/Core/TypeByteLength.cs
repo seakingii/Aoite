@@ -5,7 +5,7 @@ namespace Aoite.Serialization
     internal static class TypeByteLength
     {
 
-        public readonly static int Guid = System.Runtime.InteropServices.Marshal.SizeOf(Types.Guid);
+        public readonly static int Guid = System.Runtime.InteropServices.Marshal.SizeOf(DefineTypes.Guid);
         public const int Boolean = sizeof(Boolean);
 
         public const int Single = sizeof(Single);

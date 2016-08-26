@@ -362,7 +362,7 @@
     <Compile Include="System\Core\Log.cs" />
     <Compile Include="System\Core\Mean`1.cs" />
     <Compile Include="System\Core\SimpleLockItem.cs" />
-    <Compile Include="System\Core\Types.cs" />
+    <Compile Include="System\Core\DefineTypes.cs" />
     <Compile Include="System\Core\ValidCodeGenerator.cs" />
     <Compile Include="System\Core\VoidValue.cs" />
     <Compile Include="System\Core\WhereParameters.cs" />

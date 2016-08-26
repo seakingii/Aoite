@@ -12,7 +12,7 @@ namespace System
     public static class DynamicFactory
     {
 
-        static readonly MethodInfo ChangeTypeMethod = typeof(TypeExtensions).GetMethod("ChangeType", new Type[] { Types.Type, Types.Object });
+        static readonly MethodInfo ChangeTypeMethod = typeof(TypeExtensions).GetMethod("ChangeType", new Type[] { DefineTypes.Type, DefineTypes.Object });
         static readonly MethodInfo GetTypeFromHandleMethod = typeof(Type).GetMethod("GetTypeFromHandle", new Type[] { typeof(RuntimeTypeHandle) });
         static readonly ConcurrentDictionary<MemberInfo, DynamicMemberGetter> GetterCache = new ConcurrentDictionary<MemberInfo, DynamicMemberGetter>();
         static readonly ConcurrentDictionary<MemberInfo, DynamicMemberSetter> SetterCache = new ConcurrentDictionary<MemberInfo, DynamicMemberSetter>();
@@ -30,7 +30,7 @@ namespace System
 
             return GetterCache.GetOrAdd(fieldInfo, m =>
             {
-                var emit = new EmitHelper(Types.Object, new Type[] { Types.Object }, fieldInfo.DeclaringType);
+                var emit = new EmitHelper(DefineTypes.Object, new Type[] { DefineTypes.Object }, fieldInfo.DeclaringType);
                 if(fieldInfo.IsStatic) emit.ldsfld(fieldInfo)
                                            .end();
                 else emit.ldarg_0
@@ -58,7 +58,7 @@ namespace System
             {
                 var declaringType = fieldInfo.DeclaringType;
 
-                var emit = new EmitHelper(Types.Void, new Type[] { Types.Object, Types.Object }, declaringType);
+                var emit = new EmitHelper(DefineTypes.Void, new Type[] { DefineTypes.Object, DefineTypes.Object }, declaringType);
                 var isStatic = fieldInfo.IsStatic;
 
                 if(!isStatic)
@@ -96,7 +96,7 @@ namespace System
                 var methodInfo = propertyInfo.GetGetMethod(true);
                 if(methodInfo == null) return null;
 
-                var emit = new EmitHelper(Types.Object, new Type[] { Types.Object }, declaringType);
+                var emit = new EmitHelper(DefineTypes.Object, new Type[] { DefineTypes.Object }, declaringType);
                 var isStatic = methodInfo.IsStatic;
 
                 if(!isStatic)
@@ -134,7 +134,7 @@ namespace System
                 var methodInfo = propertyInfo.GetSetMethod(true);
                 if(methodInfo == null) return null;
 
-                var emit = new EmitHelper(Types.Void, new Type[] { Types.Object, Types.Object }, declaringType);
+                var emit = new EmitHelper(DefineTypes.Void, new Type[] { DefineTypes.Object, DefineTypes.Object }, declaringType);
                 var isStatic = methodInfo.IsStatic;
                 if(!isStatic)
                 {
@@ -223,7 +223,7 @@ namespace System
             {
                 var declaringType = m.DeclaringType;
 
-                var emit = new EmitHelper(Types.Object, new Type[] { Types.Object, Types.ObjectArray }, declaringType);
+                var emit = new EmitHelper(DefineTypes.Object, new Type[] { DefineTypes.Object, DefineTypes.ObjectArray }, declaringType);
                 var isStatic = m.IsStatic;
                 var returnType = m.ReturnType;                      //- 方法的返回类型
                 var parameterInfos = m.GetParameters();  //- 方法的参数集合
@@ -276,7 +276,7 @@ namespace System
             {
                 var declaringType = m.DeclaringType;
 
-                var emit = new EmitHelper(Types.Object, new Type[] { Types.ObjectArray }, declaringType);
+                var emit = new EmitHelper(DefineTypes.Object, new Type[] { DefineTypes.ObjectArray }, declaringType);
 
                 var parameterInfos = m.GetParameters();
                 var parameterLength = parameterInfos.Length;

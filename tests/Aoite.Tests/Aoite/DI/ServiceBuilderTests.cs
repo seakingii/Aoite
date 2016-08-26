@@ -26,10 +26,10 @@ namespace Aoite.DI
             var locator = new IocContainer();
             using(var builder = new ServiceBuilder(locator))
             {
-                var binder = builder.UseRange(Types.String);
+                var binder = builder.UseRange(DefineTypes.String);
                 Assert.IsType<TypeServiceBinder>(binder);
                 Assert.False(binder.Overwrite);
-                Assert.Equal(Types.String, binder.ExpectType);
+                Assert.Equal(DefineTypes.String, binder.ExpectType);
                 Assert.Equal(binder, builder.TypeBinders.Value[0]);
             }
         }
@@ -40,10 +40,10 @@ namespace Aoite.DI
             var locator = new IocContainer();
             using(var builder = new ServiceBuilder(locator))
             {
-                var binder = builder.Use(Types.String);
+                var binder = builder.Use(DefineTypes.String);
                 Assert.IsType<TypeServiceBinder>(binder);
                 Assert.True(binder.Overwrite);
-                Assert.Equal(Types.String, binder.ExpectType);
+                Assert.Equal(DefineTypes.String, binder.ExpectType);
                 Assert.Equal(binder, builder.TypeBinders.Value[0]);
 
                 var binder2 = builder.Use("abc");
@@ -53,10 +53,10 @@ namespace Aoite.DI
                 Assert.Equal(binder2, builder.ValueBinders.Value[0]);
 
 
-                var binder3 = builder.Use(Types.String, "abc");
+                var binder3 = builder.Use(DefineTypes.String, "abc");
                 Assert.IsType<ValueServiceBinder>(binder3);
                 Assert.Equal("abc", binder3.Name);
-                Assert.Equal(Types.String, binder3.ExpectType);
+                Assert.Equal(DefineTypes.String, binder3.ExpectType);
                 Assert.Equal(binder3, builder.ValueBinders.Value[1]);
             }
         }

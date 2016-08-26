@@ -261,16 +261,16 @@ ORDER BY a.column_id", "@tableName", this.Name)
         private string GetType(string type)
         {
 
-            if(type == Types.Boolean.Name) return GetTypeName("bool");
-            else if(type == Types.Int16.Name) return GetTypeName("short");
-            else if(type == Types.Int32.Name) return GetTypeName("int");
-            else if(type == Types.Int64.Name) return GetTypeName("long");
-            else if(type == Types.Single.Name) return GetTypeName("float");
-            else if(type == Types.Double.Name) return GetTypeName("double");
-            else if(type == Types.Decimal.Name) return GetTypeName("decimal");
-            else if(type == Types.DateTime.Name) return GetTypeName("DateTime");
-            else if(type == Types.String.Name) return "string";
-            else if(type == Types.ByteArray.Name) return "byte[]";
+            if(type == DefineTypes.Boolean.Name) return GetTypeName("bool");
+            else if(type == DefineTypes.Int16.Name) return GetTypeName("short");
+            else if(type == DefineTypes.Int32.Name) return GetTypeName("int");
+            else if(type == DefineTypes.Int64.Name) return GetTypeName("long");
+            else if(type == DefineTypes.Single.Name) return GetTypeName("float");
+            else if(type == DefineTypes.Double.Name) return GetTypeName("double");
+            else if(type == DefineTypes.Decimal.Name) return GetTypeName("decimal");
+            else if(type == DefineTypes.DateTime.Name) return GetTypeName("DateTime");
+            else if(type == DefineTypes.String.Name) return "string";
+            else if(type == DefineTypes.ByteArray.Name) return "byte[]";
             return type;
         }
 

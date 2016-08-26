@@ -3,7 +3,7 @@
     /// <summary>
     /// 基本数据类型的集合。
     /// </summary>
-    public static class Types
+    public static class DefineTypes
     {
         #region 框架类型
 

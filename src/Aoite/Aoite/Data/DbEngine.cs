@@ -186,7 +186,7 @@ namespace Aoite.Data
                 throw new NotSupportedException($"当前运行环境找不到名称为“{provider}”的数据库提供程序。");
             }
 
-            var ctor = type.GetConstructor(new Type[] { Types.String });
+            var ctor = type.GetConstructor(new Type[] { DefineTypes.String });
             if(ctor == null) throw new NotSupportedException($"当前运行环境名称为“{provider}”的数据库提供程序找不到“{type.FullName}(connectionString)” 的构造函数。");
             return (IDbEngineProvider)DynamicFactory.CreateConstructorHandler(ctor)(connectionString);
         }

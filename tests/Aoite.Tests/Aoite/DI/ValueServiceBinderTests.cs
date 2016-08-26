@@ -25,8 +25,8 @@ namespace Aoite.DI
         [Fact]
         public void Create_Test()
         {
-            var binder = this.Create(Types.String, "abc");
-            Assert.Equal(Types.String, binder.ExpectType);
+            var binder = this.Create(DefineTypes.String, "abc");
+            Assert.Equal(DefineTypes.String, binder.ExpectType);
             Assert.Equal("abc", binder.Name);
         }
 

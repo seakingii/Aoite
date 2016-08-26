@@ -123,7 +123,7 @@ namespace Aoite.Serialization
                 else if(value is UInt64[]) this.WriteUInt64Array((UInt64[])value);
                 else if(value is StringBuilder[]) this.WriteStringBuilderArray((StringBuilder[])value);
                 else if(value is Type[]) this.WriteTypeArray((Type[])value);
-                else if(value.GetType() == Types.ObjectArray) this.WriteObjectArray((Object[])value);
+                else if(value.GetType() == DefineTypes.ObjectArray) this.WriteObjectArray((Object[])value);
                 else
                 {
                     this.WriteArray(value as Array);
@@ -146,12 +146,12 @@ namespace Aoite.Serialization
 
             #region Result &　Generic
 
-            if(type == Types.Result)
+            if(type == DefineTypes.Result)
             {
                 this.WriteResult((Result)value);
                 return;
             }
-            if(type == Types.HybridDictionary)
+            if(type == DefineTypes.HybridDictionary)
             {
                 this.WriteHybridDictionary((System.Collections.Specialized.HybridDictionary)value);
                 return;
@@ -159,22 +159,22 @@ namespace Aoite.Serialization
             if(type.IsGenericType)
             {
                 var defineType = type.GetGenericTypeDefinition();
-                if(Types.GResult == defineType)
+                if(DefineTypes.GResult == defineType)
                 {
                     this.WriteGResult((Result)value, type);
                     return;
                 }
-                if(Types.GList == defineType)
+                if(DefineTypes.GList == defineType)
                 {
                     this.WriteGList((IList)value, type);
                     return;
                 }
-                if(Types.GConcurrentDictionary == defineType)
+                if(DefineTypes.GConcurrentDictionary == defineType)
                 {
                     this.WriteGConcurrentDictionary((IDictionary)value, type);
                     return;
                 }
-                if(Types.GDictionary == defineType)
+                if(DefineTypes.GDictionary == defineType)
                 {
                     this.WriteGDictionary((IDictionary)value, type);
                     return;

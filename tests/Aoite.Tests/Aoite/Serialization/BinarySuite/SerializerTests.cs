@@ -448,7 +448,7 @@ namespace Aoite.Serialization.BinarySuite
         [Fact]
         public void TypeTest1()
         {
-            var m1 = new TypeTestClass1() { Type1 = Types.String };
+            var m1 = new TypeTestClass1() { Type1 = DefineTypes.String };
             var m2 = ObjectComparer(m1);
             Assert.Equal(m1.Type1, m2.Type1);
         }
@@ -459,7 +459,7 @@ namespace Aoite.Serialization.BinarySuite
         [Fact]
         public void TypeTest2()
         {
-            var m1 = new TypeTestClass2() { Type1 = Types.String, Type2 = Types.String };
+            var m1 = new TypeTestClass2() { Type1 = DefineTypes.String, Type2 = DefineTypes.String };
             var m2 = ObjectComparer(m1);
             Assert.Equal(m1.Type1, m2.Type1);
             Assert.Equal(m1.Type2, m2.Type2);
@@ -468,7 +468,7 @@ namespace Aoite.Serialization.BinarySuite
         [Fact]
         public void TypeTest3()
         {
-            var m1 = new TypeTestClass2() { Type1 = Types.String, Type2 = Types.Int32 };
+            var m1 = new TypeTestClass2() { Type1 = DefineTypes.String, Type2 = DefineTypes.Int32 };
             var m2 = ObjectComparer(m1);
             Assert.Equal(m1.Type1, m2.Type1);
         }

@@ -20,7 +20,7 @@ namespace System
         {
             if(type == null) return null;
 
-            return type.IsValueType && !(type.IsGenericType && type.GetGenericTypeDefinition().Equals(Types.Nullable))
+            return type.IsValueType && !(type.IsGenericType && type.GetGenericTypeDefinition().Equals(DefineTypes.Nullable))
                 ? Activator.CreateInstance(type)
                 : null;
         }
@@ -31,7 +31,7 @@ namespace System
         /// <param name="type">数据类型。</param>
         /// <returns>如果类型为 <see cref="DataTable"/> 或 <see cref="DataSet"/>，则返回 true，否则返回 false。</returns>
         public static bool IsDataType(this Type type)
-            => type != null && (Types.DataTable.IsAssignableFrom(type) || Types.DataSet.IsAssignableFrom(type));
+            => type != null && (DefineTypes.DataTable.IsAssignableFrom(type) || DefineTypes.DataSet.IsAssignableFrom(type));
         
         /// <summary>
         /// 判断类型是否为匿名类型。
@@ -67,7 +67,7 @@ namespace System
         /// <param name="type">需要判断的类型。</param>
         /// <returns>如果可以转换返回 true，否则返回 false。</returns>
         public static bool HasStringConverter(this Type type)
-            => type != null && System.ComponentModel.TypeDescriptor.GetConverter(type).CanConvertFrom(Types.String);
+            => type != null && System.ComponentModel.TypeDescriptor.GetConverter(type).CanConvertFrom(DefineTypes.String);
 
         /// <summary>
         /// 获取一个值，指示当前类型是否为简单类型。
@@ -76,27 +76,27 @@ namespace System
         /// <returns>如果为简单类型返回 true，否则返回 false。</returns>
         public static bool IsSimpleType(this Type type)
             => type != null && type.IsPrimitive ||
-                   type.Equals(Types.String) ||
-                   type.Equals(Types.Guid) ||
-                   type.Equals(Types.DateTime) ||
-                   type.Equals(Types.Decimal) ||
-                   type.Equals(Types.DateTimeOffset) ||
-                   type.Equals(Types.TimeSpan) ||
-                   type.Equals(Types.SqlGuid);
+                   type.Equals(DefineTypes.String) ||
+                   type.Equals(DefineTypes.Guid) ||
+                   type.Equals(DefineTypes.DateTime) ||
+                   type.Equals(DefineTypes.Decimal) ||
+                   type.Equals(DefineTypes.DateTimeOffset) ||
+                   type.Equals(DefineTypes.TimeSpan) ||
+                   type.Equals(DefineTypes.SqlGuid);
 
         /// <summary>
         /// 判断一个类型是否为数字类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <returns>如果类型为任意数字类型则返回 true，否则返回 false。</returns>
-        public static bool IsNumber(this Type type) => type != null && Array.IndexOf(Types.NumberTypes, type) > -1;
+        public static bool IsNumber(this Type type) => type != null && Array.IndexOf(DefineTypes.NumberTypes, type) > -1;
 
         /// <summary>
         /// 判断一个类型是否为浮点数类型。
         /// </summary>
         /// <param name="type">数据类型。</param>
         /// <returns>如果类型为 <see cref="Single"/>、<see cref="Double"/> 或 <see cref="Decimal"/> 则返回 true，否则返回 false。</returns>
-        public static bool IsNumberFloat(this Type type) => type != null && Array.IndexOf(Types.NumberFloatTypes, type) > -1;
+        public static bool IsNumberFloat(this Type type) => type != null && Array.IndexOf(DefineTypes.NumberFloatTypes, type) > -1;
 
         private static string GetSimpleType(Type type, short numericPrecision, short numericScale)
         {
@@ -269,14 +269,14 @@ namespace System
             var realType = type.GetNullableType();
 
             if(realType.IsInstanceOfType(value)) return value;
-            if(realType == Types.Boolean) return Types.TrueStrings.IndexOf<string>(value.ToString(), StringComparer.OrdinalIgnoreCase) != -1;
+            if(realType == DefineTypes.Boolean) return DefineTypes.TrueStrings.IndexOf<string>(value.ToString(), StringComparer.OrdinalIgnoreCase) != -1;
 
-            if(realType == Types.Guid)
+            if(realType == DefineTypes.Guid)
             {
                 if(value is byte[]) return new Guid((byte[])value);
                 return new Guid(value.ToString());
             }
-            if(realType == Types.TimeSpan)
+            if(realType == DefineTypes.TimeSpan)
             {
                 if(value is Int64) return new TimeSpan((Int64)value);
                 return TimeSpan.Parse(value.ToString());
@@ -287,7 +287,7 @@ namespace System
                 return Enum.ToObject(realType, value);
             }
 
-            if(realType == Types.Uri) return new Uri(value.ToString());
+            if(realType == DefineTypes.Uri) return new Uri(value.ToString());
 
             switch(Type.GetTypeCode(realType))
             {

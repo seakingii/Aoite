@@ -113,27 +113,27 @@ namespace System
         {
             if(type == null) throw new ArgumentNullException(nameof(type));
             type = type.GetNullableType();
-            if(type == Types.BinaryValue) return this;
-            if(type == Types.ByteArray) return this._ByteArray;
-            if(type == Types.String) return (String)this;
+            if(type == DefineTypes.BinaryValue) return this;
+            if(type == DefineTypes.ByteArray) return this._ByteArray;
+            if(type == DefineTypes.String) return (String)this;
             if(type.IsValueType)
             {
                 if(type.IsEnum) return Enum.ToObject(type, Parse(Enum.GetUnderlyingType(type)));
-                if(type == Types.Decimal) return (Decimal)this;
-                if(type == Types.Guid) return (Guid)this;
-                if(type == Types.DateTime) return (DateTime)this;
-                if(type == Types.DateTimeOffset) return (DateTimeOffset)this;
-                if(type == Types.TimeSpan) return (TimeSpan)this;
-                if(type == Types.Boolean) return (Boolean)this;
-                if(type == Types.Char) return (Char)this;
-                if(type == Types.Double) return (Double)this;
-                if(type == Types.Int16) return (Int16)this;
-                if(type == Types.Int32) return (Int32)this;
-                if(type == Types.Int64) return (Int64)this;
-                if(type == Types.Single) return (Single)this;
-                if(type == Types.UInt16) return (UInt16)this;
-                if(type == Types.UInt32) return (UInt32)this;
-                if(type == Types.UInt64) return (UInt64)this;
+                if(type == DefineTypes.Decimal) return (Decimal)this;
+                if(type == DefineTypes.Guid) return (Guid)this;
+                if(type == DefineTypes.DateTime) return (DateTime)this;
+                if(type == DefineTypes.DateTimeOffset) return (DateTimeOffset)this;
+                if(type == DefineTypes.TimeSpan) return (TimeSpan)this;
+                if(type == DefineTypes.Boolean) return (Boolean)this;
+                if(type == DefineTypes.Char) return (Char)this;
+                if(type == DefineTypes.Double) return (Double)this;
+                if(type == DefineTypes.Int16) return (Int16)this;
+                if(type == DefineTypes.Int32) return (Int32)this;
+                if(type == DefineTypes.Int64) return (Int64)this;
+                if(type == DefineTypes.Single) return (Single)this;
+                if(type == DefineTypes.UInt16) return (UInt16)this;
+                if(type == DefineTypes.UInt32) return (UInt32)this;
+                if(type == DefineTypes.UInt64) return (UInt64)this;
             }
             return this.ToModel();
         }

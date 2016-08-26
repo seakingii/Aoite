@@ -438,7 +438,7 @@ namespace Aoite.Serialization.Json
             {
                 // Int64 and UInt64 result in numbers too big for JavaScript
                 var underlyingType = Enum.GetUnderlyingType(type);
-                if(underlyingType == Types.Int64 || underlyingType == Types.UInt64)
+                if(underlyingType == DefineTypes.Int64 || underlyingType == DefineTypes.UInt64)
                 {
                     // DevDiv #286382 - Try to provide a better error message by saying exactly what property failed.
                     var errorMessage = AtlasWeb.JSON_InvalidEnumType;

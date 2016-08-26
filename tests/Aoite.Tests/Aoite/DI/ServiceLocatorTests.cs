@@ -22,7 +22,7 @@ namespace Aoite.DI
         {
             var locator = new IocContainer();
             Assert.Equal(typeof(Service2_2), locator.FindActualType(typeof(IService2)));
-            Assert.Null(locator.FindActualType(Types.Int32));
+            Assert.Null(locator.FindActualType(DefineTypes.Int32));
 
             Assert.Equal(typeof(Service2_2), locator.FindActualType(typeof(Service2_2)));
 

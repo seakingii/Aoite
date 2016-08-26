@@ -13,7 +13,7 @@ namespace Aoite.Serialization
         {
             var assems = AppDomain.CurrentDomain.GetAssemblies();
             AssemblyInfos = new List<AssemblyInfo>(assems.Length);
-            var ms = Types.String.Assembly;
+            var ms = DefineTypes.String.Assembly;
             foreach(var assembly in assems)
             {
                 var info = new AssemblyInfo(assembly);

@@ -119,7 +119,7 @@ namespace System.Collections.Generic
         public static string Join<T>(this IEnumerable<T> items, Func<T, string> callback, string separator = ",", string start = null, string end = null, bool ignoreEmptyItem = true)
         {
             var builder = new Text.StringBuilder();
-            var isStringType = typeof(T) == Types.String;
+            var isStringType = typeof(T) == DefineTypes.String;
             foreach(var item in items)
             {
                 if(ignoreEmptyItem && (item == null || (isStringType && item.ToString().Length == 0))) continue;

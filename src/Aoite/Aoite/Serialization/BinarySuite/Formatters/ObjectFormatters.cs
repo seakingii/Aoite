@@ -10,7 +10,7 @@ namespace Aoite.Serialization
         private readonly static DynamicMemberGetter GetCaseInsensitive;
         static ObjectFormatters()
         {
-            var field = Types.HybridDictionary.GetField("caseInsensitive", Aoite.Reflection.Flags.InstancePrivateDeclaredOnly);
+            var field = DefineTypes.HybridDictionary.GetField("caseInsensitive", Aoite.Reflection.Flags.InstancePrivateDeclaredOnly);
             GetCaseInsensitive = field.CreateFieldGetter();
         }
 
@@ -53,7 +53,7 @@ namespace Aoite.Serialization
             var exceptionMessage = reader.ReadStringOrReference();
             var elementType = reader.ReadType();
 
-            var value = Activator.CreateInstance(Types.GResult.MakeGenericType(elementType)) as Result;
+            var value = Activator.CreateInstance(DefineTypes.GResult.MakeGenericType(elementType)) as Result;
             reader.ReferenceContainer[index] = value;
             value._Status = status;
             value._Message = exceptionMessage;
@@ -197,7 +197,7 @@ namespace Aoite.Serialization
             var elementType = reader.ReadType();
             var count = reader.ReadInt32();
 
-            var value = Activator.CreateInstance(Types.GList.MakeGenericType(elementType), count) as IList;
+            var value = Activator.CreateInstance(DefineTypes.GList.MakeGenericType(elementType), count) as IList;
             reader.ReferenceContainer[index] = value;
             for(int i = 0; i < count; i++) value.Add(reader.Deserialize());
 
@@ -234,7 +234,7 @@ namespace Aoite.Serialization
                 , valueType = reader.ReadType();
             var count = reader.ReadInt32();
 
-            var value = Activator.CreateInstance(Types.GConcurrentDictionary.MakeGenericType(keyType, valueType), ProcessorCount * 4, count) as IDictionary;
+            var value = Activator.CreateInstance(DefineTypes.GConcurrentDictionary.MakeGenericType(keyType, valueType), ProcessorCount * 4, count) as IDictionary;
             reader.ReferenceContainer[index] = value;
             for(int i = 0; i < count; i++) value.Add(reader.Deserialize(), reader.Deserialize());
 
@@ -246,7 +246,7 @@ namespace Aoite.Serialization
                 , valueType = reader.ReadType();
             var count = reader.ReadInt32();
 
-            var value = Activator.CreateInstance(Types.GDictionary.MakeGenericType(keyType, valueType), count) as IDictionary;
+            var value = Activator.CreateInstance(DefineTypes.GDictionary.MakeGenericType(keyType, valueType), count) as IDictionary;
             reader.ReferenceContainer[index] = value;
             for(int i = 0; i < count; i++) value.Add(reader.Deserialize(), reader.Deserialize());
 

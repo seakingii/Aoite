@@ -143,15 +143,15 @@ namespace Aoite.Serialization.BinarySuite
         [Fact]
         public void TypeTest()
         {
-            this.AssertObjct(Types.String);
-            this.AssertObjct(Types.Int32);
-            this.AssertObjct(Types.DataTable);
-            this.AssertObjct(Types.IGEnumerable);
+            this.AssertObjct(DefineTypes.String);
+            this.AssertObjct(DefineTypes.Int32);
+            this.AssertObjct(DefineTypes.DataTable);
+            this.AssertObjct(DefineTypes.IGEnumerable);
 
-            this.AssertObjct(new Type[] { Types.IGEnumerable });
-            this.AssertObjct(new Type[] { Types.String, Types.Int32, Types.String, Types.Int64, Types.Int16 });
-            this.AssertObjct(new Type[] { Types.String, Types.IGEnumerable, Types.String, Types.Int64, Types.Int16 });
-            this.AssertObjct(new Type[] { Types.String, Types.Int32, Types.String, Types.IGEnumerable, Types.Int16 });
+            this.AssertObjct(new Type[] { DefineTypes.IGEnumerable });
+            this.AssertObjct(new Type[] { DefineTypes.String, DefineTypes.Int32, DefineTypes.String, DefineTypes.Int64, DefineTypes.Int16 });
+            this.AssertObjct(new Type[] { DefineTypes.String, DefineTypes.IGEnumerable, DefineTypes.String, DefineTypes.Int64, DefineTypes.Int16 });
+            this.AssertObjct(new Type[] { DefineTypes.String, DefineTypes.Int32, DefineTypes.String, DefineTypes.IGEnumerable, DefineTypes.Int16 });
         }
 
         [Fact]

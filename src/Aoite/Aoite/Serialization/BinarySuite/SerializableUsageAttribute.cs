@@ -22,8 +22,8 @@ namespace Aoite.Serialization
         public SerializableUsageAttribute(Type formatterType)
         {
             if(formatterType == null) throw new ArgumentNullException(nameof(formatterType));
-            if(!Types.ISerializable.IsAssignableFrom(formatterType)) throw new ArgumentException("类型 {0} 没有实现 {1} 的接口。".Fmt(formatterType.FullName, Types.ISerializable.FullName), "type");
-            if(formatterType.IsInterface || formatterType.IsAbstract) throw new ArgumentException("类型 {0} 不能是一个接口或基类。".Fmt(Types.ISerializable.FullName), "type");
+            if(!DefineTypes.ISerializable.IsAssignableFrom(formatterType)) throw new ArgumentException("类型 {0} 没有实现 {1} 的接口。".Fmt(formatterType.FullName, DefineTypes.ISerializable.FullName), "type");
+            if(formatterType.IsInterface || formatterType.IsAbstract) throw new ArgumentException("类型 {0} 不能是一个接口或基类。".Fmt(DefineTypes.ISerializable.FullName), "type");
             this._FormatterType = formatterType;
         }
     }

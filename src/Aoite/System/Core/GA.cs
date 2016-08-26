@@ -334,7 +334,7 @@ namespace System
             {
                 case TypeCode.Object:
                     if(t1 == null || t2 == null) goto default;
-                    if(type.IsSubclassOf(Types.Exception) || type == Types.Exception)
+                    if(type.IsSubclassOf(DefineTypes.Exception) || type == DefineTypes.Exception)
                     {
                         t1 = t1.ToString();
                         t2 = t2.ToString();
@@ -357,7 +357,7 @@ namespace System
                             if(r != null) return r;
                         }
                     }
-                    else if(type.IsSubclassOf(Types.IDictionary))
+                    else if(type.IsSubclassOf(DefineTypes.IDictionary))
                     {
                         var a1 = t1 as IDictionary;
                         var a2 = t2 as IDictionary;
@@ -380,7 +380,7 @@ namespace System
                             if(r != null) return r;
                         }
                     }
-                    else if(type.IsSubclassOf(Types.IEnumerable))
+                    else if(type.IsSubclassOf(DefineTypes.IEnumerable))
                     {
                         var a1 = new ArrayList();
                         foreach(var item in t1 as IEnumerable) a1.Add(item);
@@ -593,7 +593,7 @@ namespace System
             if(type == null) throw new ArgumentNullException(nameof(type));
             type = type.GetNullableType();
 
-            if(type == Types.Guid) return Guid.NewGuid();
+            if(type == DefineTypes.Guid) return Guid.NewGuid();
             var random = FastRandom.Instance;
 
             if(type.IsEnum)
@@ -601,12 +601,12 @@ namespace System
                 var values = Enum.GetValues(type);
                 return values.GetValue(random.Next() % values.Length);
             }
-            if(type == Types.String) return random.NextString(random.Next() % 30 + random.Next(3, 6));
-            if(type == Types.Uri) return new Uri("www." + random.NextString(random.Next() % 10 + random.Next(3, 6)) + ".com");
-            if(type == Types.TimeSpan) return TimeSpan.FromMinutes(random.NextDouble() % random.Next(124, 1025));
-            if(type == Types.DateTime) return DateTime.Now.AddMinutes(random.NextDouble() % random.Next(124, 1025));
-            if(type == Types.DateTimeOffset) return DateTimeOffset.Now.AddMinutes(random.NextDouble() % random.Next(124, 1025));
-            if(type == Types.Boolean) return random.NextBool();
+            if(type == DefineTypes.String) return random.NextString(random.Next() % 30 + random.Next(3, 6));
+            if(type == DefineTypes.Uri) return new Uri("www." + random.NextString(random.Next() % 10 + random.Next(3, 6)) + ".com");
+            if(type == DefineTypes.TimeSpan) return TimeSpan.FromMinutes(random.NextDouble() % random.Next(124, 1025));
+            if(type == DefineTypes.DateTime) return DateTime.Now.AddMinutes(random.NextDouble() % random.Next(124, 1025));
+            if(type == DefineTypes.DateTimeOffset) return DateTimeOffset.Now.AddMinutes(random.NextDouble() % random.Next(124, 1025));
+            if(type == DefineTypes.Boolean) return random.NextBool();
 
             var randomNumber = random.Next(1, 65535) * (random.NextDouble() + 2.0) + 65535;
             switch(Type.GetTypeCode(type))

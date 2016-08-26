@@ -23,9 +23,9 @@ namespace System.Extensions
         private DataTable CreateTable(bool statusIsInt32 = true)
         {
             DataTable table = new DataTable();
-            table.Columns.Add("Id", Types.Int64);
-            table.Columns.Add("Username", Types.String);
-            table.Columns.Add("Status", statusIsInt32 ? Types.Int32 : Types.String);
+            table.Columns.Add("Id", DefineTypes.Int64);
+            table.Columns.Add("Username", DefineTypes.String);
+            table.Columns.Add("Status", statusIsInt32 ? DefineTypes.Int32 : DefineTypes.String);
             return table;
         }
 
@@ -92,7 +92,7 @@ namespace System.Extensions
         {
             var mapper = TypeMapper.Instance<User>.Mapper;
             DataTable table = new DataTable();
-            table.Columns.Add("Status", Types.String);
+            table.Columns.Add("Status", DefineTypes.String);
             table.Rows.Add("ACTIVED");
             User u = new User();
             mapper.From(table.Rows[0]).To(u);
@@ -105,7 +105,7 @@ namespace System.Extensions
         {
             var mapper = TypeMapper.Instance<User>.Mapper;
             DataTable table = new DataTable();
-            table.Columns.Add("Status", Types.Int32);
+            table.Columns.Add("Status", DefineTypes.Int32);
             table.Rows.Add(1);
             User u = new User();
             mapper.From(table.Rows[0]).To(u);
@@ -118,7 +118,7 @@ namespace System.Extensions
         {
             var mapper = TypeMapper.Instance<User>.Mapper;
             DataTable table = new DataTable();
-            table.Columns.Add("Status", Types.String);
+            table.Columns.Add("Status", DefineTypes.String);
             table.Rows.Add("ACTIVED");
 
             User u = new User();
@@ -135,7 +135,7 @@ namespace System.Extensions
         {
             var mapper = TypeMapper.Instance<User>.Mapper;
             DataTable table = new DataTable();
-            table.Columns.Add("Status", Types.Int32);
+            table.Columns.Add("Status", DefineTypes.Int32);
             table.Rows.Add(1);
             User u = new User();
             mapper.From(table.Rows[0]).To(u);

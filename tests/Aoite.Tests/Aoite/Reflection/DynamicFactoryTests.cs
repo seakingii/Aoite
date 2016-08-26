@@ -148,7 +148,7 @@ namespace Aoite.Reflection.Tests
             var m = new Methods.Model();
             var di = new DynamicInstance(m);
             Assert.Equal("11", di.Call("Public", 5, 6));
-            Assert.Equal("56", di.Call(new Type[] { Types.Int32 }, "GPublic", 5, 6));
+            Assert.Equal("56", di.Call(new Type[] { DefineTypes.Int32 }, "GPublic", 5, 6));
             var cm = new Methods.ChildModel() { MyProperty = 100 };
             var args = new object[] { cm, 0 };
 
@@ -258,26 +258,26 @@ namespace Aoite.Reflection.Tests
         public void CtorTest2()
         {
             var type = typeof(CtorClass);
-            var instance = type.CreateConstructorHandler(Types.Int32)(1) as CtorClass;
+            var instance = type.CreateConstructorHandler(DefineTypes.Int32)(1) as CtorClass;
             Assert.Equal(1, instance.X);
 
-            instance = type.CreateConstructorHandler(Types.Int32, Types.Int32)(1, 2) as CtorClass;
+            instance = type.CreateConstructorHandler(DefineTypes.Int32, DefineTypes.Int32)(1, 2) as CtorClass;
             Assert.Equal(2, instance.Y);
 
-            instance = type.CreateConstructorHandler(Types.Int32, Types.Int32, Types.Int32)(1, 2, 3) as CtorClass;
+            instance = type.CreateConstructorHandler(DefineTypes.Int32, DefineTypes.Int32, DefineTypes.Int32)(1, 2, 3) as CtorClass;
             Assert.Equal(3, instance.Z);
         }
         [Fact]
         public void CtorTest3()
         {
             var type = typeof(CtorStruct);
-            var instance = (CtorStruct)type.CreateConstructorHandler(Types.Int32)(1);
+            var instance = (CtorStruct)type.CreateConstructorHandler(DefineTypes.Int32)(1);
             Assert.Equal(1, instance.X);
 
-            instance = (CtorStruct)type.CreateConstructorHandler(Types.Int32, Types.Int32)(1, 2);
+            instance = (CtorStruct)type.CreateConstructorHandler(DefineTypes.Int32, DefineTypes.Int32)(1, 2);
             Assert.Equal(2, instance.Y);
 
-            instance = (CtorStruct)type.CreateConstructorHandler(Types.Int32, Types.Int32, Types.Int32)(1, 2, 3);
+            instance = (CtorStruct)type.CreateConstructorHandler(DefineTypes.Int32, DefineTypes.Int32, DefineTypes.Int32)(1, 2, 3);
             Assert.Equal(3, instance.Z);
         }
         class CtorClass2
@@ -294,7 +294,7 @@ namespace Aoite.Reflection.Tests
         {
             var type = typeof(CtorClass2);
             var args = new object[] { 4, 0 };
-            var instance = type.CreateConstructorHandler(Types.Int32, Types.Int32.MakeByRefType())(args) as CtorClass2;
+            var instance = type.CreateConstructorHandler(DefineTypes.Int32, DefineTypes.Int32.MakeByRefType())(args) as CtorClass2;
             Assert.Equal(4, instance.X);
             Assert.Equal(40, args[1]);
         }

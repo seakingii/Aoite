@@ -218,7 +218,7 @@ namespace Aoite.Redis
                     else
                     {
                         var type = arg.GetType();
-                        if(type == Types.Boolean)
+                        if(type == DefineTypes.Boolean)
                         {
                             this.WriteBytes(writer, encoding.GetBytes(((bool)arg) ? "1" : "0"));
                         }

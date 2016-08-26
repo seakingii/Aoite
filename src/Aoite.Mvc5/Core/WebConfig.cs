@@ -70,7 +70,7 @@ namespace System.Web
 
             public override bool CanConvert(Type objectType)
             {
-                return objectType == Types.Int64 || objectType == typeof(Nullable<Int64>);
+                return objectType == DefineTypes.Int64 || objectType == typeof(Nullable<Int64>);
             }
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

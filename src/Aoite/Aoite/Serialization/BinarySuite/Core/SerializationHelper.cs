@@ -16,7 +16,7 @@ namespace Aoite.Serialization
         {
             List<SerializableFieldInfo> list = new List<SerializableFieldInfo>();
             int depth = 0;
-            while(type != Types.Object)
+            while(type != DefineTypes.Object)
             {
                 var fields = type.GetFields(Aoite.Reflection.Flags.InstanceAnyDeclaredOnly);
                 foreach(FieldInfo field in fields)
