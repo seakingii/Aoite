@@ -12,7 +12,7 @@ namespace System
     /// </summary>
     public static class RSA
     {
-        const int DefaultKeySize = 2048;
+        const int DefaultKeySize = 1024;
 
         internal static string Base64UrlEncode(byte[] input)
         {
@@ -47,7 +47,7 @@ namespace System
         /// </summary>
         /// <param name="dwKeySize">要使用的密钥的大小（以位为单位）。</param>
         /// <returns>一个 RSA 的密钥信息。</returns>
-        public static RSAKey Create(int dwKeySize = 2048) => new RSAKey(dwKeySize);
+        public static RSAKey Create(int dwKeySize = DefaultKeySize) => new RSAKey(dwKeySize);
 
         /// <summary>
         /// 使用 <see cref="Security.Cryptography.RSA"/> 算法对数据进行加密。
