@@ -154,6 +154,7 @@
     <Compile Include="Aoite\Serialization\BinarySuite\NumberFormattersTests.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\SerializerTests.cs" />
     <Compile Include="Aoite\Serialization\BinarySuite\StringFormattersTests.cs" />
+    <Compile Include="Aoite\Serialization\Json\JSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Attributes\AliasAttributeTests.cs" />
     <Compile Include="System\Attributes\IgnoreAttributeTests.cs" />

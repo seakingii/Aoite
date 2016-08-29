@@ -24,7 +24,7 @@
     public class Result : IResult, IValueResult
     {
         internal const string SuccessedString = "执行成功！";
-        internal const string NullValueString = "[null]";
+        internal const string NullValueString = "[NULL]";
         /// <summary>
         /// 表示成功、且无法修改的结果。
         /// </summary>
