@@ -22,7 +22,7 @@ namespace System
 
             Assert.NotNull(rsaKey.Key);
             Assert.NotNull(rsaKey.PublicKey);
-            Assert.Equal(2048, rsaKey.KeySize);
+            Assert.Equal(1024, rsaKey.KeySize);
             output.WriteLine("Key");
             output.WriteLine(rsaKey.Key);
             output.WriteLine("Public Key");

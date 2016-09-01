@@ -69,7 +69,7 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            if(command == null) throw new ArgumentNullException(nameof(command));
+            if(Equals(command, default(TCommand))) throw new ArgumentNullException(nameof(command));
 
             var executorFactory = container.Get<IExecutorFactory>();
             var eventStore = container.Get<IEventStore>();
@@ -107,7 +107,7 @@ namespace Aoite.CommandModel
             , CommandExecutingHandler<TCommand> executing = null
             , CommandExecutedHandler<TCommand> executed = null) where TCommand : ICommand
         {
-            if(command == null) throw new ArgumentNullException(nameof(command));
+            if(Equals(command, default(TCommand))) throw new ArgumentNullException(nameof(command));
 
             var executorFactory = container.Get<IExecutorFactory>();
             var eventStore = container.Get<IEventStore>();
@@ -226,15 +226,15 @@ namespace Aoite.CommandModel
 
     class CommandBusPipe : ObjectDisposableBase, ICommandBusPipe
     {
-        private CommandBus _bus;
-        private Lazy<IDbEngine> _lazyEngine;
-        private Lazy<HybridDictionary> _lazyData;
+        readonly CommandBus _bus;
+        Lazy<IDbEngine> _lazyEngine;
+        readonly Lazy<HybridDictionary> _lazyData;
 
         IIocContainer IContainerProvider.Container { get { return this._bus.Container; } set { this._bus.Container = value; } }
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         ICommandBusPipe ICommandBus.Pipe => this;
-        
+
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         ICommandBusPipe ICommandBus.PipeTransaction => this.UseTransaction();
 
@@ -249,15 +249,14 @@ namespace Aoite.CommandModel
         }
 
 
-        public ICommandBusPipe UseTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.Unspecified)
+        public ICommandBusPipe UseTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified)
         {
-            if(this._lazyEngine.IsValueCreated) this._lazyEngine.Value.ContextTransaction.OpenTransaction(isolationLevel);
-            else this._lazyEngine = new Lazy<IDbEngine>(() => this.GetDbEngine().Context.OpenTransaction(isolationLevel));
+            this._lazyEngine.Value.ContextTransaction.OpenTransaction(isolationLevel);
             return this;
         }
 
 
-        private IContext CreateContext<TCommand>(TCommand command) where TCommand : ICommand
+        IContext CreateContext<TCommand>(TCommand command) where TCommand : ICommand
         {
             return this._bus.Container.Get<IContextFactory>().Create(command
                 , this._lazyData

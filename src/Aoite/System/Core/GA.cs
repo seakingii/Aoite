@@ -101,10 +101,9 @@ namespace System
         {
             const int RPC_S_OK = 0;
             Guid guid;
-            int result = UuidCreateSequential(out guid);
+            var result = UuidCreateSequential(out guid);
             if(result == RPC_S_OK) return guid;
-            else
-                return Guid.NewGuid();
+            return Guid.NewGuid();
         }
 
         /// <summary>
@@ -165,10 +164,9 @@ namespace System
         {
             get
             {
-                if(GA.IsOldOS) return true;
+                if(IsOldOS) return true;
 
-                WindowsIdentity identity = WindowsIdentity.GetCurrent();
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
@@ -178,13 +176,14 @@ namespace System
         /// </summary>
         public static void RunAsAdministrator()
         {
-            if(GA.IsAdministrator) return;
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = true;
-            startInfo.WorkingDirectory = Environment.CurrentDirectory;
-            startInfo.FileName = Assembly.GetEntryAssembly().Location;
-            startInfo.Verb = "runas";
-            Process.Start(startInfo);
+            if(IsAdministrator) return;
+            Process.Start(new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                WorkingDirectory = Environment.CurrentDirectory,
+                FileName = Assembly.GetEntryAssembly().Location,
+                Verb = "runas"
+            });
         }
 
         /// <summary>
@@ -345,7 +344,7 @@ namespace System
                         var a1 = t1 as Array;
                         var a2 = t2 as Array;
                         if(a1 == null || a2 == null) goto default;
-                        if(a1.Length != a2.Length) return new CompareResult()
+                        if(a1.Length != a2.Length) return new CompareResult
                         {
                             Name = "数组长度",
                             Value1 = a1.Length,
@@ -362,7 +361,7 @@ namespace System
                         var a1 = t1 as IDictionary;
                         var a2 = t2 as IDictionary;
                         if(a1 == null || a2 == null) goto default;
-                        if(a1.Count != a2.Count) return new CompareResult()
+                        if(a1.Count != a2.Count) return new CompareResult
                         {
                             Name = "字典大小",
                             Value1 = a1.Count,
@@ -370,7 +369,7 @@ namespace System
                         };
                         foreach(DictionaryEntry item in a1)
                         {
-                            if(!a2.Contains(item.Key)) return new CompareResult()
+                            if(!a2.Contains(item.Key)) return new CompareResult
                             {
                                 Name = "字典键",
                                 Value1 = item.Key,
@@ -387,7 +386,7 @@ namespace System
                         var a2 = new ArrayList();
                         foreach(var item in t2 as IEnumerable) a2.Add(item);
 
-                        if(a1.Count != a2.Count) return new CompareResult()
+                        if(a1.Count != a2.Count) return new CompareResult
                         {
                             Name = "枚举大小",
                             Value1 = a1.Count,
@@ -416,9 +415,9 @@ namespace System
                     }
                     break;
                 default:
-                    if(!object.Equals(t1, t2))
+                    if(!Equals(t1, t2))
                     {
-                        return new CompareResult()
+                        return new CompareResult
                         {
                             Name = name,
                             Value1 = t1,
@@ -477,10 +476,10 @@ namespace System
         /// <returns>可解锁的对象。</returns>
         public static IDisposable Lock<TSeed>(TSeed seed, TimeSpan timeout)
         {
-            if(seed == null) throw new ArgumentNullException(nameof(seed));
+            if(Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
 
             var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
-            return s.Lock(timeout);
+            return s.LockSeed(timeout);
         }
 #if !NET40
         /// <summary>
@@ -502,32 +501,32 @@ namespace System
         /// <returns>可解锁的异步操作。</returns>
         public static Threading.Tasks.Task<IDisposable> LockAsync<TSeed>(TSeed seed, TimeSpan timeout)
         {
-            if(seed == null) throw new ArgumentNullException(nameof(seed));
-            
+            if(Equals(seed, default(TSeed))) throw new ArgumentNullException(nameof(seed));
+
             var s = Seed<TSeed>.LockeableObjects.GetOrAdd(seed, key => new Seed(key));
-            return s.LockAsync(timeout);
+            return s.LockSeedAsync(timeout);
         }
 #endif
         class Seed
         {
-            public object _key;
-            private SemaphoreSlim _sema;
-            private SimpleLockItem _releaseItem;
+            public readonly object Key;
+            readonly SemaphoreSlim _sema;
+            readonly SimpleLockItem _releaseItem;
             public Seed(object key)
             {
-                _key = key;
+                Key = key;
                 _sema = new SemaphoreSlim(1, 1);
                 _releaseItem = new SimpleLockItem(() => _sema.Release());
             }
-            public IDisposable Lock(TimeSpan timeout)
+            public IDisposable LockSeed(TimeSpan timeout)
             {
-                if(!_sema.Wait(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this._key), timeout);
+                if(!_sema.Wait(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this.Key), timeout);
                 return _releaseItem;
             }
 #if !NET40
-            public async Threading.Tasks.Task<IDisposable> LockAsync(TimeSpan timeout)
+            public async Threading.Tasks.Task<IDisposable> LockSeedAsync(TimeSpan timeout)
             {
-                if(!await _sema.WaitAsync(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this._key), timeout);
+                if(!await _sema.WaitAsync(timeout)) SimpleLockItem.TimeoutError(Convert.ToString(this.Key), timeout);
                 return _releaseItem;
             }
 #endif
@@ -546,10 +545,10 @@ namespace System
         /// <returns>已加载的程序集列表。</returns>
         public static Assembly[] LoadAssemblies(string assemblies)
         {
-            List<Assembly> AssemblyList = new List<Assembly>();
+            var asemblyList = new List<Assembly>();
             if(string.IsNullOrWhiteSpace(assemblies))
             {
-                AssemblyList.Add(Assembly.GetEntryAssembly());
+                asemblyList.Add(Assembly.GetEntryAssembly());
             }
             else
             {
@@ -565,10 +564,10 @@ namespace System
                         if(!File.Exists(assemblyName)) throw new FileNotFoundException("程序集文件不存在。", assemblyName);
                         assembly = Assembly.Load(AssemblyName.GetAssemblyName(assemblyName));
                     }
-                    AssemblyList.Add(assembly);
+                    asemblyList.Add(assembly);
                 }
             }
-            return AssemblyList.ToArray();
+            return asemblyList.ToArray();
         }
 
         /// <summary>

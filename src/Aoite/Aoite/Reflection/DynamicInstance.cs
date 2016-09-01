@@ -13,11 +13,11 @@ namespace System
         /// <summary>
         /// 获取反射的类。
         /// </summary>
-        public virtual Type Type { get; }
+        public /*virtual*/ Type Type { get; }
         /// <summary>
         /// 获取反射的实例。当表示静态反射时为 null 值。
         /// </summary>
-        public virtual object Instance { get; }
+        public /*virtual*/ object Instance { get; }
 
         /// <summary>
         /// 指定静态方法的类型，初始化一个 <see cref="DynamicInstance"/> 类的新实例。
@@ -59,8 +59,8 @@ namespace System
             DynamicMemberSetter d = null;
             if(memberInfo != null)
             {
-                if(memberInfo.MemberType == MemberTypes.Property) d = DynamicFactory.CreatePropertySetter(memberInfo as PropertyInfo);
-                else if(memberInfo.MemberType == MemberTypes.Field) d = DynamicFactory.CreateFieldSetter(memberInfo as FieldInfo);
+                if(memberInfo.MemberType == MemberTypes.Property) d = (memberInfo as PropertyInfo).CreatePropertySetter();
+                else if(memberInfo.MemberType == MemberTypes.Field) d = (memberInfo as FieldInfo).CreateFieldSetter();
             }
 
             if(d == null) throw new MissingMemberException(Type.FullName, name);
@@ -78,8 +78,8 @@ namespace System
             DynamicMemberGetter d = null;
             if(memberInfo != null)
             {
-                if(memberInfo.MemberType == MemberTypes.Property) d = DynamicFactory.CreatePropertyGetter(memberInfo as PropertyInfo);
-                else if(memberInfo.MemberType == MemberTypes.Field) d = DynamicFactory.CreateFieldGetter(memberInfo as FieldInfo);
+                if(memberInfo.MemberType == MemberTypes.Property) d = (memberInfo as PropertyInfo).CreatePropertyGetter();
+                else if(memberInfo.MemberType == MemberTypes.Field) d = (memberInfo as FieldInfo).CreateFieldGetter();
             }
 
             if(d == null) throw new MissingMemberException(Type.FullName, name);
@@ -104,7 +104,7 @@ namespace System
             if(methodInfo == null) throw new MissingMethodException(Type.FullName, key);
             if(!methodInfo.IsGenericMethodDefinition) throw new ArgumentException("仅支持尚未构造泛型参数的方法。", name);
 
-            var d = DynamicFactory.CreateMethodInvoker(methodInfo.MakeGenericMethod(genericTypes));
+            var d = methodInfo.MakeGenericMethod(genericTypes).CreateMethodInvoker();
             return d(Instance, args);
         }
 
@@ -120,7 +120,7 @@ namespace System
 
             var methodInfo = Type.GetMethod(name, AllBindingFalgs);
             if(methodInfo == null) throw new MissingMethodException(Type.FullName, name);
-            var d = DynamicFactory.CreateMethodInvoker(methodInfo);
+            var d = methodInfo.CreateMethodInvoker();
             return d(Instance, args);
         }
     }

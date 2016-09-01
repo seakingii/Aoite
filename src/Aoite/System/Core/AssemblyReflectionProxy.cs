@@ -70,8 +70,7 @@ namespace System
                     return true;
                 }
             }
-            catch
-            { }
+            catch { }
 
             return false;
         }
@@ -92,8 +91,8 @@ namespace System
                _proxies.ContainsKey(assemblyPath))
             {
                 // check if there are more assemblies loaded in the same app domain; in this case fail
-                AppDomain appDomain = _loadedAssemblies[assemblyPath];
-                int count = _loadedAssemblies.Values.Count(a => a == appDomain);
+                var appDomain = _loadedAssemblies[assemblyPath];
+                var count = _loadedAssemblies.Values.Count(a => a == appDomain);
                 if(count != 1)
                     return false;
 
@@ -109,11 +108,8 @@ namespace System
 
                     return true;
                 }
-                catch
-                {
-                }
+                catch { }
             }
-
             return false;
         }
 
@@ -158,9 +154,7 @@ namespace System
 
                     return true;
                 }
-                catch
-                {
-                }
+                catch { }
             }
 
             return false;
@@ -203,17 +197,13 @@ namespace System
             base.Dispose(disposing);
         }
 
-        private AppDomain CreateChildDomain(AppDomain parentDomain, string domainName)
-        {
-            Evidence evidence = new Evidence(parentDomain.Evidence);
-            AppDomainSetup setup = parentDomain.SetupInformation;
-            return AppDomain.CreateDomain(domainName, evidence, setup);
-        }
+        AppDomain CreateChildDomain(AppDomain parentDomain, string domainName)
+            => AppDomain.CreateDomain(domainName, new Evidence(parentDomain.Evidence), parentDomain.SetupInformation);
     }
 
     class AssemblyReflectionProxy : MarshalByRefObject
     {
-        private string _assemblyPath;
+        string _assemblyPath;
 
         public void LoadAssembly(String assemblyPath)
         {
@@ -240,7 +230,7 @@ namespace System
 
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += resolveEventHandler;
 
-            var assembly = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(a => a.Location.CompareTo(_assemblyPath) == 0);
+            var assembly = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(a => string.Compare(a.Location, _assemblyPath, StringComparison.Ordinal) == 0);
 
             var result = func(assembly);
 
@@ -251,20 +241,15 @@ namespace System
 
         private Assembly OnReflectionOnlyResolve(ResolveEventArgs args, DirectoryInfo directory)
         {
-            Assembly loadedAssembly =
+            var loadedAssembly =
                 AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
                     .FirstOrDefault(
                       asm => string.Equals(asm.FullName, args.Name,
                           StringComparison.OrdinalIgnoreCase));
 
-            if(loadedAssembly != null)
-            {
-                return loadedAssembly;
-            }
-
-            AssemblyName assemblyName =
-                new AssemblyName(args.Name);
-            string dependentAssemblyFilename =
+            if(loadedAssembly != null) return loadedAssembly;
+            var assemblyName = new AssemblyName(args.Name);
+            var dependentAssemblyFilename =
                 Path.Combine(directory.FullName,
                 assemblyName.Name + ".dll");
 

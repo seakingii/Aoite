@@ -8,11 +8,10 @@ namespace Aoite.CommandModel
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class CacheAttribute : Attribute, IExecutorAttribute
     {
-        private string _Group;
         /// <summary>
         /// 获取或设置缓存的分组。
         /// </summary>
-        public string Group { get { return _Group; } }
+        public string Group { get; }
 
         /// <summary>
         /// 初始化一个 <see cref="CacheAttribute"/> 类的新实例。
@@ -21,7 +20,7 @@ namespace Aoite.CommandModel
         public CacheAttribute(string group)
         {
             if(string.IsNullOrWhiteSpace(group)) throw new ArgumentNullException(nameof(group));
-            this._Group = group;
+            this.Group = group;
         }
 
         bool ICommandHandler<ICommand>.RaiseExecuting(IContext context, ICommand command)
@@ -32,7 +31,7 @@ namespace Aoite.CommandModel
             var strategy = commandCache.CreateStrategy(context);
             if(strategy == null || string.IsNullOrWhiteSpace(strategy.Key)) throw new NotSupportedException(command.GetType().FullName + "：命令模型返回了无效的策略信息。");
 
-            var value = strategy.GetCache(this._Group);
+            var value = strategy.GetCache(this.Group);
             return value == null || !commandCache.SetCacheValue(value);
         }
 
@@ -41,7 +40,7 @@ namespace Aoite.CommandModel
             //- 存在异常则不进行缓存处理
             if(exception != null) return;
             var commandCache = command as ICommandCache;
-            commandCache.CreateStrategy(context).SetCache(this._Group, commandCache.GetCacheValue());
+            commandCache.CreateStrategy(context).SetCache(this.Group, commandCache.GetCacheValue());
         }
     }
 }

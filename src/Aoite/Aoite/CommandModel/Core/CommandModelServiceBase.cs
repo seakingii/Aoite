@@ -11,13 +11,13 @@ namespace Aoite.CommandModel
         /// <summary>
         /// 初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。
         /// </summary>
-        public CommandModelServiceBase() : this(ObjectFactory.Context) { }
+        protected CommandModelServiceBase() : this(ObjectFactory.Context) { }
 
         /// <summary>
         /// 指定服务容器，初始化一个 <see cref="CommandModelServiceBase"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
-        public CommandModelServiceBase(IIocContainer container) : base(container) { }
+        protected CommandModelServiceBase(IIocContainer container) : base(container) { }
 
         /// <summary>
         /// 获取执行命令模型的用户。该属性可能返回 null 值。

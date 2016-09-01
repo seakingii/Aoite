@@ -25,7 +25,7 @@ namespace Aoite.CommandModel
         /// 初始化一个 <see cref="CommandModelContainerProviderBase"/> 类的新实例。
         /// </summary>
         /// <param name="container">服务容器。</param>
-        public CommandModelContainerProviderBase(IIocContainer container)
+        protected CommandModelContainerProviderBase(IIocContainer container)
         {
             if(container == null) throw new ArgumentNullException(nameof(container));
             this._Container = container;
