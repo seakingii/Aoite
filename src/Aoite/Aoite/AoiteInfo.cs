@@ -32,7 +32,7 @@
         /// <summary> 
         /// 获取简写化的版本号。
         /// </summary>
-        public const string Version = "3.16";
+        public const string Version = "4.0";
         /// <summary>
         /// 公司。
         /// </summary>
@@ -54,7 +54,7 @@
             /// <summary> 
             /// 程序集详细的版本。
             /// </summary>
-            public const string AssemblyVersion = Version + ".2.5";
+            public const string AssemblyVersion = Version + ".0.0";
             /// <summary> 
             /// 程序集的简单描述。
             /// </summary>
