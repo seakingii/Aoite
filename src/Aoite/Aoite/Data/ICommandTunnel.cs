@@ -28,14 +28,8 @@ namespace Aoite.Data
     class EmptyCommandTunnel : ICommandTunnel
     {
         public EmptyCommandTunnel() { }
-        public ExecuteCommand GetCommand(TypeMapper mapper, ExecuteCommand command)
-        {
-            return command;
-        }
+        public ExecuteCommand GetCommand(TypeMapper mapper, ExecuteCommand command) => command;
 
-        public string GetTableName(TypeMapper mapper)
-        {
-            return mapper.Name;
-        }
+        public string GetTableName(TypeMapper mapper) => mapper.Name;
     }
 }

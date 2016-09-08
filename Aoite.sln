@@ -36,6 +36,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aoite.WinBase", "src\Aoite.WinBase\Aoite.WinBase.csproj", "{FE4D1BA8-AFF0-41CC-AA8B-53F68EFCE92C}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug.Net40|Any CPU = Debug.Net40|Any CPU
 		Debug.Net45|Any CPU = Debug.Net45|Any CPU

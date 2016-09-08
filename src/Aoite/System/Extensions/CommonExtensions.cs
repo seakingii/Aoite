@@ -69,7 +69,7 @@ namespace System
         /// <typeparam name="TTarget">新的数据类型。</typeparam>
         /// <param name="source">复制的源对象。</param>
         /// <param name="targetStrategy">复制目标的策略。</param>
-        /// <returns><typeparamref name="TTarget"/> 的心实例。</returns>
+        /// <returns><typeparamref name="TTarget"/> 的新实例。</returns>
         public static TTarget CopyTo<TTarget>(this object source, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
             if(source == null) return default(TTarget);
@@ -88,7 +88,7 @@ namespace System
         public static TTarget CopyTo<TTarget>(this object source, TTarget target, CopyToStrategy targetStrategy = CopyToStrategy.Default)
         {
             if(source == null) throw new ArgumentNullException(nameof(source));
-            if(target == null) throw new ArgumentNullException(nameof(target));
+            if(Equals(target, default(TTarget))) throw new ArgumentNullException(nameof(target));
 
             var sMapper = TypeMapper.Create(source.GetType());
             var tMapper = TypeMapper.Create(target.GetType());
@@ -119,6 +119,18 @@ namespace System
                 else tProperty.SetValue(target, sValue, false);
             }
             return target;
+        }
+
+        /// <summary>
+        /// 将当前对象所有的属性值复制成一个新的 <typeparamref name="TTarget"/> 实例。
+        /// </summary>
+        /// <typeparam name="TTarget">目标的数据类型。</typeparam>
+        /// <param name="source">复制的源对象。</param>
+        /// <param name="targetStrategy">复制目标的策略。</param>
+        /// <returns><typeparamref name="TTarget"/> 的新实例。</returns>
+        public static TTarget DeepCopy<TTarget>(this TTarget source, CopyToStrategy targetStrategy = CopyToStrategy.Default)
+        {
+            return source.CopyTo<TTarget>(targetStrategy);
         }
 
         /// <summary>

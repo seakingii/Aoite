@@ -108,7 +108,9 @@ namespace Aoite.Data
             this.Executed?.Invoke(this.Engine, this.Command.GetEventArgs(type, dbCommand, result));
             this.Engine.Owner.OnExecuted(this.Engine, type, this.Command, dbCommand, result);
 
+#if DEBUG
             GA.TraceInformation(this.Command.ToFullString());
+#endif
         }
 
         /// <summary>
@@ -213,7 +215,7 @@ namespace Aoite.Data
         }
 
 
-        #region Basic
+#region Basic
 
         /// <summary>
         /// 执行查询命令，并执行给定的读取器的回调函数。
@@ -303,9 +305,9 @@ namespace Aoite.Data
             return value;
         }
 
-        #endregion
+#endregion
 
-        #region Custom Entity
+#region Custom Entity
 
         /// <summary>
         /// 执行查询命令，并返回实体。
@@ -348,9 +350,9 @@ namespace Aoite.Data
             return value;
         }
 
-        #endregion
+#endregion
 
-        #region Dynamic Entity
+#region Dynamic Entity
 
         /// <summary>
         /// 执行查询命令，并返回匿名实体。
@@ -390,6 +392,6 @@ namespace Aoite.Data
             return value;
         }
 
-        #endregion
+#endregion
     }
 }
